@@ -1,0 +1,158 @@
+button:hover {
+  color: blue;
+}
+button:active {
+  color: #0099FF
+}
+#divgencost {
+  display: inline-block;
+}
+#divbbcost {
+  display: inline-block;
+  text-indent: 2.25em;
+}
+#divspeedcost {
+  display: inline-block;
+  text-indent: 2.25em;
+}
+#counter {
+  font-size: larger;
+}
+#alphacounter {
+  font-size: larger;
+}
+#divmbupcost {
+  display: inline-block;
+  text-indent: 6.5em;
+}
+#divmbmultcost {
+  display: inline-block;
+  text-indent: 5.75em;
+}
+#divalphaacceleratorcost {
+  display: inline-block;
+}
+#pcosttext {
+  display: inline-block;
+  text-indent: 4em;
+}
+#divgenboost {
+  display: inline-block;
+}
+#divgbuptcost {
+  display: inline-block;
+  text-indent: 7.5em;
+}
+#divgbupmcost {
+  display: inline-block;
+  text-indent: 4.75em;
+}
+#divthreeboostcost {
+  display: inline-block;
+}
+#divperbangcost {
+  display: inline-block;
+  text-indent: 7.25em;
+}
+#resetb {
+  color: red
+}
+#resetb:hover {
+  color: #FF00FF
+}
+#resetb:active {
+  color: #0099FF
+}
+#stat {
+  word-break:break-all;
+}
+#divunlockpca {
+  display: inline-block;
+}
+#divupgradepcacost {
+  display: inline-block;
+  text-indent: 10em;
+}
+#divtogglepca {
+  display: inline-block;
+  text-indent: 1.75em;
+}
+#divboosterupcost {
+  display: inline-block;
+}
+#divboosteruppercentcost {
+  display: inline-block;
+  text-indent: 15em;
+}
+#omegabasecost {
+  display: inline-block;
+}
+#omegaalphacost {
+  display: inline-block;
+  text-indent: 3.5em;
+}
+#omegabetacost {
+  display: inline-block;
+  text-indent: 6em;
+}
+#omegagammacost {
+  display: inline-block;
+  text-indent: 4em;
+}
+#omegadeltacost {
+  display: inline-block;
+  text-indent: 4em;
+}
+#divobase {
+  display: inline-block;
+}
+#divoalpha {
+  display: inline-block;
+  text-indent: 4.5em;
+}
+#divobeta {
+  display: inline-block;
+  text-indent: 7em;
+}
+#divogamma {
+  display: inline-block;
+  text-indent: 7em;
+}
+#divodelta {
+  display: inline-block;
+  text-indent: 7em;
+}
+#boostsection {
+  flex: space-evenly;
+  flex-direction: row;
+  gap: 2.375em
+}
+#nbnb {
+  flex: space-evenly;
+  flex-direction: row;
+  gap: 1.5em
+}
+#divbau {
+  display: inline-block
+}
+#divupgradeba {
+  display: inline-block;
+  text-indent: 5.25em;
+}
+#divtoggleba {
+  display: inline-block;
+  text-indent: 6em;
+}
+#bnbn {
+  display: flex;
+  flex: space-evenly;
+  flex-direction: row;
+  gap: 1.5em
+}
+#gboostdouble {
+  display: inline-block;
+}
+#alphamachinedouble {
+  display: inline-block;
+  text-indent: 7.4em;
+}
