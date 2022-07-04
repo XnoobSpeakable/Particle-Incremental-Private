@@ -235,6 +235,10 @@ function themeExec() {
     }
     document.getElementById("whattheme").textContent = "Theme: " + themeName;
 }
+window.theme = function () {
+    player.themeNumber = (player.themeNumber + 1) % themes.length;
+    themeExec();
+};
 function prePUD() {
     document.getElementById("tabopenalpha").style.display='none';
     document.getElementById("tabopenbeta").style.display='none';
@@ -512,4 +516,4 @@ window.save = function () {
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.e28f4356.js.map
+//# sourceMappingURL=index.507a5914.js.map
