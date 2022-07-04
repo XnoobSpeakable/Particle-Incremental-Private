@@ -489,7 +489,7 @@ function savinginloop() {
 	player.autoSaveDelay -= 1;
     if(player.autoSaveDelay == 0) {
         player.autoSaveDelay = player.autoSaveSet;
-        save();
+        window.save();
 	}
 }
 
@@ -505,7 +505,11 @@ setInterval(() => {
 
 const savefile = JSON.stringify(player);
 
-function save() {
+window.save = function () {
     localStorage.setItem('savefile', savefile);
-}
-//# sourceMappingURL=index.5186da69.js.map
+};
+
+window.reset = function () {
+    localStorage.removeItem('savefile');
+};
+//# sourceMappingURL=index.e28f4356.js.map
