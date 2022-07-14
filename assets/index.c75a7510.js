@@ -339,6 +339,9 @@ window.openTab = function (tab) {
 load();
 loadMisc();
 
+window.setting1e4 = function () { player.eSetting = 1e+4; loadMisc(); };
+window.setting1e6 = function () { player.eSetting = 1e+6; loadMisc(); };
+
 function makechunk() {
 if(player.num >= 1e+9) {
     player.num -= 1e+9;
@@ -393,6 +396,16 @@ function autosavetextanddelayupdate() {
             break;
     }
 }
+
+window.autosavesettings = function () {
+    if(player.autoSaveMode == 5) {
+        player.autoSaveMode = 0;
+    }
+    else {
+    player.autoSaveMode++;
+    }
+    autosavetextanddelayupdate();
+};
 
 const alphagaindisplay = player.alphaInc * player.alphaAccelerators * player.perBangMult * player.napOff * Math.pow(2, player.alphaMachineMulti);
 const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * player.hundredOverIS * (player.gbMult * player.npOff) * player.npOff * player.tbMultiplier * player.tempBoost * (1 + (((player.boosterParticles / 100) * player.bpPercent) / 100));
@@ -516,4 +529,4 @@ window.save = function () {
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.507a5914.js.map
+//# sourceMappingURL=index.c75a7510.js.map
