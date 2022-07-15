@@ -201,6 +201,9 @@ function scaleGen(upgradeName) {
     else {
         setUpgradeCost(upgradeName, (getUpgradeCost(upgradeName) * upgrade.multiplier));
     }
+    
+//debug
+console.log(getUpgradeTimesBought('gen'));
 }
 
 window.buyUpgrade = function (upgradeName) {
@@ -338,10 +341,6 @@ window.openTab = function (tab) {
 
 load();
 loadMisc();
-
-
-//debug
-console.log(getUpgradeTimesBought('gen'));
 
 window.setting1e4 = function () { player.eSetting = 1e+4; loadMisc(); };
 window.setting1e6 = function () { player.eSetting = 1e+6; loadMisc(); };
@@ -533,4 +532,4 @@ window.save = function () {
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.5b10d8ae.js.map
+//# sourceMappingURL=index.c780802a.js.map
