@@ -214,6 +214,9 @@ window.buyUpgrade = function (upgradeName) {
     }   
 };
 
+//debug
+console.log(getUpgradeTimesBought('gen'));
+
 const themes = [
     { textColor: "black", bgColor: "#EEEEEE", buttonColor: "#DFDFDF", borderColor: "#333333", themeName: "Light" },
     { textColor: "#EBEBEB", bgColor: "#696969", buttonColor: "#999999", borderColor: "black", themeName: "Dark" },
@@ -529,4 +532,4 @@ window.save = function () {
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.c75a7510.js.map
+//# sourceMappingURL=index.6786d765.js.map
