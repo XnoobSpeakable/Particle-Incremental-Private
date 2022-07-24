@@ -410,9 +410,6 @@ window.autosavesettings = function () {
     autosavetextanddelayupdate();
 };
 
-const alphagaindisplay = player.alphaInc * player.alphaAccelerators * player.perBangMult * player.napOff * Math.pow(2, player.alphaMachineMulti);
-const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * player.hundredOverIS * (player.gbMult * player.npOff) * player.npOff * player.tbMultiplier * player.tempBoost * (1 + (((player.boosterParticles / 100) * player.bpPercent) / 100));
-
 function fgbtest() {
     if(getUpgradeTimesBought('gen') > 0) {
         document.getElementById("boostsection").style.display='flex';
@@ -430,6 +427,10 @@ function fgbtest() {
             player.alphaNum += player.alphaInc * player.alphaAcceleratorsLeft * player.perBangMult * player.napOff * Math.pow(2, player.alphaMachineMulti);
             document.getElementById("bangtimeleft").textContent = "";
         }
+
+        const alphagaindisplay = player.alphaInc * player.alphaAccelerators * player.perBangMult * player.napOff * Math.pow(2, player.alphaMachineMulti);
+        const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * player.hundredOverIS * (player.gbMult * player.npOff) * player.npOff * player.tbMultiplier * player.tempBoost * (1 + (((player.boosterParticles / 100) * player.bpPercent) / 100));
+
         document.getElementById("alphapb").textContent = "You are getting " + format(alphagaindisplay) + " Alpha/bang";
         player.bangTimeLeft -= 1;
         if(player.bangTimeLeft > 0 && player.bangTimeLeft < player.bangTime) {
@@ -523,9 +524,8 @@ setInterval(() => {
 	savinginloop();
     }, 100);
 
-const savefile = JSON.stringify(player);
-
 window.save = function () {
+    const savefile = JSON.stringify(player);
     localStorage.setItem('savefile', savefile);
 };
 const save = window.save;
@@ -533,4 +533,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.454cdcc1.js.map
+//# sourceMappingURL=index.280ed444.js.map
