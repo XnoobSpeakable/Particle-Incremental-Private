@@ -339,8 +339,8 @@ window.setting1e4 = function () { player.eSetting = 1e+4; loadMisc(); };
 window.setting1e6 = function () { player.eSetting = 1e+6; loadMisc(); };
 
 window.mbman = function () {
-player.num += (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1);
-document.getElementById("counter").textContent = format(player.num) + " particles";
+    player.num += (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1);
+    document.getElementById("counter").textContent = format(player.num) + " particles";
 };
 
 function makechunk() {
@@ -529,4 +529,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.2137a006.js.map
+//# sourceMappingURL=index.5a18f87b.js.map
