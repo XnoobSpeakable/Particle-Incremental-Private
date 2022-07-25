@@ -163,9 +163,6 @@ function UpdateCostVal(elementID, variable, currency = "Base") {
     }
 }
 
-const scaleMultiplier = (upgradeName) => (upgradeName.cost * upgradeName.multiplier);
-
-
 const upgrades = {
     'gen': { multiplier: 4, scaleFunction: scaleGen, costDiv: "divgencost", currency: "Base"},
     'bb': {  multiplier: 2, scaleFunction: scaleMultiplier, costDiv: "divbbcost", currency: "Base"},
@@ -173,6 +170,11 @@ const upgrades = {
     'mbup': {  multiplier: 2, scaleFunction: scaleMultiplier, costDiv: "divmbupcost", currency: "Base"},
     'mbmult': {  multiplier: 3, scaleFunction: scaleMultiplier, costDiv: "divmbmultcost", currency: "Base"},
 };
+
+function scaleMultiplier(upgradeName) {
+    const upgrade = upgrades[upgradeName];
+    setUpgradeCost(upgradeName, (getUpgradeCost(upgradeName) * upgrade.multiplier));
+}
 
 /*function buyspeed() {
 if(player.num >= (player.speedCost * player.supScale)) {
@@ -533,4 +535,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.280ed444.js.map
+//# sourceMappingURL=index.288ed18e.js.map
