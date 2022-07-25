@@ -62,9 +62,6 @@ function load() {
               },
             num: 0,
             speedCost: 50,
-            intervalSpeed: 1000,
-            fracMult: 2,
-            hundredOverIS: 0.1,
             gbUnlocked: false,
             gbTimeLeft: 0,
             gbTimeLeftCon: 10,
@@ -124,8 +121,6 @@ function load() {
             gBoostSquare: 0,
             alphaMachineDoubleCost: 1000,
             alphaMachineMulti: 0,
-            supBought: 0,
-            supScale: 1
           };
     }
     else {
@@ -166,7 +161,7 @@ function UpdateCostVal(elementID, variable, currency = "Base") {
 const upgrades = {
     'gen': { multiplier: 4, scaleFunction: scaleGen, costDiv: "divgencost", currency: "Base"},
     'bb': {  multiplier: 2, scaleFunction: scaleMultiplier, costDiv: "divbbcost", currency: "Base"},
-    'speed': {  multiplier: 1.5, scaleFunction: scaleSpeed, costDiv: "divspeedcost", currency: "Base"},
+    'speed': {  multiplier: NaN, scaleFunction: scaleSpeed, costDiv: "divspeedcost", currency: "Base"},
     'mbup': {  multiplier: 2, scaleFunction: scaleMultiplier, costDiv: "divmbupcost", currency: "Base"},
     'mbmult': {  multiplier: 3, scaleFunction: scaleMultiplier, costDiv: "divmbmultcost", currency: "Base"},
 };
@@ -191,7 +186,7 @@ if(player.num >= (player.speedCost * player.supScale)) {
 
 function scaleSpeed(upgradeName) {
     if(getUpgradeTimesBought(upgradeName) % 10 == 0) {
-        setUpgradeCost(upgradeName, (getUpgradeTimesBought(upgradeName) * 5 + 50));
+        setUpgradeCost(upgradeName, (getUpgradeTimesBought(upgradeName) * 5 + 100));
     }
 }
 
@@ -203,9 +198,6 @@ function scaleGen(upgradeName) {
     else {
         setUpgradeCost(upgradeName, (getUpgradeCost(upgradeName) * upgrade.multiplier));
     }
-    
-//debug
-console.log(getUpgradeTimesBought('gen'));
 }
 
 window.buyUpgrade = function (upgradeName) {
@@ -323,7 +315,6 @@ function loadMisc() {
     }
     document.getElementById("gboostdouble").textContent = "Cost: " + format(player.gBoostDoubleCost) + " Alpha";
     document.getElementById("alphamachinedouble").textContent = "Cost: " + format(player.alphaMachineDoubleCost) + " Alpha";
-    document.getElementById("divspeedcost").textContent = "Cost: " + format(player.speedCost * player.supScale);
 }
 
 function makeElementMap(...names) {
@@ -346,6 +337,11 @@ loadMisc();
 
 window.setting1e4 = function () { player.eSetting = 1e+4; loadMisc(); };
 window.setting1e6 = function () { player.eSetting = 1e+6; loadMisc(); };
+
+window.mbman = function () {
+player.num += (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1);
+document.getElementById("counter").textContent = format(player.num) + " particles";
+};
 
 function makechunk() {
 if(player.num >= 1e+9) {
@@ -431,7 +427,7 @@ function fgbtest() {
         }
 
         const alphagaindisplay = player.alphaInc * player.alphaAccelerators * player.perBangMult * player.napOff * Math.pow(2, player.alphaMachineMulti);
-        const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * player.hundredOverIS * (player.gbMult * player.npOff) * player.npOff * player.tbMultiplier * player.tempBoost * (1 + (((player.boosterParticles / 100) * player.bpPercent) / 100));
+        const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * (player.gbMult * player.npOff) * player.npOff * player.tbMultiplier * player.tempBoost * (1 + (((player.boosterParticles / 100) * player.bpPercent) / 100));
 
         document.getElementById("alphapb").textContent = "You are getting " + format(alphagaindisplay) + " Alpha/bang";
         player.bangTimeLeft -= 1;
@@ -442,8 +438,6 @@ function fgbtest() {
             player.gbTimeLeft -= 1;
         }
         document.getElementById("divgbtl").textContent = "Boost Time Left: " + format(player.gbTimeLeft);
-
-        player.hundredOverIS = 100 / player.intervalSpeed;
         
         player.untilBoost -= 1;
         if(player.untilBoost == 0) {
@@ -535,4 +529,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.288ed18e.js.map
+//# sourceMappingURL=index.2137a006.js.map
