@@ -8,7 +8,7 @@
 
     
 
-    <script type="module" crossorigin src="/Particle-Incremental-Canary/assets/index.5a18f87b.js"></script>
+    <script type="module" crossorigin src="/Particle-Incremental-Canary/assets/index.b018227a.js"></script>
     <link rel="stylesheet" href="/Particle-Incremental-Canary/assets/index.09c03133.css">
   </head>
 
@@ -55,13 +55,13 @@
             <br>
             <div id="genboostsection">
               <h3>Generator boost</h3>
-              <button onclick="unlockgeneratorboost()" class="button">Unlock generator boost</button>
+              <button id="gbunlockbutton" onclick="buyUpgrade('unlockgb')" class="button">Unlock generator boost</button>
               <div id="divgenunlockcost">Cost: 5000</div>
               <div id="gbshow" style="display:none">
                 <div class="btn-group">
                   <button onclick="gbboost()" class="button">Generator Boost</button>
-                  <button onclick="gbupt()" class="button">Generator Boost +2s</button>
-                  <button onclick="gbupm()" class="button">Generator Boost +5x boost</button>
+                  <button onclick="buyUpgrade('gbupt')" class="button">Generator Boost +2s</button>
+                  <button onclick="buyUpgrade('gbupm')" class="button">Generator Boost +5x boost</button>
                 </div>
                 <div id="divgenboost"></div>
                 <div id="divgbuptcost">Cost: 50</div>
@@ -298,11 +298,11 @@
       </div>
       <button onclick="save()" class="button">save</button>
       <br>
-      Version b1.21.0
+      Version b1.21.0 codename Code cleanup 1
       <br>
       Changelog:
       <br>
-      code rewrite, bugfixes, slight balancing
+      code rewrite, bugfixes, slight balancing, added version codename, changed unlock button behavior
     </div>
     </body>
 </html>

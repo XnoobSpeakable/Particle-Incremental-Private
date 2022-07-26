@@ -59,16 +59,14 @@ function load() {
                 'speed': { cost: 50, timesBought: 0},
                 'mbup': { cost: 50, timesBought: 0},
                 'mbmult': { cost: 1000, timesBought: 0},
+                'unlockgb': { cost: 5000, timesBought: 0},
+                'gbupt': { cost: 100, timesBought: 0},
+                'gbupm': { cost: 10000, timesBought: 0},
               },
             num: 0,
-            speedCost: 50,
-            gbUnlocked: false,
             gbTimeLeft: 0,
             gbTimeLeftCon: 10,
             gbMult: 1,
-            gbMultCon: 5,
-            gbUptCost: 100,
-            gbUpmCost: 10000,
             nuclearCost: 1e+6,
             npOff: 1,
             alphaAccCost: 1e+10,
@@ -164,25 +162,27 @@ const upgrades = {
     'speed': {  multiplier: NaN, scaleFunction: scaleSpeed, costDiv: "divspeedcost", currency: "Base"},
     'mbup': {  multiplier: 2, scaleFunction: scaleMultiplier, costDiv: "divmbupcost", currency: "Base"},
     'mbmult': {  multiplier: 3, scaleFunction: scaleMultiplier, costDiv: "divmbmultcost", currency: "Base"},
+    'unlockgb': {  multiplier: Infinity, scaleFunction: scaleMultiplier, costDiv: "divgenunlockcost", currency: "Base"},
+    'gbupt': {  multiplier: 5, scaleFunction: GBExtraExecT, costDiv: "divgbuptcost", currency: "Base"},
+    'gbupm': {  multiplier: 5, scaleFunction: GBExtraExecM, costDiv: "divgbupmcost", currency: "Base"},
 };
 
 function scaleMultiplier(upgradeName) {
     const upgrade = upgrades[upgradeName];
     setUpgradeCost(upgradeName, (getUpgradeCost(upgradeName) * upgrade.multiplier));
 }
-
-/*function buyspeed() {
-if(player.num >= (player.speedCost * player.supScale)) {
-    player.num -= (player.speedCost * player.supScale)
-    if(player.supBought % 10 == 0) {
-        player.supScale += 1
-    }
-    player.supBought++
-    player.intervalSpeed = 1000 / player.fracMult
-    player.fracMult++
-    document.getElementById("divspeedcost").textContent = "Cost: " + format(player.speedCost * player.supScale)
+function GBExtraExecT(upgradeName) {
+    scaleMultiplier(upgradeName);
+    player.gbTimeLeftCon += 20 * Math.pow(2, player.gBoostSquare);
+    player.gbTimeLeft = 0;
+    player.gbTimeLeft = player.gbTimeLeftCon;
 }
-}*/
+function GBExtraExecM(upgradeName) {
+    scaleMultiplier(upgradeName);
+    player.gbMultCon += 5;
+    player.gbTimeLeft = 0;
+    player.gbTimeLeft = player.gbTimeLeftCon;
+}
 
 function scaleSpeed(upgradeName) {
     if(getUpgradeTimesBought(upgradeName) % 10 == 0) {
@@ -270,13 +270,12 @@ function loadMisc() {
     else {
         UpdateCostVal("divgencost", getUpgradeCost('gen'));
     }
-    if(player.gbUnlocked) {
-        document.getElementById("divgenunlockcost").textContent = "Unlocked";
+    if(getUpgradeTimesBought('unlockgb') == 1) {
         document.getElementById("gbshow").style.display='block';
+        document.getElementById("divgenunlockcost").style.display='none';
+        document.getElementById("gbunlockbutton").style.display='none';
     }
-    UpdateCostVal("divgbuptcost", player.gbUptCost);
     UpdateCostVal("divalphaacceleratorcost", player.alphaAccCost);
-    UpdateCostVal("divgbupmcost", player.gbUpmCost);
     document.getElementById("chunkamount").textContent = "Particle Chunks: " + format(player.pChunks);
     UpdateCostVal("divthreeboostcost", player.tbCost, "Alpha");
     UpdateCostVal("divperbangcost", player.pbCost, "Alpha");
@@ -341,6 +340,10 @@ window.setting1e6 = function () { player.eSetting = 1e+6; loadMisc(); };
 window.mbman = function () {
     player.num += (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1);
     document.getElementById("counter").textContent = format(player.num) + " particles";
+};
+
+window.gbboost = function () {
+    player.gbTimeLeft = player.gbTimeLeftCon;
 };
 
 function makechunk() {
@@ -414,10 +417,15 @@ function fgbtest() {
         document.getElementById("bigboosttext").style.display='block';
         document.getElementById("veryouterboost").style.display='block';
         if(player.gbTimeLeft > 0) {
-            player.gbMult = player.gbMultCon;
+            player.gbMult = (getUpgradeTimesBought('gbupm')*5+5);
         }
         else {
             player.gbMult = 1;
+        }
+        if(getUpgradeTimesBought('unlockgb') == 1) {
+            document.getElementById("gbshow").style.display='block';
+            document.getElementById("divgenunlockcost").style.display='none';
+            document.getElementById("gbunlockbutton").style.display='none';
         }
         
         if(player.bangTimeLeft == 0) {
@@ -427,7 +435,7 @@ function fgbtest() {
         }
 
         const alphagaindisplay = player.alphaInc * player.alphaAccelerators * player.perBangMult * player.napOff * Math.pow(2, player.alphaMachineMulti);
-        const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * (player.gbMult * player.npOff) * player.npOff * player.tbMultiplier * player.tempBoost * (1 + (((player.boosterParticles / 100) * player.bpPercent) / 100));
+        const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult * player.npOff * player.npOff * player.tbMultiplier * player.tempBoost * (1 + (((player.boosterParticles / 100) * player.bpPercent) / 100));
 
         document.getElementById("alphapb").textContent = "You are getting " + format(alphagaindisplay) + " Alpha/bang";
         player.bangTimeLeft -= 1;
@@ -529,4 +537,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.5a18f87b.js.map
+//# sourceMappingURL=index.b018227a.js.map
