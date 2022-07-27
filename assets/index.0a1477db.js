@@ -295,9 +295,9 @@ function loadMisc() {
         document.getElementById("gbunlockbutton").style.display='none';
     }
     document.getElementById("divnp").textContent = "Nuclear Particles: " + getUpgradeTimesBought('nuclearbuy');
-
-    UpdateCostVal("divalphaacceleratorcost", player.alphaAccCost);
     document.getElementById("chunkamount").textContent = "Particle Chunks: " + format(player.pChunks);
+    //^ post-reformat
+    //(down) pre-format
     UpdateCostVal("divthreeboostcost", player.tbCost, "Alpha");
     UpdateCostVal("divperbangcost", player.pbCost, "Alpha");
     document.getElementById("divbangspeedcost").textContent = "Cost: " + format(player.bangSpeedCost) + " Alpha";
@@ -558,4 +558,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.b5c4c862.js.map
+//# sourceMappingURL=index.0a1477db.js.map
