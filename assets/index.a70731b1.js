@@ -144,27 +144,30 @@ function format(n) {
 } 
 //tysm Diamboy for the complicated part of this function.
 
-function UpdateCostVal(elementID, variable, currency = "Base") {
-    if(currency == "Base") {
+function UpdateCostVal(elementID, variable, currency = "player.num") {
+    if(currency == "player.num") {
     document.getElementById(elementID).textContent = "Cost: " + format(variable);
     }
     else {
-        document.getElementById(elementID).textContent = "Cost: " + format(variable) + " " + currency;
+        const currencyName = {
+            'player.alphaNum': ' Alpha',
+        };
+        document.getElementById(elementID).textContent = "Cost: " + format(variable) + currencyName[currency];
     }
 }
 
 const upgrades = {
-    'gen': { multiplier: 4, scaleFunction: scaleGen, costDiv: "divgencost", currency: "Base"},
-    'bb': {  multiplier: 2, scaleFunction: scaleMultiplier, costDiv: "divbbcost", currency: "Base"},
-    'speed': {  multiplier: NaN, scaleFunction: scaleSpeed, costDiv: "divspeedcost", currency: "Base"},
-    'mbup': {  multiplier: 2, scaleFunction: scaleMultiplier, costDiv: "divmbupcost", currency: "Base"},
-    'mbmult': {  multiplier: 3, scaleFunction: scaleMultiplier, costDiv: "divmbmultcost", currency: "Base"},
-    'unlockgb': {  multiplier: Infinity, scaleFunction: scaleMultiplier, costDiv: "divgenunlockcost", currency: "Base"},
-    'gbupt': {  multiplier: 5, scaleFunction: GBTExtra, costDiv: "divgbuptcost", currency: "Base"},
-    'gbupm': {  multiplier: 5, scaleFunction: GBMExtra, costDiv: "divgbupmcost", currency: "Base"},
-    'nuclearbuy': {  multiplier: 7, scaleFunction: NBExtra, costDiv: "divnuclearcost", currency: "Base"},
-    'alphaacc': {  multiplier: 1000, scaleFunction: AAExtra, costDiv: "divalphaacceleratorcost", currency: "Base"},
-    'tb': {  multiplier: 4, scaleFunction: scaleMultiplier, costDiv: "divthreeboostcost", currency: "Alpha"},
+    'gen': { multiplier: 4, scaleFunction: scaleGen, costDiv: "divgencost", currency: "player.num"},
+    'bb': {  multiplier: 2, scaleFunction: scaleMultiplier, costDiv: "divbbcost", currency: "player.num"},
+    'speed': {  multiplier: NaN, scaleFunction: scaleSpeed, costDiv: "divspeedcost", currency: "player.num"},
+    'mbup': {  multiplier: 2, scaleFunction: scaleMultiplier, costDiv: "divmbupcost", currency: "player.num"},
+    'mbmult': {  multiplier: 3, scaleFunction: scaleMultiplier, costDiv: "divmbmultcost", currency: "player.num"},
+    'unlockgb': {  multiplier: Infinity, scaleFunction: scaleMultiplier, costDiv: "divgenunlockcost", currency: "player.num"},
+    'gbupt': {  multiplier: 5, scaleFunction: GBTExtra, costDiv: "divgbuptcost", currency: "player.num"},
+    'gbupm': {  multiplier: 5, scaleFunction: GBMExtra, costDiv: "divgbupmcost", currency: "player.num"},
+    'nuclearbuy': {  multiplier: 7, scaleFunction: NBExtra, costDiv: "divnuclearcost", currency: "player.num"},
+    'alphaacc': {  multiplier: 1000, scaleFunction: AAExtra, costDiv: "divalphaacceleratorcost", currency: "player.num"},
+    'tb': {  multiplier: 4, scaleFunction: scaleMultiplier, costDiv: "divthreeboostcost", currency: "player.alphaNum"},
 };
 
 function scaleMultiplier(upgradeName) {
@@ -213,22 +216,12 @@ function scaleGen(upgradeName) {
     }
 }
 
-function currencyConverter(curr) {
-    switch(curr) {
-        case "Base":
-            return 'num'
-        case "Alpha":
-            return 'alphaNum'
-    }
-}
-
 window.buyUpgrade = function (upgradeName) {
     const upgrade = upgrades[upgradeName];
     const oldCost = getUpgradeCost(upgradeName);
-    const cCurr = currencyConverter(upgrade.currency);
-    if (player[cCurr] >= oldCost) {
+    if (player[upgrade.currency] >= oldCost) {
         player.upgrades[upgradeName].timesBought++;
-        player[cCurr] -= oldCost;
+        player[upgrade.currency] -= oldCost;
         upgrade.scaleFunction(upgradeName);
         UpdateCostVal(upgrade.costDiv, getUpgradeCost(upgradeName), upgrade.currency);
     }   
@@ -567,4 +560,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.c52c865a.js.map
+//# sourceMappingURL=index.a70731b1.js.map
