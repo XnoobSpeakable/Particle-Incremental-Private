@@ -62,13 +62,12 @@ function load() {
                 'unlockgb': { cost: 5000, timesBought: 0},
                 'gbupt': { cost: 100, timesBought: 0},
                 'gbupm': { cost: 10000, timesBought: 0},
+                'nuclearbuy': { cost: 1e6, timesBought: 0},
               },
             num: 0,
             gbTimeLeft: 0,
             gbTimeLeftCon: 10,
             gbMult: 1,
-            nuclearCost: 1e+6,
-            npOff: 1,
             alphaAccCost: 1e+10,
             alphaAccelerators: 0,
             pChunks: 0,
@@ -165,12 +164,14 @@ const upgrades = {
     'unlockgb': {  multiplier: Infinity, scaleFunction: scaleMultiplier, costDiv: "divgenunlockcost", currency: "Base"},
     'gbupt': {  multiplier: 5, scaleFunction: GBExtraExecT, costDiv: "divgbuptcost", currency: "Base"},
     'gbupm': {  multiplier: 5, scaleFunction: GBExtraExecM, costDiv: "divgbupmcost", currency: "Base"},
+    'nuclearbuy': {  multiplier: 7, scaleFunction: NBExtra, costDiv: "divnuclearcost", currency: "Base"},
 };
 
 function scaleMultiplier(upgradeName) {
     const upgrade = upgrades[upgradeName];
     setUpgradeCost(upgradeName, (getUpgradeCost(upgradeName) * upgrade.multiplier));
 }
+
 function GBExtraExecT(upgradeName) {
     scaleMultiplier(upgradeName);
     player.gbTimeLeftCon += 20 * Math.pow(2, player.gBoostSquare);
@@ -182,6 +183,11 @@ function GBExtraExecM(upgradeName) {
     player.gbMultCon += 5;
     player.gbTimeLeft = 0;
     player.gbTimeLeft = player.gbTimeLeftCon;
+}
+
+function NBExtra(upgradeName) {
+    scaleMultiplier(upgradeName);
+    document.getElementById("divnp").textContent = "Nuclear Particles: " + getUpgradeTimesBought('nuclearbuy');
 }
 
 function scaleSpeed(upgradeName) {
@@ -435,7 +441,7 @@ function fgbtest() {
         }
 
         const alphagaindisplay = player.alphaInc * player.alphaAccelerators * player.perBangMult * player.napOff * Math.pow(2, player.alphaMachineMulti);
-        const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult * player.npOff * player.npOff * player.tbMultiplier * player.tempBoost * (1 + (((player.boosterParticles / 100) * player.bpPercent) / 100));
+        const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult * (getUpgradeTimesBought('nuclearbuy')+1) * (getUpgradeTimesBought('nuclearbuy')+1) * player.tbMultiplier * player.tempBoost * (1 + (((player.boosterParticles / 100) * player.bpPercent) / 100));
 
         document.getElementById("alphapb").textContent = "You are getting " + format(alphagaindisplay) + " Alpha/bang";
         player.bangTimeLeft -= 1;
@@ -537,4 +543,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.b018227a.js.map
+//# sourceMappingURL=index.7b9d4109.js.map
