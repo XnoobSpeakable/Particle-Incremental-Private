@@ -162,8 +162,8 @@ const upgrades = {
     'mbup': {  multiplier: 2, scaleFunction: scaleMultiplier, costDiv: "divmbupcost", currency: "Base"},
     'mbmult': {  multiplier: 3, scaleFunction: scaleMultiplier, costDiv: "divmbmultcost", currency: "Base"},
     'unlockgb': {  multiplier: Infinity, scaleFunction: scaleMultiplier, costDiv: "divgenunlockcost", currency: "Base"},
-    'gbupt': {  multiplier: 5, scaleFunction: GBExtraExecT, costDiv: "divgbuptcost", currency: "Base"},
-    'gbupm': {  multiplier: 5, scaleFunction: GBExtraExecM, costDiv: "divgbupmcost", currency: "Base"},
+    'gbupt': {  multiplier: 5, scaleFunction: GBTExtra, costDiv: "divgbuptcost", currency: "Base"},
+    'gbupm': {  multiplier: 5, scaleFunction: GBMExtra, costDiv: "divgbupmcost", currency: "Base"},
     'nuclearbuy': {  multiplier: 7, scaleFunction: NBExtra, costDiv: "divnuclearcost", currency: "Base"},
 };
 
@@ -172,13 +172,13 @@ function scaleMultiplier(upgradeName) {
     setUpgradeCost(upgradeName, (getUpgradeCost(upgradeName) * upgrade.multiplier));
 }
 
-function GBExtraExecT(upgradeName) {
+function GBTExtra(upgradeName) {
     scaleMultiplier(upgradeName);
     player.gbTimeLeftCon += 20 * Math.pow(2, player.gBoostSquare);
     player.gbTimeLeft = 0;
     player.gbTimeLeft = player.gbTimeLeftCon;
 }
-function GBExtraExecM(upgradeName) {
+function GBMExtra(upgradeName) {
     scaleMultiplier(upgradeName);
     player.gbMultCon += 5;
     player.gbTimeLeft = 0;
@@ -543,4 +543,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.820818fe.js.map
+//# sourceMappingURL=index.bd6c1b85.js.map
