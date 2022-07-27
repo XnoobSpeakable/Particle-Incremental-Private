@@ -64,6 +64,7 @@ function load() {
                 'gbupm': { cost: 10000, timesBought: 0},
                 'nuclearbuy': { cost: 1e6, timesBought: 0},
                 'alphaacc': { cost: 1e10, timesBought: 0},
+                'tb': { cost: 1, timesBought: 0},
               },
             num: 0,
             gbTimeLeft: 0,
@@ -75,8 +76,6 @@ function load() {
             bangTimeLeft: 1e+300,
             alphaAcceleratorsLeft: 0,
             alphaInc: 1,
-            tbCost: 1,
-            tbMultiplier: 1,
             perBangMult: 1,
             pbCost: 4,
             eSetting: 1e+4,
@@ -150,7 +149,7 @@ function UpdateCostVal(elementID, variable, currency = "Base") {
     document.getElementById(elementID).textContent = "Cost: " + format(variable);
     }
     else {
-        document.getElementById(elementID).textContent = "Cost: " + format(variable) + currency;
+        document.getElementById(elementID).textContent = "Cost: " + format(variable) + " " + currency;
     }
 }
 
@@ -165,6 +164,7 @@ const upgrades = {
     'gbupm': {  multiplier: 5, scaleFunction: GBMExtra, costDiv: "divgbupmcost", currency: "Base"},
     'nuclearbuy': {  multiplier: 7, scaleFunction: NBExtra, costDiv: "divnuclearcost", currency: "Base"},
     'alphaacc': {  multiplier: 1000, scaleFunction: AAExtra, costDiv: "divalphaacceleratorcost", currency: "Base"},
+    'tb': {  multiplier: 4, scaleFunction: scaleMultiplier, costDiv: "divthreeboostcost", currency: "Alpha"},
 };
 
 function scaleMultiplier(upgradeName) {
@@ -213,12 +213,22 @@ function scaleGen(upgradeName) {
     }
 }
 
+function currencyConverter(curr) {
+    switch(curr) {
+        case "Base":
+            return 'num'
+        case "Alpha":
+            return 'alphaNum'
+    }
+}
+
 window.buyUpgrade = function (upgradeName) {
     const upgrade = upgrades[upgradeName];
     const oldCost = getUpgradeCost(upgradeName);
-    if (player.num >= oldCost) {
+    const cCurr = currencyConverter(upgrade.currency);
+    if (player[cCurr] >= oldCost) {
         player.upgrades[upgradeName].timesBought++;
-        player.num -= oldCost;
+        player[cCurr] -= oldCost;
         upgrade.scaleFunction(upgradeName);
         UpdateCostVal(upgrade.costDiv, getUpgradeCost(upgradeName), upgrade.currency);
     }   
@@ -292,7 +302,6 @@ function loadMisc() {
     document.getElementById("chunkamount").textContent = "Particle Chunks: " + format(player.pChunks);
     //^ post-reformat
     //(down) pre-format
-    UpdateCostVal("divthreeboostcost", player.tbCost, "Alpha");
     UpdateCostVal("divperbangcost", player.pbCost, "Alpha");
     document.getElementById("divbangspeedcost").textContent = "Cost: " + format(player.bangSpeedCost) + " Alpha";
     document.getElementById("divupgradepcacost").textContent = "Cost: " + format(player.pcaUpCost) + " Alpha";
@@ -450,7 +459,7 @@ function fgbtest() {
         }
 
         const alphagaindisplay = player.alphaInc * getUpgradeTimesBought('alphaacc') * player.perBangMult * player.napOff * Math.pow(2, player.alphaMachineMulti);
-        const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult * (getUpgradeTimesBought('nuclearbuy')+1) * (getUpgradeTimesBought('nuclearbuy')+1) * player.tbMultiplier * player.tempBoost * (1 + (((player.boosterParticles / 100) * player.bpPercent) / 100));
+        const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult * (getUpgradeTimesBought('nuclearbuy')+1) * (getUpgradeTimesBought('nuclearbuy')+1) * Math.pow(3, getUpgradeTimesBought('tb')) * player.tempBoost * (1 + (((player.boosterParticles / 100) * player.bpPercent) / 100));
 
         document.getElementById("alphapb").textContent = "You are getting " + format(alphagaindisplay) + " Alpha/bang";
         player.bangTimeLeft -= 1;
@@ -558,4 +567,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.04721190.js.map
+//# sourceMappingURL=index.c52c865a.js.map
