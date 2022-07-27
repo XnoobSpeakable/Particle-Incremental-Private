@@ -281,12 +281,12 @@ function loadMisc() {
         document.getElementById("divgenunlockcost").style.display='none';
         document.getElementById("gbunlockbutton").style.display='none';
     }
+    document.getElementById("divnp").textContent = "Nuclear Particles: " + getUpgradeTimesBought('nuclearbuy');
+
     UpdateCostVal("divalphaacceleratorcost", player.alphaAccCost);
     document.getElementById("chunkamount").textContent = "Particle Chunks: " + format(player.pChunks);
     UpdateCostVal("divthreeboostcost", player.tbCost, "Alpha");
     UpdateCostVal("divperbangcost", player.pbCost, "Alpha");
-    UpdateCostVal("divnuclearcost", player.nuclearCost);
-    document.getElementById("divnp").textContent = "Nuclear Particles: " + format(player.npOff - 1);
     document.getElementById("divbangspeedcost").textContent = "Cost: " + format(player.bangSpeedCost) + " Alpha";
     document.getElementById("divupgradepcacost").textContent = "Cost: " + format(player.pcaUpCost) + " Alpha";
     if(player.pcaUnlocked) {
@@ -543,4 +543,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.7b9d4109.js.map
+//# sourceMappingURL=index.820818fe.js.map
