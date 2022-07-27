@@ -192,13 +192,7 @@ function NBExtra(upgradeName) {
 
 function AAExtra(upgradeName) {
     scaleMultiplier(upgradeName);
-    if(player.bangTimeLeft > 0 && player.bangTimeLeft < player.bangTime) {
-        document.getElementById("divalphaacceleratorcost").style.display='none';
-        document.getElementById("aabutton").style.display='none';
-    }
-    else {
-        document.getElementById("divalphaacceleratorcost").style.display='block';
-        document.getElementById("aabutton").style.display='block';
+    if(!(player.bangTimeLeft > 0 && player.bangTimeLeft < player.bangTime)) {
         player.alphaAcceleratorsLeft = getUpgradeTimesBought('alphaacc');
     }
 }
@@ -462,6 +456,12 @@ function fgbtest() {
         player.bangTimeLeft -= 1;
         if(player.bangTimeLeft > 0 && player.bangTimeLeft < player.bangTime) {
             document.getElementById("bangtimeleft").textContent = "Bang time left: " + player.bangTimeLeft;
+            document.getElementById("divalphaacceleratorcost").style.display='none';
+            document.getElementById("aabutton").style.display='none';
+        }
+        else {
+            document.getElementById("divalphaacceleratorcost").style.display='inline-block';
+            document.getElementById("aabutton").style.display='inline-block';
         }
         if(player.gbTimeLeft > 0) {
             player.gbTimeLeft -= 1;
@@ -558,4 +558,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.0a1477db.js.map
+//# sourceMappingURL=index.04721190.js.map
