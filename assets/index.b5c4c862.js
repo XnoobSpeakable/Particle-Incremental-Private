@@ -63,13 +63,12 @@ function load() {
                 'gbupt': { cost: 100, timesBought: 0},
                 'gbupm': { cost: 10000, timesBought: 0},
                 'nuclearbuy': { cost: 1e6, timesBought: 0},
+                'alphaacc': { cost: 1e10, timesBought: 0},
               },
             num: 0,
             gbTimeLeft: 0,
             gbTimeLeftCon: 10,
             gbMult: 1,
-            alphaAccCost: 1e+10,
-            alphaAccelerators: 0,
             pChunks: 0,
             alphaNum: 0,
             bangTime: 300,
@@ -165,6 +164,7 @@ const upgrades = {
     'gbupt': {  multiplier: 5, scaleFunction: GBTExtra, costDiv: "divgbuptcost", currency: "Base"},
     'gbupm': {  multiplier: 5, scaleFunction: GBMExtra, costDiv: "divgbupmcost", currency: "Base"},
     'nuclearbuy': {  multiplier: 7, scaleFunction: NBExtra, costDiv: "divnuclearcost", currency: "Base"},
+    'alphaacc': {  multiplier: 1000, scaleFunction: AAExtra, costDiv: "divalphaacceleratorcost", currency: "Base"},
 };
 
 function scaleMultiplier(upgradeName) {
@@ -188,6 +188,19 @@ function GBMExtra(upgradeName) {
 function NBExtra(upgradeName) {
     scaleMultiplier(upgradeName);
     document.getElementById("divnp").textContent = "Nuclear Particles: " + getUpgradeTimesBought('nuclearbuy');
+}
+
+function AAExtra(upgradeName) {
+    scaleMultiplier(upgradeName);
+    if(player.bangTimeLeft > 0 && player.bangTimeLeft < player.bangTime) {
+        document.getElementById("divalphaacceleratorcost").style.display='none';
+        document.getElementById("aabutton").style.display='none';
+    }
+    else {
+        document.getElementById("divalphaacceleratorcost").style.display='block';
+        document.getElementById("aabutton").style.display='block';
+        player.alphaAcceleratorsLeft = getUpgradeTimesBought('alphaacc');
+    }
 }
 
 function scaleSpeed(upgradeName) {
@@ -352,25 +365,27 @@ window.gbboost = function () {
     player.gbTimeLeft = player.gbTimeLeftCon;
 };
 
-function makechunk() {
-if(player.num >= 1e+9) {
-    player.num -= 1e+9;
-    player.pChunks += 1;
-    document.getElementById("chunkamount").textContent = "Particle Chunks: " + format(player.pChunks);
-}
-}
-
-function bang() {
-if(player.pChunks >= 2) {
-    if(player.alphaAcceleratorsLeft > 0) {
-        player.alphaAcceleratorsLeft -= player.alphaAccelerators;
-        player.pChunks -=2;
-        player.bangTimeLeft = player.bangTime;
+window.makechunk = function () {
+    if(player.num >= 1e+9) {
+        player.num -= 1e+9;
+        player.pChunks += 1;
         document.getElementById("chunkamount").textContent = "Particle Chunks: " + format(player.pChunks);
-        document.getElementById("boostersmaintext").style.display='block';
     }
-}
-}
+};
+const makechunk = window.makechunk;
+
+window.bang = function () {
+    if(player.pChunks >= 2) {
+        if(getUpgradeTimesBought('alphaacc') > 0) {
+            player.alphaAcceleratorsLeft -= getUpgradeTimesBought('alphaacc');
+            player.pChunks -=2;
+            player.bangTimeLeft = player.bangTime;
+            document.getElementById("chunkamount").textContent = "Particle Chunks: " + format(player.pChunks);
+            document.getElementById("boostersmaintext").style.display='block';
+        }
+    }
+};
+const bang = window.bang;
 
 function autosavetextanddelayupdate() {
     switch(player.autoSaveMode) {
@@ -435,12 +450,12 @@ function fgbtest() {
         }
         
         if(player.bangTimeLeft == 0) {
-            player.alphaAcceleratorsLeft += player.alphaAccelerators;
+            player.alphaAcceleratorsLeft += getUpgradeTimesBought('alphaacc');
             player.alphaNum += player.alphaInc * player.alphaAcceleratorsLeft * player.perBangMult * player.napOff * Math.pow(2, player.alphaMachineMulti);
             document.getElementById("bangtimeleft").textContent = "";
         }
 
-        const alphagaindisplay = player.alphaInc * player.alphaAccelerators * player.perBangMult * player.napOff * Math.pow(2, player.alphaMachineMulti);
+        const alphagaindisplay = player.alphaInc * getUpgradeTimesBought('alphaacc') * player.perBangMult * player.napOff * Math.pow(2, player.alphaMachineMulti);
         const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult * (getUpgradeTimesBought('nuclearbuy')+1) * (getUpgradeTimesBought('nuclearbuy')+1) * player.tbMultiplier * player.tempBoost * (1 + (((player.boosterParticles / 100) * player.bpPercent) / 100));
 
         document.getElementById("alphapb").textContent = "You are getting " + format(alphagaindisplay) + " Alpha/bang";
@@ -543,4 +558,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.bd6c1b85.js.map
+//# sourceMappingURL=index.b5c4c862.js.map
