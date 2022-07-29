@@ -66,6 +66,7 @@ function load() {
                 'alphaacc': { cost: 1e10, timesBought: 0},
                 'tb': { cost: 1, timesBought: 0},
                 'perbang': { cost: 4, timesBought: 0},
+                'bangspeed': { cost: 1, timesBought: 0},
               },
             num: 0,
             gbTimeLeft: 0,
@@ -77,7 +78,6 @@ function load() {
             bangTimeLeft: 1e+300,
             alphaAcceleratorsLeft: 0,
             alphaInc: 1,
-            perBangMult: 1,
             eSetting: 1e+4,
             tempBoost: 1,
             bangSpeedCost: 1,
@@ -165,12 +165,17 @@ const upgrades = {
     'alphaacc': {  scaleFunction: AAExtra(1000), costDiv: "divalphaacceleratorcost", currency: "num"},
     'tb': {  scaleFunction: scaleMultiplier(4), costDiv: "divthreeboostcost", currency: "alphaNum"},
     'perbang': {  scaleFunction: scaleMultiplier(4), costDiv: "divperbangcost", currency: "alphaNum"},
+    'bangspeed': {  scaleFunction: scaleBangSpeed, costDiv: "divbangspeedcost", currency: "alphaNum"},
 };
 
 function scaleMultiplier(multiplier) {
     return function (upgradeName) {
         setUpgradeCost( upgradeName, getUpgradeCost(upgradeName) * multiplier);
     }
+}
+
+function scaleBangSpeed(upgradeName) {
+    if(getUpgradeTimesBought(upgradeName) <= 3) ;
 }
 
 function GBTExtra(scaler) {
@@ -218,7 +223,7 @@ function scaleGen(upgradeName) {
         setUpgradeCost(upgradeName, 1000);
     }
     else {
-        scaleMultiplier(4)(upgradeName); //please sned help AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa
+        scaleMultiplier(4)(upgradeName);
     }
 }
 
@@ -301,7 +306,6 @@ function loadMisc() {
     document.getElementById("chunkamount").textContent = "Particle Chunks: " + format(player.pChunks);
     //^ post-reformat
     //(down) pre-format
-    document.getElementById("divbangspeedcost").textContent = "Cost: " + format(player.bangSpeedCost) + " Alpha";
     document.getElementById("divupgradepcacost").textContent = "Cost: " + format(player.pcaUpCost) + " Alpha";
     if(player.pcaUnlocked) {
         document.getElementById("divunlockpca").textContent = "Unlocked";
@@ -449,7 +453,8 @@ function fgbtest() {
             document.getElementById("divgenunlockcost").style.display='none';
             document.getElementById("gbunlockbutton").style.display='none';
         }
-        
+
+        player.bangTime = Math.ceil(300/Math.pow(2, getUpgradeTimesBought('bangspeed')));
         if(player.bangTimeLeft == 0) {
             player.alphaAcceleratorsLeft += getUpgradeTimesBought('alphaacc');
             player.alphaNum += player.alphaInc * player.alphaAcceleratorsLeft * (getUpgradeTimesBought('perbang')+1) * player.napOff * Math.pow(2, player.alphaMachineMulti);
@@ -565,4 +570,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.d6d92d1a.js.map
+//# sourceMappingURL=index.c7b3e54d.js.map
