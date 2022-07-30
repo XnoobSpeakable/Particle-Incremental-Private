@@ -42,7 +42,7 @@ const p = function polyfill() {
     }
 };true&&p();
 
-var style = /* #__PURE__ */ (() => "button:hover {\n  color: blue;\n}\nbutton:active {\n  color: #0099FF\n}\n#divgencost {\n  display: inline-block;\n}\n#divbbcost {\n  display: inline-block;\n  text-indent: 2.25em;\n}\n#divspeedcost {\n  display: inline-block;\n  text-indent: 2.25em;\n}\n#counter {\n  font-size: larger;\n}\n#alphacounter {\n  font-size: larger;\n}\n#divmbupcost {\n  display: inline-block;\n  text-indent: 6.5em;\n}\n#divmbmultcost {\n  display: inline-block;\n  text-indent: 5.75em;\n}\n#divalphaacceleratorcost {\n  display: inline-block;\n}\n#pcosttext {\n  display: inline-block;\n  text-indent: 4em;\n}\n#divgenboost {\n  display: inline-block;\n}\n#divgbuptcost {\n  display: inline-block;\n  text-indent: 7.5em;\n}\n#divgbupmcost {\n  display: inline-block;\n  text-indent: 4.75em;\n}\n#divthreeboostcost {\n  display: inline-block;\n}\n#divperbangcost {\n  display: inline-block;\n  text-indent: 7.25em;\n}\n#resetb {\n  color: red\n}\n#resetb:hover {\n  color: #FF00FF\n}\n#resetb:active {\n  color: #0099FF\n}\n#stat {\n  word-break:break-all;\n}\n#divunlockpca {\n  display: inline-block;\n}\n#divupgradepcacost {\n  display: inline-block;\n  text-indent: 10em;\n}\n#divtogglepca {\n  display: inline-block;\n  text-indent: 1.75em;\n}\n#divboosterupcost {\n  display: inline-block;\n}\n#divboosteruppercentcost {\n  display: inline-block;\n  text-indent: 15em;\n}\n#omegabasecost {\n  display: inline-block;\n}\n#omegaalphacost {\n  display: inline-block;\n  text-indent: 3.5em;\n}\n#omegabetacost {\n  display: inline-block;\n  text-indent: 6em;\n}\n#omegagammacost {\n  display: inline-block;\n  text-indent: 4em;\n}\n#omegadeltacost {\n  display: inline-block;\n  text-indent: 4em;\n}\n#divobase {\n  display: inline-block;\n}\n#divoalpha {\n  display: inline-block;\n  text-indent: 4.5em;\n}\n#divobeta {\n  display: inline-block;\n  text-indent: 7em;\n}\n#divogamma {\n  display: inline-block;\n  text-indent: 7em;\n}\n#divodelta {\n  display: inline-block;\n  text-indent: 7em;\n}\n#boostsection {\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 2.375em\n}\n#nbnb {\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 1.5em\n}\n#divbau {\n  display: inline-block\n}\n#divupgradeba {\n  display: inline-block;\n  text-indent: 5.25em;\n}\n#divtoggleba {\n  display: inline-block;\n  text-indent: 6em;\n}\n#bnbn {\n  display: flex;\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 1.5em\n}\n#gboostdouble {\n  display: inline-block;\n}\n#alphamachinedouble {\n  display: inline-block;\n  text-indent: 7.4em;\n}")();
+var style = /* #__PURE__ */ (() => "button:hover {\n  color: blue;\n}\nbutton:active {\n  color: #0099FF\n}\n#divgencost {\n  display: inline-block;\n}\n#divbbcost {\n  display: inline-block;\n  text-indent: 2.25em;\n}\n#divspeedcost {\n  display: inline-block;\n  text-indent: 2.25em;\n}\n#counter {\n  font-size: larger;\n}\n#alphacounter {\n  font-size: larger;\n}\n#divmbupcost {\n  display: inline-block;\n  text-indent: 6.5em;\n}\n#divmbmultcost {\n  display: inline-block;\n  text-indent: 5.75em;\n}\n#divalphaacceleratorcost {\n  display: inline-block;\n}\n#pcosttext {\n  display: inline-block;\n  text-indent: 4em;\n}\n#divgenboost {\n  display: inline-block;\n}\n#divgbuptcost {\n  display: inline-block;\n  text-indent: 7.5em;\n}\n#divgbupmcost {\n  display: inline-block;\n  text-indent: 4.75em;\n}\n#divthreeboostcost {\n  display: inline-block;\n}\n#divperbangcost {\n  display: inline-block;\n  text-indent: 7.25em;\n}\n#resetb {\n  color: red\n}\n#resetb:hover {\n  color: #FF00FF\n}\n#resetb:active {\n  color: #0099FF\n}\n#stat {\n  word-break:break-all;\n}\n#divunlockpca {\n  display: inline-block;\n}\n#divupgradepcacost {\n  display: inline-block;\n}\n#divtogglepca {\n  display: inline-block;\n  text-indent: 1.75em;\n}\n#divboosterupcost {\n  display: inline-block;\n}\n#divboosteruppercentcost {\n  display: inline-block;\n  text-indent: 15em;\n}\n#omegabasecost {\n  display: inline-block;\n}\n#omegaalphacost {\n  display: inline-block;\n  text-indent: 3.5em;\n}\n#omegabetacost {\n  display: inline-block;\n  text-indent: 6em;\n}\n#omegagammacost {\n  display: inline-block;\n  text-indent: 4em;\n}\n#omegadeltacost {\n  display: inline-block;\n  text-indent: 4em;\n}\n#divobase {\n  display: inline-block;\n}\n#divoalpha {\n  display: inline-block;\n  text-indent: 4.5em;\n}\n#divobeta {\n  display: inline-block;\n  text-indent: 7em;\n}\n#divogamma {\n  display: inline-block;\n  text-indent: 7em;\n}\n#divodelta {\n  display: inline-block;\n  text-indent: 7em;\n}\n#boostsection {\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 2.375em\n}\n#nbnb {\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 1.5em\n}\n#divbau {\n  display: inline-block\n}\n#divupgradeba {\n  display: inline-block;\n  text-indent: 5.25em;\n}\n#divtoggleba {\n  display: inline-block;\n  text-indent: 6em;\n}\n#bnbn {\n  display: flex;\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 1.5em\n}\n#gboostdouble {\n  display: inline-block;\n}\n#alphamachinedouble {\n  display: inline-block;\n  text-indent: 7.4em;\n}")();
 
 let player;
 function getUpgradeCost(upgradeName) { return player.upgrades[upgradeName].cost }
@@ -67,6 +67,7 @@ function load() {
                 'tb': { cost: 1, timesBought: 0},
                 'perbang': { cost: 4, timesBought: 0},
                 'bangspeed': { cost: 1, timesBought: 0},
+                'unlockpca': { cost: 20, timesBought: 0},
               },
             num: 0,
             gbTimeLeft: 0,
@@ -82,7 +83,6 @@ function load() {
             tempBoost: 1,
             bangSpeedCost: 1,
             bangSpeedBought: 0,
-            pcaUnlocked: false,
             pcaToggle: true,
             pcaUpCost: 2,
             pcaTime: 160,
@@ -166,6 +166,7 @@ const upgrades = {
     'tb': {  scaleFunction: scaleMultiplier(4), costDiv: "divthreeboostcost", currency: "alphaNum"},
     'perbang': {  scaleFunction: scaleMultiplier(4), costDiv: "divperbangcost", currency: "alphaNum"},
     'bangspeed': {  scaleFunction: scaleBangSpeed, costDiv: "divbangspeedcost", currency: "alphaNum"},
+    'unlockpca': {  scaleFunction: scaleMultiplier(Infinity), costDiv: "divunlockpca", currency: "alphaNum"},
 };
 
 function scaleMultiplier(multiplier) {
@@ -175,7 +176,12 @@ function scaleMultiplier(multiplier) {
 }
 
 function scaleBangSpeed(upgradeName) {
-    if(getUpgradeTimesBought(upgradeName) <= 3) ;
+    if(getUpgradeTimesBought(upgradeName) <= 3) {
+        scaleMultiplier(2)(upgradeName);
+    }
+    else {
+        scaleMultiplier(5)(upgradeName);
+    }
 }
 
 function GBTExtra(scaler) {
@@ -307,8 +313,10 @@ function loadMisc() {
     //^ post-reformat
     //(down) pre-format
     document.getElementById("divupgradepcacost").textContent = "Cost: " + format(player.pcaUpCost) + " Alpha";
-    if(player.pcaUnlocked) {
-        document.getElementById("divunlockpca").textContent = "Unlocked";
+    if(getUpgradeTimesBought('unlockpca') == 1) {
+        document.getElementById("pcashow").style.display='block';
+        document.getElementById("divunlockpca").style.display='none';
+        document.getElementById("divunlockpcabutton").style.display='none';
         document.getElementById("untilpca").textContent = player.pcaTimeLeft + " left until next autobuy";
         document.getElementById("divtogglepca").style.display='inline-block';
         if(player.pcaToggle) {
@@ -518,7 +526,10 @@ function fgbtest() {
     }
 
 function pcatest() {
-    if(player.pcaUnlocked == true) {
+    if(getUpgradeTimesBought('unlockpca') == 1) {
+        document.getElementById("pcashow").style.display='block';
+        document.getElementById("divunlockpca").style.display='none';
+        document.getElementById("divunlockpcabutton").style.display='none';
         if(player.pcaToggle == true) {
             if(player.pcaTimeLeft == 0) {
                 player.pcaTimeLeft = player.pcaTime;
@@ -570,4 +581,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.c7b3e54d.js.map
+//# sourceMappingURL=index.86b6597b.js.map

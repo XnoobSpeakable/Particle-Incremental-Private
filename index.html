@@ -8,8 +8,8 @@
 
     
 
-    <script type="module" crossorigin src="/Particle-Incremental-Canary/assets/index.c7b3e54d.js"></script>
-    <link rel="stylesheet" href="/Particle-Incremental-Canary/assets/index.09c03133.css">
+    <script type="module" crossorigin src="/Particle-Incremental-Canary/assets/index.86b6597b.js"></script>
+    <link rel="stylesheet" href="/Particle-Incremental-Canary/assets/index.adc57a1f.css">
   </head>
 
   <body>
@@ -125,15 +125,18 @@
               <button onclick="buyUpgrade('bangspeed')" class="button">Make bang twice as fast</button>
               <div id="divbangspeedcost">Cost: 1 Alpha</div>
               <br>
-              <div class="btn-group">
-                <button onclick="unlockpca()" class="button">Unlock Particle Chunk Autobuyer (PCA)</button>
-                <button onclick="upgradepca()" class="button">Make PCA faster</button>
-                <button onclick="togglepca()" class="button">Toggle PCA</button>
-              </div>
+              <button id="divunlockpcabutton" onclick="buyUpgrade('unlockpca')" class="button">Unlock Particle Chunk Autobuyer (PCA)</button>
+              <br>
               <div id="divunlockpca">Cost: 20 Alpha</div>
-              <div id="divupgradepcacost">Cost: 2 Alpha</div>
-              <div id="divtogglepca">On</div>
-              <div id="untilpca"></div>
+              <div id="pcashow" style="display:none">
+                <div class="btn-group">
+                  <button onclick="upgradepca()" class="button">Make PCA faster</button>
+                  <button onclick="togglepca()" class="button">Toggle PCA</button>
+                </div>
+                <div id="divupgradepcacost">Cost: 2 Alpha</div>
+                <div id="divtogglepca">On</div>
+                <div id="untilpca"></div>
+              </div>
             </div>
           </div>
           <div id="nuclearalphashow" style="display:none; border:0.2em solid #333333; padding-left: 10px; padding-bottom: 5px; padding-right: 10px; border-radius: 5px" class="withtheoutline">
