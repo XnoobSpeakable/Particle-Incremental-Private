@@ -69,6 +69,8 @@ function load() {
                 'bangspeed': { cost: 1, timesBought: 0},
                 'unlockpca': { cost: 20, timesBought: 0},
                 'upgradepca': { cost: 2, timesBought: 0},
+                'boosterup': { cost: 100, timesBought: 0},
+                'boosteruppercent': { cost: 100, timesBought: 0},
               },
             num: 0,
             gbTimeLeft: 0,
@@ -92,11 +94,7 @@ function load() {
             autoSaveMode: 1,
             autoSaveSet: 300,
             boosterParticles: 0,
-            bpPercent: 1,
-            bpGainMult: 1,
             untilBoost: 1,
-            bpUpCost: 100,
-            bpPercentCost: 100,
             themeNumber: 0,
             omegaBase: 0,
             omegaBaseCost: 1e+10,
@@ -167,6 +165,8 @@ const upgrades = {
     'bangspeed': {  scaleFunction: scaleBangSpeed, costDiv: "divbangspeedcost", currency: "alphaNum"},
     'unlockpca': {  scaleFunction: scaleMultiplier(Infinity), costDiv: "divunlockpca", currency: "alphaNum"},
     'upgradepca': {  scaleFunction: PCAExtra(scaleMultiplier(3)), costDiv: "divupgradepcacost", currency: "alphaNum"},
+    'boosterup': {  scaleFunction: scaleMultiplier(10), costDiv: "divboosterupcost", currency: "alphaNum"},
+    'boosteruppercent': {  scaleFunction: scaleMultiplier(10), costDiv: "divboosteruppercentcost", currency: "alphaNum"},
 };
 
 function scaleMultiplier(multiplier) {
@@ -332,8 +332,6 @@ function loadMisc() {
     }
     //^ post-reformat
     //(down) pre-format
-    document.getElementById("divboosterupcost").textContent = format(player.bpUpCost) + " Alpha particles";
-    document.getElementById("divboosteruppercentcost").textContent = format(player.bpPercentCost) + " Alpha particles";
     document.getElementById("omegabasecost").textContent = "Cost: " + format(player.omegaBaseCost);
     document.getElementById("divobase").textContent = "You have " + format(player.omegaBase);
     document.getElementById("omegaalphacost").textContent = "Cost: " + format(player.omegaAlphaCost);
@@ -484,7 +482,7 @@ function fgbtest() {
         }
 
         const alphagaindisplay = player.alphaInc * getUpgradeTimesBought('alphaacc') * (getUpgradeTimesBought('perbang')+1) * player.napOff * Math.pow(2, player.alphaMachineMulti);
-        const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult * (getUpgradeTimesBought('nuclearbuy')+1) * (getUpgradeTimesBought('nuclearbuy')+1) * Math.pow(3, getUpgradeTimesBought('tb')) * player.tempBoost * (1 + (((player.boosterParticles / 100) * player.bpPercent) / 100));
+        const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult * (getUpgradeTimesBought('nuclearbuy')+1) * (getUpgradeTimesBought('nuclearbuy')+1) * Math.pow(3, getUpgradeTimesBought('tb')) * player.tempBoost * (1 + (((player.boosterParticles / 100) * (getUpgradeTimesBought('boosteruppercent')+1)) / 100));
 
         document.getElementById("alphapb").textContent = "You are getting " + format(alphagaindisplay) + " Alpha/bang";
         player.bangTimeLeft -= 1;
@@ -505,8 +503,8 @@ function fgbtest() {
         player.untilBoost -= 1;
         if(player.untilBoost == 0) {
             player.untilBoost = 10;
-            player.boosterParticles += player.alphaNum * player.bpGainMult;
-            document.getElementById("boostersmaintext").textContent = "You are currently getting " + format(player.bpGainMult) + " booster particles per alpha particle per second, resulting in a +" + format(player.boosterParticles * player.bpPercent / 100) + "% boost to base particle production";
+            player.boosterParticles += player.alphaNum * (getUpgradeTimesBought('boosterup')+1);
+            document.getElementById("boostersmaintext").textContent = "You are currently getting " + format((getUpgradeTimesBought('boosterup')+1)) + " booster particles per alpha particle per second, resulting in a +" + format(player.boosterParticles * (getUpgradeTimesBought('boosteruppercent')+1) / 100) + "% boost to base particle production";
         }
         document.getElementById("bpamount").textContent = "You have " + format(player.boosterParticles) + " booster particles"; 
 
@@ -595,4 +593,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.4508d311.js.map
+//# sourceMappingURL=index.28d853a4.js.map
