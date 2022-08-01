@@ -68,6 +68,7 @@ function load() {
                 'perbang': { cost: 4, timesBought: 0},
                 'bangspeed': { cost: 1, timesBought: 0},
                 'unlockpca': { cost: 20, timesBought: 0},
+                'upgradepca': { cost: 2, timesBought: 0},
               },
             num: 0,
             gbTimeLeft: 0,
@@ -87,8 +88,6 @@ function load() {
             pcaUpCost: 2,
             pcaTime: 160,
             pcaTimeLeft: 0,
-            pcaUpBought: 0,
-            pcaFracMult: 2,
             autoSaveDelay: 300,
             autoSaveMode: 1,
             autoSaveSet: 300,
@@ -160,13 +159,14 @@ const upgrades = {
     'mbmult': {  scaleFunction: scaleMultiplier(3), costDiv: "divmbmultcost", currency: "num"},
     'unlockgb': {  scaleFunction: scaleMultiplier(Infinity), costDiv: "divgenunlockcost", currency: "num"},
     'gbupt': {  scaleFunction: GBTExtra(scaleMultiplier(5)), costDiv: "divgbuptcost", currency: "num"},
-    'gbupm': {  scaleFunction: GBMExtra(5), costDiv: "divgbupmcost", currency: "num"},
-    'nuclearbuy': {  scaleFunction: NBExtra(7), costDiv: "divnuclearcost", currency: "num"},
-    'alphaacc': {  scaleFunction: AAExtra(1000), costDiv: "divalphaacceleratorcost", currency: "num"},
+    'gbupm': {  scaleFunction: GBMExtra(scaleMultiplier(5)), costDiv: "divgbupmcost", currency: "num"},
+    'nuclearbuy': {  scaleFunction: NBExtra(scaleMultiplier(7)), costDiv: "divnuclearcost", currency: "num"},
+    'alphaacc': {  scaleFunction: AAExtra(scaleMultiplier(1000)), costDiv: "divalphaacceleratorcost", currency: "num"},
     'tb': {  scaleFunction: scaleMultiplier(4), costDiv: "divthreeboostcost", currency: "alphaNum"},
     'perbang': {  scaleFunction: scaleMultiplier(4), costDiv: "divperbangcost", currency: "alphaNum"},
     'bangspeed': {  scaleFunction: scaleBangSpeed, costDiv: "divbangspeedcost", currency: "alphaNum"},
     'unlockpca': {  scaleFunction: scaleMultiplier(Infinity), costDiv: "divunlockpca", currency: "alphaNum"},
+    'upgradepca': {  scaleFunction: PCAExtra(scaleMultiplier(3)), costDiv: "divupgradepcacost", currency: "alphaNum"},
 };
 
 function scaleMultiplier(multiplier) {
@@ -217,6 +217,17 @@ function AAExtra(scaler) {
     }
 }
 
+function PCAExtra(scaler) {
+    return function (upgradeName) {
+        scaler(upgradeName);
+        if(getUpgradeTimesBought('upgradepca') <= 4) {
+            player.pcaTime = Math.ceil(player.pcaTime / 2);
+        }
+        else {
+            player.pcaTime = Math.ceil(10 / (getUpgradeTimesBought('upgradepca')-3));
+        }
+    }
+}
 
 function scaleSpeed(upgradeName) {
     if(getUpgradeTimesBought(upgradeName) % 10 == 0) {
@@ -310,23 +321,17 @@ function loadMisc() {
     }
     document.getElementById("divnp").textContent = "Nuclear Particles: " + getUpgradeTimesBought('nuclearbuy');
     document.getElementById("chunkamount").textContent = "Particle Chunks: " + format(player.pChunks);
-    //^ post-reformat
-    //(down) pre-format
-    document.getElementById("divupgradepcacost").textContent = "Cost: " + format(player.pcaUpCost) + " Alpha";
     if(getUpgradeTimesBought('unlockpca') == 1) {
         document.getElementById("pcashow").style.display='block';
         document.getElementById("divunlockpca").style.display='none';
         document.getElementById("divunlockpcabutton").style.display='none';
         document.getElementById("untilpca").textContent = player.pcaTimeLeft + " left until next autobuy";
         document.getElementById("divtogglepca").style.display='inline-block';
-        if(player.pcaToggle) {
-            document.getElementById("divtogglepca").textContent = "On";
-        }
-        else {
-            document.getElementById("divtogglepca").textContent = "Off";
-        }
+        if(player.pcaToggle) { document.getElementById("divtogglepca").textContent = "On"; }
+        else { document.getElementById("divtogglepca").textContent = "Off"; }
     }
-    document.getElementById("divupgradepcacost").textContent = "Cost: " + format(player.pcaUpCost) + " Alpha";
+    //^ post-reformat
+    //(down) pre-format
     document.getElementById("divboosterupcost").textContent = format(player.bpUpCost) + " Alpha particles";
     document.getElementById("divboosteruppercentcost").textContent = format(player.bpPercentCost) + " Alpha particles";
     document.getElementById("omegabasecost").textContent = "Cost: " + format(player.omegaBaseCost);
@@ -399,6 +404,15 @@ window.bang = function () {
     }
 };
 const bang = window.bang;
+
+window.togglepca = function () {
+    if(getUpgradeTimesBought('unlockpca') == 1) {
+        player.pcaToggle = !player.pcaToggle;
+        document.getElementById("divtogglepca").style.display='inline-block';
+        if(player.pcaToggle) { document.getElementById("divtogglepca").textContent = "On"; }
+        else { document.getElementById("divtogglepca").textContent = "Off"; }
+    }
+};
 
 function autosavetextanddelayupdate() {
     switch(player.autoSaveMode) {
@@ -581,4 +595,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.86b6597b.js.map
+//# sourceMappingURL=index.4508d311.js.map
