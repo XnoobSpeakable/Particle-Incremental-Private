@@ -84,8 +84,6 @@ function load() {
             alphaInc: 1,
             eSetting: 1e+4,
             tempBoost: 1,
-            bangSpeedCost: 1,
-            bangSpeedBought: 0,
             pcaToggle: true,
             pcaUpCost: 2,
             pcaTime: 160,
@@ -616,4 +614,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.5b25bfa8.js.map
+//# sourceMappingURL=index.1ade5db8.js.map
