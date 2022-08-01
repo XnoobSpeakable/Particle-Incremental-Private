@@ -457,6 +457,29 @@ window.autosavesettings = function () {
     autosavetextanddelayupdate();
 };
 
+window.buyomegabase = function () {
+    if(player.num >= player.omegaBaseCost) {
+        player.num -= player.omegaBaseCost;
+        player.omegaBase +=1;
+        player.omegaBaseCost *= 10;
+        document.getElementById("omegabasecost").textContent = "Cost: " + format(player.omegaBaseCost);
+        document.getElementById("divobase").textContent = "You have " + format(player.omegaBase);
+    }
+};
+
+window.buyomegaalpha = function () {
+    if(player.alphaNum >= player.omegaAlphaCost) {
+        player.alphaNum -= player.omegaAlphaCost;
+        player.omegaAlpha += 1;
+        player.omegaAlphaCost *= 100;
+        document.getElementById("omegaalphacost").textContent = "Cost: " + format(player.omegaAlphaCost);
+        document.getElementById("divoalpha").textContent = "You have " + format(player.omegaAlpha);
+    }
+};
+window.buyomegabeta = function () {};
+window.buyomegagamma = function () {};
+window.buyomegadelta = function () {};
+
 function fgbtest() {
     if(getUpgradeTimesBought('gen') > 0) {
         document.getElementById("boostsection").style.display='flex';
@@ -593,4 +616,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.28d853a4.js.map
+//# sourceMappingURL=index.5b25bfa8.js.map
