@@ -63,6 +63,7 @@ function load() {
                 'gbupt': { cost: 100, timesBought: 0},
                 'gbupm': { cost: 10000, timesBought: 0},
                 'nuclearbuy': { cost: 1e6, timesBought: 0},
+                'nuclearalphabuy': { cost: 1e6, timesBought: 0},
                 'alphaacc': { cost: 1e10, timesBought: 0},
                 'tb': { cost: 1, timesBought: 0},
                 'perbang': { cost: 4, timesBought: 0},
@@ -71,7 +72,10 @@ function load() {
                 'upgradepca': { cost: 2, timesBought: 0},
                 'boosterup': { cost: 100, timesBought: 0},
                 'boosteruppercent': { cost: 100, timesBought: 0},
+                'gboostdouble': { cost: 1, timesBought: 0},
+                'alphamachinedouble': { cost: 1000, timesBought: 0},
                 'baunlock': { cost: 1, timesBought: 0},
+                'upgradeba': { cost: 1, timesBought: 0},
               },
             num: 0,
             gbTimeLeft: 0,
@@ -100,17 +104,9 @@ function load() {
             omegaAlpha: 0,
             omegaAlphaCost: 1e+12,
             baToggle: true,
-            baUpCost: 1,
             baTime: 160,
             baTimeLeft: 0,
             baUpBought: 0,
-            baFracMult: 2,
-            nuclearAlphaCost: 1e+6,
-            napOff: 1,
-            gBoostDoubleCost: 1,
-            gBoostSquare: 0,
-            alphaMachineDoubleCost: 1000,
-            alphaMachineMulti: 0,
           };
     }
     else {
@@ -165,7 +161,11 @@ const upgrades = {
     'unlockpca': {  scaleFunction: scaleMultiplier(Infinity), costDiv: "divunlockpca", currency: "alphaNum"},
     'upgradepca': {  scaleFunction: PCAExtra(scaleMultiplier(3)), costDiv: "divupgradepcacost", currency: "alphaNum"},
     'boosterup': {  scaleFunction: scaleMultiplier(10), costDiv: "divboosterupcost", currency: "alphaNum"},
+    'nuclearalphabuy': {  scaleFunction: NABExtra(scaleMultiplier(7)), costDiv: "divnuclearalphacost", currency: "alphaNum"},
+    'gboostdouble': {  scaleFunction: GBDExtra(scaleMultiplier(2)), costDiv: "gboostdouble", currency: "alphaNum"},
+    'alphamachinedouble': {  scaleFunction: scaleMultiplier(3), costDiv: "alphamachinedouble", currency: "alphaNum"},
     'baunlock': {  scaleFunction: scaleMultiplier(Infinity), costDiv: "divbau", currency: "omegaBase"},
+    'upgradeba': {  scaleFunction: BAExtra(), costDiv: "divupgradeba", currency: "omegaBase"},
 };
 
 function scaleMultiplier(multiplier) {
@@ -186,7 +186,7 @@ function scaleBangSpeed(upgradeName) {
 function GBTExtra(scaler) {
     return function (upgradeName) {
        scaler(upgradeName);
-       player.gbTimeLeftCon += 20 * Math.pow(2, player.gBoostSquare);
+       player.gbTimeLeftCon += 20 * Math.pow(2, getUpgradeTimesBought('gboostdouble'));
        player.gbTimeLeft = 0;
        player.gbTimeLeft = player.gbTimeLeftCon;
     }
@@ -199,11 +199,25 @@ function GBMExtra(scaler) {
         player.gbTimeLeft = player.gbTimeLeftCon;
     }
 }
+function GBDExtra(scaler) {
+    return function (upgradeName) {
+        scaler(upgradeName);
+        player.gbTimeLeftCon *= 2;
+        player.gbTimeLeft = 0;
+        player.gbTimeLeft = player.gbTimeLeftCon;
+    }
+}
 
 function NBExtra(scaler) {
     return function (upgradeName) {
         scaler(upgradeName);
         document.getElementById("divnp").textContent = "Nuclear Particles: " + getUpgradeTimesBought('nuclearbuy');
+    }
+}
+function NABExtra(scaler) {
+    return function (upgradeName) {
+        scaler(upgradeName);
+        document.getElementById("divnap").textContent = "Nuclear Particles: " + getUpgradeTimesBought('nuclearalphabuy');
     }
 }
 
@@ -224,6 +238,18 @@ function PCAExtra(scaler) {
         }
         else {
             player.pcaTime = Math.ceil(10 / (getUpgradeTimesBought('upgradepca')-3));
+        }
+    }
+}
+
+function BAExtra() {
+    return function (upgradeName) {
+        setUpgradeCost( upgradeName, getUpgradeCost(upgradeName)+1);
+        if(getUpgradeTimesBought('upgradeba') <= 4) {
+            player.baTime = Math.ceil(player.baTime / 2);
+        }
+        else {
+            player.baTime = Math.ceil(10 / (getUpgradeTimesBought('upgradeba')-3));
         }
     }
 }
@@ -319,6 +345,7 @@ function loadMisc() {
         document.getElementById("gbunlockbutton").style.display='none';
     }
     document.getElementById("divnp").textContent = "Nuclear Particles: " + getUpgradeTimesBought('nuclearbuy');
+    document.getElementById("divnap").textContent = "Nuclear Alpha Particles: " + getUpgradeTimesBought('nuclearalphabuy');
     document.getElementById("chunkamount").textContent = "Particle Chunks: " + format(player.pChunks);
     if(getUpgradeTimesBought('unlockpca') == 1) {
         document.getElementById("pcashow").style.display='block';
@@ -346,10 +373,6 @@ function loadMisc() {
     document.getElementById("divobase").textContent = "You have " + format(player.omegaBase);
     document.getElementById("omegaalphacost").textContent = "Cost: " + format(player.omegaAlphaCost);
     document.getElementById("divoalpha").textContent = "You have " + format(player.omegaAlpha);
-    //^ post-reformat
-    //(down) pre-format
-    document.getElementById("gboostdouble").textContent = "Cost: " + format(player.gBoostDoubleCost) + " Alpha";
-    document.getElementById("alphamachinedouble").textContent = "Cost: " + format(player.alphaMachineDoubleCost) + " Alpha";
 }
 
 function makeElementMap(...names) {
@@ -481,6 +504,19 @@ window.buyomegabeta = function () {};
 window.buyomegagamma = function () {};
 window.buyomegadelta = function () {};
 
+window.toggleba = function () {
+    if(getUpgradeTimesBought('baunlock') == 1) {
+        player.baToggle = !player.baToggle;
+        document.getElementById("divtoggleba").style.display='inline-block';
+        if(player.baToggle) {
+            document.getElementById("divtoggleba").textContent = "On";
+        }
+        else {
+            document.getElementById("divtoggleba").textContent = "Off";
+        }
+    }
+};
+
 function fgbtest() {
     if(getUpgradeTimesBought('gen') > 0) {
         document.getElementById("boostsection").style.display='flex';
@@ -501,11 +537,11 @@ function fgbtest() {
         player.bangTime = Math.ceil(300/Math.pow(2, getUpgradeTimesBought('bangspeed')));
         if(player.bangTimeLeft == 0) {
             player.alphaAcceleratorsLeft += getUpgradeTimesBought('alphaacc');
-            player.alphaNum += player.alphaInc * player.alphaAcceleratorsLeft * (getUpgradeTimesBought('perbang')+1) * player.napOff * Math.pow(2, player.alphaMachineMulti);
+            player.alphaNum += player.alphaAcceleratorsLeft * (getUpgradeTimesBought('perbang')+1) * (getUpgradeTimesBought('nuclearalphabuy')+1) * Math.pow(2, getUpgradeTimesBought('alphamachinedouble'));
             document.getElementById("bangtimeleft").textContent = "";
         }
 
-        const alphagaindisplay = player.alphaInc * getUpgradeTimesBought('alphaacc') * (getUpgradeTimesBought('perbang')+1) * player.napOff * Math.pow(2, player.alphaMachineMulti);
+        const alphagaindisplay = getUpgradeTimesBought('alphaacc') * (getUpgradeTimesBought('perbang')+1) * (getUpgradeTimesBought('nuclearalphabuy')+1) * Math.pow(2, getUpgradeTimesBought('alphamachinedouble'));
         const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult * (getUpgradeTimesBought('nuclearbuy')+1) * (getUpgradeTimesBought('nuclearbuy')+1) * Math.pow(3, getUpgradeTimesBought('tb')) * player.tempBoost * (1 + (((player.boosterParticles / 100) * (getUpgradeTimesBought('boosteruppercent')+1)) / 100));
 
         document.getElementById("alphapb").textContent = "You are getting " + format(alphagaindisplay) + " Alpha/bang";
@@ -625,4 +661,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.ef106b3f.js.map
+//# sourceMappingURL=index.c8d8ecfd.js.map
