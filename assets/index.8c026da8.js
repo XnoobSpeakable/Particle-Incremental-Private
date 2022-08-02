@@ -52,7 +52,7 @@ function getUpgradeTimesBought(upgradeName) { return player.upgrades[upgradeName
 function load() {
     if(localStorage.getItem('savefile') == null) {
         player = {
-            version: "b1.21.0",
+            version: "b1.21.1",
             upgrades: { 
                 'gen': { cost: 0, timesBought: 0 },
                 'bb': { cost: 2000, timesBought: 0},
@@ -112,10 +112,9 @@ function load() {
     else {
         player = JSON.parse(localStorage.getItem('savefile'));
     }
-    if(player.version != "b1.21.0") {
-        player.version = "b1.21.0";
-        alert("IMPORTANT! This specific version completely breaks compatibility with older saves. Sorry for the inconvenience. Your save has been wiped. Refresh and your progress is lost. Sorry, but there's no other way.");
-        localStorage.removeItem('savefile');
+    if(player.version != "b1.21.1") {
+        player.version = "b1.21.1";
+        //alert("IMPORTANT! This specific version completely breaks compatibility with older saves. Sorry for the inconvenience. Your save has been wiped. Refresh and your progress is lost. Sorry, but there's no other way.");
     }
 }
 
@@ -418,7 +417,7 @@ const makechunk = window.makechunk;
 
 window.bang = function () {
     if(player.pChunks >= 2) {
-        if(getUpgradeTimesBought('alphaacc') > 0) {
+        if(getUpgradeTimesBought('alphaacc') > 0 && !(player.bangTimeLeft > 0 && player.bangTimeLeft < player.bangTime)) {
             player.alphaAcceleratorsLeft -= getUpgradeTimesBought('alphaacc');
             player.pChunks -=2;
             player.bangTimeLeft = player.bangTime;
@@ -552,10 +551,12 @@ function fgbtest() {
             document.getElementById("bangtimeleft").textContent = "Bang time left: " + player.bangTimeLeft;
             document.getElementById("divalphaacceleratorcost").style.display='none';
             document.getElementById("aabutton").style.display='none';
+            document.getElementById("bangbutton").style.display='none';
         }
         else {
             document.getElementById("divalphaacceleratorcost").style.display='inline-block';
             document.getElementById("aabutton").style.display='inline-block';
+            document.getElementById("bangbutton").style.display='block';
         }
         if(player.gbTimeLeft > 0) {
             player.gbTimeLeft -= 1;
@@ -664,4 +665,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.83b67693.js.map
+//# sourceMappingURL=index.8c026da8.js.map
