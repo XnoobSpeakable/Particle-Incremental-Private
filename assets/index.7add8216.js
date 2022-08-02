@@ -52,7 +52,7 @@ function getUpgradeTimesBought(upgradeName) { return player.upgrades[upgradeName
 function load() {
     if(localStorage.getItem('savefile') == null) {
         player = {
-            version: "b1.21.1",
+            version: "b1.21.2",
             upgrades: { 
                 'gen': { cost: 0, timesBought: 0 },
                 'bb': { cost: 2000, timesBought: 0},
@@ -112,8 +112,8 @@ function load() {
     else {
         player = JSON.parse(localStorage.getItem('savefile'));
     }
-    if(player.version != "b1.21.1") {
-        player.version = "b1.21.1";
+    if(player.version != "b1.21.2") {
+        player.version = "b1.21.2";
         //alert("IMPORTANT! This specific version completely breaks compatibility with older saves. Sorry for the inconvenience. Your save has been wiped. Refresh and your progress is lost. Sorry, but there's no other way.");
     }
 }
@@ -161,6 +161,7 @@ const upgrades = {
     'unlockpca': {  scaleFunction: scaleMultiplier(Infinity), costDiv: "divunlockpca", currency: "alphaNum"},
     'upgradepca': {  scaleFunction: PCAExtra(scaleMultiplier(3)), costDiv: "divupgradepcacost", currency: "alphaNum"},
     'boosterup': {  scaleFunction: scaleMultiplier(10), costDiv: "divboosterupcost", currency: "alphaNum"},
+    'boosteruppercent': {  scaleFunction: scaleMultiplier(10), costDiv: "divboosteruppercentcost", currency: "alphaNum"},
     'nuclearalphabuy': {  scaleFunction: NABExtra(scaleMultiplier(7)), costDiv: "divnuclearalphacost", currency: "alphaNum"},
     'gboostdouble': {  scaleFunction: GBDExtra(scaleMultiplier(2)), costDiv: "gboostdouble", currency: "alphaNum"},
     'alphamachinedouble': {  scaleFunction: scaleMultiplier(3), costDiv: "alphamachinedouble", currency: "alphaNum"},
@@ -665,4 +666,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.8c026da8.js.map
+//# sourceMappingURL=index.7add8216.js.map
