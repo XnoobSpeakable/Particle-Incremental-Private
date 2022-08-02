@@ -8,8 +8,8 @@
 
     
 
-    <script type="module" crossorigin src="/Particle-Incremental-Canary/assets/index.1ade5db8.js"></script>
-    <link rel="stylesheet" href="/Particle-Incremental-Canary/assets/index.adc57a1f.css">
+    <script type="module" crossorigin src="/Particle-Incremental-Canary/assets/index.ef106b3f.js"></script>
+    <link rel="stylesheet" href="/Particle-Incremental-Canary/assets/index.123800be.css">
   </head>
 
   <body>
@@ -212,15 +212,17 @@
         <button onclick="openTab('oOmega')" class="button" style="display:none">Omega</button>
         <div id="oBase" style="display:block">
           <br>
-          <div class="btn-group">
-            <button onclick="buybangautobuyer()" class="button">Unlock bang autobuyer</button>
-            <button onclick="upgradeba()" class="button">Make bang autobuyer faster</button>
-            <button onclick="toggleba()" class="button">Toggle bang autobuyer</button>
-          </div>
+          <button id="baunlockbutton" onclick="buyUpgrade('baunlock')" class="button">Unlock bang autobuyer</button>
           <div id="divbau">Cost: 1 Ω<sub>B</sub></div>
-          <div id="divupgradeba">Cost: 1 Ω<sub>B</sub></div>
-          <div id="divtoggleba">On</div>
-          <div id="untilba">0</div>
+          <div id="bashow" style="display:none">
+            <div class="btn-group">
+              <button onclick="upgradeba()" class="button">Make bang autobuyer faster</button>
+              <button onclick="toggleba()" class="button">Toggle bang autobuyer</button>
+            </div>
+            <div id="divupgradeba">Cost: 1 Ω<sub>B</sub></div>
+            <div id="divtoggleba">On</div>
+            <div id="untilba">0</div>
+          </div>
         </div>
         <div id="oAlpha" style="display:none">
           <br>

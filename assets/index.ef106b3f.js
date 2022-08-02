@@ -42,7 +42,7 @@ const p = function polyfill() {
     }
 };true&&p();
 
-var style = /* #__PURE__ */ (() => "button:hover {\n  color: blue;\n}\nbutton:active {\n  color: #0099FF\n}\n#divgencost {\n  display: inline-block;\n}\n#divbbcost {\n  display: inline-block;\n  text-indent: 2.25em;\n}\n#divspeedcost {\n  display: inline-block;\n  text-indent: 2.25em;\n}\n#counter {\n  font-size: larger;\n}\n#alphacounter {\n  font-size: larger;\n}\n#divmbupcost {\n  display: inline-block;\n  text-indent: 6.5em;\n}\n#divmbmultcost {\n  display: inline-block;\n  text-indent: 5.75em;\n}\n#divalphaacceleratorcost {\n  display: inline-block;\n}\n#pcosttext {\n  display: inline-block;\n  text-indent: 4em;\n}\n#divgenboost {\n  display: inline-block;\n}\n#divgbuptcost {\n  display: inline-block;\n  text-indent: 7.5em;\n}\n#divgbupmcost {\n  display: inline-block;\n  text-indent: 4.75em;\n}\n#divthreeboostcost {\n  display: inline-block;\n}\n#divperbangcost {\n  display: inline-block;\n  text-indent: 7.25em;\n}\n#resetb {\n  color: red\n}\n#resetb:hover {\n  color: #FF00FF\n}\n#resetb:active {\n  color: #0099FF\n}\n#stat {\n  word-break:break-all;\n}\n#divunlockpca {\n  display: inline-block;\n}\n#divupgradepcacost {\n  display: inline-block;\n}\n#divtogglepca {\n  display: inline-block;\n  text-indent: 1.75em;\n}\n#divboosterupcost {\n  display: inline-block;\n}\n#divboosteruppercentcost {\n  display: inline-block;\n  text-indent: 15em;\n}\n#omegabasecost {\n  display: inline-block;\n}\n#omegaalphacost {\n  display: inline-block;\n  text-indent: 3.5em;\n}\n#omegabetacost {\n  display: inline-block;\n  text-indent: 6em;\n}\n#omegagammacost {\n  display: inline-block;\n  text-indent: 4em;\n}\n#omegadeltacost {\n  display: inline-block;\n  text-indent: 4em;\n}\n#divobase {\n  display: inline-block;\n}\n#divoalpha {\n  display: inline-block;\n  text-indent: 4.5em;\n}\n#divobeta {\n  display: inline-block;\n  text-indent: 7em;\n}\n#divogamma {\n  display: inline-block;\n  text-indent: 7em;\n}\n#divodelta {\n  display: inline-block;\n  text-indent: 7em;\n}\n#boostsection {\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 2.375em\n}\n#nbnb {\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 1.5em\n}\n#divbau {\n  display: inline-block\n}\n#divupgradeba {\n  display: inline-block;\n  text-indent: 5.25em;\n}\n#divtoggleba {\n  display: inline-block;\n  text-indent: 6em;\n}\n#bnbn {\n  display: flex;\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 1.5em\n}\n#gboostdouble {\n  display: inline-block;\n}\n#alphamachinedouble {\n  display: inline-block;\n  text-indent: 7.4em;\n}")();
+var style = /* #__PURE__ */ (() => "button:hover {\n  color: blue;\n}\nbutton:active {\n  color: #0099FF\n}\n#divgencost {\n  display: inline-block;\n}\n#divbbcost {\n  display: inline-block;\n  text-indent: 2.25em;\n}\n#divspeedcost {\n  display: inline-block;\n  text-indent: 2.25em;\n}\n#counter {\n  font-size: larger;\n}\n#alphacounter {\n  font-size: larger;\n}\n#divmbupcost {\n  display: inline-block;\n  text-indent: 6.5em;\n}\n#divmbmultcost {\n  display: inline-block;\n  text-indent: 5.75em;\n}\n#divalphaacceleratorcost {\n  display: inline-block;\n}\n#pcosttext {\n  display: inline-block;\n  text-indent: 4em;\n}\n#divgenboost {\n  display: inline-block;\n}\n#divgbuptcost {\n  display: inline-block;\n  text-indent: 7.5em;\n}\n#divgbupmcost {\n  display: inline-block;\n  text-indent: 4.75em;\n}\n#divthreeboostcost {\n  display: inline-block;\n}\n#divperbangcost {\n  display: inline-block;\n  text-indent: 7.25em;\n}\n#resetb {\n  color: red\n}\n#resetb:hover {\n  color: #FF00FF\n}\n#resetb:active {\n  color: #0099FF\n}\n#stat {\n  word-break:break-all;\n}\n#divunlockpca {\n  display: inline-block;\n}\n#divupgradepcacost {\n  display: inline-block;\n}\n#divtogglepca {\n  display: inline-block;\n  text-indent: 1.75em;\n}\n#divboosterupcost {\n  display: inline-block;\n}\n#divboosteruppercentcost {\n  display: inline-block;\n  text-indent: 15em;\n}\n#omegabasecost {\n  display: inline-block;\n}\n#omegaalphacost {\n  display: inline-block;\n  text-indent: 3.5em;\n}\n#omegabetacost {\n  display: inline-block;\n  text-indent: 6em;\n}\n#omegagammacost {\n  display: inline-block;\n  text-indent: 4em;\n}\n#omegadeltacost {\n  display: inline-block;\n  text-indent: 4em;\n}\n#divobase {\n  display: inline-block;\n}\n#divoalpha {\n  display: inline-block;\n  text-indent: 4.5em;\n}\n#divobeta {\n  display: inline-block;\n  text-indent: 7em;\n}\n#divogamma {\n  display: inline-block;\n  text-indent: 7em;\n}\n#divodelta {\n  display: inline-block;\n  text-indent: 7em;\n}\n#boostsection {\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 2.375em\n}\n#nbnb {\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 1.5em\n}\n#divbau {\n  display: inline-block\n}\n#divupgradeba {\n  display: inline-block;\n}\n#divtoggleba {\n  display: inline-block;\n  text-indent: 6em;\n}\n#bnbn {\n  display: flex;\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 1.5em\n}\n#gboostdouble {\n  display: inline-block;\n}\n#alphamachinedouble {\n  display: inline-block;\n  text-indent: 7.4em;\n}")();
 
 let player;
 function getUpgradeCost(upgradeName) { return player.upgrades[upgradeName].cost }
@@ -71,6 +71,7 @@ function load() {
                 'upgradepca': { cost: 2, timesBought: 0},
                 'boosterup': { cost: 100, timesBought: 0},
                 'boosteruppercent': { cost: 100, timesBought: 0},
+                'baunlock': { cost: 1, timesBought: 0},
               },
             num: 0,
             gbTimeLeft: 0,
@@ -98,7 +99,6 @@ function load() {
             omegaBaseCost: 1e+10,
             omegaAlpha: 0,
             omegaAlphaCost: 1e+12,
-            bangAutobuyerUnlocked: false,
             baToggle: true,
             baUpCost: 1,
             baTime: 160,
@@ -143,6 +143,7 @@ function UpdateCostVal(elementID, variable, currency = "num") {
     const currencyName = {
         'num': '',
         'alphaNum': ' Alpha',
+        'omegaBase': ' Ω<sub>B</sub>',
     };
     document.getElementById(elementID).textContent = "Cost: " + format(variable) + currencyName[currency];
 }
@@ -164,7 +165,7 @@ const upgrades = {
     'unlockpca': {  scaleFunction: scaleMultiplier(Infinity), costDiv: "divunlockpca", currency: "alphaNum"},
     'upgradepca': {  scaleFunction: PCAExtra(scaleMultiplier(3)), costDiv: "divupgradepcacost", currency: "alphaNum"},
     'boosterup': {  scaleFunction: scaleMultiplier(10), costDiv: "divboosterupcost", currency: "alphaNum"},
-    'boosteruppercent': {  scaleFunction: scaleMultiplier(10), costDiv: "divboosteruppercentcost", currency: "alphaNum"},
+    'baunlock': {  scaleFunction: scaleMultiplier(Infinity), costDiv: "divbau", currency: "omegaBase"},
 };
 
 function scaleMultiplier(multiplier) {
@@ -328,15 +329,11 @@ function loadMisc() {
         if(player.pcaToggle) { document.getElementById("divtogglepca").textContent = "On"; }
         else { document.getElementById("divtogglepca").textContent = "Off"; }
     }
-    //^ post-reformat
-    //(down) pre-format
-    document.getElementById("omegabasecost").textContent = "Cost: " + format(player.omegaBaseCost);
-    document.getElementById("divobase").textContent = "You have " + format(player.omegaBase);
-    document.getElementById("omegaalphacost").textContent = "Cost: " + format(player.omegaAlphaCost);
-    document.getElementById("divoalpha").textContent = "You have " + format(player.omegaAlpha);
-    if(player.bangAutobuyerUnlocked) {
-        document.getElementById("divbau").textContent = "Unlocked";
-        document.getElementById("untilba").textContent = player.pcaTimeLeft + " left until next autobuy";
+    if(getUpgradeTimesBought('baunlock') == 1) {
+        document.getElementById("bashow").style.display='block';
+        document.getElementById("divbau").style.display='none';
+        document.getElementById("baunlockbutton").style.display='none';
+        document.getElementById("untilba").textContent = player.baTimeLeft + " left until next autobuy";
         document.getElementById("divtoggleba").style.display='inline-block';
         if(player.baToggle) {
             document.getElementById("divtoggleba").textContent = "On";
@@ -345,6 +342,12 @@ function loadMisc() {
             document.getElementById("divtoggleba").textContent = "Off";
         }
     }
+    document.getElementById("omegabasecost").textContent = "Cost: " + format(player.omegaBaseCost);
+    document.getElementById("divobase").textContent = "You have " + format(player.omegaBase);
+    document.getElementById("omegaalphacost").textContent = "Cost: " + format(player.omegaAlphaCost);
+    document.getElementById("divoalpha").textContent = "You have " + format(player.omegaAlpha);
+    //^ post-reformat
+    //(down) pre-format
     document.getElementById("gboostdouble").textContent = "Cost: " + format(player.gBoostDoubleCost) + " Alpha";
     document.getElementById("alphamachinedouble").textContent = "Cost: " + format(player.alphaMachineDoubleCost) + " Alpha";
 }
@@ -538,6 +541,11 @@ function fgbtest() {
             document.getElementById("tmp").style.display='none';
         }
 
+        document.getElementById("omegabasecost").textContent = "Cost: " + format(player.omegaBaseCost);
+        document.getElementById("divobase").textContent = "You have " + format(player.omegaBase);
+        document.getElementById("omegaalphacost").textContent = "Cost: " + format(player.omegaAlphaCost);
+        document.getElementById("divoalpha").textContent = "You have " + format(player.omegaAlpha);
+
         player.num += gain;
         document.getElementById("particlespersecond").textContent = "You are getting " + format(gain * 10) + " particles/s";
 
@@ -575,7 +583,10 @@ function pcatest() {
 }
 
 function batest() {
-    if(player.bangAutobuyerUnlocked == true) {
+    if(getUpgradeTimesBought('baunlock') == 1) {
+        document.getElementById("bashow").style.display='block';
+        document.getElementById("divbau").style.display='none';
+        document.getElementById("baunlockbutton").style.display='none';
         if(player.baToggle == true) {
             if(player.baTimeLeft == 0) {
                 player.baTimeLeft = player.baTime;
@@ -614,4 +625,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.1ade5db8.js.map
+//# sourceMappingURL=index.ef106b3f.js.map
