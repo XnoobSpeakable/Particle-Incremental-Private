@@ -114,7 +114,8 @@ function load() {
     }
     if(player.version != "b1.21.0") {
         player.version = "b1.21.0";
-        alert("This specific version completely breaks compatibility with older saves. Sorry for the inconvenience.");
+        alert("IMPORTANT! This specific version completely breaks compatibility with older saves. Sorry for the inconvenience. Your save has been wiped. Refresh and your progress is lost. Sorry, but there's no other way.");
+        localStorage.removeItem('savefile');
     }
 }
 
@@ -139,7 +140,7 @@ function UpdateCostVal(elementID, variable, currency = "num") {
     const currencyName = {
         'num': '',
         'alphaNum': ' Alpha',
-        'omegaBase': ' Ω<sub>B</sub>',
+        'omegaBase': ' ',
     };
     document.getElementById(elementID).textContent = "Cost: " + format(variable) + currencyName[currency];
 }
@@ -359,6 +360,7 @@ function loadMisc() {
     if(getUpgradeTimesBought('baunlock') == 1) {
         document.getElementById("bashow").style.display='block';
         document.getElementById("divbau").style.display='none';
+        document.getElementById("divbauextra").style.display='none';
         document.getElementById("baunlockbutton").style.display='none';
         document.getElementById("untilba").textContent = player.baTimeLeft + " left until next autobuy";
         document.getElementById("divtoggleba").style.display='inline-block';
@@ -622,6 +624,7 @@ function batest() {
     if(getUpgradeTimesBought('baunlock') == 1) {
         document.getElementById("bashow").style.display='block';
         document.getElementById("divbau").style.display='none';
+        document.getElementById("divbauextra").style.display='none';
         document.getElementById("baunlockbutton").style.display='none';
         if(player.baToggle == true) {
             if(player.baTimeLeft == 0) {
@@ -661,4 +664,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.c8d8ecfd.js.map
+//# sourceMappingURL=index.83b67693.js.map
