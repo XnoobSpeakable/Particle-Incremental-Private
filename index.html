@@ -14,6 +14,7 @@
     <script defer src="./src/main.js" type="module"></script>
     <div id="diventirebody" style="color:black; font-family: 'Times New Roman'">
       <div id="counter">0 particles</div>
+      <div id="particlespersecond">You are getting 0 particles/s</div>
       <br>
 
       <div id="tabopeners">
@@ -38,7 +39,8 @@
         <div id="divgencost">Cost: Free</div>
         <div id="divbbcost">Cost: 2000</div>
         <div id="divspeedcost">Cost: 50</div>
-        <div id="particlespersecond">You are getting 0 particles/s</div>
+        <br>
+        <br>
         <div class="withtheoutline" id="veryouterboost">
           <h2 id="bigboosttext" style="display:none">Boost</h2>
           <div id="boostsection" style="display:none">
@@ -72,7 +74,6 @@
           </div>
         </div>
         <br>
-        <div id="tmp" style="display:none">Temporary 1e6 to 1e12 1.5x boost active</div>
         <br>
         <div id="nbnb" style="display:flex">
           <div id="nuclearshow" class="withtheoutline">
@@ -88,6 +89,7 @@
           <div id="bangshow" class="withtheoutline">
             <h2>Bang!</h2>
             Using an alpha accelerator, you can bang two particle chunks together to make alpha particles
+            <br>
             <br>
             <div class="btn-group">
               <button id="aabutton" onclick="buyUpgrade('alphaacc')" class="button">Buy Alpha Accelerator</button>
@@ -107,6 +109,8 @@
           <div id="bangreach">Reach 1e9 to unlock Bang!</div>
         </div>
         <br>
+        <div id="tmp" style="display:none">Temporary 1e6 to 1e12 1.5x boost active</div>
+        <br>
       </div>
 
       <div id="Alpha" style="display:none">
@@ -119,6 +123,8 @@
         </div>
         <div id="divthreeboostcost">Cost: 1 Alpha</div>
         <div id="divperbangcost">Cost: 4 Alpha</div>
+        <br>
+        <br>
         <div id="bnbn">
           <div id="pcabox" class="withtheoutline">
             <h2>Base automation</h2>
@@ -166,6 +172,7 @@
           <h2>Booster particles</h2>
           <div id="boostersmaintext">You are currently getting 0 booster particles per alpha particle per second, resulting in a +0% boost to base particle production</div>
           <div id="bpamount">You have 0 booster particles</div>
+          <br>
           <div class="btn-group">
             <button onclick="buyUpgrade('boosterup')" class="button">+1 booster particle per alpha particle per second</button>
             <button onclick="buyUpgrade('boosteruppercent')" class="button">+1 percent boost per booster particle</button>
@@ -284,11 +291,11 @@
         <br>
         <button onclick="save()" class="button">save</button>
         <br>
-        Version b1.21.3
+        Version b1.21.4
         <br>
         Changelog:
         <br>
-        changed default theme, added more themes, changed code responsible for autosave, added more autosave options, changed UI, removed version codename
+        made UI mostly consistant between different browsers + slight other UI tweaks
       </div>
       <div id="Tutorial" style="display:none">
         A generator gives you n particles every loop. Default is 1 loop per second and 1 particle per loop. <br>

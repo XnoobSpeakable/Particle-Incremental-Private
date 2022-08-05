@@ -13,7 +13,7 @@ const themes = [
 ];
 function themeExec() {
     const { textColor, bgColor, buttonColor, borderColor, themeName } = themes[player.themeNumber];
-    document.getElementById('diventirebody').style = "color: " + textColor;
+    document.getElementById('diventirebody').style = "color: " + textColor + "; font-family: 'Times New Roman'"
     document.body.style.backgroundColor = bgColor;
     const className = document.getElementsByClassName('button');
     for (let i = 0; i < className.length; i++) {
