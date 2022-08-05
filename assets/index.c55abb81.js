@@ -42,7 +42,7 @@ const p = function polyfill() {
     }
 };true&&p();
 
-var style = /* #__PURE__ */ (() => "button:hover {\n  color: blue;\n}\nbutton:active {\n  color: #0099FF\n}\n#divgencost {\n  display: inline-block;\n}\n#divbbcost {\n  display: inline-block;\n  text-indent: 2.25em;\n}\n#divspeedcost {\n  display: inline-block;\n  text-indent: 2.25em;\n}\n#counter {\n  font-size: larger;\n}\n#alphacounter {\n  font-size: larger;\n}\n#divmbupcost {\n  display: inline-block;\n  text-indent: 6.5em;\n}\n#divmbmultcost {\n  display: inline-block;\n  text-indent: 5.75em;\n}\n#divalphaacceleratorcost {\n  display: inline-block;\n}\n#pcosttext {\n  display: inline-block;\n  text-indent: 4em;\n}\n#divgenboost {\n  display: inline-block;\n}\n#divgbuptcost {\n  display: inline-block;\n  text-indent: 7.5em;\n}\n#divgbupmcost {\n  display: inline-block;\n  text-indent: 4.75em;\n}\n#divthreeboostcost {\n  display: inline-block;\n}\n#divperbangcost {\n  display: inline-block;\n  text-indent: 7.25em;\n}\n#resetb {\n  color: red\n}\n#resetb:hover {\n  color: #FF00FF\n}\n#resetb:active {\n  color: #0099FF\n}\n#stat {\n  word-break:break-all;\n}\n#divunlockpca {\n  display: inline-block;\n}\n#divupgradepcacost {\n  display: inline-block;\n}\n#divtogglepca {\n  display: inline-block;\n  text-indent: 1.75em;\n}\n#divboosterupcost {\n  display: inline-block;\n}\n#divboosteruppercentcost {\n  display: inline-block;\n  text-indent: 15em;\n}\n#omegabasecost {\n  display: inline-block;\n}\n#omegaalphacost {\n  display: inline-block;\n  text-indent: 3.5em;\n}\n#omegabetacost {\n  display: inline-block;\n  text-indent: 6em;\n}\n#omegagammacost {\n  display: inline-block;\n  text-indent: 4em;\n}\n#omegadeltacost {\n  display: inline-block;\n  text-indent: 4em;\n}\n#divobase {\n  display: inline-block;\n}\n#divoalpha {\n  display: inline-block;\n  text-indent: 4.5em;\n}\n#divobeta {\n  display: inline-block;\n  text-indent: 7em;\n}\n#divogamma {\n  display: inline-block;\n  text-indent: 7em;\n}\n#divodelta {\n  display: inline-block;\n  text-indent: 7em;\n}\n#boostsection {\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 2.375em\n}\n#nbnb {\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 1.5em\n}\n#divbau {\n  display: inline-block\n}\n#divupgradeba {\n  display: inline-block;\n}\n#divtoggleba {\n  display: inline-block;\n  text-indent: 6em;\n}\n#bnbn {\n  display: flex;\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 1.5em\n}\n#gboostdouble {\n  display: inline-block;\n}\n#alphamachinedouble {\n  display: inline-block;\n  text-indent: 7.4em;\n}")();
+var style = /* #__PURE__ */ (() => "button:hover {\n  color: blue;\n}\nbutton:active {\n  color: #0099FF\n}\n#divgencost {\n  display: inline-block;\n}\n#divbbcost {\n  display: inline-block;\n  text-indent: 2.25em;\n}\n#divspeedcost {\n  display: inline-block;\n  text-indent: 2.25em;\n}\n#counter {\n  font-size: x-large;\n}\n#alphacounter {\n  font-size: x-large;\n}\n#divmbupcost {\n  display: inline-block;\n  text-indent: 6.5em;\n}\n#divmbmultcost {\n  display: inline-block;\n  text-indent: 5.75em;\n}\n#divalphaacceleratorcost {\n  display: inline-block;\n}\n#pcosttext {\n  display: inline-block;\n  text-indent: 4em;\n}\n#divgenboost {\n  display: inline-block;\n}\n#divgbuptcost {\n  display: inline-block;\n  text-indent: 7.5em;\n}\n#divgbupmcost {\n  display: inline-block;\n  text-indent: 4.75em;\n}\n#divthreeboostcost {\n  display: inline-block;\n}\n#divperbangcost {\n  display: inline-block;\n  text-indent: 7.25em;\n}\n#resetb {\n  color: red\n}\n#resetb:hover {\n  color: #FF00FF\n}\n#resetb:active {\n  color: #0099FF\n}\n#stat {\n  word-break:break-all;\n}\n#divunlockpca {\n  display: inline-block;\n}\n#divupgradepcacost {\n  display: inline-block;\n}\n#divtogglepca {\n  display: inline-block;\n  text-indent: 1.75em;\n}\n#divboosterupcost {\n  display: inline-block;\n}\n#divboosteruppercentcost {\n  display: inline-block;\n  text-indent: 15em;\n}\n#omegabasecost {\n  display: inline-block;\n}\n#omegaalphacost {\n  display: inline-block;\n  text-indent: 3.5em;\n}\n#omegabetacost {\n  display: inline-block;\n  text-indent: 6em;\n}\n#omegagammacost {\n  display: inline-block;\n  text-indent: 4em;\n}\n#omegadeltacost {\n  display: inline-block;\n  text-indent: 4em;\n}\n#divobase {\n  display: inline-block;\n}\n#divoalpha {\n  display: inline-block;\n  text-indent: 4.5em;\n}\n#divobeta {\n  display: inline-block;\n  text-indent: 7em;\n}\n#divogamma {\n  display: inline-block;\n  text-indent: 7em;\n}\n#divodelta {\n  display: inline-block;\n  text-indent: 7em;\n}\n#boostsection {\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 2.375em\n}\n#nbnb {\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 1.5em\n}\n#divbau {\n  display: inline-block\n}\n#divupgradeba {\n  display: inline-block;\n}\n#divtoggleba {\n  display: inline-block;\n  text-indent: 6em;\n}\n#bnbn {\n  display: flex;\n  flex: space-evenly;\n  flex-direction: row;\n  gap: 1.5em\n}\n#gboostdouble {\n  display: inline-block;\n}\n#alphamachinedouble {\n  display: inline-block;\n  text-indent: 7.4em;\n}\n.button {\n  padding-left: 0.4em;\n  padding-right: 0.4em;\n  padding-top: 0.2em;\n  padding-bottom: 0.2em;\n  border-radius: 2px;\n}\n.tabopener {\n  padding-left: 0.6em;\n  padding-right: 0.6em;\n  padding-top: 0.3em;\n  padding-bottom: 0.3em;\n  font-size: medium;\n}\nbody {\n  display:flex;\n  flex-direction: column;\n  align-items: center;\n}\n* {text-align: center;}\n#boostsection {\n  display:flex;\n  justify-content: center;\n}\n#bangshow {\n  display:flex;\n  justify-content: center;\n}\n#bangcenteringfix {\n  display:flex;\n  justify-content: center;\n}\n#veryouterboost {\n  border:0.2em solid #333333; \n  padding-left: 15px; \n  padding-bottom: 10px; \n  display:none; \n  border-radius: 10px\n}\n#nuclearshow {\n  display:none;\n  border:0.2em solid #333333; \n  padding-left: 15px; \n  padding-bottom: 10px; \n  padding-right: 15px; \n  border-radius: 10px\n}\n#bangshow {\n  display:none; \n  border:0.2em solid #333333; \n  padding-left: 15px; \n  padding-bottom: 10px; \n  padding-right: 15px; \n  border-radius: 10px\n}\n#pcabox {\n  border:0.2em solid #333333; \n  padding-left: 15px; \n  padding-bottom: 10px; \n  padding-right: 15px; \n  border-radius: 10px\n}\n#talbox {\n  border:0.2em solid #333333; \n  padding-left: 15px; \n  padding-bottom: 10px; \n  padding-right: 15px; \n  border-radius: 10px\n}\n#nuclearalphashow {\n  display:none; \n  border:0.2em solid #333333; \n  padding-left: 15px; \n  padding-bottom: 10px;\n  padding-right: 15px; \n  border-radius: 10px\n}\n#bpsection {\n  border:0.2em solid #333333; \n  padding-left: 15px; \n  padding-bottom: 10px; \n  padding-right: 15px; \n  border-radius: 10px\n}\n")();
 
 let player;
 function getUpgradeCost(upgradeName) { return player.upgrades[upgradeName].cost }
@@ -52,7 +52,7 @@ function getUpgradeTimesBought(upgradeName) { return player.upgrades[upgradeName
 function load() {
     if(localStorage.getItem('savefile') == null) {
         player = {
-            version: "b1.21.2",
+            version: "b1.21.3",
             upgrades: { 
                 'gen': { cost: 0, timesBought: 0 },
                 'bb': { cost: 2000, timesBought: 0},
@@ -93,9 +93,9 @@ function load() {
             pcaUpCost: 2,
             pcaTime: 160,
             pcaTimeLeft: 0,
-            autoSaveDelay: 300,
-            autoSaveMode: 1,
-            autoSaveSet: 300,
+            autoSaveDelay: 50,
+            autoSaveMode: 4,
+            autoSaveSet: 50,
             boosterParticles: 0,
             untilBoost: 1,
             themeNumber: 0,
@@ -112,9 +112,9 @@ function load() {
     else {
         player = JSON.parse(localStorage.getItem('savefile'));
     }
-    if(player.version != "b1.21.2") {
-        player.version = "b1.21.2";
-        //alert("IMPORTANT! This specific version completely breaks compatibility with older saves. Sorry for the inconvenience. Your save has been wiped. Refresh and your progress is lost. Sorry, but there's no other way.");
+    if(player.version != "b1.21.3") {
+        player.version = "b1.21.3";
+        alert("This version might mess up your theme and autosave settings so just change them back to what they were before if that happens.");
     }
 }
 
@@ -282,11 +282,13 @@ window.buyUpgrade = function (upgradeName) {
 };
 
 const themes = [
-    { textColor: "black", bgColor: "#EEEEEE", buttonColor: "#DFDFDF", borderColor: "#333333", themeName: "Light" },
     { textColor: "#EBEBEB", bgColor: "#696969", buttonColor: "#999999", borderColor: "black", themeName: "Dark" },
+    { textColor: "#EFEFEF", bgColor: "#333333", buttonColor: "#ADADAD", borderColor: "black", themeName: "Darker" },
+    { textColor: "black", bgColor: "#EEEEEE", buttonColor: "#DFDFDF", borderColor: "#333333", themeName: "Light" },
     { textColor: "black", bgColor: "#EEEEEE", buttonColor: "#DFDFDF", borderColor: "#F33333", themeName: "Red Borders" },
     { textColor: "#CCCCCC", bgColor: "#000000", buttonColor: "#CCCCCC", borderColor: "#CCCCCC", themeName: "Black" },
     { textColor: "#EEEEEE", bgColor: "#000000", buttonColor: "#EEEEEE", borderColor: "#EEEEEE", themeName: "High contrast black" },
+    { textColor: "#black", bgColor: "#FF91AF", buttonColor: "#FFA1BF", borderColor: "#FFD1FF", themeName: "Pink" },
 ];
 function themeExec() {
     const { textColor, bgColor, buttonColor, borderColor, themeName } = themes[player.themeNumber];
@@ -324,12 +326,25 @@ function passiveUnlockDisplay() {
 }
 
 const autosaveElement = document.getElementById("autosaving"); 
+const delayArray = [600, 300, 150, 100, 50, 20, 10, undefined];
+
+function autoSaveSet() {
+    const delay = delayArray[player.autoSaveMode];
+    player.autoSaveSet = player.autoSaveDelay = delay ?? 1e308;
+    autosaveElement.textContent = delay ? "On, delay: " + (delay/10) + "s" : "Off";
+}
+
+window.autosavesettings = function () {
+    player.autoSaveMode = (player.autoSaveMode+1) % delayArray.length;
+    autoSaveSet();
+};
+
 
 function loadMisc() {
     themeExec();
     prePUD();
     passiveUnlockDisplay();
-    autosavetextanddelayupdate();
+    autoSaveSet();
     for (const upgradeName in upgrades) {
         const upgrade = upgrades[upgradeName];
         UpdateCostVal(upgrade.costDiv, getUpgradeCost(upgradeName), upgrade.currency);
@@ -436,51 +451,6 @@ window.togglepca = function () {
         if(player.pcaToggle) { document.getElementById("divtogglepca").textContent = "On"; }
         else { document.getElementById("divtogglepca").textContent = "Off"; }
     }
-};
-
-function autosavetextanddelayupdate() {
-    switch(player.autoSaveMode) {
-        case 0:
-            player.autoSaveSet = 600;
-            autosaveElement.textContent = "On, delay: 60s";
-            player.autoSaveDelay = 600;
-            break;
-        case 1:
-            player.autoSaveSet = 300;
-            autosaveElement.textContent = "On, delay: 30s";
-            player.autoSaveDelay = 300;
-            break;
-        case 2:
-            player.autoSaveSet = 150;
-            autosaveElement.textContent = "On, delay: 15s";
-            player.autoSaveDelay = 150;
-            break;
-        case 3:
-            player.autoSaveSet = 100;
-            autosaveElement.textContent = "On, delay: 10s";
-            player.autoSaveDelay = 100;
-            break;
-        case 4:
-            player.autoSaveSet = 50;
-            autosaveElement.textContent = "On, delay: 5s";
-            player.autoSaveDelay = 50;
-            break;
-        case 5:
-            player.autoSaveSet = 1e+300;
-            autosaveElement.textContent = "Off";
-            player.autoSaveDelay = 1e+300;
-            break;
-    }
-}
-
-window.autosavesettings = function () {
-    if(player.autoSaveMode == 5) {
-        player.autoSaveMode = 0;
-    }
-    else {
-    player.autoSaveMode++;
-    }
-    autosavetextanddelayupdate();
 };
 
 window.buyomegabase = function () {
@@ -666,4 +636,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.7add8216.js.map
+//# sourceMappingURL=index.c55abb81.js.map

@@ -16,10 +16,10 @@ button:active {
   text-indent: 2.25em;
 }
 #counter {
-  font-size: larger;
+  font-size: x-large;
 }
 #alphacounter {
-  font-size: larger;
+  font-size: x-large;
 }
 #divmbupcost {
   display: inline-block;
@@ -153,4 +153,88 @@ button:active {
 #alphamachinedouble {
   display: inline-block;
   text-indent: 7.4em;
+}
+.button {
+  padding-left: 0.4em;
+  padding-right: 0.4em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  border-radius: 2px;
+}
+.tabopener {
+  padding-left: 0.6em;
+  padding-right: 0.6em;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  font-size: medium;
+}
+body {
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+* {text-align: center;}
+#boostsection {
+  display:flex;
+  justify-content: center;
+}
+#bangshow {
+  display:flex;
+  justify-content: center;
+}
+#bangcenteringfix {
+  display:flex;
+  justify-content: center;
+}
+#veryouterboost {
+  border:0.2em solid #333333; 
+  padding-left: 15px; 
+  padding-bottom: 10px; 
+  display:none; 
+  border-radius: 10px
+}
+#nuclearshow {
+  display:none;
+  border:0.2em solid #333333; 
+  padding-left: 15px; 
+  padding-bottom: 10px; 
+  padding-right: 15px; 
+  border-radius: 10px
+}
+#bangshow {
+  display:none; 
+  border:0.2em solid #333333; 
+  padding-left: 15px; 
+  padding-bottom: 10px; 
+  padding-right: 15px; 
+  border-radius: 10px
+}
+#pcabox {
+  border:0.2em solid #333333; 
+  padding-left: 15px; 
+  padding-bottom: 10px; 
+  padding-right: 15px; 
+  border-radius: 10px
+}
+#talbox {
+  border:0.2em solid #333333; 
+  padding-left: 15px; 
+  padding-bottom: 10px; 
+  padding-right: 15px; 
+  border-radius: 10px
+}
+#nuclearalphashow {
+  display:none; 
+  border:0.2em solid #333333; 
+  padding-left: 15px; 
+  padding-bottom: 10px;
+  padding-right: 15px; 
+  border-radius: 10px
+}
+#bpsection {
+  border:0.2em solid #333333; 
+  padding-left: 15px; 
+  padding-bottom: 10px; 
+  padding-right: 15px; 
+  border-radius: 10px
 }

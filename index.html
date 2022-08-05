@@ -8,25 +8,27 @@
 
     
 
-    <script type="module" crossorigin src="/Particle-Incremental-Canary/assets/index.7add8216.js"></script>
-    <link rel="stylesheet" href="/Particle-Incremental-Canary/assets/index.123800be.css">
+    <script type="module" crossorigin src="/Particle-Incremental-Canary/assets/index.c55abb81.js"></script>
+    <link rel="stylesheet" href="/Particle-Incremental-Canary/assets/index.cd6f8ba5.css">
   </head>
 
   <body>
     
-    <div id="diventirebody" style="color:black">
+    <div id="diventirebody" style="color:black; font-family: 'Times New Roman'">
       <div id="counter">0 particles</div>
       <br>
 
-      <button onclick="openTab('Base')" class="button" id="tabopenbase">Base</button>
-      <button onclick="openTab('Alpha')" class="button" id="tabopenalpha">Alpha</button>
-      <button onclick="openTab('Beta')" class="button" id="tabopenbeta">Beta</button>
-      <button onclick="openTab('Gamma')" class="button" id="tabopengamma">Gamma</button>
-      <button onclick="openTab('Delta')" class="button" id="tabopendelta">Delta</button>
-      <button onclick="openTab('Omega')" class="button" id="tabopenomega">Omega</button>
-      <button onclick="openTab('Stats')" class="button">Stats</button>
-      <button onclick="openTab('Settings')" class="button">Settings</button>
-      <button onclick="openTab('Tutorial')" class="button">Tutorial</button>
+      <div id="tabopeners">
+        <button onclick="openTab('Base')" class="button tabopener" id="tabopenbase">Base</button>
+        <button onclick="openTab('Alpha')" class="button tabopener" id="tabopenalpha">Alpha</button>
+        <button onclick="openTab('Beta')" class="button tabopener" id="tabopenbeta">Beta</button>
+        <button onclick="openTab('Gamma')" class="button tabopener" id="tabopengamma">Gamma</button>
+        <button onclick="openTab('Delta')" class="button tabopener" id="tabopendelta">Delta</button>
+        <button onclick="openTab('Omega')" class="button tabopener" id="tabopenomega">Omega</button>
+        <button onclick="openTab('Stats')" class="button tabopener">Stats</button>
+        <button onclick="openTab('Settings')" class="button tabopener">Settings</button>
+        <button onclick="openTab('Tutorial')" class="button tabopener">Tutorial</button>
+      </div>
 
       <div id="Base">
         <br>
@@ -39,7 +41,7 @@
         <div id="divbbcost">Cost: 2000</div>
         <div id="divspeedcost">Cost: 50</div>
         <div id="particlespersecond">You are getting 0 particles/s</div>
-        <div style="border:0.2em solid #333333; padding-left: 10px; padding-bottom: 5px; display:none; border-radius: 5px" class="withtheoutline" id="veryouterboost">
+        <div class="withtheoutline" id="veryouterboost">
           <h2 id="bigboosttext" style="display:none">Boost</h2>
           <div id="boostsection" style="display:none">
             <div id="manboostsection">
@@ -75,7 +77,7 @@
         <div id="tmp" style="display:none">Temporary 1e6 to 1e12 1.5x boost active</div>
         <br>
         <div id="nbnb" style="display:flex">
-          <div id="nuclearshow" style="display:none; border:0.2em solid #333333; padding-left: 10px; padding-bottom: 5px; padding-right: 10px; border-radius: 5px" class="withtheoutline">
+          <div id="nuclearshow" class="withtheoutline">
             <h2>Nuclear boost</h2>
             <button onclick="buyUpgrade('nuclearbuy')" class="button">Buy Nuclear Particle</button>
             <div id="divnuclearcost">Cost: 1e6</div>
@@ -85,7 +87,7 @@
             <br>
           </div>
           <div id="nuclearreach">Reach 1e6 to unlock Nuclear boosts!</div>
-          <div id="bangshow" style="display:none; border:0.2em solid #333333; padding-left: 10px; padding-bottom: 5px; padding-right: 10px; border-radius: 5px" class="withtheoutline">
+          <div id="bangshow" class="withtheoutline">
             <h2>Bang!</h2>
             Using an alpha accelerator, you can bang two particle chunks together to make alpha particles
             <br>
@@ -97,7 +99,9 @@
             <div id="pcosttext">Cost: 1e9</div>
             <br>
             <br>
-            <button id="bangbutton" onclick="bang()" class="button">BANG!</button>
+            <div id="bangcenteringfix">
+              <button id="bangbutton" onclick="bang()" class="button">BANG!</button>
+            </div>
             <div>Cost: 2 Particle Chunks</div>
             <div id="chunkamount">Particle Chunks: 0</div>
             <div id="bangtimeleft"></div>
@@ -118,7 +122,7 @@
         <div id="divthreeboostcost">Cost: 1 Alpha</div>
         <div id="divperbangcost">Cost: 4 Alpha</div>
         <div id="bnbn">
-          <div style=" border:0.2em solid #333333; padding-left: 10px; padding-bottom: 5px; padding-right: 10px; border-radius: 5px" class="withtheoutline">
+          <div id="pcabox" class="withtheoutline">
             <h2>Base automation</h2>
             <br>
             <div>
@@ -139,7 +143,7 @@
               </div>
             </div>
           </div>
-          <div style="border:0.2em solid #333333; padding-left: 10px; padding-bottom: 5px; padding-right: 10px; border-radius: 5px" class="withtheoutline">
+          <div id="talbox" class="withtheoutline">
             <h2>TAL Machine</h2>
             <div class="btn-group">
               <button onclick="buyUpgrade('gboostdouble')" class="button">Double Generator Boost Length</button>
@@ -148,7 +152,7 @@
             <div id="gboostdouble">Cost: 1 Alpha</div>
             <div id="alphamachinedouble">Cost: 1000 Alpha</div>
           </div>
-          <div id="nuclearalphashow" style="display:none; border:0.2em solid #333333; padding-left: 10px; padding-bottom: 5px; padding-right: 10px; border-radius: 5px" class="withtheoutline">
+          <div id="nuclearalphashow" class="withtheoutline">
             <h2>Nuclear Alpha boost</h2>
             <button onclick="buyUpgrade('nuclearalphabuy')" class="button">Buy Nuclear Alpha Particle</button>
             <div id="divnuclearalphacost">Cost: 1e6 Alpha</div>
@@ -160,7 +164,7 @@
           <div id="nuclearalphareach">Reach 1e6 Alpha to unlock Nuclear Alpha boosts!</div>
         </div>
         <br>
-        <div id="bpsection" style="border:0.2em solid #333333; padding-left: 10px; padding-bottom: 5px; padding-right: 10px; border-radius: 5px" class="withtheoutline">
+        <div id="bpsection" class="withtheoutline">
           <h2>Booster particles</h2>
           <div id="boostersmaintext">You are currently getting 0 booster particles per alpha particle per second, resulting in a +0% boost to base particle production</div>
           <div id="bpamount">You have 0 booster particles</div>
@@ -277,9 +281,16 @@
         <button onclick="theme()" class="button">Change theme</button>
         <div id="whattheme">Theme: Light</div>
         <br>
-        <br>
         <button onclick="autosavesettings()" class="button">Toggle Autosave and autosave speed</button>
         <div id="autosaving">On, delay: 30s</div>
+        <br>
+        <button onclick="save()" class="button">save</button>
+        <br>
+        Version b1.21.3
+        <br>
+        Changelog:
+        <br>
+        changed default theme, added more themes, changed code responsible for autosave, added more autosave options, changed UI, removed version codename
       </div>
       <div id="Tutorial" style="display:none">
         A generator gives you n particles every loop. Default is 1 loop per second and 1 particle per loop. <br>
@@ -305,13 +316,6 @@
         You need at least 1 alpha accelerator to bang. <br>
         Buying more alpha accelerators multiplies alpha particle gain from the bangs by the total number of accelerators you have. <br> 
       </div>
-      <button onclick="save()" class="button">save</button>
-      <br>
-      Version b1.21.2 codename Code cleanup 1 bugfix 2
-      <br>
-      Changelog:
-      <br>
-      bugfix which makes booster particle upgrade 2 not broken anymore
     </div>
     </body>
 </html>
