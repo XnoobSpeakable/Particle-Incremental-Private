@@ -3,11 +3,13 @@ import { UpdateCostVal, upgrades } from './upgrades'
 import { format } from './util'
 
 const themes = [
-    { textColor: "black", bgColor: "#EEEEEE", buttonColor: "#DFDFDF", borderColor: "#333333", themeName: "Light" },
     { textColor: "#EBEBEB", bgColor: "#696969", buttonColor: "#999999", borderColor: "black", themeName: "Dark" },
+    { textColor: "#EFEFEF", bgColor: "#333333", buttonColor: "#ADADAD", borderColor: "black", themeName: "Darker" },
+    { textColor: "black", bgColor: "#EEEEEE", buttonColor: "#DFDFDF", borderColor: "#333333", themeName: "Light" },
     { textColor: "black", bgColor: "#EEEEEE", buttonColor: "#DFDFDF", borderColor: "#F33333", themeName: "Red Borders" },
     { textColor: "#CCCCCC", bgColor: "#000000", buttonColor: "#CCCCCC", borderColor: "#CCCCCC", themeName: "Black" },
     { textColor: "#EEEEEE", bgColor: "#000000", buttonColor: "#EEEEEE", borderColor: "#EEEEEE", themeName: "High contrast black" },
+    { textColor: "#black", bgColor: "#FF91AF", buttonColor: "#FFA1BF", borderColor: "#FFD1FF", themeName: "Pink" },
 ];
 function themeExec() {
     const { textColor, bgColor, buttonColor, borderColor, themeName } = themes[player.themeNumber];
@@ -45,12 +47,25 @@ function passiveUnlockDisplay() {
 }
 
 const autosaveElement = document.getElementById("autosaving") 
+const delayArray = [600, 300, 150, 100, 50, 20, 10, undefined]
+
+function autoSaveSet() {
+    const delay = delayArray[player.autoSaveMode];
+    player.autoSaveSet = player.autoSaveDelay = delay ?? 1e308
+    autosaveElement.textContent = delay ? "On, delay: " + (delay/10) + "s" : "Off";
+}
+
+window.autosavesettings = function () {
+    player.autoSaveMode = (player.autoSaveMode+1) % delayArray.length
+    autoSaveSet()
+}
+
 
 function loadMisc() {
     themeExec()
     prePUD()
     passiveUnlockDisplay()
-    autosavetextanddelayupdate()
+    autoSaveSet()
     for (const upgradeName in upgrades) {
         const upgrade = upgrades[upgradeName];
         UpdateCostVal(upgrade.costDiv, getUpgradeCost(upgradeName), upgrade.currency)
@@ -157,51 +172,6 @@ window.togglepca = function () {
         if(player.pcaToggle) { document.getElementById("divtogglepca").textContent = "On" }
         else { document.getElementById("divtogglepca").textContent = "Off" }
     }
-}
-
-function autosavetextanddelayupdate() {
-    switch(player.autoSaveMode) {
-        case 0:
-            player.autoSaveSet = 600
-            autosaveElement.textContent = "On, delay: 60s"
-            player.autoSaveDelay = 600
-            break;
-        case 1:
-            player.autoSaveSet = 300
-            autosaveElement.textContent = "On, delay: 30s"
-            player.autoSaveDelay = 300
-            break;
-        case 2:
-            player.autoSaveSet = 150
-            autosaveElement.textContent = "On, delay: 15s"
-            player.autoSaveDelay = 150
-            break;
-        case 3:
-            player.autoSaveSet = 100
-            autosaveElement.textContent = "On, delay: 10s"
-            player.autoSaveDelay = 100
-            break;
-        case 4:
-            player.autoSaveSet = 50
-            autosaveElement.textContent = "On, delay: 5s"
-            player.autoSaveDelay = 50
-            break;
-        case 5:
-            player.autoSaveSet = 1e+300
-            autosaveElement.textContent = "Off"
-            player.autoSaveDelay = 1e+300
-            break;
-    }
-}
-
-window.autosavesettings = function () {
-    if(player.autoSaveMode == 5) {
-        player.autoSaveMode = 0
-    }
-    else {
-    player.autoSaveMode++
-    }
-    autosavetextanddelayupdate()
 }
 
 window.buyomegabase = function () {

@@ -6,7 +6,7 @@ export function getUpgradeTimesBought(upgradeName) { return player.upgrades[upgr
 export function load() {
     if(localStorage.getItem('savefile') == null) {
         player = {
-            version: "b1.21.2",
+            version: "b1.21.3",
             upgrades: { 
                 'gen': { cost: 0, timesBought: 0 },
                 'bb': { cost: 2000, timesBought: 0},
@@ -47,9 +47,9 @@ export function load() {
             pcaUpCost: 2,
             pcaTime: 160,
             pcaTimeLeft: 0,
-            autoSaveDelay: 300,
-            autoSaveMode: 1,
-            autoSaveSet: 300,
+            autoSaveDelay: 50,
+            autoSaveMode: 4,
+            autoSaveSet: 50,
             boosterParticles: 0,
             untilBoost: 1,
             themeNumber: 0,
@@ -66,8 +66,8 @@ export function load() {
     else {
         player = JSON.parse(localStorage.getItem('savefile'))
     }
-    if(player.version != "b1.21.2") {
-        player.version = "b1.21.2";
-        //alert("IMPORTANT! This specific version completely breaks compatibility with older saves. Sorry for the inconvenience. Your save has been wiped. Refresh and your progress is lost. Sorry, but there's no other way.");
+    if(player.version != "b1.21.3") {
+        player.version = "b1.21.3";
+        alert("This version might mess up your theme and autosave settings so just change them back to what they were before if that happens.");
     }
 }
