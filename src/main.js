@@ -154,7 +154,7 @@ const makechunk = window.makechunk
 
 window.bang = function () {
     if(player.pChunks >= 2) {
-        if(getUpgradeTimesBought('alphaacc') > 0 && !(player.bangTimeLeft > 0 && player.bangTimeLeft < player.bangTime)) {
+        if(getUpgradeTimesBought('alphaacc') > 0 && !(player.bangTimeLeft > 0 && player.bangTimeLeft <= player.bangTime)) {
             player.alphaAcceleratorsLeft -= getUpgradeTimesBought('alphaacc')
             player.pChunks -=2
             player.bangTimeLeft = player.bangTime

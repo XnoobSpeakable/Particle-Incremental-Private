@@ -62,7 +62,6 @@ export function GBTExtra(scaler) {
 export function GBMExtra(scaler) {
     return function (upgradeName) {
         scaler(upgradeName)
-        player.gbMultCon += 5
         player.gbTimeLeft = 0
         player.gbTimeLeft = player.gbTimeLeftCon
     }
