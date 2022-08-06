@@ -52,7 +52,7 @@ function getUpgradeTimesBought(upgradeName) { return player.upgrades[upgradeName
 function load() {
     if(localStorage.getItem('savefile') == null) {
         player = {
-            version: "b1.21.4",
+            version: "b1.21.5",
             upgrades: { 
                 'gen': { cost: 0, timesBought: 0 },
                 'bb': { cost: 2000, timesBought: 0},
@@ -112,8 +112,8 @@ function load() {
     else {
         player = JSON.parse(localStorage.getItem('savefile'));
     }
-    if(player.version != "b1.21.4") {
-        player.version = "b1.21.4";
+    if(player.version != "b1.21.5") {
+        player.version = "b1.21.5";
         //alert("This version might mess up your theme and autosave settings so just change them back to what they were before if that happens.");
     }
 }
@@ -195,7 +195,6 @@ function GBTExtra(scaler) {
 function GBMExtra(scaler) {
     return function (upgradeName) {
         scaler(upgradeName);
-        player.gbMultCon += 5;
         player.gbTimeLeft = 0;
         player.gbTimeLeft = player.gbTimeLeftCon;
     }
@@ -433,7 +432,7 @@ const makechunk = window.makechunk;
 
 window.bang = function () {
     if(player.pChunks >= 2) {
-        if(getUpgradeTimesBought('alphaacc') > 0 && !(player.bangTimeLeft > 0 && player.bangTimeLeft < player.bangTime)) {
+        if(getUpgradeTimesBought('alphaacc') > 0 && !(player.bangTimeLeft > 0 && player.bangTimeLeft <= player.bangTime)) {
             player.alphaAcceleratorsLeft -= getUpgradeTimesBought('alphaacc');
             player.pChunks -=2;
             player.bangTimeLeft = player.bangTime;
@@ -636,4 +635,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.cb3c9d54.js.map
+//# sourceMappingURL=index.da6ba2db.js.map
