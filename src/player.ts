@@ -1,12 +1,4 @@
-export type Player = { eSetting: number } & Record<string, any>
-export let player : Player;
-export function getUpgradeCost(upgradeName) { return player.upgrades[upgradeName].cost }
-export function setUpgradeCost(upgradeName, costIn) { player.upgrades[upgradeName].cost = (costIn) }
-export function getUpgradeTimesBought(upgradeName) { return player.upgrades[upgradeName].timesBought }
-
-export function load() {
-    if(localStorage.getItem('savefile') == null) {
-        player = {
+export let player = {
             version: "b1.21.10",
             upgrades: { 
                 'gen': { cost: 0, timesBought: 0 },
@@ -63,8 +55,13 @@ export function load() {
             baTimeLeft: 0,
             baUpBought: 0,
           };
-    }
-    else {
+    
+export function getUpgradeCost(upgradeName) { return player.upgrades[upgradeName].cost }
+export function setUpgradeCost(upgradeName, costIn) { player.upgrades[upgradeName].cost = (costIn) }
+export function getUpgradeTimesBought(upgradeName) { return player.upgrades[upgradeName].timesBought }
+
+export function load() {
+    if(localStorage.getItem('savefile') !== null) {
         player = JSON.parse(localStorage.getItem('savefile')!)
     }
     const stage = player.version.substring(1, 2)

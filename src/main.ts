@@ -298,7 +298,7 @@ function fgbtest() {
         getEl("omegaalphacost").textContent = "Cost: " + format(player.omegaAlphaCost)
         getEl("divoalpha").textContent = "You have " + format(player.omegaAlpha)
 
-        player.num += gain
+        player.num += gain.toNumber
         getEl("particlespersecond").textContent = "You are getting " + formatb(gain.times(10)) + " particles/s"
 
         if(player.num >= 1000000) {
