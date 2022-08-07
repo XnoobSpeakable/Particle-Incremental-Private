@@ -455,8 +455,7 @@ const makechunk = window.makechunk;
 
 window.bang = function () {
     if(player.pChunks >= 2) {
-        if(getUpgradeTimesBought('alphaacc') > 0 && !(player.bangTimeLeft > 0 && player.bangTimeLeft <= player.bangTime)) {
-            player.alphaAcceleratorsLeft -= getUpgradeTimesBought('alphaacc');
+        if(getUpgradeTimesBought('alphaacc') > 0 && !(player.bangTimeLeft >= 0 && player.bangTimeLeft <= player.bangTime)) {
             player.pChunks -=2;
             player.bangTimeLeft = player.bangTime;
             document.getElementById("chunkamount").textContent = "Particle Chunks: " + format(player.pChunks);
@@ -529,9 +528,8 @@ function fgbtest() {
         }
 
         player.bangTime = Math.ceil(300/Math.pow(2, getUpgradeTimesBought('bangspeed')));
-        if(player.bangTimeLeft == 0) {
-            player.alphaAcceleratorsLeft += getUpgradeTimesBought('alphaacc');
-            player.alphaNum += player.alphaAcceleratorsLeft * (getUpgradeTimesBought('perbang')+1) * (getUpgradeTimesBought('nuclearalphabuy')+1) * Math.pow(2, getUpgradeTimesBought('alphamachinedouble'));
+        if(player.bangTimeLeft == 0) { 
+            player.alphaNum += getUpgradeTimesBought('alphaacc') * (getUpgradeTimesBought('perbang')+1) * (getUpgradeTimesBought('nuclearalphabuy')+1) * Math.pow(2, getUpgradeTimesBought('alphamachinedouble'));
             document.getElementById("bangtimeleft").textContent = "";
         }
 
@@ -540,15 +538,11 @@ function fgbtest() {
 
         document.getElementById("alphapb").textContent = "You are getting " + format(alphagaindisplay) + " Alpha/bang";
         player.bangTimeLeft -= 1;
-        if(player.bangTimeLeft > 0 && player.bangTimeLeft < player.bangTime) {
+        if(player.bangTimeLeft >= 0 && player.bangTimeLeft <= player.bangTime) {
             document.getElementById("bangtimeleft").textContent = "Bang time left: " + player.bangTimeLeft;
-            document.getElementById("divalphaacceleratorcost").style.display='none';
-            document.getElementById("aabutton").style.display='none';
             document.getElementById("bangbutton").style.display='none';
         }
         else {
-            document.getElementById("divalphaacceleratorcost").style.display='inline-block';
-            document.getElementById("aabutton").style.display='inline-block';
             document.getElementById("bangbutton").style.display='block';
         }
         if(player.gbTimeLeft > 0) {
@@ -658,4 +652,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.4d29a8c3.js.map
+//# sourceMappingURL=index.8e9978cc.js.map
