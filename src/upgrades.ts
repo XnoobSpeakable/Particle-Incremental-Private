@@ -1,6 +1,9 @@
 import { format, getEl } from './util'
 import { player, getUpgradeTimesBought, getUpgradeCost, setUpgradeCost } from './player'
 
+// treat window as anything, so tsc doesn't complain when we modify it
+declare var window: any;
+
 
 export function UpdateCostVal(elementID, variable, currency = "num") {
     const currencyName = {

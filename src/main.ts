@@ -2,6 +2,9 @@ import { load, getUpgradeTimesBought, getUpgradeCost, player } from './player'
 import { UpdateCostVal, upgrades } from './upgrades'
 import { format, getEl } from './util'
 
+// treat window as anything, so tsc doesn't complain when we modify it
+declare var window: any;
+
 const themes = [
     { textColor: "#EBEBEB", bgColor: "#696969", buttonColor: "#999999", borderColor: "black", themeName: "Dark" },
     { textColor: "#EFEFEF", bgColor: "#333333", buttonColor: "#ADADAD", borderColor: "black", themeName: "Darker" },
