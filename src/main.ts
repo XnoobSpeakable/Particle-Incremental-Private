@@ -149,7 +149,7 @@ window.saveImport = function () {
 }
 
 window.saveImportConfirm = function () {
-    const savefile = getEl('importareaid').value
+    const savefile = getEl('importareaid')['value']; // really should check for an empty value here
     localStorage.setItem('savefile', savefile)
     window.location.reload();
 }
