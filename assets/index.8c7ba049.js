@@ -52,7 +52,7 @@ function getUpgradeTimesBought(upgradeName) { return player.upgrades[upgradeName
 function load() {
     if(localStorage.getItem('savefile') == null) {
         player = {
-            version: "b1.21.8",
+            version: "b1.21.10",
             upgrades: { 
                 'gen': { cost: 0, timesBought: 0 },
                 'bb': { cost: 2000, timesBought: 0},
@@ -112,33 +112,15 @@ function load() {
     else {
         player = JSON.parse(localStorage.getItem('savefile'));
     }
-    if(player.version != "b1.21.8") {
-        if(player.version != "b1.21.7") {
-            if(player.version != "b1.21.6") {
-                if(player.version != "b1.21.5") {
-                    if(player.version != "b1.21.4") {
-                        if(player.version != "b1.21.3") {
-                            if(player.version != "b1.21.2") {
-                                if(player.version != "b1.21.1") {
-                                    if(player.version != "b1.21.0") {
-                                        localStorage.removeItem('savefile');
-                                        window.location.reload();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+    const stage = player.version.substring(1, 2);
+    const major = player.version.substring(3, 5);
+    //const minor = player.version.substring(6)
+    if(stage <= 1 && major <= 20) {
+        localStorage.removeItem('savefile');
+        window.location.reload();
     }
-    
-    
-    
-    
-    
-    if(player.version == "b1.21.8") {
-        player.version = "b1.21.8";
+    if(player.version != "b1.21.10") {
+        player.version = "b1.21.10";
         //alert("This version might mess up your theme and autosave settings so just change them back to what they were before if that happens.");
     }
 }
@@ -673,4 +655,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.db8d056b.js.map
+//# sourceMappingURL=index.8c7ba049.js.map
