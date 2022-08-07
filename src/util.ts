@@ -15,3 +15,7 @@ export function format(n) {
     }
 } 
 //tysm Diamboy for the complicated part of this function.
+
+export function getEl(id) {
+    return document.getElementById(id)!;
+}

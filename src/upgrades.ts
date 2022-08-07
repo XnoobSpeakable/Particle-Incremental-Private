@@ -1,4 +1,4 @@
-import { format } from './util'
+import { format, getEl } from './util'
 import { player, getUpgradeTimesBought, getUpgradeCost, setUpgradeCost } from './player'
 
 
@@ -8,7 +8,7 @@ export function UpdateCostVal(elementID, variable, currency = "num") {
         'alphaNum': ' Alpha',
         'omegaBase': ' ',
     }
-    document.getElementById(elementID).textContent = "Cost: " + format(variable) + currencyName[currency]
+    getEl(elementID).textContent = "Cost: " + format(variable) + currencyName[currency]
 }
 
 export const upgrades = {
@@ -78,13 +78,13 @@ export function GBDExtra(scaler) {
 export function NBExtra(scaler) {
     return function (upgradeName) {
         scaler(upgradeName)
-        document.getElementById("divnp").textContent = "Nuclear Particles: " + getUpgradeTimesBought('nuclearbuy')
+        getEl("divnp").textContent = "Nuclear Particles: " + getUpgradeTimesBought('nuclearbuy')
     }
 }
 export function NABExtra(scaler) {
     return function (upgradeName) {
         scaler(upgradeName)
-        document.getElementById("divnap").textContent = "Nuclear Particles: " + getUpgradeTimesBought('nuclearalphabuy')
+        getEl("divnap").textContent = "Nuclear Particles: " + getUpgradeTimesBought('nuclearalphabuy')
     }
 }
 
