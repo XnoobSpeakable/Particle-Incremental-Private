@@ -434,6 +434,12 @@ window.openTab = function (tab) {
 load();
 loadMisc();
 
+window.saveExport = function () {
+    const savefile = JSON.stringify(player);
+    localStorage.setItem('savefile', savefile);
+    navigator.clipboard.writeText(savefile);
+};
+
 window.setting1e4 = function () { player.eSetting = 1e+4; loadMisc(); };
 window.setting1e6 = function () { player.eSetting = 1e+6; loadMisc(); };
 
@@ -539,7 +545,7 @@ function fgbtest() {
         const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult * (getUpgradeTimesBought('nuclearbuy')+1) * (getUpgradeTimesBought('nuclearbuy')+1) * Math.pow(3, getUpgradeTimesBought('tb')) * player.tempBoost * (1 + (((player.boosterParticles / 100) * (getUpgradeTimesBought('boosteruppercent')+1)) / 100));
 
         document.getElementById("particlesperclick").textContent = "You are getting " + (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1) * (getUpgradeTimesBought('nuclearbuy')+1) + " particles per click";
-        
+
         document.getElementById("alphapb").textContent = "You are getting " + format(alphagaindisplay) + " Alpha/bang";
         player.bangTimeLeft -= 1;
         if(player.bangTimeLeft >= 0 && player.bangTimeLeft <= player.bangTime) {
@@ -656,4 +662,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.9944f464.js.map
+//# sourceMappingURL=index.1904467f.js.map
