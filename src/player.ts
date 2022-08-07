@@ -64,7 +64,7 @@ export function load() {
           };
     }
     else {
-        player = JSON.parse(localStorage.getItem('savefile'))
+        player = JSON.parse(localStorage.getItem('savefile')!)
     }
     const stage = player.version.substring(1, 2)
     const major = player.version.substring(3, 5)
