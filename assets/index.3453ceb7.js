@@ -422,6 +422,8 @@ window.saveExport = function () {
     navigator.clipboard.writeText(savefile);
 };
 
+console.log(JSON.stringify(player));
+
 window.saveImport = function () {
     document.getElementById("importareaid").style.display = "block";
     document.getElementById("saveimportconfirm").style.display = "block";
@@ -655,4 +657,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.ab95941f.js.map
+//# sourceMappingURL=index.3453ceb7.js.map
