@@ -440,6 +440,17 @@ window.saveExport = function () {
     navigator.clipboard.writeText(savefile);
 };
 
+window.saveImport = function () {
+    document.getElementById("importareaid").style.display = "block";
+    document.getElementById("saveimportconfirm").style.display = "block";
+};
+
+window.saveImportConfirm = function () {
+    const savefile = document.getElementById('importareaid').value;
+    localStorage.setItem('savefile', savefile);
+    window.location.reload();
+};
+
 window.setting1e4 = function () { player.eSetting = 1e+4; loadMisc(); };
 window.setting1e6 = function () { player.eSetting = 1e+6; loadMisc(); };
 
@@ -662,4 +673,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.1904467f.js.map
+//# sourceMappingURL=index.db8d056b.js.map
