@@ -13,15 +13,18 @@ const themes = [
 ];
 function themeExec() {
     const { textColor, bgColor, buttonColor, borderColor, themeName } = themes[player.themeNumber];
+    //@ts-expect-error
     getEl('diventirebody').style = "color: " + textColor + "; font-family: 'Times New Roman'"
     document.body.style.backgroundColor = bgColor;
     const className = document.getElementsByClassName('button');
     for (let i = 0; i < className.length; i++) {
+    //@ts-expect-error
         className[i].style.backgroundColor = buttonColor;
     }
     const className2 = document.getElementsByClassName('withtheoutline');
     for (let i = 0; i < className2.length; i++) {
-        className2[i].style.border = "0.2em solid " + borderColor;
+       //@ts-expect-error
+       className2[i].style.border = '0.2em solid ' + borderColor;
     }
     getEl("whattheme").textContent = "Theme: " + themeName;
 }
