@@ -280,6 +280,14 @@
         (also resets all settings)
         <br>
         <br>
+        <button onclick="saveExport()" class="button">Export save</button>
+        <button onclick="saveImport()" class="button">Import save</button>
+        <textarea id="importareaid" name="importarea" rows="4" cols="50" style="display:none"></textarea>
+        <button onclick="saveImportConfirm()" id="saveimportconfirm" class="button" style="display:none">I have pasted the save</button>
+        <br>
+        Export copies your save into your clipboard
+        <br>
+        <br>
         <button onclick="setting1e4()" class="button">Make scientific notation start at 1e4</button>
         <button onclick="setting1e6()" class="button">Make scientific notation start at 1e6</button>
         <br>
@@ -292,7 +300,7 @@
         <br>
         <button onclick="save()" class="button">save</button>
         <br>
-        Version b1.21.8
+        Version b1.21.9
         <br>
         Changelog:
         <br>
