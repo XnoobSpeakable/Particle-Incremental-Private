@@ -414,7 +414,7 @@ window.openTab = function (tab) {
 };
 
 load();
-loadMisc();
+loadMisc(); //testiiiiing
 
 window.saveExport = function () {
     const savefile = JSON.stringify(player);
@@ -655,4 +655,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.8c7ba049.js.map
+//# sourceMappingURL=index.ab95941f.js.map
