@@ -11,5 +11,8 @@
     "eslint": "^8.18.0",
     "typescript": "^4.5.4",
     "vite": "^2.9.9"
+  },
+  "dependencies": {
+    "break_eternity.js": "^1.3.1"
   }
 }

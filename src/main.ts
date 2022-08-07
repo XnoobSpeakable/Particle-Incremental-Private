@@ -1,6 +1,7 @@
 import { load, getUpgradeTimesBought, getUpgradeCost, player } from './player'
 import { UpdateCostVal, upgrades } from './upgrades'
-import { format, getEl } from './util'
+import { format, formatb, getEl } from './util'
+import Decimal from 'break_eternity.js';
 
 // treat window as anything, so tsc doesn't complain when we modify it
 declare var window: any;
@@ -256,8 +257,9 @@ function fgbtest() {
         }
 
         const alphagaindisplay = getUpgradeTimesBought('alphaacc') * (getUpgradeTimesBought('perbang')+1) * (getUpgradeTimesBought('nuclearalphabuy')+1) * Math.pow(2, getUpgradeTimesBought('alphamachinedouble'))
-        const gain = (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult * (getUpgradeTimesBought('nuclearbuy')+1) * (getUpgradeTimesBought('nuclearbuy')+1) * Math.pow(3, getUpgradeTimesBought('tb')) * player.tempBoost * (1 + (((player.boosterParticles / 100) * (getUpgradeTimesBought('boosteruppercent')+1)) / 100))
-
+        const gain : Decimal = new Decimal( 
+            (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult * (getUpgradeTimesBought('nuclearbuy')+1) * (getUpgradeTimesBought('nuclearbuy')+1) * Math.pow(3, getUpgradeTimesBought('tb')) * player.tempBoost * (1 + (((player.boosterParticles / 100) * (getUpgradeTimesBought('boosteruppercent')+1)) / 100)) 
+            )
         getEl("particlesperclick").textContent = "You are getting " + (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1) * (getUpgradeTimesBought('nuclearbuy')+1) + " particles per click"
 
         getEl("alphapb").textContent = "You are getting " + format(alphagaindisplay) + " Alpha/bang"
@@ -297,7 +299,7 @@ function fgbtest() {
         getEl("divoalpha").textContent = "You have " + format(player.omegaAlpha)
 
         player.num += gain
-        getEl("particlespersecond").textContent = "You are getting " + format(gain * 10) + " particles/s"
+        getEl("particlespersecond").textContent = "You are getting " + formatb(gain.times(10)) + " particles/s"
 
         if(player.num >= 1000000) {
             getEl("nuclearreach").style.display='none'

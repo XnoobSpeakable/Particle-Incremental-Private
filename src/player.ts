@@ -1,4 +1,5 @@
-export let player
+export type Player = { eSetting: number } & Record<string, any>
+export let player : Player;
 export function getUpgradeCost(upgradeName) { return player.upgrades[upgradeName].cost }
 export function setUpgradeCost(upgradeName, costIn) { player.upgrades[upgradeName].cost = (costIn) }
 export function getUpgradeTimesBought(upgradeName) { return player.upgrades[upgradeName].timesBought }
@@ -41,7 +42,7 @@ export function load() {
             bangTimeLeft: 1e+300,
             alphaAcceleratorsLeft: 0,
             alphaInc: 1,
-            eSetting: 1e+4,
+            eSetting: 4,
             tempBoost: 1,
             pcaToggle: true,
             pcaUpCost: 2,
