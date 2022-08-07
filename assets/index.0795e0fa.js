@@ -172,8 +172,8 @@ const upgrades = {
     'gen': { multiplier: 4, scaleFunction: scaleGen, costDiv: "divgencost", currency: "num"},
     'bb': {  scaleFunction: scaleMultiplier(2), costDiv: "divbbcost", currency: "num"},
     'speed': {  scaleFunction: scaleSpeed, costDiv: "divspeedcost", currency: "num"},
-    'mbup': { scaleFunction: scaleMultiplier(2), costDiv: "divmbupcost", currency: "num"},
-    'mbmult': {  scaleFunction: scaleMultiplier(3), costDiv: "divmbmultcost", currency: "num"},
+    'mbup': { scaleFunction: scaleMultiplier(1.5), costDiv: "divmbupcost", currency: "num"},
+    'mbmult': {  scaleFunction: scaleMultiplier(2), costDiv: "divmbmultcost", currency: "num"},
     'unlockgb': {  scaleFunction: scaleMultiplier(Infinity), costDiv: "divgenunlockcost", currency: "num"},
     'gbupt': {  scaleFunction: GBTExtra(scaleMultiplier(5)), costDiv: "divgbuptcost", currency: "num"},
     'gbupm': {  scaleFunction: GBMExtra(scaleMultiplier(5)), costDiv: "divgbupmcost", currency: "num"},
@@ -437,7 +437,7 @@ window.setting1e4 = function () { player.eSetting = 1e+4; loadMisc(); };
 window.setting1e6 = function () { player.eSetting = 1e+6; loadMisc(); };
 
 window.mbman = function () {
-    player.num += (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1);
+    player.num += (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1) * (getUpgradeTimesBought('nuclearbuy')+1);
     document.getElementById("counter").textContent = format(player.num) + " particles";
 };
 
@@ -653,4 +653,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.369efba7.js.map
+//# sourceMappingURL=index.0795e0fa.js.map
