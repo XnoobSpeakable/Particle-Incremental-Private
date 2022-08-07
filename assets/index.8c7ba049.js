@@ -414,15 +414,13 @@ window.openTab = function (tab) {
 };
 
 load();
-loadMisc(); //testiiiiing
+loadMisc();
 
 window.saveExport = function () {
     const savefile = JSON.stringify(player);
     localStorage.setItem('savefile', savefile);
     navigator.clipboard.writeText(savefile);
 };
-
-console.log(JSON.stringify(player));
 
 window.saveImport = function () {
     document.getElementById("importareaid").style.display = "block";
@@ -657,4 +655,4 @@ const save = window.save;
 window.reset = function () {
     localStorage.removeItem('savefile');
 };
-//# sourceMappingURL=index.3453ceb7.js.map
+//# sourceMappingURL=index.8c7ba049.js.map
