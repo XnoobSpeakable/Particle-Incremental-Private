@@ -44,11 +44,11 @@ function prePUD() {
     getEl("tabopenomega").style.display='none'
 }
 function passiveUnlockDisplay() {
-    if(player.num >= 1e9) {
+    if(player.num.gte(1e9)) {
         getEl("tabopenalpha").style.display='inline'
         getEl("tabopenomega").style.display='inline'
     }
-    if(player.alphaNum >= 1e9) {
+    if(player.alphaNum.gte(1e9)) {
         getEl("tabopenbeta").style.display='inline'
     }
 }
@@ -90,7 +90,7 @@ function loadMisc() {
     }
     getEl("divnp").textContent = "Nuclear Particles: " + getUpgradeTimesBought('nuclearbuy')
     getEl("divnap").textContent = "Nuclear Alpha Particles: " + getUpgradeTimesBought('nuclearalphabuy')
-    getEl("chunkamount").textContent = "Particle Chunks: " + format(player.pChunks)
+    getEl("chunkamount").textContent = "Particle Chunks: " + formatb(player.pChunks)
     if(getUpgradeTimesBought('unlockpca') == 1) {
         getEl("pcashow").style.display='block'
         getEl("divunlockpca").style.display='none'
@@ -114,10 +114,10 @@ function loadMisc() {
             getEl("divtoggleba").textContent = "Off"
         }
     }
-    getEl("omegabasecost").textContent = "Cost: " + format(player.omegaBaseCost)
-    getEl("divobase").textContent = "You have " + format(player.omegaBase)
-    getEl("omegaalphacost").textContent = "Cost: " + format(player.omegaAlphaCost)
-    getEl("divoalpha").textContent = "You have " + format(player.omegaAlpha)
+    getEl("omegabasecost").textContent = "Cost: " + formatb(player.omegaBaseCost)
+    getEl("divobase").textContent = "You have " + formatb(player.omegaBase)
+    getEl("omegaalphacost").textContent = "Cost: " + formatb(player.omegaAlphaCost)
+    getEl("divoalpha").textContent = "You have " + formatb(player.omegaAlpha)
 }
 
 function makeElementMap(...names) {
@@ -159,8 +159,11 @@ window.setting1e4 = function () { player.eSetting = 1e+4; loadMisc() }
 window.setting1e6 = function () { player.eSetting = 1e+6; loadMisc() }
 
 window.mbman = function () {
-    player.num += (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1) * (getUpgradeTimesBought('nuclearbuy')+1)
-    getEl("counter").textContent = format(player.num) + " particles"
+    const gain : Decimal = new Decimal(
+        (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1) * (getUpgradeTimesBought('nuclearbuy')+1)
+    )
+    player.num.plus(gain)
+    getEl("counter").textContent = formatb(player.num) + " particles"
 }
 
 window.gbboost = function () {
@@ -168,20 +171,20 @@ window.gbboost = function () {
 }
 
 window.makechunk = function () {
-    if(player.num >= 1e+9) {
-        player.num -= 1e+9
-        player.pChunks += 1
-        getEl("chunkamount").textContent = "Particle Chunks: " + format(player.pChunks)
+    if(player.num.gte(1e9)) {
+        player.num.minus(1e9)
+        player.pChunks.plus(1)
+        getEl("chunkamount").textContent = "Particle Chunks: " + formatb(player.pChunks)
     }
 }
 const makechunk = window.makechunk
 
 window.bang = function () {
-    if(player.pChunks >= 2) {
+    if(player.pChunks.gte(2)) {
         if(getUpgradeTimesBought('alphaacc') > 0 && !(player.bangTimeLeft >= 0 && player.bangTimeLeft <= player.bangTime)) {
-            player.pChunks -=2
+            player.pChunks.minus(2)
             player.bangTimeLeft = player.bangTime
-            getEl("chunkamount").textContent = "Particle Chunks: " + format(player.pChunks)
+            getEl("chunkamount").textContent = "Particle Chunks: " + formatb(player.pChunks)
             getEl("boostersmaintext").style.display='block'
         }
     }
@@ -198,22 +201,22 @@ window.togglepca = function () {
 }
 
 window.buyomegabase = function () {
-    if(player.num >= player.omegaBaseCost) {
-        player.num -= player.omegaBaseCost
-        player.omegaBase +=1
-        player.omegaBaseCost *= 10
-        getEl("omegabasecost").textContent = "Cost: " + format(player.omegaBaseCost)
-        getEl("divobase").textContent = "You have " + format(player.omegaBase)
+    if(player.num.gte(player.omegaBaseCost)) {
+        player.num.minus(player.omegaBaseCost)
+        player.omegaBase.plus(1)
+        player.omegaBaseCost.times(10)
+        getEl("omegabasecost").textContent = "Cost: " + formatb(player.omegaBaseCost)
+        getEl("divobase").textContent = "You have " + formatb(player.omegaBase)
     }
 }
 
 window.buyomegaalpha = function () {
-    if(player.alphaNum >= player.omegaAlphaCost) {
-        player.alphaNum -= player.omegaAlphaCost
-        player.omegaAlpha += 1
-        player.omegaAlphaCost *= 100
-        getEl("omegaalphacost").textContent = "Cost: " + format(player.omegaAlphaCost)
-        getEl("divoalpha").textContent = "You have " + format(player.omegaAlpha)
+    if(player.alphaNum.gte(player.omegaAlphaCost)) {
+        player.alphaNum.minus(player.omegaAlphaCost)
+        player.omegaAlpha.plus(1)
+        player.omegaAlphaCost.times(100)
+        getEl("omegaalphacost").textContent = "Cost: " + formatb(player.omegaAlphaCost)
+        getEl("divoalpha").textContent = "You have " + formatb(player.omegaAlpha)
     }
 }
 window.buyomegabeta = function () {}
@@ -238,11 +241,12 @@ function fgbtest() {
         getEl("boostsection").style.display='flex'
         getEl("bigboosttext").style.display='block'
         getEl("veryouterboost").style.display='block'
-        if(player.gbTimeLeft > 0) {
-            player.gbMult = (getUpgradeTimesBought('gbupm')*5+5)
+        if(player.gbTimeLeft.greaterThan(0)) {
+            
+            player.gbMult = new Decimal(getUpgradeTimesBought('gbupm')*5+5)
         }
         else {
-            player.gbMult = 1
+            player.gbMult = new Decimal(1)
         }
         if(getUpgradeTimesBought('unlockgb') == 1) {
             getEl("gbshow").style.display='block'
@@ -252,13 +256,16 @@ function fgbtest() {
 
         player.bangTime = Math.ceil(300/Math.pow(2, getUpgradeTimesBought('bangspeed')))
         if(player.bangTimeLeft == 0) { 
-            player.alphaNum += getUpgradeTimesBought('alphaacc') * (getUpgradeTimesBought('perbang')+1) * (getUpgradeTimesBought('nuclearalphabuy')+1) * Math.pow(2, getUpgradeTimesBought('alphamachinedouble'))
+            const alphaGain : Decimal = new Decimal( 
+                getUpgradeTimesBought('alphaacc') * (getUpgradeTimesBought('perbang')+1) * (getUpgradeTimesBought('nuclearalphabuy')+1) * Math.pow(2, getUpgradeTimesBought('alphamachinedouble'))
+            )
+            player.alphaNum.plus(alphaGain)
             getEl("bangtimeleft").textContent = ""
         }
 
         const alphagaindisplay = getUpgradeTimesBought('alphaacc') * (getUpgradeTimesBought('perbang')+1) * (getUpgradeTimesBought('nuclearalphabuy')+1) * Math.pow(2, getUpgradeTimesBought('alphamachinedouble'))
         const gain : Decimal = new Decimal( 
-            (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult * (getUpgradeTimesBought('nuclearbuy')+1) * (getUpgradeTimesBought('nuclearbuy')+1) * Math.pow(3, getUpgradeTimesBought('tb')) * player.tempBoost * (1 + (((player.boosterParticles / 100) * (getUpgradeTimesBought('boosteruppercent')+1)) / 100)) 
+            (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult.toNumber() * (getUpgradeTimesBought('nuclearbuy')+1) * (getUpgradeTimesBought('nuclearbuy')+1) * Math.pow(3, getUpgradeTimesBought('tb')) * player.tempBoost * (1 + (((player.boosterParticles.toNumber() / 100) * (getUpgradeTimesBought('boosteruppercent')+1)) / 100)) 
             )
         getEl("particlesperclick").textContent = "You are getting " + (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1) * (getUpgradeTimesBought('nuclearbuy')+1) + " particles per click"
 
@@ -271,20 +278,22 @@ function fgbtest() {
         else {
             getEl("bangbutton").style.display='block'
         }
-        if(player.gbTimeLeft > 0) {
-            player.gbTimeLeft -= 1
+        if(player.gbTimeLeft.greaterThan(0)) {
+            player.gbTimeLeft.minus(1)
         }
-        getEl("divgbtl").textContent = "Boost Time Left: " + format(player.gbTimeLeft)
+        getEl("divgbtl").textContent = "Boost Time Left: " + formatb(player.gbTimeLeft)
         
         player.untilBoost -= 1
         if(player.untilBoost == 0) {
             player.untilBoost = 10
-            player.boosterParticles += player.alphaNum * (getUpgradeTimesBought('boosterup')+1)
-            getEl("boostersmaintext").textContent = "You are currently getting " + format((getUpgradeTimesBought('boosterup')+1)) + " booster particles per alpha particle per second, resulting in a +" + format(player.boosterParticles * (getUpgradeTimesBought('boosteruppercent')+1) / 100) + "% boost to base particle production"
+            const totalGain : Decimal = new Decimal(player.alphaNum.times((getUpgradeTimesBought('boosterup')+1)))
+            player.boosterParticles.add(totalGain)
+            const percentBoostDisplay : Decimal = new Decimal(formatb(player.boosterParticles.times((getUpgradeTimesBought('boosteruppercent')+1) / 100)))
+            getEl("boostersmaintext").textContent = "You are currently getting " + format((getUpgradeTimesBought('boosterup')+1)) + " booster particles per alpha particle per second, resulting in a +" + percentBoostDisplay + "% boost to base particle production"
         }
-        getEl("bpamount").textContent = "You have " + format(player.boosterParticles) + " booster particles" 
+        getEl("bpamount").textContent = "You have " + formatb(player.boosterParticles) + " booster particles" 
 
-        if(player.num > 1e+6 && player.num < 1e+12) {
+        if(player.num.gte(1e6) && player.num.lessThan(1e12)) {
             player.tempBoost = 1.5
             getEl("tmp").style.display='block'
         }
@@ -293,28 +302,28 @@ function fgbtest() {
             getEl("tmp").style.display='none'
         }
 
-        getEl("omegabasecost").textContent = "Cost: " + format(player.omegaBaseCost)
-        getEl("divobase").textContent = "You have " + format(player.omegaBase)
-        getEl("omegaalphacost").textContent = "Cost: " + format(player.omegaAlphaCost)
-        getEl("divoalpha").textContent = "You have " + format(player.omegaAlpha)
+        getEl("omegabasecost").textContent = "Cost: " + formatb(player.omegaBaseCost)
+        getEl("divobase").textContent = "You have " + formatb(player.omegaBase)
+        getEl("omegaalphacost").textContent = "Cost: " + formatb(player.omegaAlphaCost)
+        getEl("divoalpha").textContent = "You have " + formatb(player.omegaAlpha)
 
-        player.num += gain.toNumber
+        player.num.plus(gain)
         getEl("particlespersecond").textContent = "You are getting " + formatb(gain.times(10)) + " particles/s"
 
-        if(player.num >= 1000000) {
+        if(player.num.gte(1e6)) {
             getEl("nuclearreach").style.display='none'
             getEl("nuclearshow").style.display='block'
         }
-        if(player.alphaNum >= 1000000) {
+        if(player.alphaNum.gte(1e6)) {
             getEl("nuclearalphareach").style.display='none'
             getEl("nuclearalphashow").style.display='block'
         }
-        if(player.num >= 1000000000) {
+        if(player.num.gte(1e12)) {
             getEl("bangreach").style.display='none'
             getEl("bangshow").style.display='block'
         }
-        getEl("counter").textContent = format(player.num) + " particles"
-        getEl("alphacounter").textContent = format(player.alphaNum) + " Alpha particles"
+        getEl("counter").textContent = formatb(player.num) + " particles"
+        getEl("alphacounter").textContent = formatb(player.alphaNum) + " Alpha particles"
         }
     }
 

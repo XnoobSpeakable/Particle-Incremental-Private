@@ -1,5 +1,6 @@
 import { format, getEl } from './util'
 import { player, getUpgradeTimesBought, getUpgradeCost, setUpgradeCost } from './player'
+import Decimal from 'break_eternity.js';
 
 // treat window as anything, so tsc doesn't complain when we modify it
 declare var window: any;
@@ -57,23 +58,23 @@ export function scaleBangSpeed(upgradeName) {
 export function GBTExtra(scaler) {
     return function (upgradeName) {
        scaler(upgradeName)
-       player.gbTimeLeftCon += 20 * Math.pow(2, getUpgradeTimesBought('gboostdouble'))
-       player.gbTimeLeft = 0
+       player.gbTimeLeftCon.plus(20 * Math.pow(2, getUpgradeTimesBought('gboostdouble')))
+       player.gbTimeLeft = new Decimal(0)
        player.gbTimeLeft = player.gbTimeLeftCon
     }
  }
 export function GBMExtra(scaler) {
     return function (upgradeName) {
         scaler(upgradeName)
-        player.gbTimeLeft = 0
+        player.gbTimeLeft = new Decimal(0)
         player.gbTimeLeft = player.gbTimeLeftCon
     }
 }
 export function GBDExtra(scaler) {
     return function (upgradeName) {
         scaler(upgradeName)
-        player.gbTimeLeftCon *= 2
-        player.gbTimeLeft = 0
+        player.gbTimeLeftCon.times(2)
+        player.gbTimeLeft = new Decimal(0)
         player.gbTimeLeft = player.gbTimeLeftCon
     }
 }
