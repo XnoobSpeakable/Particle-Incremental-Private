@@ -1,4 +1,5 @@
 import Decimal from 'break_eternity.js';
+
 export let player = {
             version: "b1.22.0",
             upgrades: { 
@@ -53,8 +54,10 @@ export let player = {
             baTime: 160, //possibly no b_e
             baTimeLeft: 0,//possibly no b_e
           };
-    
-export function getUpgradeCost(upgradeName) { return player.upgrades[upgradeName].cost }
+
+          export type UpgradeName = keyof typeof player.upgrades;
+          
+export function getUpgradeCost(upgradeName: UpgradeName) { return player.upgrades[upgradeName].cost }
 export function setUpgradeCost(upgradeName, costIn) { player.upgrades[upgradeName].cost = (costIn) }
 export function getUpgradeTimesBought(upgradeName) { return player.upgrades[upgradeName].timesBought }
 

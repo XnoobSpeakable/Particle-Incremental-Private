@@ -1,17 +1,20 @@
 import { format, getEl } from './util'
-import { player, getUpgradeTimesBought, getUpgradeCost, setUpgradeCost } from './player'
+import { player, getUpgradeTimesBought, getUpgradeCost, setUpgradeCost, UpgradeName } from './player'
 import Decimal from 'break_eternity.js';
 
 // treat window as anything, so tsc doesn't complain when we modify it
 declare var window: any;
 
-
-export function UpdateCostVal(elementID, variable, currency = "num") {
     const currencyName = {
-        'num': '',
-        'alphaNum': ' Alpha',
-        'omegaBase': ' ',
-    }
+       num: '',
+       alphaNum: ' Alpha',
+       omegaBase: ' ',
+    };
+
+    export type CurrenyName = keyof typeof currencyName;
+
+export function UpdateCostVal(elementID: string, variable: number, currency = "num") {
+
     getEl(elementID).textContent = "Cost: " + format(variable) + currencyName[currency]
 }
 
@@ -38,15 +41,15 @@ export const upgrades = {
     'alphamachinedouble': {  scaleFunction: scaleMultiplier(3), costDiv: "alphamachinedouble", currency: "alphaNum"},
     'baunlock': {  scaleFunction: scaleMultiplier(Infinity), costDiv: "divbau", currency: "omegaBase"},
     'upgradeba': {  scaleFunction: BAExtra(), costDiv: "divupgradeba", currency: "omegaBase"},
-}
+} as const;
 
-export function scaleMultiplier(multiplier) {
-    return function (upgradeName) {
+export function scaleMultiplier(multiplier: number) {
+    return function (upgradeName: any) {
         setUpgradeCost( upgradeName, getUpgradeCost(upgradeName) * multiplier);
     }
 }
 
-export function scaleBangSpeed(upgradeName) {
+export function scaleBangSpeed(upgradeName: any) {
     if(getUpgradeTimesBought(upgradeName) <= 3) {
         scaleMultiplier(2)(upgradeName)
     }
@@ -55,23 +58,23 @@ export function scaleBangSpeed(upgradeName) {
     }
 }
 
-export function GBTExtra(scaler) {
-    return function (upgradeName) {
+export function GBTExtra(scaler: { (upgradeName: any): void; (arg0: any): void; }) {
+    return function (upgradeName: any) {
        scaler(upgradeName)
        player.gbTimeLeftCon.plus(20 * Math.pow(2, getUpgradeTimesBought('gboostdouble')))
        player.gbTimeLeft = new Decimal(0)
        player.gbTimeLeft = player.gbTimeLeftCon
     }
  }
-export function GBMExtra(scaler) {
-    return function (upgradeName) {
+export function GBMExtra(scaler: { (upgradeName: any): void; (arg0: any): void; }) {
+    return function (upgradeName: any) {
         scaler(upgradeName)
         player.gbTimeLeft = new Decimal(0)
         player.gbTimeLeft = player.gbTimeLeftCon
     }
 }
-export function GBDExtra(scaler) {
-    return function (upgradeName) {
+export function GBDExtra(scaler: { (upgradeName: any): void; (arg0: any): void; }) {
+    return function (upgradeName: any) {
         scaler(upgradeName)
         player.gbTimeLeftCon.times(2)
         player.gbTimeLeft = new Decimal(0)
@@ -79,21 +82,21 @@ export function GBDExtra(scaler) {
     }
 }
 
-export function NBExtra(scaler) {
-    return function (upgradeName) {
+export function NBExtra(scaler: { (upgradeName: any): void; (arg0: any): void; }) {
+    return function (upgradeName: any) {
         scaler(upgradeName)
         getEl("divnp").textContent = "Nuclear Particles: " + getUpgradeTimesBought('nuclearbuy')
     }
 }
-export function NABExtra(scaler) {
-    return function (upgradeName) {
+export function NABExtra(scaler: { (upgradeName: any): void; (arg0: any): void; }) {
+    return function (upgradeName: any) {
         scaler(upgradeName)
         getEl("divnap").textContent = "Nuclear Particles: " + getUpgradeTimesBought('nuclearalphabuy')
     }
 }
 
-export function AAExtra(scaler) {
-    return function (upgradeName) {
+export function AAExtra(scaler: { (upgradeName: any): void; (arg0: any): void; }) {
+    return function (upgradeName: any) {
         scaler(upgradeName)
         if(!(player.bangTimeLeft > 0 && player.bangTimeLeft < player.bangTime)) {
             player.alphaAcceleratorsLeft = getUpgradeTimesBought('alphaacc')
@@ -101,8 +104,8 @@ export function AAExtra(scaler) {
     }
 }
 
-export function PCAExtra(scaler) {
-    return function (upgradeName) {
+export function PCAExtra(scaler: { (upgradeName: any): void; (arg0: any): void; }) {
+    return function (upgradeName: any) {
         scaler(upgradeName)
         if(getUpgradeTimesBought('upgradepca') <= 4) {
             player.pcaTime = Math.ceil(player.pcaTime / 2)
@@ -114,7 +117,7 @@ export function PCAExtra(scaler) {
 }
 
 export function BAExtra() {
-    return function (upgradeName) {
+    return function (upgradeName: any) {
         setUpgradeCost( upgradeName, getUpgradeCost(upgradeName)+1)
         if(getUpgradeTimesBought('upgradeba') <= 4) {
             player.baTime = Math.ceil(player.baTime / 2)
@@ -125,13 +128,13 @@ export function BAExtra() {
     }
 }
 
-export function scaleSpeed(upgradeName) {
+export function scaleSpeed(upgradeName: any) {
     if(getUpgradeTimesBought(upgradeName) % 10 == 0) {
         setUpgradeCost(upgradeName, (getUpgradeTimesBought(upgradeName) * 5 + 100))
     }
 }
 
-export function scaleGen(upgradeName) {
+export function scaleGen(upgradeName: any) {
     if(getUpgradeCost(upgradeName) == 0) {
         setUpgradeCost(upgradeName, 1000)
     }
@@ -140,7 +143,7 @@ export function scaleGen(upgradeName) {
     }
 }
 
-window.buyUpgrade = function (upgradeName) {
+window.buyUpgrade = function (upgradeName: UpgradeName ) {
     const upgrade = upgrades[upgradeName];
     const oldCost = getUpgradeCost(upgradeName);
     if (player[upgrade.currency] >= oldCost) {
