@@ -1,4 +1,4 @@
-import { load, getUpgradeTimesBought, getUpgradeCost, player } from './player'
+import { load, getUpgradeTimesBought, getUpgradeCost, player, UpgradeNames } from './player'
 import { UpdateCostVal, upgrades } from './upgrades'
 import { format, formatb, getEl } from './util'
 import Decimal from 'break_eternity.js';
@@ -73,7 +73,7 @@ function loadMisc() {
     prePUD()
     passiveUnlockDisplay()
     autoSaveSet()
-    for (const upgradeName in upgrades) {
+    for (const upgradeName of UpgradeNames) {
         const upgrade = upgrades[upgradeName];
         UpdateCostVal(upgrade.costDiv, getUpgradeCost(upgradeName), upgrade.currency)
     }
@@ -120,16 +120,16 @@ function loadMisc() {
     getEl("divoalpha").textContent = "You have " + formatb(player.omegaAlpha)
 }
 
-function makeElementMap(...names) {
+function makeElementMap(...names: string[]) {
     const entries = names.map(function (x) { return [x, getEl(x)]; });
     return Object.fromEntries(entries);
 }
 const tabElements = makeElementMap('Base', 'Alpha', 'Beta', 'Gamma', 'Delta', 'Omega', 'Stats', 'Settings', 'Tutorial');
 const tabOmegaElements = makeElementMap('oBase', 'oAlpha', 'oBeta', 'oGamma', 'oDelta', 'oOmega');
-function hideElements(elements) {
+function hideElements(elements: { [x: string]: { style: { display: string; }; }; }) {
     for (const name in elements) { elements[name].style.display = 'none' }
 }
-window.openTab = function (tab) {
+window.openTab = function (tab: string) {
     if(tab in tabOmegaElements) { hideElements(tabOmegaElements) }
     else { hideElements(tabElements) }
     getEl(tab).style.display = 'block';
@@ -150,10 +150,14 @@ window.saveImport = function () {
 }
 
 window.saveImportConfirm = function () {
-    const savefile = getEl('importareaid')['value']; // really should check for an empty value here
-    localStorage.setItem('savefile', savefile)
+    const saveEl = getEl('importareaid');
+    if (!(saveEl instanceof HTMLTextAreaElement)) {
+       throw new Error('wrong element type');
+    }
+    const savefile = saveEl.value; // really should check for an empty value here
+    localStorage.setItem('savefile', savefile);
     window.location.reload();
-}
+ }
 
 window.setting1e4 = function () { player.eSetting = 1e+4; loadMisc() }
 window.setting1e6 = function () { player.eSetting = 1e+6; loadMisc() }
@@ -162,7 +166,7 @@ window.mbman = function () {
     const gain : Decimal = new Decimal(
         (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1) * (getUpgradeTimesBought('nuclearbuy')+1)
     )
-    player.num.plus(gain)
+    player.num = player.num.plus(gain)
     getEl("counter").textContent = formatb(player.num) + " particles"
 }
 
@@ -172,8 +176,8 @@ window.gbboost = function () {
 
 window.makechunk = function () {
     if(player.num.gte(1e9)) {
-        player.num.minus(1e9)
-        player.pChunks.plus(1)
+        player.num = player.num.minus(1e9)
+        player.pChunks = player.pChunks.plus(1)
         getEl("chunkamount").textContent = "Particle Chunks: " + formatb(player.pChunks)
     }
 }
@@ -182,7 +186,7 @@ const makechunk = window.makechunk
 window.bang = function () {
     if(player.pChunks.gte(2)) {
         if(getUpgradeTimesBought('alphaacc') > 0 && !(player.bangTimeLeft >= 0 && player.bangTimeLeft <= player.bangTime)) {
-            player.pChunks.minus(2)
+            player.pChunks = player.pChunks.minus(2)
             player.bangTimeLeft = player.bangTime
             getEl("chunkamount").textContent = "Particle Chunks: " + formatb(player.pChunks)
             getEl("boostersmaintext").style.display='block'
@@ -202,9 +206,9 @@ window.togglepca = function () {
 
 window.buyomegabase = function () {
     if(player.num.gte(player.omegaBaseCost)) {
-        player.num.minus(player.omegaBaseCost)
-        player.omegaBase.plus(1)
-        player.omegaBaseCost.times(10)
+        player.num = player.num.minus(player.omegaBaseCost)
+        player.omegaBase = player.omegaBase.plus(1)
+        player.omegaBaseCost = player.omegaBaseCost.times(10)
         getEl("omegabasecost").textContent = "Cost: " + formatb(player.omegaBaseCost)
         getEl("divobase").textContent = "You have " + formatb(player.omegaBase)
     }
@@ -212,9 +216,9 @@ window.buyomegabase = function () {
 
 window.buyomegaalpha = function () {
     if(player.alphaNum.gte(player.omegaAlphaCost)) {
-        player.alphaNum.minus(player.omegaAlphaCost)
-        player.omegaAlpha.plus(1)
-        player.omegaAlphaCost.times(100)
+        player.alphaNum = player.alphaNum.minus(player.omegaAlphaCost)
+        player.omegaAlpha = player.omegaAlpha.plus(1)
+        player.omegaAlphaCost = player.omegaAlphaCost.times(100)
         getEl("omegaalphacost").textContent = "Cost: " + formatb(player.omegaAlphaCost)
         getEl("divoalpha").textContent = "You have " + formatb(player.omegaAlpha)
     }
@@ -259,7 +263,7 @@ function fgbtest() {
             const alphaGain : Decimal = new Decimal( 
                 getUpgradeTimesBought('alphaacc') * (getUpgradeTimesBought('perbang')+1) * (getUpgradeTimesBought('nuclearalphabuy')+1) * Math.pow(2, getUpgradeTimesBought('alphamachinedouble'))
             )
-            player.alphaNum.plus(alphaGain)
+            player.alphaNum = player.alphaNum.plus(alphaGain)
             getEl("bangtimeleft").textContent = ""
         }
 
@@ -279,7 +283,7 @@ function fgbtest() {
             getEl("bangbutton").style.display='block'
         }
         if(player.gbTimeLeft.greaterThan(0)) {
-            player.gbTimeLeft.minus(1)
+            player.gbTimeLeft = player.gbTimeLeft.minus(1)
         }
         getEl("divgbtl").textContent = "Boost Time Left: " + formatb(player.gbTimeLeft)
         
@@ -307,7 +311,7 @@ function fgbtest() {
         getEl("omegaalphacost").textContent = "Cost: " + formatb(player.omegaAlphaCost)
         getEl("divoalpha").textContent = "You have " + formatb(player.omegaAlpha)
 
-        player.num.plus(gain)
+        player.num = player.num.plus(gain)
         getEl("particlespersecond").textContent = "You are getting " + formatb(gain.times(10)) + " particles/s"
 
         if(player.num.gte(1e6)) {
