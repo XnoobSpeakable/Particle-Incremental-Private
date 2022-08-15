@@ -6,7 +6,7 @@ export function getUpgradeTimesBought(upgradeName) { return player.upgrades[upgr
 export function load() {
     if(localStorage.getItem('savefile') == null) {
         player = {
-            version: "b1.21.10",
+            version: "b1.21.11",
             upgrades: { 
                 'gen': { cost: 0, timesBought: 0 },
                 'bb': { cost: 2000, timesBought: 0},
@@ -73,8 +73,8 @@ export function load() {
         localStorage.removeItem('savefile');
         window.location.reload();
     }
-    if(player.version != "b1.21.10") {
-        player.version = "b1.21.10";
+    if(player.version != "b1.21.11") {
+        player.version = "b1.21.11";
         //alert("This version might mess up your theme and autosave settings so just change them back to what they were before if that happens.");
     }
 }
