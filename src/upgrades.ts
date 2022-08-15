@@ -164,7 +164,7 @@ export function GBTExtra(scaler: {
 }) {
   return function (upgradeName: any) {
     scaler(upgradeName);
-    player.gbTimeLeftCon.plus(
+    player.gbTimeLeftCon = player.gbTimeLeftCon.plus(
       20 * Math.pow(2, getUpgradeTimesBought("gboostdouble"))
     );
     player.gbTimeLeft = new Decimal(0);
@@ -187,7 +187,7 @@ export function GBDExtra(scaler: {
 }) {
   return function (upgradeName: any) {
     scaler(upgradeName);
-    player.gbTimeLeftCon.times(2);
+    player.gbTimeLeftCon = player.gbTimeLeftCon.times(2);
     player.gbTimeLeft = new Decimal(0);
     player.gbTimeLeft = player.gbTimeLeftCon;
   };
@@ -272,7 +272,7 @@ window.buyUpgrade = function (upgradeName: UpgradeName) {
   const oldCost = getUpgradeCost(upgradeName);
   if (player[upgrade.currency].gte(oldCost)) {
     player.upgrades[upgradeName].timesBought++;
-    player[upgrade.currency].minus(oldCost);
+    player[upgrade.currency] = player[upgrade.currency].minus(oldCost);
     upgrade.scaleFunction(upgradeName);
     UpdateCostVal(
       upgrade.costDiv,
