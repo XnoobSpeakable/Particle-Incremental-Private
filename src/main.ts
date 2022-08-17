@@ -1,6 +1,6 @@
 import { load, getUpgradeTimesBought, getUpgradeCost, player, UpgradeNames } from './player'
 import { UpdateCostVal, upgrades } from './upgrades'
-import { format, formatb, getEl } from './util'
+import { format, formatb, getEl, D } from './util'
 import Decimal from 'break_eternity.js';
 
 // treat window as anything, so tsc doesn't complain when we modify it
@@ -163,7 +163,7 @@ window.setting1e4 = function () { player.eSetting = 1e+4; loadMisc() }
 window.setting1e6 = function () { player.eSetting = 1e+6; loadMisc() }
 
 window.mbman = function () {
-    const gain : Decimal = new Decimal(
+    const gain : Decimal = D(
         (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1) * (getUpgradeTimesBought('nuclearbuy')+1)
     )
     player.num = player.num.plus(gain)
@@ -247,10 +247,10 @@ function fgbtest() {
         getEl("veryouterboost").style.display='block'
         if(player.gbTimeLeft.greaterThan(0)) {
             
-            player.gbMult = new Decimal(getUpgradeTimesBought('gbupm')*5+5)
+            player.gbMult = D(getUpgradeTimesBought('gbupm')*5+5)
         }
         else {
-            player.gbMult = new Decimal(1)
+            player.gbMult = D(1)
         }
         if(getUpgradeTimesBought('unlockgb') == 1) {
             getEl("gbshow").style.display='block'
@@ -260,7 +260,7 @@ function fgbtest() {
 
         player.bangTime = Math.ceil(300/Math.pow(2, getUpgradeTimesBought('bangspeed')))
         if(player.bangTimeLeft == 0) { 
-            const alphaGain : Decimal = new Decimal( 
+            const alphaGain : Decimal = D( 
                 getUpgradeTimesBought('alphaacc') * (getUpgradeTimesBought('perbang')+1) * (getUpgradeTimesBought('nuclearalphabuy')+1) * Math.pow(2, getUpgradeTimesBought('alphamachinedouble'))
             )
             player.alphaNum = player.alphaNum.plus(alphaGain)
@@ -268,7 +268,7 @@ function fgbtest() {
         }
 
         const alphagaindisplay = getUpgradeTimesBought('alphaacc') * (getUpgradeTimesBought('perbang')+1) * (getUpgradeTimesBought('nuclearalphabuy')+1) * Math.pow(2, getUpgradeTimesBought('alphamachinedouble'))
-        const gain : Decimal = new Decimal( 
+        const gain : Decimal = D( 
             (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult.toNumber() * (getUpgradeTimesBought('nuclearbuy')+1) * (getUpgradeTimesBought('nuclearbuy')+1) * Math.pow(3, getUpgradeTimesBought('tb')) * player.tempBoost * (1 + (((player.boosterParticles.toNumber() / 100) * (getUpgradeTimesBought('boosteruppercent')+1)) / 100)) 
             )
         getEl("particlesperclick").textContent = "You are getting " + (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1) * (getUpgradeTimesBought('nuclearbuy')+1) + " particles per click"
@@ -291,7 +291,7 @@ function fgbtest() {
         if(player.untilBoost == 0) {
             player.untilBoost = 10
             const totalGain : Decimal = new Decimal(player.alphaNum.times((getUpgradeTimesBought('boosterup')+1)))
-            player.boosterParticles.add(totalGain)
+            player.boosterParticles = player.boosterParticles.plus(totalGain)
             const percentBoostDisplay : Decimal = new Decimal(formatb(player.boosterParticles.times((getUpgradeTimesBought('boosteruppercent')+1) / 100)))
             getEl("boostersmaintext").textContent = "You are currently getting " + format((getUpgradeTimesBought('boosterup')+1)) + " booster particles per alpha particle per second, resulting in a +" + percentBoostDisplay + "% boost to base particle production"
         }
