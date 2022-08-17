@@ -11,6 +11,7 @@ import {
 import Decimal from "break_eternity.js";
 
 // treat window as anything, so tsc doesn't complain when we modify it
+// eslint-disable-next-line no-var
 declare var window: any;
 
 export const currencyName = {
