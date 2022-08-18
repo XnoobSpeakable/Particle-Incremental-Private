@@ -3,47 +3,50 @@ import { UpdateCostVal, upgrades } from './upgrades'
 import { format, formatb, getEl, D } from './util'
 import Decimal from 'break_eternity.js';
 
-// treat window as anything, so tsc doesn't complain when we modify it
-declare var window: any;
+// eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
+declare var window: Window & Record<string, unknown>
 
 const themes = [
-    { textColor: "#EBEBEB", bgColor: "#696969", buttonColor: "#999999", borderColor: "black", themeName: "Dark" },
-    { textColor: "#EFEFEF", bgColor: "#333333", buttonColor: "#ADADAD", borderColor: "black", themeName: "Darker" },
-    { textColor: "black", bgColor: "#EEEEEE", buttonColor: "#DFDFDF", borderColor: "#333333", themeName: "Light" },
-    { textColor: "black", bgColor: "#EEEEEE", buttonColor: "#DFDFDF", borderColor: "#F33333", themeName: "Red Borders" },
+    { textColor: "#EBEBEB", bgColor: "#696969", buttonColor: "#999999", borderColor: "#000000", themeName: "Dark" },
+    { textColor: "#EFEFEF", bgColor: "#333333", buttonColor: "#ADADAD", borderColor: "#000000", themeName: "Darker" },
+    { textColor: "#000000", bgColor: "#EEEEEE", buttonColor: "#DFDFDF", borderColor: "#333333", themeName: "Light" },
+    { textColor: "#000000", bgColor: "#EEEEEE", buttonColor: "#DFDFDF", borderColor: "#F33333", themeName: "Red Borders" },
     { textColor: "#CCCCCC", bgColor: "#000000", buttonColor: "#CCCCCC", borderColor: "#CCCCCC", themeName: "Black" },
     { textColor: "#EEEEEE", bgColor: "#000000", buttonColor: "#EEEEEE", borderColor: "#EEEEEE", themeName: "High contrast black" },
-    { textColor: "#black", bgColor: "#FF91AF", buttonColor: "#FFA1BF", borderColor: "#FFD1FF", themeName: "Pink" },
+    { textColor: "#000000", bgColor: "#FF91AF", buttonColor: "#FFA1BF", borderColor: "#FFD1FF", themeName: "Pink" },
 ];
 function themeExec() {
     const { textColor, bgColor, buttonColor, borderColor, themeName } = themes[player.themeNumber];
-    //@ts-expect-error
+    //@ts-expect-error style isn't read only
     getEl('diventirebody').style = "color: " + textColor + "; font-family: 'Times New Roman'"
     document.body.style.backgroundColor = bgColor;
-    const className = document.getElementsByClassName('button');
+    const className = document.getElementsByClassName(
+        'button'
+     ) as HTMLCollectionOf<HTMLElement>;
     for (let i = 0; i < className.length; i++) {
-    //@ts-expect-error
         className[i].style.backgroundColor = buttonColor;
     }
-    const className2 = document.getElementsByClassName('withtheoutline');
+    const className2 = document.getElementsByClassName(
+        'withtheoutline'
+     ) as HTMLCollectionOf<HTMLElement>;
     for (let i = 0; i < className2.length; i++) {
-       //@ts-expect-error
        className2[i].style.border = '0.2em solid ' + borderColor;
     }
     getEl("whattheme").textContent = "Theme: " + themeName;
 }
-window.theme = function () {
+
+window.theme = function (): void {
     player.themeNumber = (player.themeNumber + 1) % themes.length;
     themeExec();
 }
-function prePUD() {
+function prePUD(): void {
     getEl("tabopenalpha").style.display='none'
     getEl("tabopenbeta").style.display='none'
     getEl("tabopengamma").style.display='none'
     getEl("tabopendelta").style.display='none'
     getEl("tabopenomega").style.display='none'
 }
-function passiveUnlockDisplay() {
+function passiveUnlockDisplay(): void {
     if(player.num.gte(1e9)) {
         getEl("tabopenalpha").style.display='inline'
         getEl("tabopenomega").style.display='inline'
@@ -56,19 +59,19 @@ function passiveUnlockDisplay() {
 const autosaveElement = getEl("autosaving") 
 const delayArray = [600, 300, 150, 100, 50, 20, 10, undefined]
 
-function autoSaveSet() {
+function autoSaveSet(): void {
     const delay = delayArray[player.autoSaveMode];
     player.autoSaveSet = player.autoSaveDelay = delay ?? 1e308
-    autosaveElement.textContent = delay ? "On, delay: " + (delay/10) + "s" : "Off";
+    autosaveElement.textContent = delay ? "On, delay: " + format((delay/10)) + "s" : "Off";
 }
 
-window.autosavesettings = function () {
+window.autosavesettings = function (): void {
     player.autoSaveMode = (player.autoSaveMode+1) % delayArray.length
     autoSaveSet()
 }
 
 
-function loadMisc() {
+function loadMisc(): void {
     themeExec()
     prePUD()
     passiveUnlockDisplay()
@@ -77,35 +80,35 @@ function loadMisc() {
         const upgrade = upgrades[upgradeName];
         UpdateCostVal(upgrade.costDiv, getUpgradeCost(upgradeName), upgrade.currency)
     }
-    if(getUpgradeTimesBought('gen') == 0) {
+    if(getUpgradeTimesBought('gen') === 0) {
         getEl("divgencost").textContent = "Cost: Free"
     }
     else {
         UpdateCostVal("divgencost", getUpgradeCost('gen'))
     }
-    if(getUpgradeTimesBought('unlockgb') == 1) {
+    if(getUpgradeTimesBought('unlockgb') === 1) {
         getEl("gbshow").style.display='block'
         getEl("divgenunlockcost").style.display='none'
         getEl("gbunlockbutton").style.display='none'
     }
-    getEl("divnp").textContent = "Nuclear Particles: " + getUpgradeTimesBought('nuclearbuy')
-    getEl("divnap").textContent = "Nuclear Alpha Particles: " + getUpgradeTimesBought('nuclearalphabuy')
+    getEl("divnp").textContent = "Nuclear Particles: " + format(getUpgradeTimesBought('nuclearbuy'))
+    getEl("divnap").textContent = "Nuclear Alpha Particles: " + format(getUpgradeTimesBought('nuclearalphabuy'))
     getEl("chunkamount").textContent = "Particle Chunks: " + formatb(player.pChunks)
-    if(getUpgradeTimesBought('unlockpca') == 1) {
+    if(getUpgradeTimesBought('unlockpca') === 1) {
         getEl("pcashow").style.display='block'
         getEl("divunlockpca").style.display='none'
         getEl("divunlockpcabutton").style.display='none'
-        getEl("untilpca").textContent = player.pcaTimeLeft + " left until next autobuy"
+        getEl("untilpca").textContent = format(player.pcaTimeLeft) + " left until next autobuy"
         getEl("divtogglepca").style.display='inline-block'
         if(player.pcaToggle) { getEl("divtogglepca").textContent = "On" }
         else { getEl("divtogglepca").textContent = "Off" }
     }
-    if(getUpgradeTimesBought('baunlock') == 1) {
+    if(getUpgradeTimesBought('baunlock') === 1) {
         getEl("bashow").style.display='block'
         getEl("divbau").style.display='none'
         getEl("divbauextra").style.display='none'
         getEl("baunlockbutton").style.display='none'
-        getEl("untilba").textContent = player.baTimeLeft + " left until next autobuy"
+        getEl("untilba").textContent = format(player.baTimeLeft) + " left until next autobuy"
         getEl("divtoggleba").style.display='inline-block'
         if(player.baToggle) {
             getEl("divtoggleba").textContent = "On"
@@ -120,8 +123,8 @@ function loadMisc() {
     getEl("divoalpha").textContent = "You have " + formatb(player.omegaAlpha)
 }
 
-function makeElementMap(...names: string[]) {
-    const entries = names.map(function (x) { return [x, getEl(x)]; });
+function makeElementMap(...names: string[]): { [k: string]: HTMLElement; } {
+    const entries = names.map(function (x) { return [x, getEl(x)] as const; });
     return Object.fromEntries(entries);
 }
 const tabElements = makeElementMap('Base', 'Alpha', 'Beta', 'Gamma', 'Delta', 'Omega', 'Stats', 'Settings', 'Tutorial');
@@ -129,7 +132,7 @@ const tabOmegaElements = makeElementMap('oBase', 'oAlpha', 'oBeta', 'oGamma', 'o
 function hideElements(elements: { [x: string]: { style: { display: string; }; }; }) {
     for (const name in elements) { elements[name].style.display = 'none' }
 }
-window.openTab = function (tab: string) {
+window.openTab = function (tab: string): void {
     if(tab in tabOmegaElements) { hideElements(tabOmegaElements) }
     else { hideElements(tabElements) }
     getEl(tab).style.display = 'block';
@@ -137,19 +140,17 @@ window.openTab = function (tab: string) {
 
 load()
 loadMisc()
-
-window.saveExport = function () {
+window.saveExport = function (): void {
     const savefile = JSON.stringify(player)
     localStorage.setItem('savefile', savefile)
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     navigator.clipboard.writeText(savefile)
 }
-
-window.saveImport = function () {
+window.saveImport = function (): void {
     getEl("importareaid").style.display = "block"
     getEl("saveimportconfirm").style.display = "block"
 }
-
-window.saveImportConfirm = function () {
+window.saveImportConfirm = function (): void {
     const saveEl = getEl('importareaid');
     if (!(saveEl instanceof HTMLTextAreaElement)) {
        throw new Error('wrong element type');
@@ -158,11 +159,10 @@ window.saveImportConfirm = function () {
     localStorage.setItem('savefile', savefile);
     window.location.reload();
  }
+window.setting1e4 = function (): void { player.eSetting = 1e4; loadMisc() }
+window.setting1e6 = function (): void { player.eSetting = 1e6; loadMisc() }
 
-window.setting1e4 = function () { player.eSetting = 1e+4; loadMisc() }
-window.setting1e6 = function () { player.eSetting = 1e+6; loadMisc() }
-
-window.mbman = function () {
+window.mbman = function (): void {
     const gain : Decimal = D(
         (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1) * (getUpgradeTimesBought('nuclearbuy')+1)
     )
@@ -170,20 +170,21 @@ window.mbman = function () {
     getEl("counter").textContent = formatb(player.num) + " particles"
 }
 
-window.gbboost = function () {
+window.gbboost = function (): void {
     player.gbTimeLeft = player.gbTimeLeftCon
 }
 
-window.makechunk = function () {
+function makechunk (): void {
     if(player.num.gte(1e9)) {
         player.num = player.num.minus(1e9)
         player.pChunks = player.pChunks.plus(1)
         getEl("chunkamount").textContent = "Particle Chunks: " + formatb(player.pChunks)
     }
 }
-const makechunk = window.makechunk
+window.makechunk = makechunk;
 
-window.bang = function () {
+
+function bang(): void {
     if(player.pChunks.gte(2)) {
         if(getUpgradeTimesBought('alphaacc') > 0 && !(player.bangTimeLeft >= 0 && player.bangTimeLeft <= player.bangTime)) {
             player.pChunks = player.pChunks.minus(2)
@@ -193,10 +194,10 @@ window.bang = function () {
         }
     }
 }
-const bang = window.bang
+window.bang = bang
 
-window.togglepca = function () {
-    if(getUpgradeTimesBought('unlockpca') == 1) {
+window.togglepca = function (): void {
+    if(getUpgradeTimesBought('unlockpca') === 1) {
         player.pcaToggle = !player.pcaToggle
         getEl("divtogglepca").style.display='inline-block'
         if(player.pcaToggle) { getEl("divtogglepca").textContent = "On" }
@@ -204,7 +205,7 @@ window.togglepca = function () {
     }
 }
 
-window.buyomegabase = function () {
+window.buyomegabase = function (): void {
     if(player.num.gte(player.omegaBaseCost)) {
         player.num = player.num.minus(player.omegaBaseCost)
         player.omegaBase = player.omegaBase.plus(1)
@@ -214,7 +215,7 @@ window.buyomegabase = function () {
     }
 }
 
-window.buyomegaalpha = function () {
+window.buyomegaalpha = function (): void {
     if(player.alphaNum.gte(player.omegaAlphaCost)) {
         player.alphaNum = player.alphaNum.minus(player.omegaAlphaCost)
         player.omegaAlpha = player.omegaAlpha.plus(1)
@@ -223,12 +224,14 @@ window.buyomegaalpha = function () {
         getEl("divoalpha").textContent = "You have " + formatb(player.omegaAlpha)
     }
 }
-window.buyomegabeta = function () {}
-window.buyomegagamma = function () {}
-window.buyomegadelta = function () {}
 
-window.toggleba = function () {
-    if(getUpgradeTimesBought('baunlock') == 1) {
+window.buyomegabeta = function (): void { /* TODO: implement this */ }
+window.buyomegagamma = function (): void { /* TODO: implement this */ }
+window.buyomegadelta = function (): void { /* TODO: implement this */ }
+
+
+window.toggleba = function (): void {
+    if(getUpgradeTimesBought('baunlock') === 1) {
         player.baToggle = !player.baToggle
         getEl("divtoggleba").style.display='inline-block'
         if(player.baToggle) {
@@ -240,7 +243,7 @@ window.toggleba = function () {
     }
 }
 
-function fgbtest() {
+function fgbtest(): void {
     if(getUpgradeTimesBought('gen') > 0) {
         getEl("boostsection").style.display='flex'
         getEl("bigboosttext").style.display='block'
@@ -252,14 +255,14 @@ function fgbtest() {
         else {
             player.gbMult = D(1)
         }
-        if(getUpgradeTimesBought('unlockgb') == 1) {
+        if(getUpgradeTimesBought('unlockgb') === 1) {
             getEl("gbshow").style.display='block'
             getEl("divgenunlockcost").style.display='none'
             getEl("gbunlockbutton").style.display='none'
         }
 
         player.bangTime = Math.ceil(300/Math.pow(2, getUpgradeTimesBought('bangspeed')))
-        if(player.bangTimeLeft == 0) { 
+        if(player.bangTimeLeft === 0) { 
             const alphaGain : Decimal = D( 
                 getUpgradeTimesBought('alphaacc') * (getUpgradeTimesBought('perbang')+1) * (getUpgradeTimesBought('nuclearalphabuy')+1) * Math.pow(2, getUpgradeTimesBought('alphamachinedouble'))
             )
@@ -271,12 +274,12 @@ function fgbtest() {
         const gain : Decimal = D( 
             (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult.toNumber() * (getUpgradeTimesBought('nuclearbuy')+1) * (getUpgradeTimesBought('nuclearbuy')+1) * Math.pow(3, getUpgradeTimesBought('tb')) * player.tempBoost * (1 + (((player.boosterParticles.toNumber() / 100) * (getUpgradeTimesBought('boosteruppercent')+1)) / 100)) 
             )
-        getEl("particlesperclick").textContent = "You are getting " + (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1) * (getUpgradeTimesBought('nuclearbuy')+1) + " particles per click"
+        getEl("particlesperclick").textContent = "You are getting " + format((getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1) * (getUpgradeTimesBought('nuclearbuy')+1)) + " particles per click"
 
         getEl("alphapb").textContent = "You are getting " + format(alphagaindisplay) + " Alpha/bang"
         player.bangTimeLeft -= 1
         if(player.bangTimeLeft >= 0 && player.bangTimeLeft <= player.bangTime) {
-            getEl("bangtimeleft").textContent = "Bang time left: " + player.bangTimeLeft
+            getEl("bangtimeleft").textContent = "Bang time left: " + format(player.bangTimeLeft)
             getEl("bangbutton").style.display='none'
         }
         else {
@@ -288,12 +291,12 @@ function fgbtest() {
         getEl("divgbtl").textContent = "Boost Time Left: " + formatb(player.gbTimeLeft)
         
         player.untilBoost -= 1
-        if(player.untilBoost == 0) {
+        if(player.untilBoost === 0) {
             player.untilBoost = 10
             const totalGain : Decimal = new Decimal(player.alphaNum.times((getUpgradeTimesBought('boosterup')+1)))
             player.boosterParticles = player.boosterParticles.plus(totalGain)
             const percentBoostDisplay : Decimal = new Decimal(formatb(player.boosterParticles.times((getUpgradeTimesBought('boosteruppercent')+1) / 100)))
-            getEl("boostersmaintext").textContent = "You are currently getting " + format((getUpgradeTimesBought('boosterup')+1)) + " booster particles per alpha particle per second, resulting in a +" + percentBoostDisplay + "% boost to base particle production"
+            getEl("boostersmaintext").textContent = "You are currently getting " + format((getUpgradeTimesBought('boosterup')+1)) + " booster particles per alpha particle per second, resulting in a +" + formatb(percentBoostDisplay) + "% boost to base particle production"
         }
         getEl("bpamount").textContent = "You have " + formatb(player.boosterParticles) + " booster particles" 
 
@@ -322,7 +325,7 @@ function fgbtest() {
             getEl("nuclearalphareach").style.display='none'
             getEl("nuclearalphashow").style.display='block'
         }
-        if(player.num.gte(1e12)) {
+        if(player.num.gte(1e9)) {
             getEl("bangreach").style.display='none'
             getEl("bangshow").style.display='block'
         }
@@ -331,42 +334,42 @@ function fgbtest() {
         }
     }
 
-function pcatest() {
-    if(getUpgradeTimesBought('unlockpca') == 1) {
+function pcatest(): void {
+    if(getUpgradeTimesBought('unlockpca') === 1) {
         getEl("pcashow").style.display='block'
         getEl("divunlockpca").style.display='none'
         getEl("divunlockpcabutton").style.display='none'
-        if(player.pcaToggle == true) {
-            if(player.pcaTimeLeft == 0) {
+        if(player.pcaToggle === true) {
+            if(player.pcaTimeLeft === 0) {
                 player.pcaTimeLeft = player.pcaTime
                 makechunk()
             }
             player.pcaTimeLeft -= 1
-            getEl("untilpca").textContent = player.pcaTimeLeft + " left until next autobuy"
+            getEl("untilpca").textContent = format(player.pcaTimeLeft) + " left until next autobuy"
         }
     }
 }
 
-function batest() {
-    if(getUpgradeTimesBought('baunlock') == 1) {
+function batest(): void {
+    if(getUpgradeTimesBought('baunlock') === 1) {
         getEl("bashow").style.display='block'
         getEl("divbau").style.display='none'
         getEl("divbauextra").style.display='none'
         getEl("baunlockbutton").style.display='none'
-        if(player.baToggle == true) {
-            if(player.baTimeLeft == 0) {
+        if(player.baToggle === true) {
+            if(player.baTimeLeft === 0) {
                 player.baTimeLeft = player.baTime
                 bang()
             }
             player.baTimeLeft -= 1
-            getEl("untilba").textContent = player.baTimeLeft + " left until next autobuy"
+            getEl("untilba").textContent = format(player.baTimeLeft) + " left until next autobuy"
         }
     }
 }
 
-function savinginloop() {
+function savinginloop(): void {
 	player.autoSaveDelay -= 1
-    if(player.autoSaveDelay == 0) {
+    if(player.autoSaveDelay === 0) {
         player.autoSaveDelay = player.autoSaveSet
         save()
 	}
@@ -380,14 +383,14 @@ setInterval(() => {
     fgbtest()
     getEl("stat").textContent = JSON.stringify(player)
 	savinginloop()
-    }, 100)
+}, 100)
 
-window.save = function () {
+function save(): void {
     const savefile = JSON.stringify(player)
     localStorage.setItem('savefile', savefile)
 }
-const save = window.save
+window.save = save
 
-window.reset = function () {
+window.reset = function (): void {
     localStorage.removeItem('savefile');
 }

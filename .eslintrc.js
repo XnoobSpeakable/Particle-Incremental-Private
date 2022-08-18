@@ -20,6 +20,8 @@ module.exports = {
       'no-var': 'error',
       'prefer-const': 'error',
       'no-duplicate-imports': 'error',
+      'no-self-compare': 'error',
+      'eqeqeq': ['error', 'always'],
 '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/ban-types': [
          'error',

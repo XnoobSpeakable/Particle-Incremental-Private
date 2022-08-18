@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
-
-import { formatb , getEl, D } from "./util";
+import { format, formatb , getEl, D } from "./util";
 import {
   player,
   getUpgradeTimesBought,
@@ -10,9 +8,8 @@ import {
 } from "./player";
 import Decimal from "break_eternity.js";
 
-// treat window as anything, so tsc doesn't complain when we modify it
-// eslint-disable-next-line no-var
-declare var window: any;
+// eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
+declare var window: Window & Record<string, unknown>
 
 export const currencyName = {
   num: "",
@@ -199,7 +196,7 @@ export function NBExtra(
   return function (upgradeName: UpgradeName) {
     scaler(upgradeName);
     getEl("divnp").textContent =
-      "Nuclear Particles: " + getUpgradeTimesBought("nuclearbuy");
+      "Nuclear Particles: " + format(getUpgradeTimesBought("nuclearbuy"));
   };
 }
 export function NABExtra(  
@@ -208,7 +205,7 @@ export function NABExtra(
   return function (upgradeName: UpgradeName) {
     scaler(upgradeName);
     getEl("divnap").textContent =
-      "Nuclear Particles: " + getUpgradeTimesBought("nuclearalphabuy");
+      "Nuclear Particles: " + format(getUpgradeTimesBought("nuclearalphabuy"));
   };
 }
 export function PCAExtra(  
@@ -238,7 +235,7 @@ export function BAExtra() {
 }
 
 export function scaleSpeed(upgradeName: UpgradeName) {
-  if (getUpgradeTimesBought(upgradeName) % 10 == 0) {
+  if (getUpgradeTimesBought(upgradeName) % 10 === 0) {
     setUpgradeCost(upgradeName, D(getUpgradeTimesBought(upgradeName) * 5 + 100));
   }
 }

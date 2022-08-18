@@ -63,16 +63,17 @@ export function getUpgradeTimesBought(upgradeName: UpgradeName) { return player.
 
 export function load() {
     if(localStorage.getItem('savefile') !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         player = JSON.parse(localStorage.getItem('savefile')!)
     }
     const stage = Number(player.version.substring(1, 2))
     const major = Number(player.version.substring(3, 5))
     //const minor = player.version.substring(6)
-    if(stage == 1 && major <= 21) {
+    if(stage === 1 && major <= 21) {
         localStorage.removeItem('savefile');
         window.location.reload();
     }
-    if(player.version != "b1.22.0") {
+    if(player.version !== "b1.22.0") {
         player.version = "b1.22.0";
         alert("This version is incompatible with older saves, so your progress has been wiped.");
     }
