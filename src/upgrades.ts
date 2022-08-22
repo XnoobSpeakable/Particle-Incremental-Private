@@ -1,4 +1,4 @@
-import { format, formatb , getEl, D } from "./util";
+import { formatb , getEl, D } from "./util";
 import {
   player,
   getUpgradeTimesBought,
@@ -142,14 +142,14 @@ export const upgrades = {
   }
 } as const;
 
-export function scaleMultiplier(multiplier: Decimal) {
+export function scaleMultiplier(multiplier: Decimal): (upgradeName: UpgradeName) => void {
   return function (upgradeName: UpgradeName) {
     setUpgradeCost(upgradeName, getUpgradeCost(upgradeName).times(multiplier));
   };
 }
 
-export function scaleBangSpeed(upgradeName: UpgradeName) {
-  if (getUpgradeTimesBought(upgradeName) <= 3) {
+export function scaleBangSpeed(upgradeName: UpgradeName): void {
+  if (getUpgradeTimesBought(upgradeName).lte(3)) {
     scaleMultiplier(D(2))(upgradeName);
   } else {
     scaleMultiplier(D(5))(upgradeName);
@@ -158,7 +158,7 @@ export function scaleBangSpeed(upgradeName: UpgradeName) {
 
 export function GBTExtra(
   scaler: (upgradeName: UpgradeName) => void
-) {
+): (upgradeName: UpgradeName) => void {
   return function (upgradeName: UpgradeName) {
     scaler(upgradeName);
     player.gbTimeLeftCon = player.gbTimeLeftCon.plus(
@@ -171,7 +171,7 @@ export function GBTExtra(
 export function GBMExtra(  
   scaler: (
   upgradeName: UpgradeName) => void
-) {
+): (upgradeName: UpgradeName) => void {
   return function (upgradeName: UpgradeName) {
     scaler(upgradeName);
     player.gbTimeLeft = new Decimal(0);
@@ -181,7 +181,7 @@ export function GBMExtra(
 export function GBDExtra(
 scaler: (
   upgradeName: UpgradeName) => void
-) {
+): (upgradeName: UpgradeName) => void {
   return function (upgradeName: UpgradeName) {
     scaler(upgradeName);
     player.gbTimeLeftCon = player.gbTimeLeftCon.times(2);
@@ -192,67 +192,64 @@ scaler: (
 
 export function NBExtra(  
   scaler: (upgradeName: UpgradeName) => void
-) {
+): (upgradeName: UpgradeName) => void {
   return function (upgradeName: UpgradeName) {
     scaler(upgradeName);
     getEl("divnp").textContent =
-      "Nuclear Particles: " + format(getUpgradeTimesBought("nuclearbuy"));
+      "Nuclear Particles: " + formatb(getUpgradeTimesBought("nuclearbuy"));
   };
 }
 export function NABExtra(  
   scaler: (upgradeName: UpgradeName) => void
-) {
+): (upgradeName: UpgradeName) => void {
   return function (upgradeName: UpgradeName) {
     scaler(upgradeName);
     getEl("divnap").textContent =
-      "Nuclear Particles: " + format(getUpgradeTimesBought("nuclearalphabuy"));
+      "Nuclear Particles: " + formatb(getUpgradeTimesBought("nuclearalphabuy"));
   };
 }
 export function PCAExtra(  
   scaler: (upgradeName: UpgradeName) => void
-) {
+): (upgradeName: UpgradeName) => void {
   return function (upgradeName: UpgradeName) {
     scaler(upgradeName);
-    if (getUpgradeTimesBought("upgradepca") <= 4) {
+    if (getUpgradeTimesBought("upgradepca").lte(4)) {
       player.pcaTime = Math.ceil(player.pcaTime / 2);
     } else {
-      player.pcaTime = Math.ceil(
-        10 / (getUpgradeTimesBought("upgradepca") - 3)
-      );
+      player.pcaTime = (D(10).div(getUpgradeTimesBought("upgradepca").minus(3))).ceil()
     }
   };
 }
 
-export function BAExtra() {
+export function BAExtra(): (upgradeName: UpgradeName) => void {
   return function (upgradeName: UpgradeName) {
     setUpgradeCost(upgradeName, getUpgradeCost(upgradeName).plus(1));
-    if (getUpgradeTimesBought("upgradeba") <= 4) {
+    if (getUpgradeTimesBought("upgradeba").lte(4)) {
       player.baTime = Math.ceil(player.baTime / 2);
     } else {
-      player.baTime = Math.ceil(10 / (getUpgradeTimesBought("upgradeba") - 3));
-    }
+      player.baTime = (D(10).div(getUpgradeTimesBought("upgradeba").minus(3))).ceil()
   };
 }
 
-export function scaleSpeed(upgradeName: UpgradeName) {
+export function scaleSpeed(upgradeName: UpgradeName): void {
   if (getUpgradeTimesBought(upgradeName) % 10 === 0) {
     setUpgradeCost(upgradeName, D(getUpgradeTimesBought(upgradeName) * 5 + 100));
   }
 }
 
-export function scaleGen(upgradeName: UpgradeName) {
-  if (getUpgradeCost(upgradeName).equals(0)) {
+export function scaleGen(upgradeName: UpgradeName): void {
+  if (getUpgradeCost(upgradeName).eq(0)) {
     setUpgradeCost(upgradeName, D(1000));
   } else {
     scaleMultiplier(D(4))(upgradeName);
   }
 }
 
-window.buyUpgrade = function (upgradeName: UpgradeName) {
+window.buyUpgrade = function (upgradeName: UpgradeName): void {
   const upgrade = upgrades[upgradeName];
   const oldCost = getUpgradeCost(upgradeName);
   if (player[upgrade.currency].gte(oldCost)) {
-    player.upgrades[upgradeName].timesBought++;
+    player.upgrades[upgradeName].timesBought = player.upgrades[upgradeName].timesBought.plus(1);
     player[upgrade.currency] = player[upgrade.currency].minus(oldCost);
     upgrade.scaleFunction(upgradeName);
     UpdateCostVal(
