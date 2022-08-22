@@ -1,6 +1,6 @@
-import { load, getUpgradeTimesBought, getUpgradeCost, player, UpgradeNames } from './player'
+import { load, getUpgradeTimesBought, getUpgradeCost, player, UpgradeName, UpgradeNames, getSaveString } from './player'
 import { UpdateCostVal, upgrades } from './upgrades'
-import { format, formatb, getEl, D } from './util'
+import { format, formatb, getEl, D, onD } from './util'
 import Decimal from 'break_eternity.js';
 
 // eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
@@ -15,7 +15,7 @@ const themes = [
     { textColor: "#EEEEEE", bgColor: "#000000", buttonColor: "#EEEEEE", borderColor: "#EEEEEE", themeName: "High contrast black" },
     { textColor: "#000000", bgColor: "#FF91AF", buttonColor: "#FFA1BF", borderColor: "#FFD1FF", themeName: "Pink" },
 ];
-function themeExec() {
+function themeExec(): void {
     const { textColor, bgColor, buttonColor, borderColor, themeName } = themes[player.themeNumber];
     //@ts-expect-error style isn't read only
     getEl('diventirebody').style = "color: " + textColor + "; font-family: 'Times New Roman'"
@@ -80,21 +80,21 @@ function loadMisc(): void {
         const upgrade = upgrades[upgradeName];
         UpdateCostVal(upgrade.costDiv, getUpgradeCost(upgradeName), upgrade.currency)
     }
-    if(getUpgradeTimesBought('gen') === 0) {
+    if(getUpgradeTimesBought('gen').eq(0)) {
         getEl("divgencost").textContent = "Cost: Free"
     }
     else {
         UpdateCostVal("divgencost", getUpgradeCost('gen'))
     }
-    if(getUpgradeTimesBought('unlockgb') === 1) {
+    if(getUpgradeTimesBought('unlockgb').eq(1)) {
         getEl("gbshow").style.display='block'
         getEl("divgenunlockcost").style.display='none'
         getEl("gbunlockbutton").style.display='none'
     }
-    getEl("divnp").textContent = "Nuclear Particles: " + format(getUpgradeTimesBought('nuclearbuy'))
-    getEl("divnap").textContent = "Nuclear Alpha Particles: " + format(getUpgradeTimesBought('nuclearalphabuy'))
+    getEl("divnp").textContent = "Nuclear Particles: " + formatb(getUpgradeTimesBought('nuclearbuy'))
+    getEl("divnap").textContent = "Nuclear Alpha Particles: " + formatb(getUpgradeTimesBought('nuclearalphabuy'))
     getEl("chunkamount").textContent = "Particle Chunks: " + formatb(player.pChunks)
-    if(getUpgradeTimesBought('unlockpca') === 1) {
+    if(getUpgradeTimesBought('unlockpca').eq(1)) {
         getEl("pcashow").style.display='block'
         getEl("divunlockpca").style.display='none'
         getEl("divunlockpcabutton").style.display='none'
@@ -103,7 +103,7 @@ function loadMisc(): void {
         if(player.pcaToggle) { getEl("divtogglepca").textContent = "On" }
         else { getEl("divtogglepca").textContent = "Off" }
     }
-    if(getUpgradeTimesBought('baunlock') === 1) {
+    if(getUpgradeTimesBought('baunlock').eq(1)) {
         getEl("bashow").style.display='block'
         getEl("divbau").style.display='none'
         getEl("divbauextra").style.display='none'
@@ -141,10 +141,8 @@ window.openTab = function (tab: string): void {
 load()
 loadMisc()
 window.saveExport = function (): void {
-    const savefile = JSON.stringify(player)
-    localStorage.setItem('savefile', savefile)
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    navigator.clipboard.writeText(savefile)
+    navigator.clipboard.writeText(save())
 }
 window.saveImport = function (): void {
     getEl("importareaid").style.display = "block"
@@ -156,16 +154,15 @@ window.saveImportConfirm = function (): void {
        throw new Error('wrong element type');
     }
     const savefile = saveEl.value; // really should check for an empty value here
-    localStorage.setItem('savefile', savefile);
+    localStorage.setItem(window.location.pathname, savefile);
     window.location.reload();
  }
 window.setting1e4 = function (): void { player.eSetting = 1e4; loadMisc() }
 window.setting1e6 = function (): void { player.eSetting = 1e6; loadMisc() }
 
 window.mbman = function (): void {
-    const gain : Decimal = D(
-        (getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1) * (getUpgradeTimesBought('nuclearbuy')+1)
-    )
+    const onBoughtInc = onD<UpgradeName>((key) => getUpgradeTimesBought(key).plus(1));
+    const gain : Decimal = onBoughtInc('mbup', 'times', onBoughtInc('mbmult', 'times', 'nuclearbuy'));
     player.num = player.num.plus(gain)
     getEl("counter").textContent = formatb(player.num) + " particles"
 }
@@ -186,7 +183,7 @@ window.makechunk = makechunk;
 
 function bang(): void {
     if(player.pChunks.gte(2)) {
-        if(getUpgradeTimesBought('alphaacc') > 0 && !(player.bangTimeLeft >= 0 && player.bangTimeLeft <= player.bangTime)) {
+        if(getUpgradeTimesBought('alphaacc').gt(0) && !(player.bangTimeLeft >= 0 && player.bangTimeLeft <= player.bangTime)) {
             player.pChunks = player.pChunks.minus(2)
             player.bangTimeLeft = player.bangTime
             getEl("chunkamount").textContent = "Particle Chunks: " + formatb(player.pChunks)
@@ -197,7 +194,7 @@ function bang(): void {
 window.bang = bang
 
 window.togglepca = function (): void {
-    if(getUpgradeTimesBought('unlockpca') === 1) {
+    if(getUpgradeTimesBought('unlockpca').eq(1)) {
         player.pcaToggle = !player.pcaToggle
         getEl("divtogglepca").style.display='inline-block'
         if(player.pcaToggle) { getEl("divtogglepca").textContent = "On" }
@@ -231,7 +228,7 @@ window.buyomegadelta = function (): void { /* TODO: implement this */ }
 
 
 window.toggleba = function (): void {
-    if(getUpgradeTimesBought('baunlock') === 1) {
+    if(getUpgradeTimesBought('baunlock').eq(1)) {
         player.baToggle = !player.baToggle
         getEl("divtoggleba").style.display='inline-block'
         if(player.baToggle) {
@@ -244,18 +241,17 @@ window.toggleba = function (): void {
 }
 
 function fgbtest(): void {
-    if(getUpgradeTimesBought('gen') > 0) {
+    if(getUpgradeTimesBought('gen').gt(0)) {
         getEl("boostsection").style.display='flex'
         getEl("bigboosttext").style.display='block'
         getEl("veryouterboost").style.display='block'
         if(player.gbTimeLeft.greaterThan(0)) {
-            
-            player.gbMult = D(getUpgradeTimesBought('gbupm')*5+5)
+            player.gbMult = getUpgradeTimesBought('gbupm').times(5).plus(5)
         }
         else {
             player.gbMult = D(1)
         }
-        if(getUpgradeTimesBought('unlockgb') === 1) {
+        if(getUpgradeTimesBought('unlockgb').eq(1)) {
             getEl("gbshow").style.display='block'
             getEl("divgenunlockcost").style.display='none'
             getEl("gbunlockbutton").style.display='none'
@@ -335,7 +331,7 @@ function fgbtest(): void {
     }
 
 function pcatest(): void {
-    if(getUpgradeTimesBought('unlockpca') === 1) {
+    if(getUpgradeTimesBought('unlockpca').eq(1)) {
         getEl("pcashow").style.display='block'
         getEl("divunlockpca").style.display='none'
         getEl("divunlockpcabutton").style.display='none'
@@ -351,7 +347,7 @@ function pcatest(): void {
 }
 
 function batest(): void {
-    if(getUpgradeTimesBought('baunlock') === 1) {
+    if(getUpgradeTimesBought('baunlock').eq(1)) {
         getEl("bashow").style.display='block'
         getEl("divbau").style.display='none'
         getEl("divbauextra").style.display='none'
@@ -381,16 +377,23 @@ setInterval(() => {
     pcatest()
     batest()
     fgbtest()
-    getEl("stat").textContent = JSON.stringify(player)
+    getEl("stat").textContent = getSaveString().replace(/","/g,'",\n"').replace(/},"/g,'",\n"')
 	savinginloop()
 }, 100)
 
-function save(): void {
-    const savefile = JSON.stringify(player)
-    localStorage.setItem('savefile', savefile)
+function saveReplace(_key: string, value: unknown): unknown {
+    if (value instanceof Decimal) { return 'D#' + value.toString() }
+    return value;
+  }
+
+function save(): string {
+    const savefile = JSON.stringify(player, saveReplace)
+    localStorage.setItem(window.location.pathname, savefile)
+    return savefile
 }
 window.save = save
 
 window.reset = function (): void {
-    localStorage.removeItem('savefile');
+    localStorage.removeItem(window.location.pathname);
 }
+console.log(window.location.pathname)
