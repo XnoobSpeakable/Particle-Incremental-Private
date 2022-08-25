@@ -162,7 +162,7 @@ export function GBTExtra(
   return function (upgradeName: UpgradeName) {
     scaler(upgradeName);
     player.gbTimeLeftCon = player.gbTimeLeftCon.plus(
-      20 * Math.pow(2, getUpgradeTimesBought("gboostdouble"))
+      D(2).pow(getUpgradeTimesBought("gboostdouble")).times(20)
     );
     player.gbTimeLeft = new Decimal(0);
     player.gbTimeLeft = player.gbTimeLeftCon;
@@ -216,24 +216,26 @@ export function PCAExtra(
     if (getUpgradeTimesBought("upgradepca").lte(4)) {
       player.pcaTime = Math.ceil(player.pcaTime / 2);
     } else {
-      player.pcaTime = (D(10).div(getUpgradeTimesBought("upgradepca").minus(3))).ceil()
+      player.pcaTime = (D(10).div(getUpgradeTimesBought("upgradepca").minus(3))).ceil().toNumber()
     }
   };
 }
 
 export function BAExtra(): (upgradeName: UpgradeName) => void {
-  return function (upgradeName: UpgradeName) {
-    setUpgradeCost(upgradeName, getUpgradeCost(upgradeName).plus(1));
-    if (getUpgradeTimesBought("upgradeba").lte(4)) {
-      player.baTime = Math.ceil(player.baTime / 2);
-    } else {
-      player.baTime = (D(10).div(getUpgradeTimesBought("upgradeba").minus(3))).ceil()
-  };
+    return function (upgradeName: UpgradeName) {
+      setUpgradeCost(upgradeName, getUpgradeCost(upgradeName).plus(1));
+      if (getUpgradeTimesBought("upgradeba").lte(4)) {
+        player.baTime = Math.ceil(player.baTime / 2);
+      } else {
+        player.baTime = (D(10).div(getUpgradeTimesBought("upgradeba").minus(3))).ceil().toNumber()
+    }
+  }
 }
 
 export function scaleSpeed(upgradeName: UpgradeName): void {
-  if (getUpgradeTimesBought(upgradeName) % 10 === 0) {
-    setUpgradeCost(upgradeName, D(getUpgradeTimesBought(upgradeName) * 5 + 100));
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+  if (getUpgradeTimesBought(upgradeName).modulo(10).eq(0)) {
+    setUpgradeCost(upgradeName, getUpgradeTimesBought(upgradeName).times(5).plus(100));
   }
 }
 

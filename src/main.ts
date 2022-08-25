@@ -257,22 +257,22 @@ function fgbtest(): void {
             getEl("gbunlockbutton").style.display='none'
         }
 
-        player.bangTime = Math.ceil(300/Math.pow(2, getUpgradeTimesBought('bangspeed')))
+        player.bangTime = Math.ceil(300/Math.pow(2, getUpgradeTimesBought('bangspeed').toNumber()))
+        const onBought = onD<UpgradeName>((key) => getUpgradeTimesBought(key))
+        const alphaGain : Decimal = D( 
+            onBought('alphaacc', 'times', onBought('perbang'.plus(1), 'times', onBought('nuclearalphabuy'.plus(1), 'times', D(2).pow('alphamachinedouble'))))
+        )
         if(player.bangTimeLeft === 0) { 
-            const alphaGain : Decimal = D( 
-                getUpgradeTimesBought('alphaacc') * (getUpgradeTimesBought('perbang')+1) * (getUpgradeTimesBought('nuclearalphabuy')+1) * Math.pow(2, getUpgradeTimesBought('alphamachinedouble'))
-            )
             player.alphaNum = player.alphaNum.plus(alphaGain)
             getEl("bangtimeleft").textContent = ""
         }
 
-        const alphagaindisplay = getUpgradeTimesBought('alphaacc') * (getUpgradeTimesBought('perbang')+1) * (getUpgradeTimesBought('nuclearalphabuy')+1) * Math.pow(2, getUpgradeTimesBought('alphamachinedouble'))
         const gain : Decimal = D( 
-            (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult.toNumber() * (getUpgradeTimesBought('nuclearbuy')+1) * (getUpgradeTimesBought('nuclearbuy')+1) * Math.pow(3, getUpgradeTimesBought('tb')) * player.tempBoost * (1 + (((player.boosterParticles.toNumber() / 100) * (getUpgradeTimesBought('boosteruppercent')+1)) / 100)) 
-            )
+            (getUpgradeTimesBought('bb')+1) * getUpgradeTimesBought('gen') * (getUpgradeTimesBought('speed')/10+0.1) * player.gbMult * (getUpgradeTimesBought('nuclearbuy')+1) * (getUpgradeTimesBought('nuclearbuy')+1) * Math.pow(3, getUpgradeTimesBought('tb')) * player.tempBoost * ((player.boosterParticles / 100) * (getUpgradeTimesBought('boosteruppercent')+1) / 100 + 1)
+        )
         getEl("particlesperclick").textContent = "You are getting " + format((getUpgradeTimesBought('mbup') + 1) * (getUpgradeTimesBought('mbmult') + 1) * (getUpgradeTimesBought('nuclearbuy')+1)) + " particles per click"
 
-        getEl("alphapb").textContent = "You are getting " + format(alphagaindisplay) + " Alpha/bang"
+        getEl("alphapb").textContent = "You are getting " + formatb(alphaGain) + " Alpha/bang"
         player.bangTimeLeft -= 1
         if(player.bangTimeLeft >= 0 && player.bangTimeLeft <= player.bangTime) {
             getEl("bangtimeleft").textContent = "Bang time left: " + format(player.bangTimeLeft)
@@ -289,10 +289,11 @@ function fgbtest(): void {
         player.untilBoost -= 1
         if(player.untilBoost === 0) {
             player.untilBoost = 10
-            const totalGain : Decimal = new Decimal(player.alphaNum.times((getUpgradeTimesBought('boosterup')+1)))
+            const totalGain : Decimal = player.alphaNum.times((getUpgradeTimesBought('boosterup').plus(1)))
             player.boosterParticles = player.boosterParticles.plus(totalGain)
-            const percentBoostDisplay : Decimal = new Decimal(formatb(player.boosterParticles.times((getUpgradeTimesBought('boosteruppercent')+1) / 100)))
-            getEl("boostersmaintext").textContent = "You are currently getting " + format((getUpgradeTimesBought('boosterup')+1)) + " booster particles per alpha particle per second, resulting in a +" + formatb(percentBoostDisplay) + "% boost to base particle production"
+            const percentBoostDisplay : string = formatb(player.boosterParticles.times((getUpgradeTimesBought('boosteruppercent').plus(1)).div(100)))
+            // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+            getEl("boostersmaintext").textContent = "You are currently getting " + totalGain + " booster particles per alpha particle per second, resulting in a +" + percentBoostDisplay + "% boost to base particle production"
         }
         getEl("bpamount").textContent = "You have " + formatb(player.boosterParticles) + " booster particles" 
 
