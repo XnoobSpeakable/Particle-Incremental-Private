@@ -1,5 +1,10 @@
 import Decimal from 'break_eternity.js';
-import { D } from "./util";
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+type jsnumber = number;
+function D(n: jsnumber): Decimal {
+   return new Decimal(n);
+}
 
 export let player = {
     version: "b1.22.0",
@@ -57,9 +62,13 @@ export let player = {
 
 export type UpgradeName = keyof typeof player.upgrades;
 export const UpgradeNames = Object.keys(player.upgrades) as UpgradeName[];        
+export function isUpgradName(x: unknown) : x  is UpgradeName { return typeof x === 'string' && UpgradeNames.includes(x as UpgradeName) }
 export function getUpgradeCost(upgradeName: UpgradeName) { return player.upgrades[upgradeName].cost }
 export function setUpgradeCost(upgradeName: UpgradeName, costIn: Decimal) { player.upgrades[upgradeName].cost = (costIn) }
-export function getUpgradeTimesBought(upgradeName: UpgradeName) { return player.upgrades[upgradeName].timesBought }
+export function getUpgradeTimesBought(upgradeName: UpgradeName) { 
+    if (typeof player.upgrades[upgradeName]?.timesBought === 'undefined') { debugger; }
+    return player.upgrades[upgradeName].timesBought 
+}
 
 Decimal.prototype.toJSON = function () {
     return 'D#' + this.toString();

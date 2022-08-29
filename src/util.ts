@@ -1,27 +1,131 @@
-import { player } from './player'
+import {
+   getUpgradeTimesBought,
+   isUpgradName,
+   player,
+   UpgradeName,
+} from './player';
 import Decimal from 'break_eternity.js';
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type jsnumber = number;
-export function format(n : jsnumber): string {
-    return Math.log10(n) >= player.eSetting ? n.toExponential(2).replace('e+','e') : n.toFixed(2).replace('.00','');
+export function format(n: jsnumber): string {
+   return Math.log10(n) >= player.eSetting
+      ? n.toExponential(2).replace('e+', 'e')
+      : n.toFixed(2).replace('.00', '');
 }
-export function formatb(n : Decimal): string {
-    return n.absLog10().toNumber() >= player.eSetting ? n.toExponential(2).replace('e+','e') : n.toFixed(2).replace('.00','');
+export function formatb(n: Decimal): string {
+   return n.absLog10().toNumber() >= player.eSetting
+      ? n.toExponential(2).replace('e+', 'e')
+      : n.toFixed(2).replace('.00', '');
 }
 export function getEl(id: string): HTMLElement {
-    return document.getElementById(id)!;
+   return document.getElementById(id)!;
 }
-export function D(n: jsnumber): Decimal { return new Decimal(n) }
+export function D(n: jsnumber): Decimal {
+   return new Decimal(n);
+}
 
-export function onD<T = string>(   lookup: (key: T) => Decimal) {
-    return function (
-   lKey: T | Decimal,
-   op: keyof Decimal,
-   rKey: T | Decimal
+export function onD<T = string>(lookup: (key: T) => Decimal) {
+   return function (lKey: T | Decimal, op: keyof Decimal, rKey: T | Decimal) {
+      const l = lKey instanceof Decimal ? lKey : lookup(lKey);
+      const r = rKey instanceof Decimal ? rKey : lookup(rKey);
+      const fn = l[op] as (d: Decimal) => Decimal;
+      return fn(r);
+   };
+}
+
+type D2Arg<T> = T | Decimal | Op | D2Arg<T>[];
+
+type Op = '+' | '*' | '/' | '^';
+const opMap = {
+   '+': 'plus',
+   '*': 'times',
+   '/': 'div',
+   '^': 'pow',
+} as const;
+
+function isOp(x: unknown): x is Op {
+   return typeof x === 'string' && Object.keys(opMap).includes(x);
+}
+
+export function onD2<T = string>(
+   is: (x: unknown) => x is T,
+   lookup: (key: T) => Decimal
 ) {
-   const l = lKey instanceof Decimal ? lKey : lookup(lKey);
-   const r = rKey instanceof Decimal ? rKey : lookup(rKey);
-   const fn = l[op] as (d: Decimal) => Decimal;
-   return fn(r);
+   const fn = function (
+      start: T | Decimal | D2Arg<T>[],
+      ...terms: D2Arg<T>[]
+   ): Decimal {
+      let result: Decimal | ((x: D2Arg<T>) => Decimal);
+      if (Array.isArray(start)) {
+         const [first, rest] = splitArgs(start);
+         result = fn(first, ...rest);
+      } else {
+         result = start instanceof Decimal ? start : lookup(start);
+      }
+
+      terms.forEach((token) => {
+         if (result instanceof Function) {
+            if (isOp(token)) {
+               throw new Error('to operations in a row');
+            }
+            if (Array.isArray(token)) {
+               const [first, rest] = splitArgs(token);
+               result = result(fn(first, ...rest));
+            } else {
+               const operand = is(token) ? lookup(token) : token;
+               result = result(operand);
+            }
+         } else {
+            if (token instanceof Decimal) {
+               result = result.times(token);
+            } else if (is(token)) {
+               result = result.times(lookup(token));
+            } else if (Array.isArray(token)) {
+               const [first, args] = splitArgs(token);
+               result = result.times(fn(first, ...args));
+            } else {
+                const left = result;
+               const method = (d: Decimal) => Decimal[opMap[token]](left, d); 
+               result = (x) => {
+                  if (x instanceof Decimal) {
+                     return method(x);
+                  }
+                  if (Decimal[x as never]) {
+                     throw new Error('cannot have two operations in a row');
+                  }
+
+                  return method(lookup(x as T));
+               };
+            }
+         }
+      });
+      return result;
+   };
+
+   function splitArgs(args: D2Arg<T>[]): [T | Decimal, D2Arg<T>[]] {
+      const arr = [...args];
+      const head = arr.shift()!;
+      if (isOp(head)) {
+         throw new Error('first token cannot be an operator');
+      }
+      if (Array.isArray(head)) {
+         const [first, rest] = splitArgs(head);
+         return [fn(first, ...rest), arr];
+      }
+      return [head, arr];
+   }
+   return fn;
 }
-}
+
+export const onBought = onD2<UpgradeName>(isUpgradName, (key) =>
+   getUpgradeTimesBought(key)
+);
+
+export const onBoughtInc = onD2<UpgradeName>(isUpgradName, (key) =>
+   getUpgradeTimesBought(key).plus(1)
+);
+
+
+const _x = onBought('bb', '*', ['bangspeed', '+', D(1)]);
+
+//TODO: test onBought.
