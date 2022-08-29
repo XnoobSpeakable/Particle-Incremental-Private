@@ -233,8 +233,7 @@ export function BAExtra(): (upgradeName: UpgradeName) => void {
 }
 
 export function scaleSpeed(upgradeName: UpgradeName): void {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-  if (getUpgradeTimesBought(upgradeName).modulo(10).eq(0)) {
+  if (getUpgradeTimesBought(upgradeName).toNumber() % 10 === 0) {
     setUpgradeCost(upgradeName, getUpgradeTimesBought(upgradeName).times(5).plus(100));
   }
 }

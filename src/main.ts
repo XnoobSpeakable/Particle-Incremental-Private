@@ -8,7 +8,7 @@ import {
    getSaveString,
 } from './player';
 import { UpdateCostVal, upgrades } from './upgrades';
-import { format, formatb, getEl, D, onD, onBought, onBoughtInc } from './util';
+import { format, formatb, getEl, D,  onBought, onBoughtInc } from './util';
 import Decimal from 'break_eternity.js';
 
 // eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
@@ -374,18 +374,37 @@ function fgbtest(): void {
          300 / Math.pow(2, getUpgradeTimesBought('bangspeed').toNumber())
       );
       
-      const alphaGain: Decimal = onBought(
-         'alphaacc', '*', ['perbang', '+', D(1)], '*',['nuclearalphabuy', '+', D(1)], '*', [D(2), '^', 'alphamachinedouble']
-         );
-            
+    //   const alphaGain: Decimal = onBought(
+    //      'alphaacc', '*', ['perbang', '+', D(1)], '*',['nuclearalphabuy', '+', D(1)], '*', [D(2), '^', 'alphamachinedouble']
+    //      );
+
+               const alphaGain: Decimal = onBought(
+                  'alphaacc', ['perbang', '+', D(1)], ['nuclearalphabuy', '+', D(1)], [D(2), '^', 'alphamachinedouble']
+               );
+
       if (player.bangTimeLeft === 0) {
          player.alphaNum = player.alphaNum.plus(alphaGain);
          getEl('bangtimeleft').textContent = '';
       }
 
+/* const gain =
+   (getUpgradeTimesBought('bb') + 1) *
+   getUpgradeTimesBought('gen') *
+   (getUpgradeTimesBought('speed') / 10 + 0.1) *
+   player.gbMult *
+   (getUpgradeTimesBought('nuclearbuy') + 1) *
+   (getUpgradeTimesBought('nuclearbuy') + 1) *
+   Math.pow(3, getUpgradeTimesBought('tb')) *
+   player.tempBoost *
+   (1 +
+      ((player.boosterParticles / 100) *
+         (getUpgradeTimesBought('boosteruppercent') + 1)) /
+         100);
+*/
+
       const gain: Decimal = onBought(        
             ['bb', '+', D(1)], '*', 'gen', '*', ['speed', '/', D(10), '+', D(0.1)], '*', player.gbMult, '*', [['nuclearbuy', '+', D(1)], '^', D(2)], '*', 
-            [D(3), '^', 'tb'], '*', D(player.tempBoost), '*', player.boosterParticles, '/', D(100), '*', [['boosteruppercent', '+', D(1)], '/', D(100), '+', D(1)]
+            [D(3), '^', 'tb'], '*', D(player.tempBoost), '*', [D(1), '+', [[player.boosterParticles, '+', D(1)], '/', D(100), '*', [['boosteruppercent', '+', D(1)], '/', D(100), '+', D(1)]]]
     );
 
       getEl('particlesperclick').textContent =

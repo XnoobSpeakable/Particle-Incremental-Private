@@ -66,7 +66,6 @@ export function isUpgradName(x: unknown) : x  is UpgradeName { return typeof x =
 export function getUpgradeCost(upgradeName: UpgradeName) { return player.upgrades[upgradeName].cost }
 export function setUpgradeCost(upgradeName: UpgradeName, costIn: Decimal) { player.upgrades[upgradeName].cost = (costIn) }
 export function getUpgradeTimesBought(upgradeName: UpgradeName) { 
-    if (typeof player.upgrades[upgradeName]?.timesBought === 'undefined') { debugger; }
     return player.upgrades[upgradeName].timesBought 
 }
 

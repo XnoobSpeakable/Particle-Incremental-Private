@@ -24,14 +24,6 @@ export function D(n: jsnumber): Decimal {
    return new Decimal(n);
 }
 
-export function onD<T = string>(lookup: (key: T) => Decimal) {
-   return function (lKey: T | Decimal, op: keyof Decimal, rKey: T | Decimal) {
-      const l = lKey instanceof Decimal ? lKey : lookup(lKey);
-      const r = rKey instanceof Decimal ? rKey : lookup(rKey);
-      const fn = l[op] as (d: Decimal) => Decimal;
-      return fn(r);
-   };
-}
 
 type D2Arg<T> = T | Decimal | Op | D2Arg<T>[];
 
@@ -47,7 +39,7 @@ function isOp(x: unknown): x is Op {
    return typeof x === 'string' && Object.keys(opMap).includes(x);
 }
 
-export function onD2<T = string>(
+export function onD<T = string>(
    is: (x: unknown) => x is T,
    lookup: (key: T) => Decimal
 ) {
@@ -117,11 +109,11 @@ export function onD2<T = string>(
    return fn;
 }
 
-export const onBought = onD2<UpgradeName>(isUpgradName, (key) =>
+export const onBought = onD<UpgradeName>(isUpgradName, (key) =>
    getUpgradeTimesBought(key)
 );
 
-export const onBoughtInc = onD2<UpgradeName>(isUpgradName, (key) =>
+export const onBoughtInc = onD<UpgradeName>(isUpgradName, (key) =>
    getUpgradeTimesBought(key).plus(1)
 );
 
