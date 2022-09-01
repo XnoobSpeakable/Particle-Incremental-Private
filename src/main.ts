@@ -1,9 +1,10 @@
 import {
    load,
+   loadSettings,
    getUpgradeTimesBought,
    getUpgradeCost,
    player,
-   UpgradeName,
+   playerSettings,
    UpgradeNames,
    getSaveString,
 } from './player';
@@ -13,6 +14,8 @@ import Decimal from 'break_eternity.js';
 
 // eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
 declare var window: Window & Record<string, unknown>;
+
+loadSettings();
 
 const themes = [
    {
@@ -67,7 +70,7 @@ const themes = [
 ];
 function themeExec(): void {
    const { textColor, bgColor, buttonColor, borderColor, themeName } =
-      themes[player.themeNumber];
+      themes[playerSettings.themeNumber];
    //@ts-expect-error style isn't read only
    getEl('diventirebody').style =
       'color: ' + textColor + "; font-family: 'Times New Roman'";
@@ -88,8 +91,9 @@ function themeExec(): void {
 }
 
 window.theme = function (): void {
-   player.themeNumber = (player.themeNumber + 1) % themes.length;
+   playerSettings.themeNumber = (playerSettings.themeNumber + 1) % themes.length;
    themeExec();
+   saveSettings();
 };
 function prePUD(): void {
    getEl('tabopenalpha').style.display = 'none';
@@ -112,16 +116,17 @@ const autosaveElement = getEl('autosaving');
 const delayArray = [600, 300, 150, 100, 50, 20, 10, undefined];
 
 function autoSaveSet(): void {
-   const delay = delayArray[player.autoSaveMode];
-   player.autoSaveSet = player.autoSaveDelay = delay ?? 1e308;
+   const delay = delayArray[playerSettings.autoSaveMode];
+   playerSettings.autoSaveSet = playerSettings.autoSaveDelay = delay ?? 1e308;
    autosaveElement.textContent = delay
       ? 'On, delay: ' + format(delay / 10) + 's'
       : 'Off';
 }
 
 window.autosavesettings = function (): void {
-   player.autoSaveMode = (player.autoSaveMode + 1) % delayArray.length;
+   playerSettings.autoSaveMode = (playerSettings.autoSaveMode + 1) % delayArray.length;
    autoSaveSet();
+   saveSettings();
 };
 
 function loadMisc(): void {
@@ -250,12 +255,14 @@ window.saveImportConfirm = function (): void {
    window.location.reload();
 };
 window.setting1e4 = function (): void {
-   player.eSetting = 1e4;
+   playerSettings.eSetting = 1e4;
    loadMisc();
+   saveSettings();
 };
 window.setting1e6 = function (): void {
-   player.eSetting = 1e6;
+   playerSettings.eSetting = 1e6;
    loadMisc();
+   saveSettings();
 };
 
 window.mbman = function (): void {
@@ -404,7 +411,7 @@ function fgbtest(): void {
 
       const gain: Decimal = onBought(        
             ['bb', '+', D(1)], '*', 'gen', '*', ['speed', '/', D(10), '+', D(0.1)], '*', player.gbMult, '*', [['nuclearbuy', '+', D(1)], '^', D(2)], '*', 
-            [D(3), '^', 'tb'], '*', D(player.tempBoost), '*', [D(1), '+', [[player.boosterParticles, '+', D(1)], '/', D(100), '*', [['boosteruppercent', '+', D(1)], '/', D(100), '+', D(1)]]]
+            [D(3), '^', 'tb'], '*', D(player.tempBoost), '*', [D(1), '+', [[player.boosterParticles, '+', D(1)], '/', D(100), '*', [['boosteruppercent', '+', D(1)], '/', D(100)]]]
     );
 
       getEl('particlesperclick').textContent =
@@ -525,9 +532,9 @@ function batest(): void {
 }
 
 function savinginloop(): void {
-   player.autoSaveDelay -= 1;
-   if (player.autoSaveDelay === 0) {
-      player.autoSaveDelay = player.autoSaveSet;
+   playerSettings.autoSaveDelay -= 1;
+   if (playerSettings.autoSaveDelay === 0) {
+      playerSettings.autoSaveDelay = playerSettings.autoSaveSet;
       save();
    }
 }
@@ -551,14 +558,24 @@ function saveReplace(_key: string, value: unknown): unknown {
    return value;
 }
 
+function saveSettings(): void {
+   const settingfile = JSON.stringify(playerSettings);
+   localStorage.setItem(window.location.pathname + "settings", settingfile);
+}
+window.saveSettings = saveSettings;
+
+
 function save(): string {
    const savefile = JSON.stringify(player, saveReplace);
    localStorage.setItem(window.location.pathname, savefile);
+   saveSettings();
    return savefile;
 }
 window.save = save;
 
 window.reset = function (): void {
+   saveSettings();
    localStorage.removeItem(window.location.pathname);
+   window.location.reload();
 };
 console.log(window.location.pathname);

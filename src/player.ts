@@ -7,7 +7,6 @@ function D(n: jsnumber): Decimal {
 }
 
 export let player = {
-    version: "b1.22.0",
     upgrades: { 
         'gen': { cost: D(0), timesBought: D(0) },
         'bb': { cost: D(2000), timesBought: D(0)},
@@ -39,18 +38,13 @@ export let player = {
     pChunks: D(0),
     alphaNum: D(0),
     bangTime: 300, 
-    bangTimeLeft: 1e+300, 
-    eSetting: 4, 
+    bangTimeLeft: 1e+300,  
     tempBoost: 1, 
     pcaToggle: true, 
     pcaTime: 160, 
     pcaTimeLeft: 0, 
-    autoSaveDelay: 50, 
-    autoSaveMode: 4, 
-    autoSaveSet: 50, 
     boosterParticles: D(0),
     untilBoost: 1, 
-    themeNumber: 0, 
     omegaBase: D(0),
     omegaBaseCost: D(1e10),
     omegaAlpha: D(0),
@@ -60,13 +54,40 @@ export let player = {
     baTimeLeft: 0,
 };
 
+export let playerSettings = {
+    version: "b1.22.0",
+    eSetting: 4,
+    autoSaveDelay: 50, 
+    autoSaveMode: 4, 
+    autoSaveSet: 50,
+    themeNumber: 0,
+}
+
 export type UpgradeName = keyof typeof player.upgrades;
 export const UpgradeNames = Object.keys(player.upgrades) as UpgradeName[];        
-export function isUpgradName(x: unknown) : x  is UpgradeName { return typeof x === 'string' && UpgradeNames.includes(x as UpgradeName) }
+export function isUpgradeName(x: unknown) : x  is UpgradeName { return typeof x === 'string' && UpgradeNames.includes(x as UpgradeName) }
 export function getUpgradeCost(upgradeName: UpgradeName) { return player.upgrades[upgradeName].cost }
 export function setUpgradeCost(upgradeName: UpgradeName, costIn: Decimal) { player.upgrades[upgradeName].cost = (costIn) }
 export function getUpgradeTimesBought(upgradeName: UpgradeName) { 
     return player.upgrades[upgradeName].timesBought 
+}
+
+export function loadSettings() {
+    if(localStorage.getItem(window.location.pathname + "settings") !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        playerSettings = JSON.parse(localStorage.getItem(window.location.pathname + "settings")!);
+    }
+    const stage = Number(playerSettings.version.substring(1, 2))
+    const major = Number(playerSettings.version.substring(3, 5))
+    //const minor = player.version.substring(6)
+    if(stage === 1 && major <= 21) {
+        localStorage.removeItem(window.location.pathname);
+        window.location.reload();
+    }
+    if(playerSettings.version !== "b1.22.0") {
+        playerSettings.version = "b1.22.0";
+        alert("This version is incompatible with older saves, so your progress has been wiped.");
+    }
 }
 
 Decimal.prototype.toJSON = function () {
@@ -86,16 +107,5 @@ Decimal.prototype.toJSON = function () {
     if(localStorage.getItem(window.location.pathname) !== null) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         player = JSON.parse(localStorage.getItem(window.location.pathname)!, saveRevive);
-    }
-    const stage = Number(player.version.substring(1, 2))
-    const major = Number(player.version.substring(3, 5))
-    //const minor = player.version.substring(6)
-    if(stage === 1 && major <= 21) {
-        localStorage.removeItem(window.location.pathname);
-        window.location.reload();
-    }
-    if(player.version !== "b1.22.0") {
-        player.version = "b1.22.0";
-        alert("This version is incompatible with older saves, so your progress has been wiped.");
     }
 }
