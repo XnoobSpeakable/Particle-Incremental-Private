@@ -30,7 +30,6 @@ export function UpdateCostVal(
 
 export const upgrades = {
   gen: {
-    multiplier: 4,
     scaleFunction: scaleGen,
     costDiv: "divgencost",
     currency: "num"
@@ -246,7 +245,7 @@ export function scaleGen(upgradeName: UpgradeName): void {
   }
 }
 
-window.buyUpgrade = function (upgradeName: UpgradeName): void {
+function buyUpgrade(upgradeName: UpgradeName): void {
   const upgrade = upgrades[upgradeName];
   const oldCost = getUpgradeCost(upgradeName);
   if (player[upgrade.currency].gte(oldCost)) {
@@ -259,4 +258,12 @@ window.buyUpgrade = function (upgradeName: UpgradeName): void {
       upgrade.currency
     );
   }
-};
+}
+window.buyUpgrade = buyUpgrade;
+
+window.buyTenSpeed = function (): void {
+  while(player.num.gte(getUpgradeCost('speed'))) {
+    buyUpgrade('speed');
+  }
+}
+

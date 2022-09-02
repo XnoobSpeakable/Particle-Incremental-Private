@@ -35,10 +35,12 @@
           <button onclick="buyUpgrade('gen')" class="button">Buy generator</button>
           <button onclick="buyUpgrade('bb')" class="button">Bigger batches</button>
           <button onclick="buyUpgrade('speed')" class="button">Speed</button>
+          <button onclick="buyTenSpeed()" class="button">Buy max Speed</button>
         </div>
         <div id="divgencost">Cost: Free</div>
         <div id="divbbcost">Cost: 2000</div>
         <div id="divspeedcost">Cost: 50</div>
+        <div id="divtenspeedcost">Cost: unknown</div>
         <br>
         <br>
         <div class="withtheoutline" id="veryouterboost">
@@ -82,7 +84,7 @@
             <button onclick="buyUpgrade('nuclearbuy')" class="button">Buy Nuclear Particle</button>
             <div id="divnuclearcost">Cost: 1e6</div>
             <div id="divnp">Nuclear Particles: 0</div>
-            Nuclear particles add a +1x multipler to generators, generator boost, and manual boost
+            Nuclear particles add a +1x multiplier to generators, generator boost, and manual boost
             <br>
             <br>
           </div>
@@ -106,6 +108,7 @@
             <div>Cost: 2 Particle Chunks</div>
             <div id="chunkamount">Particle Chunks: 0</div>
             <div id="bangtimeleft"></div>
+            <div id="bangtimeconst">Currently, bangs take 30 seconds.</div>
           </div>
           <div id="bangreach">Reach 1e9 to unlock Bang!</div>
         </div>
@@ -304,7 +307,7 @@
         <br>
         Changelog:
         <br>
-        switched to break_eternity.js, bugfixes, code improvements, stats tab "improvement", saving and importing changes
+        switched to break_eternity.js, bugfixes, code improvements, stats tab "improvement", saving and importing changes, UI changes
       </div>
       <div id="Tutorial" style="display:none">
         A generator gives you n particles every loop. Default is 1 loop per second and 1 particle per loop. <br>

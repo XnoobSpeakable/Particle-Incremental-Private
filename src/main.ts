@@ -67,6 +67,13 @@ const themes = [
       borderColor: '#FFD1FF',
       themeName: 'Pink',
    },
+   {
+      textColor: '#3DD7DE',
+      bgColor: '#191970',
+      buttonColor: '#3DD7DE',
+      borderColor: '#3DD7DE',
+      themeName: 'Blue',
+   },
 ];
 function themeExec(): void {
    const { textColor, bgColor, buttonColor, borderColor, themeName } =
@@ -419,13 +426,15 @@ function fgbtest(): void {
                   formatb ( onBought( ['mbup', '+', D(1)], '*', ['mbmult', '+', D(1)], '*',['nuclearbuy', '+', D(1)])
          ) +
          ' particles per click';
-
+      
       getEl('alphapb').textContent =
          'You are getting ' + formatb(alphaGain) + ' Alpha/bang';
+      getEl('bangtimeconst').textContent =
+         'Currently, bangs take ' + format(player.bangTime / 10) + ' seconds.';
       player.bangTimeLeft -= 1;
       if (player.bangTimeLeft >= 0 && player.bangTimeLeft <= player.bangTime) {
          getEl('bangtimeleft').textContent =
-            'Bang time left: ' + format(player.bangTimeLeft);
+            'Bang time left: ' + format(player.bangTimeLeft / 10);
          getEl('bangbutton').style.display = 'none';
       } else {
          getEl('bangbutton').style.display = 'block';
@@ -434,7 +443,7 @@ function fgbtest(): void {
          player.gbTimeLeft = player.gbTimeLeft.minus(1);
       }
       getEl('divgbtl').textContent =
-         'Boost Time Left: ' + formatb(player.gbTimeLeft);
+         'Boost Time Left: ' + formatb(player.gbTimeLeft.div(10));
 
       player.untilBoost -= 1;
       if (player.untilBoost === 0) {
@@ -508,7 +517,7 @@ function pcatest(): void {
          }
          player.pcaTimeLeft -= 1;
          getEl('untilpca').textContent =
-            format(player.pcaTimeLeft) + ' left until next autobuy';
+            format(player.pcaTimeLeft / 10) + ' left until next autobuy';
       }
    }
 }

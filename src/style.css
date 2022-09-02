@@ -9,11 +9,15 @@ button:active {
 }
 #divbbcost {
   display: inline-block;
-  text-indent: 2.25em;
+  text-indent: 1.25em;
 }
 #divspeedcost {
   display: inline-block;
-  text-indent: 2.25em;
+  text-indent: 1.25em;
+}
+#divtenspeedcost {
+  display: inline-block;
+  text-indent: 1.25em;
 }
 #counter {
   font-size: x-large;
