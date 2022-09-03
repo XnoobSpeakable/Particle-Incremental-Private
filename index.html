@@ -13,17 +13,20 @@
   <body>
     <script defer src="./src/main.ts" type="module"></script>
     <div id="diventirebody" style="color:black; font-family: 'Times New Roman'">
+      <div id="nextfeature" style="display:none">Reach 5000 particles to unlock Generator boost (0%)</div>
       <div id="counter">0 particles</div>
       <div id="particlespersecond">You are getting 0 particles/s</div>
       <br>
 
       <div id="tabopeners">
         <button onclick="openTab('Base')" class="button tabopener" id="tabopenbase">Base</button>
+        <button onclick="openTab('Factory')" class="button tabopener" id="tabopenfactory">Factory</button>
         <button onclick="openTab('Alpha')" class="button tabopener" id="tabopenalpha">Alpha</button>
         <button onclick="openTab('Beta')" class="button tabopener" id="tabopenbeta">Beta</button>
         <button onclick="openTab('Gamma')" class="button tabopener" id="tabopengamma">Gamma</button>
         <button onclick="openTab('Delta')" class="button tabopener" id="tabopendelta">Delta</button>
         <button onclick="openTab('Omega')" class="button tabopener" id="tabopenomega">Omega</button>
+        <button onclick="openTab('Achievements')" class="button tabopener" id="tabopenachievements">Achievements</button>
         <button onclick="openTab('Stats')" class="button tabopener">Stats</button>
         <button onclick="openTab('Settings')" class="button tabopener">Settings</button>
         <button onclick="openTab('Tutorial')" class="button tabopener">Tutorial</button>
@@ -115,6 +118,10 @@
         <br>
         <div id="tmp" style="display:none">Temporary 1e6 to 1e12 1.5x boost active</div>
         <br>
+      </div>
+
+      <div id="Factory" style="display:none">
+        asdf
       </div>
 
       <div id="Alpha" style="display:none">
@@ -272,6 +279,10 @@
         <pre id="stat"></pre>
       </div>
 
+      <div id="Achievements" style="display:none">
+        achivemnt 1: stuiff 
+      </div>
+
       <div id="Settings" style="display:none">
         <br>
         <button onclick="reset()" id="resetb" class="button">RESET SAVE</button>
@@ -299,15 +310,24 @@
         <div id="whattheme">Theme: Light</div>
         <br>
         <button onclick="autosavesettings()" class="button">Toggle Autosave and autosave speed</button>
+        <button onclick="experimentalToggle()" class="button">Toggle experimental features</button>
+        <br>
         <div id="autosaving">On, delay: 30s</div>
+        <div id="experimentoggle">false</div>
         <br>
         <button onclick="save()" class="button">save</button>
-        <br>
-        Version alpha8
+        <br><br>
+        Special thanks to: <br>
+        <a href="https://github.com/CosmicDevourer26">Cosmic47</a>
+        for keeping me motivated, helping me come up with ideas, and more. <br>
+        <a href="https://github.com/typeholes">qhwood</a>
+        for improving my code and helping me code.
+        <br><br>
+        Version b1.22.0
         <br>
         Changelog:
         <br>
-        switched to break_eternity.js, bugfixes, code improvements, stats tab "improvement", saving and importing changes, UI changes
+        switched to break_eternity.js, bugfixes, code improvements, stats tab "improvement", saving and importing changes, UI changes, added new themes
       </div>
       <div id="Tutorial" style="display:none">
         A generator gives you n particles every loop. Default is 1 loop per second and 1 particle per loop. <br>

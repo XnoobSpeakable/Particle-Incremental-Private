@@ -60,19 +60,22 @@ export const upgrades = {
     currency: "num"
   },
   gbupt: {
-    scaleFunction: GBTExtra(scaleMultiplier(D(5))),
+    scaleFunction: scaleMultiplier(D(5)),
     costDiv: "divgbuptcost",
-    currency: "num"
+    currency: "num",
+    extra: GBTExtra()
   },
   gbupm: {
-    scaleFunction: GBMExtra(scaleMultiplier(D(5))),
+    scaleFunction: scaleMultiplier(D(5)),
     costDiv: "divgbupmcost",
-    currency: "num"
+    currency: "num",
+    extra: GBMExtra()
   },
   nuclearbuy: {
-    scaleFunction: NBExtra(scaleMultiplier(D(7))),
+    scaleFunction: scaleMultiplier(D(7)),
     costDiv: "divnuclearcost",
-    currency: "num"
+    currency: "num",
+    extra: NBExtra()
   },
   alphaacc: {
     scaleFunction: scaleMultiplier(D(1000)),
@@ -100,9 +103,10 @@ export const upgrades = {
     currency: "alphaNum"
   },
   upgradepca: {
-    scaleFunction: PCAExtra(scaleMultiplier(D(3))),
+    scaleFunction: scaleMultiplier(D(3)),
     costDiv: "divupgradepcacost",
-    currency: "alphaNum"
+    currency: "alphaNum",
+    extra: PCAExtra()
   },
   boosterup: {
     scaleFunction: scaleMultiplier(D(10)),
@@ -115,14 +119,16 @@ export const upgrades = {
     currency: "alphaNum"
   },
   nuclearalphabuy: {
-    scaleFunction: NABExtra(scaleMultiplier(D(7))),
+    scaleFunction: scaleMultiplier(D(7)),
     costDiv: "divnuclearalphacost",
-    currency: "alphaNum"
+    currency: "alphaNum",
+    extra: NABExtra()
   },
   gboostdouble: {
-    scaleFunction: GBDExtra(scaleMultiplier(D(2))),
+    scaleFunction: scaleMultiplier(D(2)),
     costDiv: "gboostdouble",
-    currency: "alphaNum"
+    currency: "alphaNum",
+    extra: GBDExtra()
   },
   alphamachinedouble: {
     scaleFunction: scaleMultiplier(D(3)),
@@ -135,7 +141,7 @@ export const upgrades = {
     currency: "omegaBase"
   },
   upgradeba: {
-    scaleFunction: BAExtra(),
+    scaleFunction: scaleBA,
     costDiv: "divupgradeba",
     currency: "omegaBase"
   }
@@ -155,85 +161,15 @@ export function scaleBangSpeed(upgradeName: UpgradeName): void {
   }
 }
 
-export function GBTExtra(
-  scaler: (upgradeName: UpgradeName) => void
-): (upgradeName: UpgradeName) => void {
-  return function (upgradeName: UpgradeName) {
-    scaler(upgradeName);
-    player.gbTimeLeftCon = player.gbTimeLeftCon.plus(
-      D(2).pow(getUpgradeTimesBought("gboostdouble")).times(20)
-    );
-    player.gbTimeLeft = new Decimal(0);
-    player.gbTimeLeft = player.gbTimeLeftCon;
-  };
-}
-export function GBMExtra(  
-  scaler: (
-  upgradeName: UpgradeName) => void
-): (upgradeName: UpgradeName) => void {
-  return function (upgradeName: UpgradeName) {
-    scaler(upgradeName);
-    player.gbTimeLeft = new Decimal(0);
-    player.gbTimeLeft = player.gbTimeLeftCon;
-  };
-}
-export function GBDExtra(
-scaler: (
-  upgradeName: UpgradeName) => void
-): (upgradeName: UpgradeName) => void {
-  return function (upgradeName: UpgradeName) {
-    scaler(upgradeName);
-    player.gbTimeLeftCon = player.gbTimeLeftCon.times(2);
-    player.gbTimeLeft = new Decimal(0);
-    player.gbTimeLeft = player.gbTimeLeftCon;
-  };
-}
-
-export function NBExtra(  
-  scaler: (upgradeName: UpgradeName) => void
-): (upgradeName: UpgradeName) => void {
-  return function (upgradeName: UpgradeName) {
-    scaler(upgradeName);
-    getEl("divnp").textContent =
-      "Nuclear Particles: " + formatb(getUpgradeTimesBought("nuclearbuy"));
-  };
-}
-export function NABExtra(  
-  scaler: (upgradeName: UpgradeName) => void
-): (upgradeName: UpgradeName) => void {
-  return function (upgradeName: UpgradeName) {
-    scaler(upgradeName);
-    getEl("divnap").textContent =
-      "Nuclear Particles: " + formatb(getUpgradeTimesBought("nuclearalphabuy"));
-  };
-}
-export function PCAExtra(  
-  scaler: (upgradeName: UpgradeName) => void
-): (upgradeName: UpgradeName) => void {
-  return function (upgradeName: UpgradeName) {
-    scaler(upgradeName);
-    if (getUpgradeTimesBought("upgradepca").lte(4)) {
-      player.pcaTime = Math.ceil(player.pcaTime / 2);
-    } else {
-      player.pcaTime = (D(10).div(getUpgradeTimesBought("upgradepca").minus(3))).ceil().toNumber()
-    }
-  };
-}
-
-export function BAExtra(): (upgradeName: UpgradeName) => void {
-    return function (upgradeName: UpgradeName) {
-      setUpgradeCost(upgradeName, getUpgradeCost(upgradeName).plus(1));
-      if (getUpgradeTimesBought("upgradeba").lte(4)) {
-        player.baTime = Math.ceil(player.baTime / 2);
-      } else {
-        player.baTime = (D(10).div(getUpgradeTimesBought("upgradeba").minus(3))).ceil().toNumber()
-    }
-  }
-}
-
 export function scaleSpeed(upgradeName: UpgradeName): void {
-  if (getUpgradeTimesBought(upgradeName).toNumber() % 10 === 0) {
-    setUpgradeCost(upgradeName, getUpgradeTimesBought(upgradeName).times(5).plus(100));
+  if(getUpgradeTimesBought(upgradeName).lt(10)) {
+    setUpgradeCost(upgradeName, D(50))
+  }
+  else if(getUpgradeTimesBought(upgradeName).gte(10) && getUpgradeTimesBought(upgradeName).lte(1000)) {
+    setUpgradeCost(upgradeName, (getUpgradeTimesBought(upgradeName).times(10).plus(100).times(getUpgradeTimesBought(upgradeName).log10())));
+  }
+  else {
+    scaleMultiplier(D(1.1))(upgradeName)
   }
 }
 
@@ -245,6 +181,55 @@ export function scaleGen(upgradeName: UpgradeName): void {
   }
 }
 
+export function scaleBA(upgradeName: UpgradeName): void {
+  setUpgradeCost(upgradeName, getUpgradeCost(upgradeName).plus(1));
+}
+
+export function GBTExtra(): void {
+  player.gbTimeLeftCon = player.gbTimeLeftCon.plus(
+    D(2).pow(getUpgradeTimesBought("gboostdouble")).times(20)
+  );
+  player.gbTimeLeft = new Decimal(0);
+  player.gbTimeLeft = player.gbTimeLeftCon;
+}
+
+export function GBMExtra(): void {
+  player.gbTimeLeft = new Decimal(0);
+  player.gbTimeLeft = player.gbTimeLeftCon;
+}
+
+export function GBDExtra(): void {
+  player.gbTimeLeftCon = player.gbTimeLeftCon.times(2);
+  player.gbTimeLeft = new Decimal(0);
+  player.gbTimeLeft = player.gbTimeLeftCon;
+}
+
+export function NBExtra(): void {  
+  getEl("divnp").textContent =
+    "Nuclear Particles: " + formatb(getUpgradeTimesBought("nuclearbuy"));
+}
+
+export function NABExtra(): void {  
+  getEl("divnap").textContent =
+    "Nuclear Particles: " + formatb(getUpgradeTimesBought("nuclearalphabuy"));
+}
+
+export function PCAExtra(): void {
+  if (getUpgradeTimesBought("upgradepca").lte(4)) {
+    player.pcaTime = Math.ceil(player.pcaTime / 2);
+  } else {
+    player.pcaTime = (D(10).div(getUpgradeTimesBought("upgradepca").minus(3))).ceil().toNumber()
+  }
+}
+
+export function BAExtra(): void {
+  if (getUpgradeTimesBought("upgradeba").lte(4)) {
+    player.baTime = Math.ceil(player.baTime / 2);
+  } else {
+    player.baTime = (D(10).div(getUpgradeTimesBought("upgradeba").minus(3))).ceil().toNumber()
+  }
+}
+
 function buyUpgrade(upgradeName: UpgradeName): void {
   const upgrade = upgrades[upgradeName];
   const oldCost = getUpgradeCost(upgradeName);
@@ -252,6 +237,7 @@ function buyUpgrade(upgradeName: UpgradeName): void {
     player.upgrades[upgradeName].timesBought = player.upgrades[upgradeName].timesBought.plus(1);
     player[upgrade.currency] = player[upgrade.currency].minus(oldCost);
     upgrade.scaleFunction(upgradeName);
+    //upgrade.extra(upgradeName); //TODO: fix the 2 errors here
     UpdateCostVal(
       upgrade.costDiv,
       getUpgradeCost(upgradeName),

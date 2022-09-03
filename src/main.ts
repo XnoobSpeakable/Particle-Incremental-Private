@@ -74,6 +74,20 @@ const themes = [
       borderColor: '#3DD7DE',
       themeName: 'Blue',
    },
+   {
+      textColor: '#000000',
+      bgColor: '#FFFACD',
+      buttonColor: '#FFD700',
+      borderColor: '#FFD700',
+      themeName: 'Yellow',
+   },
+   {
+      textColor: '#000000',
+      bgColor: '#DEB2EF',
+      buttonColor: '#8A7AED',
+      borderColor: '#6A5ACD',
+      themeName: 'Purple',
+   },
 ];
 function themeExec(): void {
    const { textColor, bgColor, buttonColor, borderColor, themeName } =
@@ -103,6 +117,7 @@ window.theme = function (): void {
    saveSettings();
 };
 function prePUD(): void {
+   getEl('tabopenfactory').style.display = 'none';
    getEl('tabopenalpha').style.display = 'none';
    getEl('tabopenbeta').style.display = 'none';
    getEl('tabopengamma').style.display = 'none';
@@ -114,8 +129,20 @@ function passiveUnlockDisplay(): void {
       getEl('tabopenalpha').style.display = 'inline';
       getEl('tabopenomega').style.display = 'inline';
    }
-   if (player.alphaNum.gte(1e9)) {
+   if (/*player.alphaNum.gte(1e9) &&*/ playerSettings.useExperimental) { //TODO: remove exprimental when you want
       getEl('tabopenbeta').style.display = 'inline';
+   }
+   if (playerSettings.useExperimental) { //TODO: remove exprimental when you want
+      getEl('tabopengamma').style.display = 'inline';
+   }
+   if (playerSettings.useExperimental) { //TODO: remove exprimental when you want
+      getEl('tabopendelta').style.display = 'inline';
+   }
+   if (/*player.num.gte(1e5) &&*/ playerSettings.useExperimental) { //TODO: remove exprimental when you want
+      getEl('tabopenfactory').style.display = 'inline';
+   }
+   if (playerSettings.useExperimental) { //TODO: remove exprimental when you want
+      getEl('tabopenachievements').style.display = 'inline';
    }
 }
 
@@ -209,11 +236,13 @@ function makeElementMap(...names: string[]): { [k: string]: HTMLElement } {
 }
 const tabElements = makeElementMap(
    'Base',
+   'Factory',
    'Alpha',
    'Beta',
    'Gamma',
    'Delta',
    'Omega',
+   'Achievements',
    'Stats',
    'Settings',
    'Tutorial'
@@ -262,15 +291,36 @@ window.saveImportConfirm = function (): void {
    window.location.reload();
 };
 window.setting1e4 = function (): void {
-   playerSettings.eSetting = 1e4;
+   playerSettings.eSetting = 4;
    loadMisc();
    saveSettings();
 };
 window.setting1e6 = function (): void {
-   playerSettings.eSetting = 1e6;
+   playerSettings.eSetting = 6;
    loadMisc();
    saveSettings();
 };
+
+window.experimentalToggle = function () {
+   playerSettings.useExperimental = !playerSettings.useExperimental
+   if(playerSettings.useExperimental) {
+      getEl('nextfeature').style.display = 'block'
+      getEl('tabopenfactory').style.display = 'inline';
+      getEl('tabopenbeta').style.display = 'inline';
+      getEl('tabopengamma').style.display = 'inline';
+      getEl('tabopendelta').style.display = 'inline';
+      getEl('tabopenachievements').style.display = 'inline';
+   }
+   else {
+      getEl('nextfeature').style.display = 'none'
+      getEl('tabopenfactory').style.display = 'none';
+      getEl('tabopenbeta').style.display = 'none';
+      getEl('tabopengamma').style.display = 'none';
+      getEl('tabopendelta').style.display = 'none';
+      getEl('tabopenachievements').style.display = 'none';
+   }
+   getEl('experimentoggle').textContent = playerSettings.useExperimental.toString()
+}
 
 window.mbman = function (): void {
    const gain: Decimal = onBoughtInc(
@@ -367,6 +417,23 @@ window.toggleba = function (): void {
       }
    }
 };
+/* TODO:
+const features = { 
+   GB: {displayName: "Generator boost", unlocksAt: D(5000), currency: ""},
+   Factory: {displayName: "Factory", unlocksAt: D(1e5), currency: ""},
+   NP: {displayName: "Nuclear Particles", unlocksAt: D(1e6), currency: ""},
+   Bang: {displayName: "Bang", unlocksAt: D(1e9), currency: ""},
+   BA: {displayName: "Bang Autobuyer (in Omega tab)", unlocksAt: D(1e10), currency: ""},
+   PCA: {displayName: "Particle Chunk Autobuyer", unlocksAt: D(20), currency: " Alpha "},
+}
+function nextFeatureHandler(): void {
+   let nextFeature = features['GB']
+   const percentage = D(100).times((player.num.log10()).div(nextFeature.unlocksAt.log10()))
+   getEl('nextfeature').textContent =
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+      "Reach" + nextFeature.unlocksAt + nextFeature.currency + "particles to unlock Generator boost (" + percentage + ")"
+
+}*/
 
 function fgbtest(): void {
    if (getUpgradeTimesBought('gen').gt(0)) {
@@ -475,6 +542,8 @@ function fgbtest(): void {
          player.tempBoost = 1;
          getEl('tmp').style.display = 'none';
       }
+
+      //nextFeatureHandler() TODO:
 
       getEl('omegabasecost').textContent =
          'Cost: ' + formatb(player.omegaBaseCost);

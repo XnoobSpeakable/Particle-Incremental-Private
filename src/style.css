@@ -21,6 +21,7 @@ button:active {
 }
 #counter {
   font-size: x-large;
+  padding-bottom: 0.05em;
 }
 #alphacounter {
   font-size: x-large;
@@ -75,10 +76,6 @@ button:active {
 }
 #divupgradepcacost {
   display: inline-block;
-}
-#divtogglepca {
-  display: inline-block;
-  text-indent: 1.75em;
 }
 #divboosterupcost {
   display: inline-block;
@@ -247,4 +244,15 @@ body {
   padding-bottom: 10px; 
   padding-right: 15px; 
   border-radius: 10px
+}
+#nextfeature {
+  font-size:larger;
+  padding-bottom:0.3em;
+}
+#autosaving {
+  display:inline-block;
+}
+#experimentoggle {
+  display:inline-block;
+  text-indent: 10em;
 }

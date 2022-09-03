@@ -1,4 +1,5 @@
 import Decimal from 'break_eternity.js';
+import { getEl} from './util'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type jsnumber = number;
@@ -61,6 +62,7 @@ export let playerSettings = {
     autoSaveMode: 4, 
     autoSaveSet: 50,
     themeNumber: 0,
+    useExperimental: false,
 }
 
 export type UpgradeName = keyof typeof player.upgrades;
@@ -88,6 +90,23 @@ export function loadSettings() {
         playerSettings.version = "b1.22.0";
         alert("This version is incompatible with older saves, so your progress has been wiped.");
     }
+    if(playerSettings.useExperimental) {
+        getEl('nextfeature').style.display = 'block'
+        getEl('tabopenfactory').style.display = 'inline';
+        getEl('tabopenbeta').style.display = 'inline';
+        getEl('tabopengamma').style.display = 'inline';
+        getEl('tabopendelta').style.display = 'inline';
+        getEl('tabopenachievements').style.display = 'inline';
+     }
+     else {
+        getEl('nextfeature').style.display = 'none'
+        getEl('tabopenfactory').style.display = 'none';
+        getEl('tabopenbeta').style.display = 'none';
+        getEl('tabopengamma').style.display = 'none';
+        getEl('tabopendelta').style.display = 'none';
+        getEl('tabopenachievements').style.display = 'none';
+     }
+     getEl('experimentoggle').textContent = playerSettings.useExperimental.toString()
 }
 
 Decimal.prototype.toJSON = function () {
