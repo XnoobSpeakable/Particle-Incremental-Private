@@ -10,12 +10,22 @@ export type jsnumber = number;
 export function format(n: jsnumber): string {
    return Math.log10(n) >= playerSettings.eSetting
       ? n.toExponential(2).replace('e+', 'e')
-      : n.toFixed(2).replace('.00', '');
+      : n.toFixed(0)
 }
 export function formatb(n: Decimal): string {
    return n.absLog10().toNumber() >= playerSettings.eSetting
       ? n.toExponential(2).replace('e+', 'e')
-      : n.toFixed(2).replace('.00', '');
+      : n.toFixed(0)
+}
+export function formatSpecific(n: jsnumber): string {
+   return Math.log10(n) >= playerSettings.eSetting
+      ? n.toExponential(2).replace('e+', 'e')
+      : n.toFixed(3).replace('.000', '');
+}
+export function formatbSpecific(n: Decimal): string {
+   return n.absLog10().toNumber() >= playerSettings.eSetting
+      ? n.toExponential(2).replace('e+', 'e')
+      : n.toFixed(3).replace('.000', '');
 }
 export function getEl(id: string): HTMLElement {
    return document.getElementById(id)!;

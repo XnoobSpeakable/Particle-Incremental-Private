@@ -10,6 +10,7 @@ import {
 } from './player';
 import { UpdateCostVal, upgrades } from './upgrades';
 import { format, formatb, getEl, D,  onBought, onBoughtInc } from './util';
+import { nextFeatureHandler } from './features';
 import Decimal from 'break_eternity.js';
 
 // eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
@@ -417,23 +418,6 @@ window.toggleba = function (): void {
       }
    }
 };
-/* TODO:
-const features = { 
-   GB: {displayName: "Generator boost", unlocksAt: D(5000), currency: ""},
-   Factory: {displayName: "Factory", unlocksAt: D(1e5), currency: ""},
-   NP: {displayName: "Nuclear Particles", unlocksAt: D(1e6), currency: ""},
-   Bang: {displayName: "Bang", unlocksAt: D(1e9), currency: ""},
-   BA: {displayName: "Bang Autobuyer (in Omega tab)", unlocksAt: D(1e10), currency: ""},
-   PCA: {displayName: "Particle Chunk Autobuyer", unlocksAt: D(20), currency: " Alpha "},
-}
-function nextFeatureHandler(): void {
-   let nextFeature = features['GB']
-   const percentage = D(100).times((player.num.log10()).div(nextFeature.unlocksAt.log10()))
-   getEl('nextfeature').textContent =
-      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-      "Reach" + nextFeature.unlocksAt + nextFeature.currency + "particles to unlock Generator boost (" + percentage + ")"
-
-}*/
 
 function fgbtest(): void {
    if (getUpgradeTimesBought('gen').gt(0)) {
@@ -524,13 +508,9 @@ function fgbtest(): void {
                getUpgradeTimesBought('boosteruppercent').plus(1).div(100)
             )
          );
-         // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
          getEl('boostersmaintext').textContent =
-            'You are currently getting ' +
-            formatb(totalGain) +
-            ' booster particles per alpha particle per second, resulting in a +' +
-            percentBoostDisplay +
-            '% boost to base particle production';
+            `You are currently getting ${formatb(totalGain)} booster particles per alpha particle per second,
+             resulting in a +${percentBoostDisplay}% boost to base particle production`;
       }
       getEl('bpamount').textContent =
          'You have ' + formatb(player.boosterParticles) + ' booster particles';
@@ -543,7 +523,7 @@ function fgbtest(): void {
          getEl('tmp').style.display = 'none';
       }
 
-      //nextFeatureHandler() TODO:
+      nextFeatureHandler()
 
       getEl('omegabasecost').textContent =
          'Cost: ' + formatb(player.omegaBaseCost);
