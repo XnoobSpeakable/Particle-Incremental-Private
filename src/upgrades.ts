@@ -28,123 +28,132 @@ export function UpdateCostVal(
     "Cost: " + formatb(variable) + currencyName[currency];
 }
 
+type Upgrade = {
+  currency: CurrencyName;
+  costDiv: string;
+  scaleFunction: (upgradeName: UpgradeName) => void;
+  extra?: undefined | (() => void) ;
+}
+
+function Upgrade(x: Upgrade) { return x; } //when the impostor is sus
+
 export const upgrades = {
-  gen: {
+  gen: Upgrade({
     scaleFunction: scaleGen,
     costDiv: "divgencost",
     currency: "num"
-  },
-  bb: {
+  }),
+  bb: Upgrade({
     scaleFunction: scaleMultiplier(D(2)),
     costDiv: "divbbcost",
     currency: "num"
-  },
-  speed: {
+  }),
+  speed: Upgrade({
     scaleFunction: scaleSpeed,
     costDiv: "divspeedcost",
     currency: "num"
-  },
-  mbup: {
+  }),
+  mbup: Upgrade({
     scaleFunction: scaleMultiplier(D(1.5)),
     costDiv: "divmbupcost",
     currency: "num"
-  },
-  mbmult: {
+  }),
+  mbmult: Upgrade({
     scaleFunction: scaleMultiplier(D(2)),
     costDiv: "divmbmultcost",
     currency: "num"
-  },
-  unlockgb: {
+  }),
+  unlockgb: Upgrade({
     scaleFunction: scaleMultiplier(D(Infinity)),
     costDiv: "divgenunlockcost",
     currency: "num"
-  },
-  gbupt: {
+  }),
+  gbupt: Upgrade({
     scaleFunction: scaleMultiplier(D(5)),
     costDiv: "divgbuptcost",
     currency: "num",
-    extra: GBTExtra()
-  },
-  gbupm: {
+    extra: GBTExtra
+  }),
+  gbupm: Upgrade({
     scaleFunction: scaleMultiplier(D(5)),
     costDiv: "divgbupmcost",
     currency: "num",
-    extra: GBMExtra()
-  },
-  nuclearbuy: {
+    extra: GBMExtra
+  }),
+  nuclearbuy: Upgrade({
     scaleFunction: scaleMultiplier(D(7)),
     costDiv: "divnuclearcost",
     currency: "num",
-    extra: NBExtra()
-  },
-  alphaacc: {
+    extra: NBExtra
+  }),
+  alphaacc: Upgrade({
     scaleFunction: scaleMultiplier(D(1000)),
     costDiv: "divalphaacceleratorcost",
     currency: "num"
-  },
-  tb: {
+  }),
+  tb: Upgrade({
     scaleFunction: scaleMultiplier(D(4)),
     costDiv: "divthreeboostcost",
     currency: "alphaNum"
-  },
-  perbang: {
+  }),
+  perbang: Upgrade({
     scaleFunction: scaleMultiplier(D(4)),
     costDiv: "divperbangcost",
     currency: "alphaNum"
-  },
-  bangspeed: {
+  }),
+  bangspeed: Upgrade({
     scaleFunction: scaleBangSpeed,
     costDiv: "divbangspeedcost",
     currency: "alphaNum"
-  },
-  unlockpca: {
+  }),
+  unlockpca: Upgrade({
     scaleFunction: scaleMultiplier(D(Infinity)),
     costDiv: "divunlockpca",
     currency: "alphaNum"
-  },
-  upgradepca: {
+  }),
+  upgradepca: Upgrade({
     scaleFunction: scaleMultiplier(D(3)),
     costDiv: "divupgradepcacost",
     currency: "alphaNum",
-    extra: PCAExtra()
-  },
-  boosterup: {
+    extra: PCAExtra
+  }),
+  boosterup: Upgrade({
     scaleFunction: scaleMultiplier(D(10)),
     costDiv: "divboosterupcost",
     currency: "alphaNum"
-  },
-  boosteruppercent: {
+  }),
+  boosteruppercent: Upgrade({
     scaleFunction: scaleMultiplier(D(10)),
     costDiv: "divboosteruppercentcost",
     currency: "alphaNum"
-  },
-  nuclearalphabuy: {
+  }),
+  nuclearalphabuy: Upgrade({
     scaleFunction: scaleMultiplier(D(7)),
     costDiv: "divnuclearalphacost",
     currency: "alphaNum",
-    extra: NABExtra()
-  },
-  gboostdouble: {
+    extra: NABExtra
+  }),
+  gboostdouble: Upgrade({
     scaleFunction: scaleMultiplier(D(2)),
     costDiv: "gboostdouble",
     currency: "alphaNum",
-    extra: GBDExtra()
-  },
-  alphamachinedouble: {
+    extra: GBDExtra
+  }),
+  alphamachinedouble: Upgrade({
     scaleFunction: scaleMultiplier(D(3)),
     costDiv: "alphamachinedouble",
     currency: "alphaNum"
-  },
-  baunlock: {
+  }),
+  baunlock: Upgrade({
     scaleFunction: scaleMultiplier(D(Infinity)),
     costDiv: "divbau",
     currency: "omegaBase"
-  },
-  upgradeba: {
+  }),
+  upgradeba: Upgrade({
     scaleFunction: scaleBA,
     costDiv: "divupgradeba",
     currency: "omegaBase"
-  }
+  }),
 } as const;
 
 export function scaleMultiplier(multiplier: Decimal): (upgradeName: UpgradeName) => void {
@@ -237,7 +246,7 @@ function buyUpgrade(upgradeName: UpgradeName): void {
     player.upgrades[upgradeName].timesBought = player.upgrades[upgradeName].timesBought.plus(1);
     player[upgrade.currency] = player[upgrade.currency].minus(oldCost);
     upgrade.scaleFunction(upgradeName);
-    //upgrade.extra(upgradeName); //TODO: fix the 2 errors here
+    if (typeof upgrade.extra !== 'undefined') { upgrade.extra(); }
     UpdateCostVal(
       upgrade.costDiv,
       getUpgradeCost(upgradeName),

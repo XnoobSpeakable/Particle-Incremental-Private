@@ -56,7 +56,7 @@ export let player = {
 };
 
 export let playerSettings = {
-    version: "b1.22.0",
+    version: "b1.22.3",
     eSetting: 4,
     autoSaveDelay: 50, 
     autoSaveMode: 4, 
@@ -82,13 +82,14 @@ export function loadSettings() {
     const stage = Number(playerSettings.version.substring(1, 2))
     const major = Number(playerSettings.version.substring(3, 5))
     //const minor = player.version.substring(6)
-    if(stage === 1 && major <= 21) {
+    if(stage === 1 && major <= 21) { //code for legacy support
         localStorage.removeItem(window.location.pathname);
         window.location.reload();
     }
-    if(playerSettings.version !== "b1.22.0") {
-        playerSettings.version = "b1.22.0";
-        alert("This version is incompatible with older saves, so your progress has been wiped.");
+    if(playerSettings.version !== "b1.22.3") {
+        localStorage.removeItem(window.location.pathname);
+        window.location.reload();
+        playerSettings.version = "b1.22.3";
     }
     if(playerSettings.useExperimental) {
         getEl('nextfeature').style.display = 'block'
