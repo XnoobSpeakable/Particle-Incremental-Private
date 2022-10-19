@@ -84,6 +84,12 @@ button:active {
   display: inline-block;
   text-indent: 15em;
 }
+#divboostsacrificecost {
+  display: inline-block;
+}
+#boostsac2 {
+  display: inline-block;
+}
 #omegabasecost {
   display: inline-block;
 }
@@ -245,6 +251,13 @@ body {
   padding-right: 15px; 
   border-radius: 10px
 }
+#divclickerparticles {
+  border:0.2em solid #333333; 
+  padding-left: 15px; 
+  padding-bottom: 10px; 
+  padding-right: 15px; 
+  border-radius: 10px
+}
 #nextfeature {
   font-size:larger;
   padding-bottom:0.3em;
@@ -255,4 +268,11 @@ body {
 #experimentoggle {
   display:inline-block;
   text-indent: 10em;
+}
+#divspeedparticlecost {
+  display: inline-block;
+}
+#divmachinecost {
+  display: inline-block;
+  text-indent: 2em;
 }

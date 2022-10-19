@@ -86,6 +86,16 @@ export const upgrades = {
     currency: "num",
     extra: NBExtra
   }),
+  speedparticle: Upgrade({
+    scaleFunction: scaleMultiplier(D(5)),
+    costDiv: "divspeedparticlecost",
+    currency: "num"
+  }),
+  machine: Upgrade({
+    scaleFunction: scaleMultiplier(D(4)),
+    costDiv: "divmachinecost",
+    currency: "num"
+  }),
   alphaacc: Upgrade({
     scaleFunction: scaleMultiplier(D(1000)),
     costDiv: "divalphaacceleratorcost",
@@ -175,7 +185,7 @@ export function scaleSpeed(upgradeName: UpgradeName): void {
     setUpgradeCost(upgradeName, D(50))
   }
   else if(getUpgradeTimesBought(upgradeName).gte(10) && getUpgradeTimesBought(upgradeName).lte(1000)) {
-    setUpgradeCost(upgradeName, (getUpgradeTimesBought(upgradeName).times(10).plus(100).times(getUpgradeTimesBought(upgradeName).log10())));
+    setUpgradeCost(upgradeName, (D(31).times(getUpgradeTimesBought(upgradeName)).minus(110)));
   }
   else {
     scaleMultiplier(D(1.1))(upgradeName)
@@ -256,9 +266,12 @@ function buyUpgrade(upgradeName: UpgradeName): void {
 }
 window.buyUpgrade = buyUpgrade;
 
-window.buyTenSpeed = function (): void {
-  while(player.num.gte(getUpgradeCost('speed'))) {
-    buyUpgrade('speed');
+window.buyFiftySpeed = function (): void {
+  for(let i = 0; i < 50; i++) {
+    if(player.num.gte(getUpgradeCost('speed'))) {
+      buyUpgrade('speed')
+    }
+    else { return; } 
   }
 }
 

@@ -1,26 +1,49 @@
-import { D, getEl, formatb, formatbSpecific } from './util'
-import { player } from './player'
+import { D, getEl, formatb, formatbSpecific } from './util';
+import { player } from './player';
+import { CurrencyName, currencyName } from './upgrades';
+import Decimal from 'break_eternity.js';
 
+function Feature(x: Feature) { return x; }
 const features = { 
-    GB: {displayName: "Generator boost", unlocksAt: D(5000), currency: "", next: 'Factory'} ,
-    Factory: {displayName: "Factory", unlocksAt: D(1e5), currency: "", next: 'NP'} ,
-    NP: {displayName: "Nuclear Particles", unlocksAt: D(1e6), currency: "", next: 'Bang'} ,
-    Bang: {displayName: "Bang", unlocksAt: D(1e9), currency: "", next: 'BA'} ,
-    BA: {displayName: "Bang Autobuyer (in Omega tab)", unlocksAt: D(1e10), currency: "", next: 'PCA'} ,
-    PCA: {displayName: "Particle Chunk Autobuyer", unlocksAt: D(20), currency: " Alpha", next: 'NAP'} ,
-    NAP: {displayName: "Nuclear Alpha Particles", unlocksAt: D(1e6), currency: " Alpha", next: undefined} ,
-} as const
-type FeatureKey = keyof typeof features;
-let goal : FeatureKey = 'GB'
+    GB: Feature({displayName: "Generator boost", unlocksAt: D(5000), currency: "num", next: 'Factory'}),
+    Factory: Feature({displayName: "Factory", unlocksAt: D(1e5), currency: "num", next: 'NP'}),
+    NP: Feature({displayName: "Nuclear Particles", unlocksAt: D(1e6), currency: "num", next: 'Bang'}),
+    Bang: Feature({displayName: "Bang", unlocksAt: D(1e9), currency: "num", next: 'BA'}),
+    BA: Feature({displayName: "Bang Autobuyer (in Omega tab)", unlocksAt: D(1e10), currency: "num", next: 'PCA'}),
+    PCA: Feature({displayName: "Particle Chunk Autobuyer", unlocksAt: D(20), currency: "alphaNum", next: 'NAP'}),
+    NAP: Feature({displayName: "Nuclear Alpha Particles", unlocksAt: D(1e6), currency: "alphaNum", next: undefined}),
+} as const;
+
+type FeatureKey = 'GB'|'Factory'|'NP'|'Bang'|'BA'|'PCA'|'NAP'
+        
+type Feature = {
+    displayName: string,
+    unlocksAt: Decimal,
+    currency: CurrencyName,
+    next: FeatureKey | undefined
+}
+
+let goal : FeatureKey | undefined = 'GB'
 export function nextFeatureHandler(): void {
+    if (typeof goal === 'undefined') { return; }
     let feature = features[goal]
-    const nextGoal : FeatureKey = feature.next as FeatureKey
-    const percentage = D(100).times((player.num.log10()).div(feature.unlocksAt.log10()))
-    getEl('nextfeature').textContent =
-       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-       `Reach ${formatb(feature.unlocksAt)}${feature.currency} particles to unlock ${feature.displayName} (${formatbSpecific(percentage)}%)`
-    if(player.num.gte(feature.unlocksAt)) {
+    const featureCurrency = feature.currency
+    const nextGoal  = feature.next
+    if(!nextGoal) {
+        getEl('nextfeature').textContent = 'You have unlocked all the features.'
+        goal = undefined;
+    }
+    else if(player[featureCurrency].gte(feature.unlocksAt)){
         goal = nextGoal
         feature = features[goal]
+    }
+    else {
+        let percentage = D(100).times((player[featureCurrency].log10()).div(feature.unlocksAt.log10()))
+        if(percentage.lt(0)) {
+            percentage = D(0)
+        }
+        getEl('nextfeature').textContent =
+            `Reach ${formatb(feature.unlocksAt)}${currencyName[feature.currency]} particles to unlock ${feature.displayName} (${formatbSpecific(percentage)}%)`.replace('(e^NaN)NaN', '0')
+
     }
 }
