@@ -5,31 +5,39 @@ import {
    UpgradeName,
 } from './player';
 import Decimal from 'break_eternity.js';
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type jsnumber = number;
+
+
 export function format(n: jsnumber): string {
    return Math.log10(n) >= playerSettings.eSetting
       ? n.toExponential(2).replace('e+', 'e').replace('.00', '')
       : n.toFixed(0)
 }
+
 export function formatb(n: Decimal): string {
    return n.absLog10().toNumber() >= playerSettings.eSetting
       ? n.toExponential(2).replace('e+', 'e').replace('.00', '')
       : n.toFixed(0)
 }
+
 export function formatSpecific(n: jsnumber): string {
    return Math.log10(n) >= playerSettings.eSetting
       ? n.toExponential(2).replace('e+', 'e').replace('.00', '')
       : n.toFixed(3).replace('.000', '');
 }
+
 export function formatbSpecific(n: Decimal): string {
    return n.absLog10().toNumber() >= playerSettings.eSetting
       ? n.toExponential(2).replace('e+', 'e').replace('.00', '')
       : n.toFixed(3).replace('.000', '');
 }
+
 export function getEl(id: string): HTMLElement {
    return document.getElementById(id)!;
 }
+
 export function D(n: jsnumber): Decimal {
    return new Decimal(n);
 }
