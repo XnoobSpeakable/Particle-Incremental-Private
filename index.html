@@ -301,13 +301,8 @@
 
       <div id="Settings" style="display:none">
         <br>
-        <button onclick="reset()" id="resetb" class="button">RESET SAVE</button>
-        <br>
-        Refresh and you're back to 0 particles
-        <br>
-        THIS CAN NOT BE UNDONE!
-        <br>
-        (also resets all settings)
+        <button onclick="reset()"  class="button, redb">RESET SAVE</button>
+        <button onclick="loadbackup()" class="button, redb">load backup (if one exists)</button>
         <br>
         <br>
         <button onclick="saveExport()" class="button">Export save</button>
@@ -343,7 +338,7 @@
         <br>
         Changelog:
         <br>
-        Added factory tab, percent to next feature, changed booster particle behavior, changed balancing, bugfixes.
+        Added part of facotry tab, percent to next feature, backup save, changed booster particle behavior, changed balancing, bugfixes.
       </div>
       <div id="Tutorial" style="display:none">
         A generator gives you n particles every loop. Default is 1 loop per second and 1 particle per loop. <br>

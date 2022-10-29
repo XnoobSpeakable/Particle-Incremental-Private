@@ -91,6 +91,7 @@ const themes = [
       themeName: 'Purple',
    },
 ];
+
 function themeExec(): void {
    const { textColor, bgColor, buttonColor, borderColor, themeName } =
       themes[playerSettings.themeNumber];
@@ -110,6 +111,12 @@ function themeExec(): void {
    for (let i = 0; i < className2.length; i++) {
       className2[i].style.border = '0.2em solid ' + borderColor;
    }
+   const className3 = document.getElementsByClassName(
+      'redb'
+   ) as HTMLCollectionOf<HTMLElement>;
+   for (let i = 0; i < className3.length; i++) {
+      className3[i].style.backgroundColor = buttonColor;
+   }
    getEl('whattheme').textContent = 'Theme: ' + themeName;
 }
 
@@ -118,6 +125,7 @@ window.theme = function (): void {
    themeExec();
    saveSettings();
 };
+
 function prePUD(): void {
    getEl('tabopenfactory').style.display = 'none';
    getEl('tabopenalpha').style.display = 'none';
@@ -126,6 +134,7 @@ function prePUD(): void {
    getEl('tabopendelta').style.display = 'none';
    getEl('tabopenomega').style.display = 'none';
 }
+
 function passiveUnlockDisplay(): void {
    if (player.num.gte(1e9)) {
       getEl('tabopenalpha').style.display = 'inline';
@@ -236,6 +245,7 @@ function makeElementMap(...names: string[]): { [k: string]: HTMLElement } {
    });
    return Object.fromEntries(entries);
 }
+
 const tabElements = makeElementMap(
    'Base',
    'Factory',
@@ -257,6 +267,7 @@ const tabOmegaElements = makeElementMap(
    'oDelta',
    'oOmega'
 );
+
 function hideElements(elements: {
    [x: string]: { style: { display: string } };
 }) {
@@ -264,6 +275,7 @@ function hideElements(elements: {
       elements[name].style.display = 'none';
    }
 }
+
 window.openTab = function (tab: string): void {
    if (tab in tabOmegaElements) {
       hideElements(tabOmegaElements);
@@ -275,14 +287,17 @@ window.openTab = function (tab: string): void {
 
 load();
 loadMisc();
+
 window.saveExport = function (): void {
    // eslint-disable-next-line @typescript-eslint/no-floating-promises
    navigator.clipboard.writeText(save());
 };
+
 window.saveImport = function (): void {
    getEl('importareaid').style.display = 'block';
    getEl('saveimportconfirm').style.display = 'block';
 };
+
 window.saveImportConfirm = function (): void {
    const saveEl = getEl('importareaid');
    if (!(saveEl instanceof HTMLTextAreaElement)) {
@@ -292,11 +307,13 @@ window.saveImportConfirm = function (): void {
    localStorage.setItem(window.location.pathname, savefile);
    window.location.reload();
 };
+
 window.setting1e4 = function (): void {
    playerSettings.eSetting = 4;
    loadMisc();
    saveSettings();
 };
+
 window.setting1e6 = function (): void {
    playerSettings.eSetting = 6;
    loadMisc();
@@ -330,9 +347,7 @@ window.mbman = function (): void {
    ).times(clickerParticleMult);
    player.num = player.num.plus(gain);
    getEl('counter').textContent = formatb(player.num) + ' particles';
-};if(player.clickerParticles.gt(100)) {
-   clickerParticleMult = player.clickerParticles.div(100)
-}
+};
 
 window.gbboost = function (): void {
    player.gbTimeLeft = player.gbTimeLeftCon;
@@ -440,13 +455,9 @@ function fgbtest(): void {
          300 / Math.pow(2, getUpgradeTimesBought('bangspeed').toNumber())
       );
       
-    //   const alphaGain: Decimal = onBought(
-    //      'alphaacc', '*', ['perbang', '+', D(1)], '*',['nuclearalphabuy', '+', D(1)], '*', [D(2), '^', 'alphamachinedouble']
-    //      );
-
-               const alphaGain: Decimal = onBought(
-                  'alphaacc', ['perbang', '+', D(1)], ['nuclearalphabuy', '+', D(1)], [D(2), '^', 'alphamachinedouble']
-               );
+      const alphaGain: Decimal = onBought(
+         'alphaacc', ['perbang', '+', D(1)], ['nuclearalphabuy', '+', D(1)], [D(2), '^', 'alphamachinedouble']
+      );
 
       if (player.bangTimeLeft === 0) {
          player.alphaNum = player.alphaNum.plus(alphaGain);
@@ -522,6 +533,7 @@ function fgbtest(): void {
       getEl('divoalpha').textContent = 'You have ' + formatb(player.omegaAlpha);
 
       player.num = player.num.plus(gain);
+
       getEl('particlespersecond').textContent =
          'You are getting ' + formatb(gain.times(10)) + ' particles/s';
 
@@ -624,6 +636,10 @@ window.save = save;
 window.reset = function (): void {
    saveSettings();
    localStorage.removeItem(window.location.pathname);
+
+   //make backup save
+   const savefile = JSON.stringify(player, saveReplace);
+   localStorage.setItem(window.location.pathname + "backupsave", savefile);
+
    window.location.reload();
 };
-console.log(window.location.pathname);

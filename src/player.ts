@@ -3,6 +3,10 @@ import { getEl } from './util'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type jsnumber = number;
+
+// eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
+declare var window: Window & Record<string, unknown>;
+
 function D(n: jsnumber): Decimal {
    return new Decimal(n);
 }
@@ -11,8 +15,8 @@ export let player = {
     upgrades: { 
         'gen': { cost: D(0), timesBought: D(0) },
         'bb': { cost: D(2000), timesBought: D(0)},
-        'speed': { cost: D(50), timesBought: D(0)},
-        'mbup': { cost: D(50), timesBought: D(0)},
+        'speed': { cost: D(100), timesBought: D(0)},
+        'mbup': { cost: D(100), timesBought: D(0)},
         'mbmult': { cost: D(1000), timesBought: D(0)},
         'unlockgb': { cost: D(5000), timesBought: D(0)},
         'gbupt': { cost: D(100), timesBought: D(0)},
@@ -109,20 +113,31 @@ export function loadSettings() {
 
 Decimal.prototype.toJSON = function () {
     return 'D#' + this.toString();
- };
+};
  
- function saveRevive(_key: string, value: unknown) {
+function saveRevive(_key: string, value: unknown) {
     if (typeof value === 'string' && value.startsWith('D#') ) { return new Decimal(value.slice(2)) }
     return value;
- }
- 
- export function getSaveString() {
+}
+
+export function getSaveString() {
     return JSON.stringify(player);
- }
+}
  
- export function load() {
+export function load() {
     if(localStorage.getItem(window.location.pathname) !== null) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         player = JSON.parse(localStorage.getItem(window.location.pathname)!, saveRevive);
     }
 }
+
+
+window.loadbackup = function () {
+    if(localStorage.getItem(window.location.pathname + "backupsave") !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const savefile = localStorage.getItem(window.location.pathname + "backupsave")!;
+        localStorage.setItem(window.location.pathname, savefile);
+        window.location.reload();
+    }
+ }
+ 

@@ -4,6 +4,7 @@ import { CurrencyName, currencyName } from './upgrades';
 import Decimal from 'break_eternity.js';
 
 function Feature(x: Feature) { return x; }
+
 const features = { 
     GB: Feature({displayName: "Generator boost", unlocksAt: D(5000), currency: "num", next: 'Factory'}),
     Factory: Feature({displayName: "Factory", unlocksAt: D(1e5), currency: "num", next: 'NP'}),
@@ -24,6 +25,7 @@ type Feature = {
 }
 
 let goal : FeatureKey | undefined = 'GB'
+
 export function nextFeatureHandler(): void {
     if (typeof goal === 'undefined') { return; }
     let feature = features[goal]

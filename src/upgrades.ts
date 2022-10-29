@@ -162,7 +162,8 @@ export const upgrades = {
   upgradeba: Upgrade({
     scaleFunction: scaleBA,
     costDiv: "divupgradeba",
-    currency: "omegaBase"
+    currency: "omegaBase",
+    extra: BAExtra
   }),
 } as const;
 
@@ -181,11 +182,13 @@ export function scaleBangSpeed(upgradeName: UpgradeName): void {
 }
 
 export function scaleSpeed(upgradeName: UpgradeName): void {
-  if(getUpgradeTimesBought(upgradeName).lt(10)) {
-    setUpgradeCost(upgradeName, D(50))
+  const x = getUpgradeTimesBought(upgradeName)
+
+  if(x.lt(10)) {
+    setUpgradeCost( upgradeName, D(10).times(x).plus(100) )
   }
-  else if(getUpgradeTimesBought(upgradeName).gte(10) && getUpgradeTimesBought(upgradeName).lte(1000)) {
-    setUpgradeCost(upgradeName, (D(31).times(getUpgradeTimesBought(upgradeName)).minus(110)));
+  else if(x.gte(10) && x.lte(1000)) {
+    setUpgradeCost( upgradeName, D(50).times(x).minus(250) );
   }
   else {
     scaleMultiplier(D(1.1))(upgradeName)

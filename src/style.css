@@ -59,13 +59,23 @@ button:active {
   display: inline-block;
   text-indent: 7.25em;
 }
-#resetb {
+.redb {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  border-radius: 2px;
+  border: 1px solid black;
+  box-shadow: none;
+  font-family: 'Tahoma';
+  font-weight: 500;
+  cursor: pointer;
   color: red
 }
-#resetb:hover {
+.redb:hover {
   color: #FF00FF
 }
-#resetb:active {
+.redb:active {
   color: #0099FF
 }
 #stat {
