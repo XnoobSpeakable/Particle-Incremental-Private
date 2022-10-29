@@ -13,7 +13,7 @@
   <body>
     <script defer src="./src/main.ts" type="module"></script>
     <div id="diventirebody" style="color:black; font-family: 'Times New Roman'">
-      <div id="nextfeature" style="display:none">Reach 5000 particles to unlock Generator boost (0%)</div>
+      <div id="nextfeature">Reach 5000 particles to unlock Generator boost (0%)</div>
       <div id="counter">0 particles</div>
       <div id="particlespersecond">You are getting 0 particles/s</div>
       <br>
@@ -38,7 +38,7 @@
           <button onclick="buyUpgrade('gen')" class="button">Buy generator</button>
           <button onclick="buyUpgrade('bb')" class="button">Bigger batches</button>
           <button onclick="buyUpgrade('speed')" class="button">Speed</button>
-          <button onclick="buyTenSpeed()" class="button">Buy max Speed</button>
+          <button onclick="buyFiftySpeed()" class="button">Buy up to 50 Speed</button>
         </div>
         <div id="divgencost">Cost: Free</div>
         <div id="divbbcost">Cost: 2000</div>
@@ -116,12 +116,23 @@
           <div id="bangreach">Reach 1e9 to unlock Bang!</div>
         </div>
         <br>
-        <div id="tmp" style="display:none">Temporary 1e6 to 1e12 1.5x boost active</div>
         <br>
       </div>
 
       <div id="Factory" style="display:none">
-        asdf
+        <br>
+        <div id="divclickerparticles" class="withtheoutline">
+          <br>
+          <div id="clickercounter">You have 0 Clicker Particles (+0/s), which are making Manual Boost 1x stronger.</div>
+          <br><br>
+          <div class="btn-group">
+            <button onclick="buyUpgrade('speedparticle')" class="button">Buy speed particle</button>
+            <button onclick="buyUpgrade('machine')" class="button">Buy machine</button>
+          </div>
+          <div id="divspeedparticlecost">Cost: 5e4 Particles</div>
+          <div id="divmachinecost">Cost: 2e4 Particles</div>
+          <br><br>
+        </div>
       </div>
 
       <div id="Alpha" style="display:none">
@@ -190,6 +201,9 @@
           </div>
           <div id="divboosterupcost">100 Alpha</div>
           <div id="divboosteruppercentcost">100 Alpha</div>
+          <br>
+          <br>
+          
         </div>
         <br>
       </div>
@@ -280,18 +294,15 @@
       </div>
 
       <div id="Achievements" style="display:none">
-        achivemnt 1: stuiff 
+        <div id="achievementContainer">
+
+        </div> 
       </div>
 
       <div id="Settings" style="display:none">
         <br>
-        <button onclick="reset()" id="resetb" class="button">RESET SAVE</button>
-        <br>
-        Refresh and you're back to 0 particles
-        <br>
-        THIS CAN NOT BE UNDONE!
-        <br>
-        (also resets all settings)
+        <button onclick="reset()"  class="button, redb">RESET SAVE</button>
+        <button onclick="loadbackup()" class="button, redb">load backup (if one exists)</button>
         <br>
         <br>
         <button onclick="saveExport()" class="button">Export save</button>
@@ -323,11 +334,11 @@
         <a href="https://github.com/typeholes">qhwood</a>
         for improving my code and helping me code.
         <br><br>
-        Version b1.22.3
+        Version b1.23.0 (alpha10)
         <br>
         Changelog:
         <br>
-        emergency fix 2
+        Added part of facotry tab, percent to next feature, backup save, changed booster particle behavior, changed balancing, bugfixes.
       </div>
       <div id="Tutorial" style="display:none">
         A generator gives you n particles every loop. Default is 1 loop per second and 1 particle per loop. <br>
@@ -342,10 +353,10 @@
         <br>
         The generator boost multiplies particle production by n for m seconds. <br>
         The default is a 5x multiplier for 1 second. <br>
-        The +1s upgrade makes it last for 1 more second <br>
+        The +2s upgrade makes it last for 2 more seconds <br>
         The +5x upgrade increases the multiplier by 5x (1st upgrade 10x, 2nd upgrade 15x etc). <br>
         <br>
-        Every nuclear particle adds a +1x multiplier to both generator boosts and particle production. <br>
+        Every nuclear particle adds a +1x multiplier to both boosts and particle production. <br>
         (1st particle 2x, 2nd particle 3x etc). <br>
         <br>
         The buy particle chunk button is self explanatory. <br>

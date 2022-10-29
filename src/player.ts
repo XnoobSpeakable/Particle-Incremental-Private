@@ -1,8 +1,12 @@
 import Decimal from 'break_eternity.js';
-import { getEl} from './util'
+import { getEl } from './util'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type jsnumber = number;
+
+// eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
+declare var window: Window & Record<string, unknown>;
+
 function D(n: jsnumber): Decimal {
    return new Decimal(n);
 }
@@ -11,13 +15,15 @@ export let player = {
     upgrades: { 
         'gen': { cost: D(0), timesBought: D(0) },
         'bb': { cost: D(2000), timesBought: D(0)},
-        'speed': { cost: D(50), timesBought: D(0)},
-        'mbup': { cost: D(50), timesBought: D(0)},
+        'speed': { cost: D(100), timesBought: D(0)},
+        'mbup': { cost: D(100), timesBought: D(0)},
         'mbmult': { cost: D(1000), timesBought: D(0)},
         'unlockgb': { cost: D(5000), timesBought: D(0)},
         'gbupt': { cost: D(100), timesBought: D(0)},
         'gbupm': { cost: D(10000), timesBought: D(0)},
         'nuclearbuy': { cost: D(1e6), timesBought: D(0)},
+        'speedparticle': { cost: D(5e4), timesBought: D(0)},
+        'machine': { cost: D(2e4), timesBought: D(0)},
         'nuclearalphabuy': { cost: D(1e6), timesBought: D(0)},
         'alphaacc': { cost: D(1e10), timesBought: D(0)},
         'tb': { cost: D(1), timesBought: D(0)},
@@ -39,8 +45,7 @@ export let player = {
     pChunks: D(0),
     alphaNum: D(0),
     bangTime: 300, 
-    bangTimeLeft: 1e+300,  
-    tempBoost: 1, 
+    bangTimeLeft: 1e+300,   
     pcaToggle: true, 
     pcaTime: 160, 
     pcaTimeLeft: 0, 
@@ -53,10 +58,11 @@ export let player = {
     baToggle: true, 
     baTime: 160, 
     baTimeLeft: 0,
+    clickerParticles: D(0)
 };
 
 export let playerSettings = {
-    version: "b1.22.3",
+    version: "b1.23.0",
     eSetting: 4,
     autoSaveDelay: 50, 
     autoSaveMode: 4, 
@@ -86,23 +92,18 @@ export function loadSettings() {
         localStorage.removeItem(window.location.pathname);
         window.location.reload();
     }
-    if(playerSettings.version !== "b1.22.3") {
-        localStorage.removeItem(window.location.pathname);
-        window.location.reload();
-        playerSettings.version = "b1.22.3";
+    if(playerSettings.version !== "b1.23.0") {
+        localStorage.removeItem(window.location.pathname + "settings");
+        localStorage.removeItem(window.location.pathname)
+        playerSettings.version = "b1.23.0";
+        alert('please refresh')
     }
     if(playerSettings.useExperimental) {
-        getEl('nextfeature').style.display = 'block'
-        getEl('tabopenfactory').style.display = 'inline';
-        getEl('tabopenbeta').style.display = 'inline';
         getEl('tabopengamma').style.display = 'inline';
         getEl('tabopendelta').style.display = 'inline';
         getEl('tabopenachievements').style.display = 'inline';
      }
      else {
-        getEl('nextfeature').style.display = 'none'
-        getEl('tabopenfactory').style.display = 'none';
-        getEl('tabopenbeta').style.display = 'none';
         getEl('tabopengamma').style.display = 'none';
         getEl('tabopendelta').style.display = 'none';
         getEl('tabopenachievements').style.display = 'none';
@@ -112,20 +113,31 @@ export function loadSettings() {
 
 Decimal.prototype.toJSON = function () {
     return 'D#' + this.toString();
- };
+};
  
- function saveRevive(_key: string, value: unknown) {
+function saveRevive(_key: string, value: unknown) {
     if (typeof value === 'string' && value.startsWith('D#') ) { return new Decimal(value.slice(2)) }
     return value;
- }
- 
- export function getSaveString() {
+}
+
+export function getSaveString() {
     return JSON.stringify(player);
- }
+}
  
- export function load() {
+export function load() {
     if(localStorage.getItem(window.location.pathname) !== null) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         player = JSON.parse(localStorage.getItem(window.location.pathname)!, saveRevive);
     }
 }
+
+
+window.loadbackup = function () {
+    if(localStorage.getItem(window.location.pathname + "backupsave") !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const savefile = localStorage.getItem(window.location.pathname + "backupsave")!;
+        localStorage.setItem(window.location.pathname, savefile);
+        window.location.reload();
+    }
+ }
+ 

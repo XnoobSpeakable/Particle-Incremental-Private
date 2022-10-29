@@ -5,6 +5,7 @@ import {
   UpgradeName,
 } from "./player";
 import Decimal from "break_eternity.js";
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type jsnumber = number;
 
@@ -12,14 +13,17 @@ const MAX_ES_IN_A_ROW = 5;
 
 const decimalPlaces = function decimalPlaces(
   value: jsnumber,
-  places: jsnumber
+  places: jsnumber,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  trunc = (x: number) => x
 ): jsnumber {
   const len = places + 1;
   const numDigits = Math.ceil(Math.log10(Math.abs(value)));
   const rounded =
     Math.round(value * Math.pow(10, len - numDigits)) *
     Math.pow(10, numDigits - len);
-  return Math.ceil(parseFloat(rounded.toFixed(Math.max(len - numDigits, 0))));
+  const ret = parseFloat(rounded.toFixed(Math.max(len - numDigits, 0)));
+  return trunc(ret);
 };
 
 function formatD(d: Decimal, places = 3, ePlaces = 99): string {
@@ -27,9 +31,17 @@ function formatD(d: Decimal, places = 3, ePlaces = 99): string {
     if ((d.mag < 1e21 && d.mag > 1e-7) || d.mag === 0) {
       return (d.sign * d.mag).toFixed(places);
     }
-    return `${decimalPlaces(d.m, places)}e${decimalPlaces(d.e, ePlaces)}`;
+    return `${decimalPlaces(d.m, places)}e${decimalPlaces(
+      d.e,
+      ePlaces,
+      Math.round
+    )}`;
   } else if (d.layer === 1) {
-    return `${decimalPlaces(d.m, places)}e${decimalPlaces(d.e, ePlaces)}`;
+    return `${decimalPlaces(d.m, places)}e${decimalPlaces(
+      d.e,
+      ePlaces,
+      Math.round
+    )}`;
   } else {
     //layer 2+
     if (d.layer <= MAX_ES_IN_A_ROW) {
@@ -37,12 +49,13 @@ function formatD(d: Decimal, places = 3, ePlaces = 99): string {
         // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
         (d.sign === -1 ? "-" : "") +
         "e".repeat(d.layer) +
-        decimalPlaces(d.mag, ePlaces)
+        decimalPlaces(d.mag, ePlaces, Math.round)
       );
     } else {
       return `${d.sign === -1 ? "-" : ""}(e^${d.layer})${decimalPlaces(
         d.mag,
-        ePlaces
+        ePlaces,
+        Math.round
       )}`;
     }
   }
@@ -50,27 +63,32 @@ function formatD(d: Decimal, places = 3, ePlaces = 99): string {
 
 export function format(n: jsnumber): string {
   return Math.log10(n) >= playerSettings.eSetting
-    ? n.toExponential(2).replace("e+", "e")
+    ? n.toExponential(2).replace("e+", "e").replace(".00", "")
     : n.toFixed(0);
 }
+
 export function formatb(n: Decimal): string {
   return n.absLog10().toNumber() >= playerSettings.eSetting
-    ? formatD(n, 2).replace("e+", "e")
+    ? formatD(n, 2).replace("e+", "e").replace(".00", "")
     : n.toFixed(0);
 }
+
 export function formatSpecific(n: jsnumber): string {
   return Math.log10(n) >= playerSettings.eSetting
-    ? n.toExponential(2).replace("e+", "e")
+    ? n.toExponential(2).replace("e+", "e").replace(".00", "")
     : n.toFixed(3).replace(".000", "");
 }
+
 export function formatbSpecific(n: Decimal): string {
   return n.absLog10().toNumber() >= playerSettings.eSetting
-    ? n.toExponential(2).replace("e+", "e")
-    : formatD(n, 3).replace(".000", "");
+    ? formatD(n, 2).replace("e+", "e").replace(".00", "")
+    : n.toFixed(3).replace(".000", "");
 }
+
 export function getEl(id: string): HTMLElement {
   return document.getElementById(id)!;
 }
+
 export function D(n: jsnumber): Decimal {
   return new Decimal(n);
 }

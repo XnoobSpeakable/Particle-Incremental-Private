@@ -9,9 +9,10 @@ import {
    getSaveString,
 } from './player';
 import { UpdateCostVal, upgrades } from './upgrades';
-import { format, formatb, getEl, D,  onBought, onBoughtInc } from './util';
+import { format, formatb, getEl, D,  onBought, onBoughtInc, formatbSpecific } from './util';
 import { nextFeatureHandler } from './features';
 import Decimal from 'break_eternity.js';
+import { createAchievementHTML } from './achievements';
 
 // eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
 declare var window: Window & Record<string, unknown>;
@@ -90,6 +91,7 @@ const themes = [
       themeName: 'Purple',
    },
 ];
+
 function themeExec(): void {
    const { textColor, bgColor, buttonColor, borderColor, themeName } =
       themes[playerSettings.themeNumber];
@@ -109,6 +111,12 @@ function themeExec(): void {
    for (let i = 0; i < className2.length; i++) {
       className2[i].style.border = '0.2em solid ' + borderColor;
    }
+   const className3 = document.getElementsByClassName(
+      'redb'
+   ) as HTMLCollectionOf<HTMLElement>;
+   for (let i = 0; i < className3.length; i++) {
+      className3[i].style.backgroundColor = buttonColor;
+   }
    getEl('whattheme').textContent = 'Theme: ' + themeName;
 }
 
@@ -117,6 +125,7 @@ window.theme = function (): void {
    themeExec();
    saveSettings();
 };
+
 function prePUD(): void {
    getEl('tabopenfactory').style.display = 'none';
    getEl('tabopenalpha').style.display = 'none';
@@ -125,12 +134,13 @@ function prePUD(): void {
    getEl('tabopendelta').style.display = 'none';
    getEl('tabopenomega').style.display = 'none';
 }
+
 function passiveUnlockDisplay(): void {
    if (player.num.gte(1e9)) {
       getEl('tabopenalpha').style.display = 'inline';
       getEl('tabopenomega').style.display = 'inline';
    }
-   if (/*player.alphaNum.gte(1e9) &&*/ playerSettings.useExperimental) { //TODO: remove exprimental when you want
+   if (player.alphaNum.gte(1e9)) {
       getEl('tabopenbeta').style.display = 'inline';
    }
    if (playerSettings.useExperimental) { //TODO: remove exprimental when you want
@@ -139,7 +149,7 @@ function passiveUnlockDisplay(): void {
    if (playerSettings.useExperimental) { //TODO: remove exprimental when you want
       getEl('tabopendelta').style.display = 'inline';
    }
-   if (/*player.num.gte(1e5) &&*/ playerSettings.useExperimental) { //TODO: remove exprimental when you want
+   if (player.num.gte(1e5)) {
       getEl('tabopenfactory').style.display = 'inline';
    }
    if (playerSettings.useExperimental) { //TODO: remove exprimental when you want
@@ -235,6 +245,7 @@ function makeElementMap(...names: string[]): { [k: string]: HTMLElement } {
    });
    return Object.fromEntries(entries);
 }
+
 const tabElements = makeElementMap(
    'Base',
    'Factory',
@@ -256,6 +267,7 @@ const tabOmegaElements = makeElementMap(
    'oDelta',
    'oOmega'
 );
+
 function hideElements(elements: {
    [x: string]: { style: { display: string } };
 }) {
@@ -263,6 +275,7 @@ function hideElements(elements: {
       elements[name].style.display = 'none';
    }
 }
+
 window.openTab = function (tab: string): void {
    if (tab in tabOmegaElements) {
       hideElements(tabOmegaElements);
@@ -274,14 +287,17 @@ window.openTab = function (tab: string): void {
 
 load();
 loadMisc();
+
 window.saveExport = function (): void {
    // eslint-disable-next-line @typescript-eslint/no-floating-promises
    navigator.clipboard.writeText(save());
 };
+
 window.saveImport = function (): void {
    getEl('importareaid').style.display = 'block';
    getEl('saveimportconfirm').style.display = 'block';
 };
+
 window.saveImportConfirm = function (): void {
    const saveEl = getEl('importareaid');
    if (!(saveEl instanceof HTMLTextAreaElement)) {
@@ -291,11 +307,13 @@ window.saveImportConfirm = function (): void {
    localStorage.setItem(window.location.pathname, savefile);
    window.location.reload();
 };
+
 window.setting1e4 = function (): void {
    playerSettings.eSetting = 4;
    loadMisc();
    saveSettings();
 };
+
 window.setting1e6 = function (): void {
    playerSettings.eSetting = 6;
    loadMisc();
@@ -305,17 +323,11 @@ window.setting1e6 = function (): void {
 window.experimentalToggle = function () {
    playerSettings.useExperimental = !playerSettings.useExperimental
    if(playerSettings.useExperimental) {
-      getEl('nextfeature').style.display = 'block'
-      getEl('tabopenfactory').style.display = 'inline';
-      getEl('tabopenbeta').style.display = 'inline';
       getEl('tabopengamma').style.display = 'inline';
       getEl('tabopendelta').style.display = 'inline';
       getEl('tabopenachievements').style.display = 'inline';
    }
    else {
-      getEl('nextfeature').style.display = 'none'
-      getEl('tabopenfactory').style.display = 'none';
-      getEl('tabopenbeta').style.display = 'none';
       getEl('tabopengamma').style.display = 'none';
       getEl('tabopendelta').style.display = 'none';
       getEl('tabopenachievements').style.display = 'none';
@@ -323,12 +335,16 @@ window.experimentalToggle = function () {
    getEl('experimentoggle').textContent = playerSettings.useExperimental.toString()
 }
 
+createAchievementHTML()
+
+let clickerParticleMult = player.clickerParticles.div(100).plus(1)
+
 window.mbman = function (): void {
    const gain: Decimal = onBoughtInc(
       'mbup',
       '*',
       'mbmult', '*', 'nuclearbuy'
-   );
+   ).times(clickerParticleMult);
    player.num = player.num.plus(gain);
    getEl('counter').textContent = formatb(player.num) + ' particles';
 };
@@ -439,45 +455,29 @@ function fgbtest(): void {
          300 / Math.pow(2, getUpgradeTimesBought('bangspeed').toNumber())
       );
       
-    //   const alphaGain: Decimal = onBought(
-    //      'alphaacc', '*', ['perbang', '+', D(1)], '*',['nuclearalphabuy', '+', D(1)], '*', [D(2), '^', 'alphamachinedouble']
-    //      );
-
-               const alphaGain: Decimal = onBought(
-                  'alphaacc', ['perbang', '+', D(1)], ['nuclearalphabuy', '+', D(1)], [D(2), '^', 'alphamachinedouble']
-               );
+      const alphaGain: Decimal = onBought(
+         'alphaacc', ['perbang', '+', D(1)], ['nuclearalphabuy', '+', D(1)], [D(2), '^', 'alphamachinedouble']
+      );
 
       if (player.bangTimeLeft === 0) {
          player.alphaNum = player.alphaNum.plus(alphaGain);
          getEl('bangtimeleft').textContent = '';
       }
 
-/* const gain =
-   (getUpgradeTimesBought('bb') + 1) *
-   getUpgradeTimesBought('gen') *
-   (getUpgradeTimesBought('speed') / 10 + 0.1) *
-   player.gbMult *
-   (getUpgradeTimesBought('nuclearbuy') + 1) *
-   (getUpgradeTimesBought('nuclearbuy') + 1) *
-   Math.pow(3, getUpgradeTimesBought('tb')) *
-   player.tempBoost *
-   (1 +
-      ((player.boosterParticles / 100) *
-         (getUpgradeTimesBought('boosteruppercent') + 1)) /
-         100);
-*/
-
       const gain: Decimal = onBought(        
             ['bb', '+', D(1)], '*', 'gen', '*', ['speed', '/', D(10), '+', D(0.1)], '*', player.gbMult, '*', [['nuclearbuy', '+', D(1)], '^', D(2)], '*', 
-            [D(3), '^', 'tb'], '*', D(player.tempBoost), '*', [D(1), '+', [[player.boosterParticles, '+', D(1)], '/', D(100), '*', [['boosteruppercent', '+', D(1)], '/', D(100)]]]
-    );
+            [D(3), '^', 'tb'], '*', [D(1), '+', [[player.boosterParticles, '+', D(1)], '/', D(100), '*', [['boosteruppercent', '+', D(1)], '/', D(100)]]]
+      );
+
+      clickerParticleMult = player.clickerParticles.div(100).plus(1)
+      
 
       getEl('particlesperclick').textContent =
          'You are getting ' +
-                  formatb ( onBought( ['mbup', '+', D(1)], '*', ['mbmult', '+', D(1)], '*',['nuclearbuy', '+', D(1)])
+                  formatb ( onBought( ['mbup', '+', D(1)], '*', ['mbmult', '+', D(1)], '*',['nuclearbuy', '+', D(1)]).times(clickerParticleMult)
          ) +
          ' particles per click';
-      
+
       getEl('alphapb').textContent =
          'You are getting ' + formatb(alphaGain) + ' Alpha/bang';
       getEl('bangtimeconst').textContent =
@@ -496,32 +496,32 @@ function fgbtest(): void {
       getEl('divgbtl').textContent =
          'Boost Time Left: ' + formatb(player.gbTimeLeft.div(10));
 
-      player.untilBoost -= 1;
-      if (player.untilBoost === 0) {
-         player.untilBoost = 10;
-         const totalGain: Decimal = player.alphaNum.times(
-            getUpgradeTimesBought('boosterup').plus(1)
-         );
-         player.boosterParticles = player.boosterParticles.plus(totalGain);
-         const percentBoostDisplay: string = formatb(
-            player.boosterParticles.times(
-               getUpgradeTimesBought('boosteruppercent').plus(1).div(100)
-            )
-         );
+      const totalGain: Decimal = (player.alphaNum.times(
+         getUpgradeTimesBought('boosterup').plus(1)
+      )).times(D(2)).div(10);
+      player.boosterParticles = player.boosterParticles.plus(totalGain);
+      const percentBoostDisplay: Decimal = 
+         player.boosterParticles.times(
+            getUpgradeTimesBought('boosteruppercent').plus(1).div(100)
+         )
+      if(percentBoostDisplay.lt(100)) {
          getEl('boostersmaintext').textContent =
-            `You are currently getting ${formatb(totalGain)} booster particles per alpha particle per second,
-             resulting in a +${percentBoostDisplay}% boost to base particle production`;
+            `You are currently getting ${formatb(totalGain.times(10))} booster particles per alpha particle per second,
+               resulting in a +${formatbSpecific(percentBoostDisplay)}% boost to base particle production`;
+      }
+      else {
+         getEl('boostersmaintext').textContent =
+            `You are currently getting ${formatb(totalGain.times(10))} booster particles per alpha particle per second,
+               resulting in a ${formatbSpecific(percentBoostDisplay.div(100).plus(1))}x boost to base particle production`;
+
       }
       getEl('bpamount').textContent =
          'You have ' + formatb(player.boosterParticles) + ' booster particles';
-
-      if (player.num.gte(1e6) && player.num.lessThan(1e12)) {
-         player.tempBoost = 1.5;
-         getEl('tmp').style.display = 'block';
-      } else {
-         player.tempBoost = 1;
-         getEl('tmp').style.display = 'none';
-      }
+      
+      const clickerParticleGain: Decimal = onBought(
+         [['machine', '*', [D(1.5), '^', 'speedparticle']], '/', D(10)]
+      )
+      player.clickerParticles = player.clickerParticles.plus(clickerParticleGain)
 
       nextFeatureHandler()
 
@@ -533,6 +533,7 @@ function fgbtest(): void {
       getEl('divoalpha').textContent = 'You have ' + formatb(player.omegaAlpha);
 
       player.num = player.num.plus(gain);
+
       getEl('particlespersecond').textContent =
          'You are getting ' + formatb(gain.times(10)) + ' particles/s';
 
@@ -549,6 +550,7 @@ function fgbtest(): void {
          getEl('bangshow').style.display = 'block';
       }
       getEl('counter').textContent = formatb(player.num) + ' particles';
+      getEl('clickercounter').textContent = `You have ${formatb(player.clickerParticles)} Clicker Particles (${formatb(clickerParticleGain.times(10))}/s), which are making Manual Boost ${formatbSpecific(clickerParticleMult)}x stronger.`
       getEl('alphacounter').textContent =
          formatb(player.alphaNum) + ' Alpha particles';
    }
@@ -634,6 +636,10 @@ window.save = save;
 window.reset = function (): void {
    saveSettings();
    localStorage.removeItem(window.location.pathname);
+
+   //make backup save
+   const savefile = JSON.stringify(player, saveReplace);
+   localStorage.setItem(window.location.pathname + "backupsave", savefile);
+
    window.location.reload();
 };
-console.log(window.location.pathname);

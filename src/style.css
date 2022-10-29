@@ -59,13 +59,23 @@ button:active {
   display: inline-block;
   text-indent: 7.25em;
 }
-#resetb {
+.redb {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  border-radius: 2px;
+  border: 1px solid black;
+  box-shadow: none;
+  font-family: 'Tahoma';
+  font-weight: 500;
+  cursor: pointer;
   color: red
 }
-#resetb:hover {
+.redb:hover {
   color: #FF00FF
 }
-#resetb:active {
+.redb:active {
   color: #0099FF
 }
 #stat {
@@ -83,6 +93,12 @@ button:active {
 #divboosteruppercentcost {
   display: inline-block;
   text-indent: 15em;
+}
+#divboostsacrificecost {
+  display: inline-block;
+}
+#boostsac2 {
+  display: inline-block;
 }
 #omegabasecost {
   display: inline-block;
@@ -245,6 +261,13 @@ body {
   padding-right: 15px; 
   border-radius: 10px
 }
+#divclickerparticles {
+  border:0.2em solid #333333; 
+  padding-left: 15px; 
+  padding-bottom: 10px; 
+  padding-right: 15px; 
+  border-radius: 10px
+}
 #nextfeature {
   font-size:larger;
   padding-bottom:0.3em;
@@ -255,4 +278,11 @@ body {
 #experimentoggle {
   display:inline-block;
   text-indent: 10em;
+}
+#divspeedparticlecost {
+  display: inline-block;
+}
+#divmachinecost {
+  display: inline-block;
+  text-indent: 2em;
 }
