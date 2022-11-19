@@ -1,6 +1,7 @@
 import {
   getUpgradeTimesBought,
   isUpgradeName,
+  player,
   playerSettings,
   UpgradeName,
 } from "./player";
@@ -28,7 +29,7 @@ const decimalPlaces = function decimalPlaces(
 
 function formatD(d: Decimal, places = 3, ePlaces = 99): string {
   if (d.layer === 0) {
-    if ((d.mag < 1e21 && d.mag > 1e-7) || d.mag === 0) {
+    if ((d.mag < 1e4 && d.mag > 1e-7) || d.mag === 0) {
       return (d.sign * d.mag).toFixed(places);
     }
     return `${decimalPlaces(d.m, places)}e${decimalPlaces(
@@ -68,19 +69,19 @@ export function format(n: jsnumber): string {
 }
 
 export function formatb(n: Decimal): string {
-  return n.absLog10().toNumber() >= playerSettings.eSetting
+  return n.absLog10().toNumber() >= /*playerSettings.eSetting TODO: fix all this*/ 4
     ? formatD(n, 2).replace("e+", "e").replace(".00", "")
     : n.toFixed(0);
 }
 
 export function formatSpecific(n: jsnumber): string {
-  return Math.log10(n) >= playerSettings.eSetting
+  return Math.log10(n) >= 4 //playersettings.esettin!!
     ? n.toExponential(2).replace("e+", "e").replace(".00", "")
     : n.toFixed(3).replace(".000", "");
 }
 
 export function formatbSpecific(n: Decimal): string {
-  return n.absLog10().toNumber() >= playerSettings.eSetting
+  return n.absLog10().toNumber() >= 4 //playersettings.esettin!!
     ? formatD(n, 2).replace("e+", "e").replace(".00", "")
     : n.toFixed(3).replace(".000", "");
 }
@@ -184,3 +185,10 @@ export const onBought = onD<UpgradeName>(isUpgradeName, (key) =>
 export const onBoughtInc = onD<UpgradeName>(isUpgradeName, (key) =>
   getUpgradeTimesBought(key).plus(1)
 );
+
+// eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
+declare var window: Window & Record<string, unknown>;
+window.cheat = function (): void {
+  player.num = player.num.times(2)
+  //player.alphaNum = player.alphaNum.plus(1).times(2)
+};

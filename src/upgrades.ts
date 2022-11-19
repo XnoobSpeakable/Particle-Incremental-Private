@@ -1,4 +1,3 @@
-import { formatb , getEl, D } from "./util";
 import {
   player,
   getUpgradeTimesBought,
@@ -6,6 +5,7 @@ import {
   setUpgradeCost,
   UpgradeName
 } from "./player";
+import { formatb , getEl, D } from "./util"
 import Decimal from "break_eternity.js";
 
 // eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
@@ -33,17 +33,17 @@ type Upgrade = {
   costDiv: string;
   scaleFunction: (upgradeName: UpgradeName) => void;
   extra?: undefined | (() => void) ;
-}
+};
 
-function Upgrade(x: Upgrade) { return x; } //when the impostor is sus
+function Upgrade(x: Upgrade) { return x; }
 
 export const upgrades = {
   gen: Upgrade({
     scaleFunction: scaleGen,
     costDiv: "divgencost",
-    currency: "num"
+    currency: "num",
   }),
-  bb: Upgrade({
+  biggerbatches: Upgrade({
     scaleFunction: scaleMultiplier(D(2)),
     costDiv: "divbbcost",
     currency: "num"
@@ -63,18 +63,18 @@ export const upgrades = {
     costDiv: "divmbmultcost",
     currency: "num"
   }),
-  unlockgb: Upgrade({
+  unlockgenboost: Upgrade({
     scaleFunction: scaleMultiplier(D(Infinity)),
     costDiv: "divgenunlockcost",
     currency: "num"
   }),
-  gbupt: Upgrade({
+  genboostuptime: Upgrade({
     scaleFunction: scaleMultiplier(D(5)),
     costDiv: "divgbuptcost",
     currency: "num",
     extra: GBTExtra
   }),
-  gbupm: Upgrade({
+  genboostupmult: Upgrade({
     scaleFunction: scaleMultiplier(D(5)),
     costDiv: "divgbupmcost",
     currency: "num",
@@ -94,14 +94,15 @@ export const upgrades = {
   machine: Upgrade({
     scaleFunction: scaleMultiplier(D(4)),
     costDiv: "divmachinecost",
-    currency: "num"
+    currency: "num",
+    extra: MachineExtra
   }),
   alphaacc: Upgrade({
     scaleFunction: scaleMultiplier(D(1000)),
     costDiv: "divalphaacceleratorcost",
     currency: "num"
   }),
-  tb: Upgrade({
+  threeboost: Upgrade({
     scaleFunction: scaleMultiplier(D(4)),
     costDiv: "divthreeboostcost",
     currency: "alphaNum"
@@ -143,7 +144,7 @@ export const upgrades = {
     currency: "alphaNum",
     extra: NABExtra
   }),
-  gboostdouble: Upgrade({
+  genboostdouble: Upgrade({
     scaleFunction: scaleMultiplier(D(2)),
     costDiv: "gboostdouble",
     currency: "alphaNum",
@@ -154,12 +155,12 @@ export const upgrades = {
     costDiv: "alphamachinedouble",
     currency: "alphaNum"
   }),
-  baunlock: Upgrade({
+  bangautobuyerunlock: Upgrade({
     scaleFunction: scaleMultiplier(D(Infinity)),
     costDiv: "divbau",
     currency: "omegaBase"
   }),
-  upgradeba: Upgrade({
+  upgradebangautobuyer: Upgrade({
     scaleFunction: scaleBA,
     costDiv: "divupgradeba",
     currency: "omegaBase",
@@ -188,7 +189,7 @@ export function scaleSpeed(upgradeName: UpgradeName): void {
     setUpgradeCost( upgradeName, D(10).times(x).plus(100) )
   }
   else if(x.gte(10) && x.lte(1000)) {
-    setUpgradeCost( upgradeName, D(50).times(x).minus(250) );
+    setUpgradeCost( upgradeName, D(40).times(x).minus(200) );
   }
   else {
     scaleMultiplier(D(1.1))(upgradeName)
@@ -208,22 +209,26 @@ export function scaleBA(upgradeName: UpgradeName): void {
 }
 
 export function GBTExtra(): void {
-  player.gbTimeLeftCon = player.gbTimeLeftCon.plus(
-    D(2).pow(getUpgradeTimesBought("gboostdouble")).times(20)
+  player.genBoostTimeLeftCon = player.genBoostTimeLeftCon.plus(
+    D(2).pow(getUpgradeTimesBought("genboostdouble")).times(20)
   );
-  player.gbTimeLeft = new Decimal(0);
-  player.gbTimeLeft = player.gbTimeLeftCon;
+  player.genBoostTimeLeft = new Decimal(0);
+  player.genBoostTimeLeft = player.genBoostTimeLeftCon;
 }
 
 export function GBMExtra(): void {
-  player.gbTimeLeft = new Decimal(0);
-  player.gbTimeLeft = player.gbTimeLeftCon;
+  player.genBoostTimeLeft = new Decimal(0);
+  player.genBoostTimeLeft = player.genBoostTimeLeftCon;
 }
 
 export function GBDExtra(): void {
-  player.gbTimeLeftCon = player.gbTimeLeftCon.times(2);
-  player.gbTimeLeft = new Decimal(0);
-  player.gbTimeLeft = player.gbTimeLeftCon;
+  player.genBoostTimeLeftCon = player.genBoostTimeLeftCon.times(2);
+  player.genBoostTimeLeft = new Decimal(0);
+  player.genBoostTimeLeft = player.genBoostTimeLeftCon;
+}
+
+export function MachineExtra(): void {
+  player.machineWear = 10
 }
 
 export function NBExtra(): void {  
@@ -245,20 +250,22 @@ export function PCAExtra(): void {
 }
 
 export function BAExtra(): void {
-  if (getUpgradeTimesBought("upgradeba").lte(4)) {
-    player.baTime = Math.ceil(player.baTime / 2);
+  if (getUpgradeTimesBought("upgradebangautobuyer").lte(4)) {
+    player.bangAutobuyerTime = Math.ceil(player.bangAutobuyerTime / 2);
   } else {
-    player.baTime = (D(10).div(getUpgradeTimesBought("upgradeba").minus(3))).ceil().toNumber()
+    player.bangAutobuyerTime = (D(10).div(getUpgradeTimesBought("upgradebangautobuyer").minus(3))).ceil().toNumber();
   }
 }
 
 function buyUpgrade(upgradeName: UpgradeName): void {
   const upgrade = upgrades[upgradeName];
   const oldCost = getUpgradeCost(upgradeName);
+
   if (player[upgrade.currency].gte(oldCost)) {
     player.upgrades[upgradeName].timesBought = player.upgrades[upgradeName].timesBought.plus(1);
     player[upgrade.currency] = player[upgrade.currency].minus(oldCost);
     upgrade.scaleFunction(upgradeName);
+
     if (typeof upgrade.extra !== 'undefined') { upgrade.extra(); }
     UpdateCostVal(
       upgrade.costDiv,
@@ -274,7 +281,27 @@ window.buyFiftySpeed = function (): void {
     if(player.num.gte(getUpgradeCost('speed'))) {
       buyUpgrade('speed')
     }
-    else { return; } 
+    else { return; }
   }
-}
+};
+/*
+const className = document.getElementsByClassName(
+  'button'
+) as HTMLCollectionOf<HTMLElement>;
+for (let i = 0; i < className.length; i++) {
+  //console.log(className[i].onclick!.toString())
+  const str = className[i].onclick!.toString()
 
+  if(str.includes('buyUpgrade')) {
+     //console.log(str)
+     const upgr = str.substring(37, str.length-3)
+     console.log(upgr)
+     const upgrade = upgrades[upgr];
+     if (player[upgrade.currency].gte(getUpgradeCost(upgr))) {
+        className[i].style.backgroundColor = 'FF00FF'
+     }
+     else {
+        className[i].style.backgroundColor = 'FF0000'
+     }
+  }
+}*/

@@ -1,5 +1,5 @@
-import Decimal from 'break_eternity.js';
 import { getEl } from './util'
+import Decimal from 'break_eternity.js';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type jsnumber = number;
@@ -14,55 +14,56 @@ function D(n: jsnumber): Decimal {
 export let player = {
     upgrades: { 
         'gen': { cost: D(0), timesBought: D(0) },
-        'bb': { cost: D(2000), timesBought: D(0)},
-        'speed': { cost: D(100), timesBought: D(0)},
+        'biggerbatches': { cost: D(2000), timesBought: D(0)},
+        'speed': { cost: D(50), timesBought: D(0)},
         'mbup': { cost: D(100), timesBought: D(0)},
         'mbmult': { cost: D(1000), timesBought: D(0)},
-        'unlockgb': { cost: D(5000), timesBought: D(0)},
-        'gbupt': { cost: D(100), timesBought: D(0)},
-        'gbupm': { cost: D(10000), timesBought: D(0)},
+        'unlockgenboost': { cost: D(5000), timesBought: D(0)},
+        'genboostuptime': { cost: D(100), timesBought: D(0)},
+        'genboostupmult': { cost: D(10000), timesBought: D(0)},
         'nuclearbuy': { cost: D(1e6), timesBought: D(0)},
         'speedparticle': { cost: D(5e4), timesBought: D(0)},
         'machine': { cost: D(2e4), timesBought: D(0)},
         'nuclearalphabuy': { cost: D(1e6), timesBought: D(0)},
         'alphaacc': { cost: D(1e10), timesBought: D(0)},
-        'tb': { cost: D(1), timesBought: D(0)},
+        'threeboost': { cost: D(1), timesBought: D(0)},
         'perbang': { cost: D(4), timesBought: D(0)},
         'bangspeed': { cost: D(1), timesBought: D(0)},
         'unlockpca': { cost: D(20), timesBought: D(0)},
         'upgradepca': { cost: D(2), timesBought: D(0)},
         'boosterup': { cost: D(100), timesBought: D(0)},
         'boosteruppercent': { cost: D(100), timesBought: D(0)},
-        'gboostdouble': { cost: D(1), timesBought: D(0)},
+        'genboostdouble': { cost: D(1), timesBought: D(0)},
         'alphamachinedouble': { cost: D(1000), timesBought: D(0)},
-        'baunlock': { cost: D(1), timesBought: D(0)},
-        'upgradeba': { cost: D(1), timesBought: D(0)},
+        'bangautobuyerunlock': { cost: D(1), timesBought: D(0)},
+        'upgradebangautobuyer': { cost: D(1), timesBought: D(0)},
         },
     num: D(0),
-    gbTimeLeft: D(0),
-    gbTimeLeftCon: D(10),
-    gbMult: D(1),
+    genBoostTimeLeft: D(0),
+    genBoostTimeLeftCon: D(10),
+    genBoostMult: D(1),
     pChunks: D(0),
     alphaNum: D(0),
     bangTime: 300, 
     bangTimeLeft: 1e+300,   
     pcaToggle: true, 
     pcaTime: 160, 
-    pcaTimeLeft: 0, 
+    chunkAutobuyerTimeLeft: 0, 
     boosterParticles: D(0),
     untilBoost: 1, 
     omegaBase: D(0),
     omegaBaseCost: D(1e10),
     omegaAlpha: D(0),
     omegaAlphaCost: D(1e12),
-    baToggle: true, 
-    baTime: 160, 
-    baTimeLeft: 0,
-    clickerParticles: D(0)
+    bangAutobuyerToggle: true, 
+    bangAutobuyerTime: 160, 
+    bangAutobuyerTimeLeft: 0,
+    clickerParticles: D(0),
+    machineWear: 10
 };
 
 export let playerSettings = {
-    version: "b1.23.0",
+    version: "b1.23.2",
     eSetting: 4,
     autoSaveDelay: 50, 
     autoSaveMode: 4, 
@@ -85,30 +86,34 @@ export function loadSettings() {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         playerSettings = JSON.parse(localStorage.getItem(window.location.pathname + "settings")!);
     }
-    const stage = Number(playerSettings.version.substring(1, 2))
-    const major = Number(playerSettings.version.substring(3, 5))
+
+    //const stage = Number(playerSettings.version.substring(1, 2))
+    //const major = Number(playerSettings.version.substring(3, 5))
     //const minor = player.version.substring(6)
-    if(stage === 1 && major <= 21) { //code for legacy support
+
+    /*if(stage === 1 && major <= 21) { //code for legacy support
         localStorage.removeItem(window.location.pathname);
         window.location.reload();
-    }
-    if(playerSettings.version !== "b1.23.0") {
+    }*/
+
+    if(playerSettings.version !== "b1.23.2") {
         localStorage.removeItem(window.location.pathname + "settings");
         localStorage.removeItem(window.location.pathname)
-        playerSettings.version = "b1.23.0";
-        alert('please refresh')
+        playerSettings.version = "b1.23.2";
+        window.location.reload()
     }
+
     if(playerSettings.useExperimental) {
         getEl('tabopengamma').style.display = 'inline';
         getEl('tabopendelta').style.display = 'inline';
         getEl('tabopenachievements').style.display = 'inline';
-     }
-     else {
+    }
+    else {
         getEl('tabopengamma').style.display = 'none';
         getEl('tabopendelta').style.display = 'none';
         getEl('tabopenachievements').style.display = 'none';
-     }
-     getEl('experimentoggle').textContent = playerSettings.useExperimental.toString()
+    }
+    getEl('experimentoggle').textContent = playerSettings.useExperimental.toString()
 }
 
 Decimal.prototype.toJSON = function () {
@@ -131,7 +136,6 @@ export function load() {
     }
 }
 
-
 window.loadbackup = function () {
     if(localStorage.getItem(window.location.pathname + "backupsave") !== null) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -139,5 +143,4 @@ window.loadbackup = function () {
         localStorage.setItem(window.location.pathname, savefile);
         window.location.reload();
     }
- }
- 
+};

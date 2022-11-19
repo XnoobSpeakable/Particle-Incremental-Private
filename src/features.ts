@@ -28,17 +28,21 @@ let goal : FeatureKey | undefined = 'GB'
 
 export function nextFeatureHandler(): void {
     if (typeof goal === 'undefined') { return; }
+
     let feature = features[goal]
     const featureCurrency = feature.currency
     const nextGoal  = feature.next
+
     if(!nextGoal) {
         getEl('nextfeature').textContent = 'You have unlocked all the features.'
         goal = undefined;
     }
+
     else if(player[featureCurrency].gte(feature.unlocksAt)){
         goal = nextGoal
         feature = features[goal]
     }
+
     else {
         let percentage = D(100).times((player[featureCurrency].log10()).div(feature.unlocksAt.log10()))
         if(percentage.lt(0)) {
