@@ -41,7 +41,7 @@ export const upgrades = {
   gen: Upgrade({
     scaleFunction: scaleGen,
     costDiv: "divgencost",
-    currency: "num",
+    currency: "num"
   }),
   biggerbatches: Upgrade({
     scaleFunction: scaleMultiplier(D(2)),
@@ -165,6 +165,16 @@ export const upgrades = {
     costDiv: "divupgradeba",
     currency: "omegaBase",
     extra: BAExtra
+  }),
+  betaacc: Upgrade({
+    scaleFunction: scaleMultiplier(D(1000)),
+    costDiv: "divbetaacceleratorcost",
+    currency: "alphaNum"
+  }),
+  unlockabgb: Upgrade({
+    scaleFunction: scaleMultiplier(D(Infinity)),
+    costDiv: "divgenunlockcost",
+    currency: "num"
   }),
 } as const;
 

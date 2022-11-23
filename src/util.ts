@@ -188,7 +188,34 @@ export const onBoughtInc = onD<UpgradeName>(isUpgradeName, (key) =>
 
 // eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
 declare var window: Window & Record<string, unknown>;
+
+window.changeCheatMode = function (): void {
+  if(playerSettings.cheatMode !== 4) {
+    playerSettings.cheatMode += 1
+  }
+  else {
+    playerSettings.cheatMode = 0
+  }
+  getEl('cheatmodediv').textContent = playerSettings.cheatMode.toString();
+}
+
 window.cheat = function (): void {
-  player.num = player.num.times(2)
-  //player.alphaNum = player.alphaNum.plus(1).times(2)
+  switch(playerSettings.cheatMode) {
+    case 0:
+      player.num = player.num.times(2)
+      break;
+    case 1:
+      player.alphaNum = player.alphaNum.times(2)
+      break;
+    case 2:
+      player.num = player.num.times(2)
+      player.alphaNum = player.alphaNum.times(2)
+      break;
+    case 3:
+      player.alphaNum = player.alphaNum.plus(1).times(2)
+      break;
+    case 4:
+      player.num = player.num.times(2)
+      player.alphaNum = player.alphaNum.plus(1).times(2)
+  }
 };

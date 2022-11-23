@@ -168,6 +168,16 @@ function passiveUnlockDisplay(): void {
    }
 }
 
+function devToolsVisibilityUpdate() {
+   if(playerSettings.devToggled) {
+      getEl('tabopendev').style.display = 'inline';
+   }
+   else {
+      getEl('tabopendev').style.display = 'none';
+   }
+   getEl('devtoggle').textContent = playerSettings.devToggled.toString();
+}
+
 const autosaveElement = getEl('autosaving');
 const delayArray = [600, 300, 150, 100, 50, 20, 10, undefined];
 
@@ -190,6 +200,7 @@ function loadMisc(): void {
    prePUD();
    passiveUnlockDisplay();
    autoSaveSet();
+   devToolsVisibilityUpdate()
 
    for (const upgradeName of UpgradeNames) {
       const upgrade = upgrades[upgradeName];
@@ -277,7 +288,8 @@ const tabElements = makeElementMap(
    'Achievements',
    'Stats',
    'Settings',
-   'Tutorial'
+   'Tutorial',
+   'Dev'
 );
 const tabOmegaElements = makeElementMap(
    'oBase',
@@ -329,7 +341,7 @@ window.saveImportConfirm = function (): void {
    window.location.reload();
 };
 
-window.setting1e4 = function (): void {
+window.setting1e4 = function (): void { //TODO: fix formatting settings
    playerSettings.eSetting = 4;
    loadMisc();
    saveSettings();
@@ -342,7 +354,7 @@ window.setting1e6 = function (): void {
 };
 
 window.experimentalToggle = function () {
-   playerSettings.useExperimental = !playerSettings.useExperimental
+   playerSettings.useExperimental = !playerSettings.useExperimental;
 
    if(playerSettings.useExperimental) {
       getEl('tabopengamma').style.display = 'inline';
@@ -354,7 +366,21 @@ window.experimentalToggle = function () {
       getEl('tabopendelta').style.display = 'none';
       getEl('tabopenachievements').style.display = 'none';
    }
-   getEl('experimentoggle').textContent = playerSettings.useExperimental.toString()
+   getEl('experimentoggle').textContent = playerSettings.useExperimental.toString();
+   saveSettings();
+}
+
+window.devToggle = function () {
+   playerSettings.devToggled = !playerSettings.devToggled;
+
+   if(playerSettings.devToggled) {
+      getEl('tabopendev').style.display = 'inline';
+   }
+   else {
+      getEl('tabopendev').style.display = 'none';
+   }
+   getEl('devtoggle').textContent = playerSettings.devToggled.toString();
+   saveSettings();
 }
 
 createAchievementHTML();
@@ -461,6 +487,31 @@ window.toggleba = function (): void {
    }
 };
 
+function makegroup(): void {
+   if (player.alphaNum.gte(1e9)) {
+      player.alphaNum = player.alphaNum.minus(1e9);
+      player.aGroups = player.aGroups.plus(1);
+      getEl('groupamount').textContent =
+         'Alpha Groups: ' + formatb(player.aGroups);
+   }
+}
+window.makegroup = makegroup;
+
+function merge(): void {
+   if (player.aGroups.gte(2)) {
+      if (
+         getUpgradeTimesBought('betaacc').gt(0) &&
+         !(player.mergeTimeLeft >= 0 && player.mergeTimeLeft <= player.mergeTime)
+      ) {
+         player.aGroups = player.aGroups.minus(2);
+         player.mergeTimeLeft = player.mergeTime;
+         getEl('groupamount').textContent =
+            'Alpha Groups: ' + formatb(player.aGroups);      
+      }
+   }
+}
+window.merge = merge;
+
 function fgbtest(): void {
    if (getUpgradeTimesBought('gen').gt(0)) {
       getEl('boostsection').style.display = 'flex';
@@ -487,9 +538,18 @@ function fgbtest(): void {
          'alphaacc', ['perbang', '+', D(1)], ['nuclearalphabuy', '+', D(1)], [D(2), '^', 'alphamachinedouble']
       );
 
+      const betaGain: Decimal = onBought(
+         'alphaacc'
+      );
+
       if (player.bangTimeLeft === 0) {
          player.alphaNum = player.alphaNum.plus(alphaGain);
          getEl('bangtimeleft').textContent = '';
+      }
+
+      if (player.mergeTimeLeft === 0) {
+         player.betaNum = player.betaNum.plus(betaGain);
+         getEl('mergetimeleft').textContent = '';
       }
 
       if (getUpgradeTimesBought('machine').gte(1)) {
@@ -522,6 +582,20 @@ function fgbtest(): void {
          getEl('bangbutton').style.display = 'none';
       } else {
          getEl('bangbutton').style.display = 'block';
+      }
+
+      getEl('betapb').textContent =
+         'You are getting ' + formatb(betaGain) + ' Beta/merge';
+      getEl('mergetimeconst').textContent =
+         'Currently, merges take ' + format(player.mergeTime / 10) + ' seconds.';
+      player.mergeTimeLeft -= 1;
+
+      if (player.mergeTimeLeft >= 0 && player.mergeTimeLeft <= player.mergeTime) {
+         getEl('mergetimeleft').textContent =
+            'Merge time left: ' + format(player.mergeTimeLeft / 10);
+         getEl('mergebutton').style.display = 'none';
+      } else {
+         getEl('mergebutton').style.display = 'block';
       }
 
       if (player.genBoostTimeLeft.greaterThan(0)) {
@@ -588,10 +662,16 @@ function fgbtest(): void {
          getEl('bangshow').style.display = 'block';
       }
 
+      if (player.alphaNum.gte(1e9)) {
+         getEl('mergeshow').style.display = 'block';
+      }
+
       getEl('counter').textContent = formatb(player.num) + ' particles';
       getEl('clickercounter').textContent = `You have ${formatb(player.clickerParticles)} Clicker Particles (${formatb(clickerParticleGain.times(10))}/s), which are making Manual Boost ${formatbSpecific(clickerParticleMult)}x stronger.`
       getEl('alphacounter').textContent =
          formatb(player.alphaNum) + ' Alpha particles';
+         getEl('betacounter').textContent =
+         formatb(player.betaNum) + ' Beta particles';
    }
 }
 

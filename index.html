@@ -30,6 +30,7 @@
         <button onclick="openTab('Stats')" class="button tabopener">Stats</button>
         <button onclick="openTab('Settings')" class="button tabopener">Settings</button>
         <button onclick="openTab('Tutorial')" class="button tabopener">Tutorial</button>
+        <button onclick="openTab('Dev')" class="button tabopener" id="tabopendev" style="display:none">Dev</button>
       </div>
 
       <div id="Base">
@@ -39,7 +40,6 @@
           <button onclick="buyUpgrade('biggerbatches')" class="button">Bigger batches</button>
           <button onclick="buyUpgrade('speed')" class="button">Speed</button>
           <button onclick="buyFiftySpeed()" class="button">Buy up to 50 Speed</button>
-<!--           <button onclick="cheat()" class="button">cheatbutton(fortesting)</button> -->
         </div>
         <div id="divgencost">Cost: Free</div>
         <div id="divbbcost">Cost: 2000</div>
@@ -207,9 +207,37 @@
           
         </div>
         <br>
+
+        <div id="mergeshow" class="withtheoutline">
+          <h2>Merge!</h2>
+          Using a beta accelerator, you can merge two alpha groups together to make beta particles
+          <br>
+          <br>
+          <div class="btn-group">
+            <button onclick="buyUpgrade('betaacc')" class="button">Buy Beta Accelerator</button>
+            <button onclick="makegroup()" class="button">Make Alpha Group</button>
+          </div>
+          <div id="divbetaacceleratorcost">Cost: 1e12</div>
+          <div id="gcosttext">Cost: 1e9</div>
+          <br>
+          <br>
+          <div id="mergecenteringfix">
+            <button id="mergebutton" onclick="merge()" class="button">MERGE!</button>
+          </div>
+          <div>Cost: 2 Alpha Groups</div>
+          <div id="groupamount">Alpha Groups: 0</div>
+          <div id="mergetimeleft"></div>
+          <div id="mergetimeconst">Currently, merges take 30 seconds.</div>
+        </div>
       </div>
 
-      <div id="Beta" style="display:none">nothing here yet</div>
+      <div id="Beta" style="display:none">
+        <div id="betacounter">0 Beta particles</div>
+        <div id="betapb">You are getting 1 beta/merge</div>
+        <br>
+        <button onclick="buyUpgrade('unlockabgb')" class="button">Buy Beta Accelerator</button>
+      </div>
+
       <div id="Gamma" style="display:none">nothing here yet</div>
       <div id="Delta" style="display:none">nothing here yet</div>
 
@@ -322,11 +350,15 @@
         <div id="whattheme">Theme: Light</div>
         <br>
         <button onclick="autosavesettings()" class="button">Toggle Autosave and autosave speed</button>
-        <button onclick="experimentalToggle()" class="button">Toggle experimental features</button>
         <br>
         <div id="autosaving">On, delay: 30s</div>
-        <div id="experimentoggle">false</div>
+        <br><br>
+        <button onclick="experimentalToggle()" class="button">Toggle experimental features</button>
+        <button onclick="devToggle()" class="button">Toggle developer features</button>
         <br>
+        <div id="experimentoggle">false</div>
+        <div id="devtoggle">false</div>
+        <br><br>
         <button onclick="save()" class="button">save</button>
         <br><br>
         Special thanks to: <br>
@@ -335,11 +367,11 @@
         <a href="https://github.com/typeholes">qhwood</a>
         for improving my code and helping me code.
         <br><br>
-        Version b1.23.2
+        Version b2.0.0.0 (alpha11)
         <br>
         Changelog:
         <br>
-        Serious bugfix, code readability improvement, factory changes.
+        Beta tab
       </div>
       <div id="Tutorial" style="display:none">
         A generator gives you n particles every loop. Default is 1 loop per second and 1 particle per loop. <br>
@@ -364,6 +396,31 @@
         The bang button makes an alpha particle from 2 particle chunks. <br>
         You need at least 1 alpha accelerator to bang. <br>
         Buying more alpha accelerators multiplies alpha particle gain from the bangs by the total number of accelerators you have. <br> 
+      </div>
+      <div id="Dev" style="display:none">
+        <br>
+        <button onclick="cheat()" class="button">cheat</button>
+        <button onclick="changeCheatMode()" class="button">cheatmode</button>
+        <div id="cheatmodediv">0</div>
+        <pre style="text-align:left">
+          switch(playerSettings.cheatMode) {
+            case 0:
+              player.num = player.num.times(2)
+              break;
+            case 1:
+              player.alphaNum = player.alphaNum.times(2)
+              break;
+            case 2:
+              player.num = player.num.times(2)
+              player.alphaNum = player.alphaNum.times(2)
+              break;
+            case 3:
+              player.alphaNum = player.alphaNum.plus(1).times(2)
+              break;
+            case 4:
+              player.num = player.num.times(2)
+              player.alphaNum = player.alphaNum.plus(1).times(2)
+          </pre>
       </div>
     </div>
     </body>

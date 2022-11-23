@@ -26,6 +26,9 @@ button:active {
 #alphacounter {
   font-size: x-large;
 }
+#betacounter {
+  font-size: x-large;
+}
 #divmbupcost {
   display: inline-block;
   text-indent: 6.5em;
@@ -38,6 +41,13 @@ button:active {
   display: inline-block;
 }
 #pcosttext {
+  display: inline-block;
+  text-indent: 4em;
+}
+#divbetaacceleratorcost {
+  display: inline-block;
+}
+#gcosttext {
   display: inline-block;
   text-indent: 4em;
 }
@@ -208,6 +218,10 @@ body {
   display:flex;
   justify-content: center;
 }
+#mergecenteringfix {
+  display:flex;
+  justify-content: center;
+}
 #veryouterboost {
   border:0.2em solid #333333; 
   padding-left: 15px; 
@@ -225,6 +239,14 @@ body {
   border-radius: 10px
 }
 #bangshow {
+  display:none; 
+  border:0.2em solid #333333; 
+  padding-left: 15px; 
+  padding-bottom: 10px; 
+  padding-right: 15px; 
+  border-radius: 10px
+}
+#mergeshow {
   display:none; 
   border:0.2em solid #333333; 
   padding-left: 15px; 
@@ -275,14 +297,18 @@ body {
 #autosaving {
   display:inline-block;
 }
-#experimentoggle {
-  display:inline-block;
-  text-indent: 10em;
-}
 #divspeedparticlecost {
   display: inline-block;
 }
 #divmachinecost {
   display: inline-block;
   text-indent: 2em;
+}
+#experimentoggle {
+  display:inline-block;
+  text-indent: 1em;
+}
+#devtoggle {
+  display:inline-block;
+  text-indent: 10em;
 }

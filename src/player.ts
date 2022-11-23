@@ -37,6 +37,7 @@ export let player = {
         'alphamachinedouble': { cost: D(1000), timesBought: D(0)},
         'bangautobuyerunlock': { cost: D(1), timesBought: D(0)},
         'upgradebangautobuyer': { cost: D(1), timesBought: D(0)},
+        'betaacc': { cost: D(1e10), timesBought: D(0)},
         },
     num: D(0),
     genBoostTimeLeft: D(0),
@@ -59,17 +60,23 @@ export let player = {
     bangAutobuyerTime: 160, 
     bangAutobuyerTimeLeft: 0,
     clickerParticles: D(0),
-    machineWear: 10
+    machineWear: 10,
+    aGroups: D(0),
+    betaNum: D(0),
+    mergeTime: 300, 
+    mergeTimeLeft: 1e+300,
 };
 
 export let playerSettings = {
-    version: "b1.23.2",
+    version: "b2.0.0.0",
     eSetting: 4,
     autoSaveDelay: 50, 
     autoSaveMode: 4, 
     autoSaveSet: 50,
     themeNumber: 0,
     useExperimental: false,
+    devToggled: false,
+    cheatMode: 0,
 }
 
 export type UpgradeName = keyof typeof player.upgrades;
@@ -96,10 +103,10 @@ export function loadSettings() {
         window.location.reload();
     }*/
 
-    if(playerSettings.version !== "b1.23.2") {
+    if(playerSettings.version !== "b2.0.0.0") {
         localStorage.removeItem(window.location.pathname + "settings");
         localStorage.removeItem(window.location.pathname)
-        playerSettings.version = "b1.23.2";
+        playerSettings.version = "b2.0.0.0";
         window.location.reload()
     }
 
