@@ -232,9 +232,6 @@ function loadMisc(): void {
       'Particle Chunks: ' + formatb(player.pChunks);
    
    if (getUpgradeTimesBought('unlockpca').eq(1)) {
-      getEl('pcashow').style.display = 'block';
-      getEl('divunlockpca').style.display = 'none';
-      getEl('divunlockpcabutton').style.display = 'none';
       getEl('untilpca').textContent =
          format(player.chunkAutobuyerTimeLeft) + ' left until next autobuy';
       getEl('divtogglepca').style.display = 'inline-block';
@@ -247,10 +244,6 @@ function loadMisc(): void {
    }
 
    if (getUpgradeTimesBought('bangautobuyerunlock').eq(1)) {
-      getEl('bashow').style.display = 'block';
-      getEl('divbau').style.display = 'none';
-      getEl('divbauextra').style.display = 'none';
-      getEl('baunlockbutton').style.display = 'none';
       getEl('untilba').textContent =
          format(player.bangAutobuyerTimeLeft) + ' left until next autobuy';
       getEl('divtoggleba').style.display = 'inline-block';

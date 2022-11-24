@@ -14,7 +14,8 @@ declare var window: Window & Record<string, unknown>
 export const currencyName = {
   num: "",
   alphaNum: " Alpha",
-  omegaBase: " "
+  omegaBase: " ",
+  betaNum: " Beta"
 };
 
 export type CurrencyName = keyof typeof currencyName;
@@ -173,8 +174,8 @@ export const upgrades = {
   }),
   unlockabgb: Upgrade({
     scaleFunction: scaleMultiplier(D(Infinity)),
-    costDiv: "divgenunlockcost",
-    currency: "num"
+    costDiv: "divabgbcost",
+    currency: "betaNum"
   }),
 } as const;
 

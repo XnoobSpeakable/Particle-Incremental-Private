@@ -38,6 +38,7 @@ export let player = {
         'bangautobuyerunlock': { cost: D(1), timesBought: D(0)},
         'upgradebangautobuyer': { cost: D(1), timesBought: D(0)},
         'betaacc': { cost: D(1e10), timesBought: D(0)},
+        'unlockabgb': { cost: D(1), timesBought: D(0)},
         },
     num: D(0),
     genBoostTimeLeft: D(0),
