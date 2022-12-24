@@ -12,10 +12,11 @@ const features = {
     Bang: Feature({displayName: "Bang", unlocksAt: D(1e9), currency: "num", next: 'BA'}),
     BA: Feature({displayName: "Bang Autobuyer (in Omega tab)", unlocksAt: D(1e10), currency: "num", next: 'PCA'}),
     PCA: Feature({displayName: "Particle Chunk Autobuyer", unlocksAt: D(20), currency: "alphaNum", next: 'NAP'}),
-    NAP: Feature({displayName: "Nuclear Alpha Particles", unlocksAt: D(1e6), currency: "alphaNum", next: undefined}),
+    NAP: Feature({displayName: "Nuclear Alpha Particles", unlocksAt: D(1e6), currency: "alphaNum", next: 'Merge'}),
+    Merge: Feature({displayName: "Merge", unlocksAt: D(1e9), currency: "alphaNum", next: undefined}),
 } as const;
 
-type FeatureKey = 'GB'|'Factory'|'NP'|'Bang'|'BA'|'PCA'|'NAP'
+type FeatureKey = 'GB'|'Factory'|'NP'|'Bang'|'BA'|'PCA'|'NAP'|'Merge'
         
 type Feature = {
     displayName: string,

@@ -195,42 +195,7 @@ window.autosavesettings = function (): void {
    saveSettings();
 };
 
-function loadMisc(): void {
-   themeExec();
-   prePUD();
-   passiveUnlockDisplay();
-   autoSaveSet();
-   devToolsVisibilityUpdate()
-
-   for (const upgradeName of UpgradeNames) {
-      const upgrade = upgrades[upgradeName];
-      UpdateCostVal(
-         upgrade.costDiv,
-         getUpgradeCost(upgradeName),
-         upgrade.currency
-      );
-   }
-
-   if (getUpgradeTimesBought('gen').eq(0)) {
-      getEl('divgencost').textContent = 'Cost: Free';
-   } else {
-      UpdateCostVal('divgencost', getUpgradeCost('gen'));
-   }
-
-   if (getUpgradeTimesBought('unlockgenboost').eq(1)) {
-      getEl('gbshow').style.display = 'block';
-      getEl('divgenunlockcost').style.display = 'none';
-      getEl('gbunlockbutton').style.display = 'none';
-   }
-
-   getEl('divnp').textContent =
-      'Nuclear Particles: ' + formatb(getUpgradeTimesBought('nuclearbuy'));
-   getEl('divnap').textContent =
-      'Nuclear Alpha Particles: ' +
-      formatb(getUpgradeTimesBought('nuclearalphabuy'));
-   getEl('chunkamount').textContent =
-      'Particle Chunks: ' + formatb(player.pChunks);
-   
+function pcaTestSingle() {
    if (getUpgradeTimesBought('unlockpca').eq(1)) {
       getEl('untilpca').textContent =
          format(player.chunkAutobuyerTimeLeft) + ' left until next autobuy';
@@ -242,7 +207,9 @@ function loadMisc(): void {
          getEl('divtogglepca').textContent = 'Off';
       }
    }
+}
 
+function baTestSingle() {
    if (getUpgradeTimesBought('bangautobuyerunlock').eq(1)) {
       getEl('untilba').textContent =
          format(player.bangAutobuyerTimeLeft) + ' left until next autobuy';
@@ -254,13 +221,60 @@ function loadMisc(): void {
          getEl('divtoggleba').textContent = 'Off';
       }
    }
+}
 
+function fgbTestSingle() {
+   if (getUpgradeTimesBought('gen').eq(0)) {
+      getEl('divgencost').textContent = 'Cost: Free';
+   } else {
+      UpdateCostVal('divgencost', getUpgradeCost('gen'));
+   }
+}
+
+function amountUpdate() {
+   getEl('divnp').textContent =
+      'Nuclear Particles: ' + formatb(getUpgradeTimesBought('nuclearbuy'));
+   getEl('divnap').textContent =
+      'Nuclear Alpha Particles: ' +
+      formatb(getUpgradeTimesBought('nuclearalphabuy'));
+   
+   getEl('chunkamount').textContent =
+      'Particle Chunks: ' + formatb(player.pChunks);
+   getEl('groupamount').textContent =
+      'Particle Chunks: ' + formatb(player.aGroups);
+   
    getEl('omegabasecost').textContent =
       'Cost: ' + formatb(player.omegaBaseCost);
    getEl('divobase').textContent = 'You have ' + formatb(player.omegaBase);
    getEl('omegaalphacost').textContent =
       'Cost: ' + formatb(player.omegaAlphaCost);
    getEl('divoalpha').textContent = 'You have ' + formatb(player.omegaAlpha);
+}
+
+function loadMisc(): void {
+   for (const upgradeName of UpgradeNames) {
+      const upgrade = upgrades[upgradeName];
+      UpdateCostVal(
+         upgrade.costDiv,
+         getUpgradeCost(upgradeName),
+         upgrade.currency
+      );
+   }
+
+   themeExec();
+
+   prePUD();
+   passiveUnlockDisplay();
+
+   autoSaveSet();
+
+   devToolsVisibilityUpdate();
+
+   pcaTestSingle();
+   baTestSingle();
+   fgbTestSingle();
+
+   amountUpdate();
 }
 
 function makeElementMap(...names: string[]): { [k: string]: HTMLElement } {
@@ -505,11 +519,17 @@ function merge(): void {
 }
 window.merge = merge;
 
-function fgbtest(): void {
+function fgbTestConst(): void {
    if (getUpgradeTimesBought('gen').gt(0)) {
       getEl('boostsection').style.display = 'flex';
       getEl('bigboosttext').style.display = 'block';
       getEl('veryouterboost').style.display = 'block';
+
+      if (getUpgradeTimesBought('gen').eq(0)) {
+         getEl('divgencost').textContent = 'Cost: Free';
+      } else {
+         UpdateCostVal('divgencost', getUpgradeCost('gen'));
+      }
 
       if (player.genBoostTimeLeft.greaterThan(0)) {
          player.genBoostMult = getUpgradeTimesBought('genboostupmult').times(5).plus(5);
@@ -523,6 +543,12 @@ function fgbtest(): void {
          getEl('gbunlockbutton').style.display = 'none';
       }
 
+      if (getUpgradeTimesBought('unlockabgb').eq(1)) {
+         getEl('abgbshow').style.display = 'block';
+         getEl('divabgbcost').style.display = 'none';
+         getEl('abgbunlockbutton').style.display = 'none';
+      }
+
       player.bangTime = Math.ceil(
          300 / Math.pow(2, getUpgradeTimesBought('bangspeed').toNumber())
       );
@@ -531,8 +557,12 @@ function fgbtest(): void {
          'alphaacc', ['perbang', '+', D(1)], ['nuclearalphabuy', '+', D(1)], [D(2), '^', 'alphamachinedouble']
       );
 
+      player.mergeTime = Math.ceil(
+         300 / Math.pow(2, getUpgradeTimesBought('mergespeed').toNumber())
+      );
+
       const betaGain: Decimal = onBought(
-         'alphaacc'
+         'betaacc', ['permerge', '+', D(1)]
       );
 
       if (player.bangTimeLeft === 0) {
@@ -552,9 +582,17 @@ function fgbtest(): void {
 
       clickerParticleMult = player.clickerParticles.div(100).plus(1);
 
+      let abgbBoost: Decimal = D(1)
+
+      if(getUpgradeTimesBought('unlockabgb').gt(0)) {
+         abgbBoost  = onBoughtInc(
+            player.alphaNum, '/', D(100), '*', 'abgbefficiency', '+', D(1)
+         )
+      }
+
       const gain: Decimal = onBought(        
             ['biggerbatches', '+', D(1)], '*', 'gen', '*', ['speed', '/', D(10), '+', D(0.1)], '*', player.genBoostMult, '*', [['nuclearbuy', '+', D(1)], '^', D(2)], '*', 
-            [D(3), '^', 'threeboost'], '*', [D(1), '+', [[player.boosterParticles, '+', D(1)], '/', D(100), '*', [['boosteruppercent', '+', D(1)], '/', D(100)]]]
+            [D(3), '^', 'threeboost'], '*', [D(1), '+', [[player.boosterParticles, '+', D(1)], '/', D(100), '*', [['boosteruppercent', '+', D(1)], '/', D(100)]]], '*', abgbBoost
       );
       
       getEl('particlesperclick').textContent =
@@ -591,16 +629,16 @@ function fgbtest(): void {
          getEl('mergebutton').style.display = 'block';
       }
 
-      if (player.genBoostTimeLeft.greaterThan(0)) {
+      if (player.genBoostTimeLeft.gt(0)) {
          player.genBoostTimeLeft = player.genBoostTimeLeft.minus(1);
       }
       getEl('divgbtl').textContent =
          'Boost Time Left: ' + formatb(player.genBoostTimeLeft.div(10));
 
-      const totalGain: Decimal = (player.alphaNum.times(
+      const bpGain: Decimal = (player.alphaNum.times(
          getUpgradeTimesBought('boosterup').plus(1)
       )).times(D(2)).div(10);
-      player.boosterParticles = player.boosterParticles.plus(totalGain);
+      player.boosterParticles = player.boosterParticles.plus(bpGain);
       const percentBoostDisplay: Decimal = 
          player.boosterParticles.times(
             getUpgradeTimesBought('boosteruppercent').plus(1).div(100)
@@ -608,12 +646,12 @@ function fgbtest(): void {
       
       if(percentBoostDisplay.lt(100)) {
          getEl('boostersmaintext').textContent =
-            `You are currently getting ${formatb(totalGain.times(10))} booster particles per alpha particle per second,
+            `You are currently getting ${formatb(bpGain.times(10))} booster particles per alpha particle per second,
                resulting in a +${formatbSpecific(percentBoostDisplay)}% boost to base particle production`;
       }
       else {
          getEl('boostersmaintext').textContent =
-            `You are currently getting ${formatb(totalGain.times(10))} booster particles per alpha particle per second,
+            `You are currently getting ${formatb(bpGain.times(10))} booster particles per alpha particle per second,
                resulting in a ${formatbSpecific(percentBoostDisplay.div(100).plus(1))}x boost to base particle production`;
 
       }
@@ -668,7 +706,7 @@ function fgbtest(): void {
    }
 }
 
-function pcatest(): void {
+function pcaTestConst(): void {
    if (getUpgradeTimesBought('unlockpca').eq(1)) {
       getEl('pcashow').style.display = 'block';
       getEl('divunlockpca').style.display = 'none';
@@ -687,7 +725,7 @@ function pcatest(): void {
    }
 }
 
-function batest(): void {
+function baTestConst(): void {
    if (getUpgradeTimesBought('bangautobuyerunlock').eq(1)) {
       getEl('bashow').style.display = 'block';
       getEl('divbau').style.display = 'none';
@@ -719,9 +757,9 @@ function savinginloop(): void {
 //game loop
 setInterval(() => {
    passiveUnlockDisplay();
-   pcatest();
-   batest();
-   fgbtest();
+   pcaTestConst();
+   baTestConst();
+   fgbTestConst();
    getEl('stat').textContent = getSaveString()
       .replace(/","/g, '",\n"')
       .replace(/},"/g, '",\n"');

@@ -39,6 +39,9 @@ export let player = {
         'upgradebangautobuyer': { cost: D(1), timesBought: D(0)},
         'betaacc': { cost: D(1e10), timesBought: D(0)},
         'unlockabgb': { cost: D(1), timesBought: D(0)},
+        'abgbefficiency': { cost: D(3), timesBought: D(0)},
+        'permerge': { cost: D(4), timesBought: D(0)},
+        'mergespeed': { cost: D(1), timesBought: D(0)},
         },
     num: D(0),
     genBoostTimeLeft: D(0),
@@ -69,7 +72,7 @@ export let player = {
 };
 
 export let playerSettings = {
-    version: "b2.0.0.0",
+    version: "b2.0.0.0a12",
     eSetting: 4,
     autoSaveDelay: 50, 
     autoSaveMode: 4, 
@@ -104,10 +107,10 @@ export function loadSettings() {
         window.location.reload();
     }*/
 
-    if(playerSettings.version !== "b2.0.0.0") {
+    if(playerSettings.version !== "b2.0.0.0a12") {
         localStorage.removeItem(window.location.pathname + "settings");
         localStorage.removeItem(window.location.pathname)
-        playerSettings.version = "b2.0.0.0";
+        playerSettings.version = "b2.0.0.0a12";
         window.location.reload()
     }
 

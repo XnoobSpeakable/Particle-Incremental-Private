@@ -49,7 +49,7 @@ button:active {
 }
 #gcosttext {
   display: inline-block;
-  text-indent: 4em;
+  text-indent: 2.3em;
 }
 #divgenboost {
   display: inline-block;
@@ -240,50 +240,14 @@ body {
 }
 #bangshow {
   display:none; 
-  border:0.2em solid #333333; 
-  padding-left: 15px; 
-  padding-bottom: 10px; 
-  padding-right: 15px; 
-  border-radius: 10px
 }
 #mergeshow {
   display:none; 
-  border:0.2em solid #333333; 
-  padding-left: 15px; 
-  padding-bottom: 10px; 
-  padding-right: 15px; 
-  border-radius: 10px
-}
-#pcabox {
-  border:0.2em solid #333333; 
-  padding-left: 15px; 
-  padding-bottom: 10px; 
-  padding-right: 15px; 
-  border-radius: 10px
-}
-#talbox {
-  border:0.2em solid #333333; 
-  padding-left: 15px; 
-  padding-bottom: 10px; 
-  padding-right: 15px; 
-  border-radius: 10px
 }
 #nuclearalphashow {
   display:none; 
-  border:0.2em solid #333333; 
-  padding-left: 15px; 
-  padding-bottom: 10px;
-  padding-right: 15px; 
-  border-radius: 10px
 }
-#bpsection {
-  border:0.2em solid #333333; 
-  padding-left: 15px; 
-  padding-bottom: 10px; 
-  padding-right: 15px; 
-  border-radius: 10px
-}
-#divclickerparticles {
+.withtheoutline {
   border:0.2em solid #333333; 
   padding-left: 15px; 
   padding-bottom: 10px; 
@@ -311,4 +275,11 @@ body {
 #devtoggle {
   display:inline-block;
   text-indent: 10em;
+}
+#divmergespeedcost {
+  display:inline-block;
+}
+#divpermergecost {
+  display:inline-block;
+  text-indent: 3em;
 }

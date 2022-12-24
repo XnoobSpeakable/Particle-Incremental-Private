@@ -177,6 +177,21 @@ export const upgrades = {
     costDiv: "divabgbcost",
     currency: "betaNum"
   }),
+  abgbefficiency: Upgrade({
+    scaleFunction: scaleMultiplier(D(2)),
+    costDiv: "divabgbefficiencycost",
+    currency: "betaNum"
+  }),
+  permerge: Upgrade({
+    scaleFunction: scaleMultiplier(D(4)),
+    costDiv: "divpermergecost",
+    currency: "betaNum"
+  }),
+  mergespeed: Upgrade({
+    scaleFunction: scaleBangSpeed,
+    costDiv: "divmergespeedcost",
+    currency: "betaNum"
+  }),
 } as const;
 
 export function scaleMultiplier(multiplier: Decimal): (upgradeName: UpgradeName) => void {
@@ -186,7 +201,7 @@ export function scaleMultiplier(multiplier: Decimal): (upgradeName: UpgradeName)
 }
 
 export function scaleBangSpeed(upgradeName: UpgradeName): void {
-  if (getUpgradeTimesBought(upgradeName).lte(3)) {
+  if (getUpgradeTimesBought(upgradeName).lte(2)) {
     scaleMultiplier(D(2))(upgradeName);
   } else {
     scaleMultiplier(D(5))(upgradeName);
