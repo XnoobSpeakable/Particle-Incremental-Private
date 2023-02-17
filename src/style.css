@@ -9,16 +9,24 @@ button:active {
 }
 #divbbcost {
   display: inline-block;
-  text-indent: 2.25em;
+  text-indent: 1.25em;
 }
 #divspeedcost {
   display: inline-block;
-  text-indent: 2.25em;
+  text-indent: 1.25em;
+}
+#divtenspeedcost {
+  display: inline-block;
+  text-indent: 1.25em;
 }
 #counter {
   font-size: x-large;
+  padding-bottom: 0.05em;
 }
 #alphacounter {
+  font-size: x-large;
+}
+#betacounter {
   font-size: x-large;
 }
 #divmbupcost {
@@ -35,6 +43,13 @@ button:active {
 #pcosttext {
   display: inline-block;
   text-indent: 4em;
+}
+#divbetaacceleratorcost {
+  display: inline-block;
+}
+#gcosttext {
+  display: inline-block;
+  text-indent: 2.3em;
 }
 #divgenboost {
   display: inline-block;
@@ -54,13 +69,23 @@ button:active {
   display: inline-block;
   text-indent: 7.25em;
 }
-#resetb {
+.redb {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  border-radius: 2px;
+  border: 1px solid black;
+  box-shadow: none;
+  font-family: 'Tahoma';
+  font-weight: 500;
+  cursor: pointer;
   color: red
 }
-#resetb:hover {
+.redb:hover {
   color: #FF00FF
 }
-#resetb:active {
+.redb:active {
   color: #0099FF
 }
 #stat {
@@ -72,10 +97,6 @@ button:active {
 #divupgradepcacost {
   display: inline-block;
 }
-#divtogglepca {
-  display: inline-block;
-  text-indent: 1.75em;
-}
 #divboosterupcost {
   display: inline-block;
 }
@@ -83,43 +104,11 @@ button:active {
   display: inline-block;
   text-indent: 15em;
 }
-#omegabasecost {
+#divboostsacrificecost {
   display: inline-block;
 }
-#omegaalphacost {
+#boostsac2 {
   display: inline-block;
-  text-indent: 3.5em;
-}
-#omegabetacost {
-  display: inline-block;
-  text-indent: 6em;
-}
-#omegagammacost {
-  display: inline-block;
-  text-indent: 4em;
-}
-#omegadeltacost {
-  display: inline-block;
-  text-indent: 4em;
-}
-#divobase {
-  display: inline-block;
-}
-#divoalpha {
-  display: inline-block;
-  text-indent: 4.5em;
-}
-#divobeta {
-  display: inline-block;
-  text-indent: 7em;
-}
-#divogamma {
-  display: inline-block;
-  text-indent: 7em;
-}
-#divodelta {
-  display: inline-block;
-  text-indent: 7em;
 }
 #boostsection {
   flex: space-evenly;
@@ -162,7 +151,6 @@ button:active {
   border-radius: 2px;
   border: 1px solid black;
   box-shadow: none;
-  font-family: 'Tahoma';
   font-weight: 500;
   cursor: pointer;
 }
@@ -178,7 +166,7 @@ body {
   flex-direction: column;
   align-items: center;
 }
-* {text-align: center;}
+* {text-align: center; font-family: 'Arial'}
 #boostsection {
   display:flex;
   justify-content: center;
@@ -188,6 +176,10 @@ body {
   justify-content: center;
 }
 #bangcenteringfix {
+  display:flex;
+  justify-content: center;
+}
+#mergecenteringfix {
   display:flex;
   justify-content: center;
 }
@@ -209,38 +201,63 @@ body {
 }
 #bangshow {
   display:none; 
-  border:0.2em solid #333333; 
-  padding-left: 15px; 
-  padding-bottom: 10px; 
-  padding-right: 15px; 
-  border-radius: 10px
 }
-#pcabox {
-  border:0.2em solid #333333; 
-  padding-left: 15px; 
-  padding-bottom: 10px; 
-  padding-right: 15px; 
-  border-radius: 10px
-}
-#talbox {
-  border:0.2em solid #333333; 
-  padding-left: 15px; 
-  padding-bottom: 10px; 
-  padding-right: 15px; 
-  border-radius: 10px
+#mergeshow {
+  display:none; 
 }
 #nuclearalphashow {
   display:none; 
-  border:0.2em solid #333333; 
-  padding-left: 15px; 
-  padding-bottom: 10px;
-  padding-right: 15px; 
-  border-radius: 10px
 }
-#bpsection {
+.withtheoutline {
   border:0.2em solid #333333; 
   padding-left: 15px; 
   padding-bottom: 10px; 
   padding-right: 15px; 
   border-radius: 10px
+}
+#nextfeature {
+  font-size:larger;
+  padding-bottom:0.3em;
+}
+#autosaving {
+  display:inline-block;
+}
+#divspeedparticlecost {
+  display: inline-block;
+}
+#divmachinecost {
+  display: inline-block;
+  text-indent: 2em;
+}
+#experimentoggle {
+  display:inline-block;
+  text-indent: 1em;
+}
+#devtoggle {
+  display:inline-block;
+  text-indent: 10em;
+}
+#divmergespeedcost {
+  display:inline-block;
+}
+#divpermergecost {
+  display:inline-block;
+  text-indent: 3em;
+}
+.flexycentering {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3em;
+}
+#flexyreactor {
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+.flexyreactorcosts {
+  display: flex;
+  gap: 9em;
 }
