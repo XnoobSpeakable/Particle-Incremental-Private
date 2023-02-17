@@ -110,44 +110,6 @@ button:active {
 #boostsac2 {
   display: inline-block;
 }
-#omegabasecost {
-  display: inline-block;
-}
-#omegaalphacost {
-  display: inline-block;
-  text-indent: 3.5em;
-}
-#omegabetacost {
-  display: inline-block;
-  text-indent: 6em;
-}
-#omegagammacost {
-  display: inline-block;
-  text-indent: 4em;
-}
-#omegadeltacost {
-  display: inline-block;
-  text-indent: 4em;
-}
-#divobase {
-  display: inline-block;
-}
-#divoalpha {
-  display: inline-block;
-  text-indent: 4.5em;
-}
-#divobeta {
-  display: inline-block;
-  text-indent: 7em;
-}
-#divogamma {
-  display: inline-block;
-  text-indent: 7em;
-}
-#divodelta {
-  display: inline-block;
-  text-indent: 7em;
-}
 #boostsection {
   flex: space-evenly;
   flex-direction: row;
@@ -189,7 +151,6 @@ button:active {
   border-radius: 2px;
   border: 1px solid black;
   box-shadow: none;
-  font-family: 'Tahoma';
   font-weight: 500;
   cursor: pointer;
 }
@@ -205,7 +166,7 @@ body {
   flex-direction: column;
   align-items: center;
 }
-* {text-align: center;}
+* {text-align: center; font-family: 'Arial'}
 #boostsection {
   display:flex;
   justify-content: center;
@@ -282,4 +243,21 @@ body {
 #divpermergecost {
   display:inline-block;
   text-indent: 3em;
+}
+.flexycentering {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3em;
+}
+#flexyreactor {
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+.flexyreactorcosts {
+  display: flex;
+  gap: 9em;
 }

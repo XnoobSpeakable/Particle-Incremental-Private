@@ -21,7 +21,7 @@ export let player = {
         'unlockgenboost': { cost: D(5000), timesBought: D(0)},
         'genboostuptime': { cost: D(100), timesBought: D(0)},
         'genboostupmult': { cost: D(10000), timesBought: D(0)},
-        'nuclearbuy': { cost: D(1e6), timesBought: D(0)},
+        'nuclearbuy': { cost: D(1e8), timesBought: D(0)},
         'speedparticle': { cost: D(5e4), timesBought: D(0)},
         'machine': { cost: D(2e4), timesBought: D(0)},
         'nuclearalphabuy': { cost: D(1e6), timesBought: D(0)},
@@ -37,18 +37,33 @@ export let player = {
         'alphamachinedouble': { cost: D(1000), timesBought: D(0)},
         'bangautobuyerunlock': { cost: D(1), timesBought: D(0)},
         'upgradebangautobuyer': { cost: D(1), timesBought: D(0)},
+        'boostsacrifice': { cost: D(1e5), timesBought: D(0)},
         'betaacc': { cost: D(1e10), timesBought: D(0)},
         'unlockabgb': { cost: D(1), timesBought: D(0)},
         'abgbefficiency': { cost: D(3), timesBought: D(0)},
         'permerge': { cost: D(4), timesBought: D(0)},
         'mergespeed': { cost: D(1), timesBought: D(0)},
+        'GnBBAunlock': { cost: D(0.5), timesBought: D(0)},
+        'GBUAunlock': { cost: D(0.5), timesBought: D(0)},
+        'MBUAunlock': { cost: D(0.5), timesBought: D(0)},
+        'NPAunlock': { cost: D(0.5), timesBought: D(0)},
+        'AAccAunlock': { cost: D(0.5), timesBought: D(0)},
+        'SAunlock': { cost: D(0.5), timesBought: D(0)},
+        'unlocknpboost': { cost: D(2), timesBought: D(0)},
+        'upgradenpboost': { cost: D(2), timesBought: D(0)},
+        'reactorupmult': { cost: D(1500), timesBought: D(0)},
+        'reactoruptime': { cost: D(1250), timesBought: D(0)},
         },
     num: D(0),
+    alphaNum: D(0),
+    betaNum: D(0),
+    gammaNum: D(0),
+    deltaNum: D(0),
+    omegaNum: D(0),
     genBoostTimeLeft: D(0),
     genBoostTimeLeftCon: D(10),
     genBoostMult: D(1),
     pChunks: D(0),
-    alphaNum: D(0),
     bangTime: 300, 
     bangTimeLeft: 1e+300,   
     pcaToggle: true, 
@@ -66,13 +81,27 @@ export let player = {
     clickerParticles: D(0),
     machineWear: 10,
     aGroups: D(0),
-    betaNum: D(0),
     mergeTime: 300, 
     mergeTimeLeft: 1e+300,
+    fuel: D(0),
+    superfuel: D(0),
+    hyperfuel: D(0),
+    instantAutobuyers: {
+        genAutobuyerToggle: false,
+        bbAutobuyerToggle: false,
+        genBoostTimeAutobuyerToggle: false,
+        genBoostMultAutobuyerToggle: false,
+        manBoost1perClickAutobuyerToggle: false,
+        manBoost1xperClickAutobuyerToggle: false,
+        nuclearParticlesAutobuyerToggle: false,
+        nuclearAlphaParticlesAutobuyerToggle: false,
+        AlphaAccAutobuyerToggle: false,
+        SpeedAutobuyerToggle: false,
+    }
 };
 
 export let playerSettings = {
-    version: "b2.0.0.0a12",
+    version: "b2.0.0.1",
     eSetting: 4,
     autoSaveDelay: 50, 
     autoSaveMode: 4, 
@@ -83,6 +112,7 @@ export let playerSettings = {
     cheatMode: 0,
 }
 
+export type InstantAutobuyerName = keyof typeof player.instantAutobuyers;
 export type UpgradeName = keyof typeof player.upgrades;
 export const UpgradeNames = Object.keys(player.upgrades) as UpgradeName[];        
 export function isUpgradeName(x: unknown) : x  is UpgradeName { return typeof x === 'string' && UpgradeNames.includes(x as UpgradeName) }
@@ -92,36 +122,43 @@ export function getUpgradeTimesBought(upgradeName: UpgradeName) {
     return player.upgrades[upgradeName].timesBought 
 }
 
+function updateGame() { //TODO: NEVER forget to change this when updating the game
+    const stage = Number(playerSettings.version.substring(1, 2));
+    /*
+    const major = Number(playerSettings.version.substring(3, 5));
+    const mid = Number(playerSettings.version.substring(5, 7));
+    const minor = Number(playerSettings.version.substring(7));
+    */
+
+    if(stage !== 2) {
+        localStorage.removeItem(window.location.pathname + "settings");
+        localStorage.removeItem(window.location.pathname);
+        playerSettings.version = "b2.0.0.1";
+        window.location.reload();
+    }
+    playerSettings.version = 'b2.0.0.1';
+}
+
 export function loadSettings() {
     if(localStorage.getItem(window.location.pathname + "settings") !== null) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         playerSettings = JSON.parse(localStorage.getItem(window.location.pathname + "settings")!);
     }
 
-    //const stage = Number(playerSettings.version.substring(1, 2))
-    //const major = Number(playerSettings.version.substring(3, 5))
-    //const minor = player.version.substring(6)
-
-    /*if(stage === 1 && major <= 21) { //code for legacy support
-        localStorage.removeItem(window.location.pathname);
-        window.location.reload();
-    }*/
-
-    if(playerSettings.version !== "b2.0.0.0a12") {
-        localStorage.removeItem(window.location.pathname + "settings");
-        localStorage.removeItem(window.location.pathname)
-        playerSettings.version = "b2.0.0.0a12";
-        window.location.reload()
-    }
+    updateGame();
 
     if(playerSettings.useExperimental) {
         getEl('tabopengamma').style.display = 'inline';
         getEl('tabopendelta').style.display = 'inline';
+        getEl('tabopenomegaomega').style.display = 'inline';
+        getEl('tabopenstats').style.display = 'inline';
         getEl('tabopenachievements').style.display = 'inline';
     }
     else {
         getEl('tabopengamma').style.display = 'none';
         getEl('tabopendelta').style.display = 'none';
+        getEl('tabopenomegaomega').style.display = 'none';
+        getEl('tabopenstats').style.display = 'inline';
         getEl('tabopenachievements').style.display = 'none';
     }
     getEl('experimentoggle').textContent = playerSettings.useExperimental.toString()

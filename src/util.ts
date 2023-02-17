@@ -27,7 +27,7 @@ const decimalPlaces = function decimalPlaces(
   return trunc(ret);
 };
 
-function formatD(d: Decimal, places = 3, ePlaces = 99): string {
+export function formatD(d: Decimal, places = 3, ePlaces = 99): string {
   if (d.layer === 0) {
     if ((d.mag < 1e4 && d.mag > 1e-7) || d.mag === 0) {
       return (d.sign * d.mag).toFixed(places);
@@ -227,4 +227,8 @@ window.opsave = function() {
   const savefile = `{"upgrades":{"gen":{"cost":"D#1000","timesBought":"D#1"},"biggerbatches":{"cost":"D#2000","timesBought":"D#0"},"speed":{"cost":"D#50","timesBought":"D#0"},"mbup":{"cost":"D#100","timesBought":"D#0"},"mbmult":{"cost":"D#1000","timesBought":"D#0"},"unlockgenboost":{"cost":"D#5000","timesBought":"D#0"},"genboostuptime":{"cost":"D#100","timesBought":"D#0"},"genboostupmult":{"cost":"D#10000","timesBought":"D#0"},"nuclearbuy":{"cost":"D#1000000","timesBought":"D#0"},"speedparticle":{"cost":"D#50000","timesBought":"D#0"},"machine":{"cost":"D#20000","timesBought":"D#0"},"nuclearalphabuy":{"cost":"D#1000000","timesBought":"D#0"},"alphaacc":{"cost":"D#10000000000","timesBought":"D#0"},"threeboost":{"cost":"D#1","timesBought":"D#0"},"perbang":{"cost":"D#4","timesBought":"D#0"},"bangspeed":{"cost":"D#1","timesBought":"D#0"},"unlockpca":{"cost":"D#20","timesBought":"D#0"},"upgradepca":{"cost":"D#2","timesBought":"D#0"},"boosterup":{"cost":"D#100","timesBought":"D#0"},"boosteruppercent":{"cost":"D#100","timesBought":"D#0"},"genboostdouble":{"cost":"D#1","timesBought":"D#0"},"alphamachinedouble":{"cost":"D#1000","timesBought":"D#0"},"bangautobuyerunlock":{"cost":"D#1","timesBought":"D#0"},"upgradebangautobuyer":{"cost":"D#1","timesBought":"D#0"},"betaacc":{"cost":"D#10000000000","timesBought":"D#0"},"unlockabgb":{"cost":"D#1","timesBought":"D#0"},"abgbefficiency":{"cost":"D#3","timesBought":"D#0"}},"num":"D#3.7662028908580303e52","genBoostTimeLeft":"D#0","genBoostTimeLeftCon":"D#10","genBoostMult":"D#1","pChunks":"D#0","alphaNum":"D#1.197262141301484e52","bangTime":300,"bangTimeLeft":1e+300,"pcaToggle":true,"pcaTime":160,"chunkAutobuyerTimeLeft":0,"boosterParticles":"D#1.4745635017706773e53","untilBoost":1,"omegaBase":"D#0","omegaBaseCost":"D#10000000000","omegaAlpha":"D#0","omegaAlphaCost":"D#1000000000000","bangAutobuyerToggle":true,"bangAutobuyerTime":160,"bangAutobuyerTimeLeft":0,"clickerParticles":"D#0","machineWear":10,"aGroups":"D#0","betaNum":"D#0","mergeTime":300,"mergeTimeLeft":1e+300}`
    localStorage.setItem(window.location.pathname, savefile);
    window.location.reload();
+}
+window.clearls = function() {
+  localStorage.clear()
+  window.location.reload();
 }

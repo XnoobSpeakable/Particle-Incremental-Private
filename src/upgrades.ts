@@ -5,7 +5,7 @@ import {
   setUpgradeCost,
   UpgradeName
 } from "./player";
-import { formatb , getEl, D } from "./util"
+import { formatb , getEl, D, onBought, formatD, jsnumber } from "./util"
 import Decimal from "break_eternity.js";
 
 // eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
@@ -14,8 +14,10 @@ declare var window: Window & Record<string, unknown>
 export const currencyName = {
   num: "",
   alphaNum: " Alpha",
+  boosterParticles: " Booster Particles",
   omegaBase: " ",
-  betaNum: " Beta"
+  betaNum: " Beta",
+  omegaAlpha: " "
 };
 
 export type CurrencyName = keyof typeof currencyName;
@@ -23,10 +25,17 @@ export type CurrencyName = keyof typeof currencyName;
 export function UpdateCostVal(
   elementID: string,
   variable: Decimal,
-  currency: CurrencyName = "num"
+  currency: CurrencyName = "num",
+  prec: jsnumber = 2
 ) {
-  getEl(elementID).textContent =
+  if(prec === 2) {
+    getEl(elementID).textContent =
     "Cost: " + formatb(variable) + currencyName[currency];
+  }
+  else {
+    getEl(elementID).textContent =
+    "Cost: " + formatD(variable, prec) + currencyName[currency];
+  }
 }
 
 type Upgrade = {
@@ -34,6 +43,7 @@ type Upgrade = {
   costDiv: string;
   scaleFunction: (upgradeName: UpgradeName) => void;
   extra?: undefined | (() => void) ;
+  costRounding?: undefined | jsnumber;
 };
 
 function Upgrade(x: Upgrade) { return x; }
@@ -42,7 +52,7 @@ export const upgrades = {
   gen: Upgrade({
     scaleFunction: scaleGen,
     costDiv: "divgencost",
-    currency: "num"
+    currency: "num",
   }),
   biggerbatches: Upgrade({
     scaleFunction: scaleMultiplier(D(2)),
@@ -165,7 +175,14 @@ export const upgrades = {
     scaleFunction: scaleBA,
     costDiv: "divupgradeba",
     currency: "omegaBase",
-    extra: BAExtra
+    extra: BAExtra,
+    costRounding: 1
+  }),
+  boostsacrifice: Upgrade({
+    scaleFunction: scaleMultiplier(D(10)),
+    costDiv: "divboostsacrificecost",
+    currency: "boosterParticles",
+    extra: BSExtra
   }),
   betaacc: Upgrade({
     scaleFunction: scaleMultiplier(D(1000)),
@@ -191,6 +208,58 @@ export const upgrades = {
     scaleFunction: scaleBangSpeed,
     costDiv: "divmergespeedcost",
     currency: "betaNum"
+  }),
+  GnBBAunlock: Upgrade({
+    scaleFunction: scaleMultiplier(D(Infinity)),
+    costDiv: "usewhencostdisplaynotneeded",
+    currency: "omegaAlpha"
+  }),
+  GBUAunlock: Upgrade({
+    scaleFunction: scaleMultiplier(D(Infinity)),
+    costDiv: "usewhencostdisplaynotneeded",
+    currency: "omegaAlpha"
+  }),
+  MBUAunlock: Upgrade({
+    scaleFunction: scaleMultiplier(D(Infinity)),
+    costDiv: "usewhencostdisplaynotneeded",
+    currency: "omegaAlpha"
+  }),
+  NPAunlock: Upgrade({
+    scaleFunction: scaleMultiplier(D(Infinity)),
+    costDiv: "usewhencostdisplaynotneeded",
+    currency: "omegaAlpha"
+  }),
+  AAccAunlock: Upgrade({
+    scaleFunction: scaleMultiplier(D(Infinity)),
+    costDiv: "usewhencostdisplaynotneeded",
+    currency: "omegaAlpha"
+  }),
+  SAunlock: Upgrade({
+    scaleFunction: scaleMultiplier(D(Infinity)),
+    costDiv: "usewhencostdisplaynotneeded",
+    currency: "omegaAlpha"
+  }),
+  unlocknpboost: Upgrade({
+    scaleFunction: scaleMultiplier(D(Infinity)),
+    costDiv: "divnpboostcost",
+    currency: "betaNum",
+    extra: NBExtra
+  }),
+  upgradenpboost: Upgrade({
+    scaleFunction: scaleMultiplier(D(2)),
+    costDiv: "divnpboostupcost",
+    currency: "betaNum",
+    extra: NBExtra
+  }),
+  reactorupmult: Upgrade({
+    scaleFunction: scaleReactorUpMult,
+    costDiv: "divreactorupmultcost",
+    currency: "betaNum",
+  }),
+  reactoruptime: Upgrade({
+    scaleFunction: scaleReactorUpTime,
+    costDiv: "divreactoruptimecost",
+    currency: "betaNum",
   }),
 } as const;
 
@@ -231,7 +300,29 @@ export function scaleGen(upgradeName: UpgradeName): void {
 }
 
 export function scaleBA(upgradeName: UpgradeName): void {
-  setUpgradeCost(upgradeName, getUpgradeCost(upgradeName).plus(1));
+  setUpgradeCost(upgradeName, getUpgradeCost(upgradeName).plus(0.5));
+}
+
+export function scaleReactorUpMult(upgradeName: UpgradeName): void {
+  if (getUpgradeTimesBought(upgradeName).lte(4)) {
+    scaleMultiplier(D(4))(upgradeName);
+  } else if (getUpgradeTimesBought(upgradeName).lte(8)) {
+    scaleMultiplier(D(8))(upgradeName);
+  }
+  else {
+    scaleMultiplier(D(64))(upgradeName);
+  }
+}
+
+export function scaleReactorUpTime(upgradeName: UpgradeName): void {
+  if (getUpgradeTimesBought(upgradeName).lte(4)) {
+    scaleMultiplier(D(3))(upgradeName);
+  } else if (getUpgradeTimesBought(upgradeName).lte(8)) {
+    scaleMultiplier(D(7))(upgradeName);
+  }
+  else {
+    scaleMultiplier(D(56))(upgradeName);
+  }
 }
 
 export function GBTExtra(): void {
@@ -258,13 +349,23 @@ export function MachineExtra(): void {
 }
 
 export function NBExtra(): void {  
-  getEl("divnp").textContent =
-    "Nuclear Particles: " + formatb(getUpgradeTimesBought("nuclearbuy"));
+  let nuclearParticles = getUpgradeTimesBought('nuclearbuy')
+
+  if(getUpgradeTimesBought('unlocknpboost').eq(1)) {
+    nuclearParticles = onBought(
+        ['nuclearbuy', '*', [D(1), '+', ['upgradenpboost', '+', D(1), '/', D(10)]]]
+    )
+    getEl('divnp').textContent = "Nuclear Particles: " + formatD(nuclearParticles, 1);
+  }
+
+  else {
+    getEl('divnp').textContent = "Nuclear Particles: " + formatb(getUpgradeTimesBought('nuclearbuy'));
+  }
 }
 
 export function NABExtra(): void {  
   getEl("divnap").textContent =
-    "Nuclear Particles: " + formatb(getUpgradeTimesBought("nuclearalphabuy"));
+    "Nuclear Alpha Particles: " + formatb(getUpgradeTimesBought("nuclearalphabuy"));
 }
 
 export function PCAExtra(): void {
@@ -283,7 +384,11 @@ export function BAExtra(): void {
   }
 }
 
-function buyUpgrade(upgradeName: UpgradeName): void {
+export function BSExtra(): void {
+  player.boosterParticles = D(0)
+}
+
+export function buyUpgrade(upgradeName: UpgradeName): void {
   const upgrade = upgrades[upgradeName];
   const oldCost = getUpgradeCost(upgradeName);
 
@@ -293,11 +398,22 @@ function buyUpgrade(upgradeName: UpgradeName): void {
     upgrade.scaleFunction(upgradeName);
 
     if (typeof upgrade.extra !== 'undefined') { upgrade.extra(); }
-    UpdateCostVal(
-      upgrade.costDiv,
-      getUpgradeCost(upgradeName),
-      upgrade.currency
-    );
+
+    if (typeof upgrade.costRounding === 'undefined') {
+      UpdateCostVal(
+        upgrade.costDiv,
+        getUpgradeCost(upgradeName),
+        upgrade.currency
+      );
+    }
+    else {
+      UpdateCostVal(
+        upgrade.costDiv,
+        getUpgradeCost(upgradeName),
+        upgrade.currency,
+        upgrade.costRounding
+      );
+    }
   }
 }
 window.buyUpgrade = buyUpgrade;

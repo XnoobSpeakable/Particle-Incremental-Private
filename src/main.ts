@@ -7,6 +7,7 @@ import {
    playerSettings,
    UpgradeNames,
    getSaveString,
+   InstantAutobuyerName,
 } from './player';
 import { format, 
    formatb, 
@@ -14,8 +15,9 @@ import { format,
    D,  
    onBought, 
    onBoughtInc, 
-   formatbSpecific } from './util';
-import { UpdateCostVal, upgrades } from './upgrades';
+   formatbSpecific,
+   formatD } from './util';
+import { UpdateCostVal, upgrades, buyUpgrade } from './upgrades';
 import { createAchievementHTML } from './achievements';
 import { nextFeatureHandler } from './features';
 import Decimal from 'break_eternity.js';
@@ -141,12 +143,18 @@ function prePUD(): void {
    getEl('tabopenfactory').style.display = 'none';
    getEl('tabopenalpha').style.display = 'none';
    getEl('tabopenbeta').style.display = 'none';
+   getEl('tabopenreactor').style.display = 'none';
    getEl('tabopengamma').style.display = 'none';
    getEl('tabopendelta').style.display = 'none';
    getEl('tabopenomega').style.display = 'none';
+   getEl('tabopenstats').style.display = 'none';
+   getEl('tabopenomegaomega').style.display = 'none';
 }
 
 function passiveUnlockDisplay(): void {
+   if (player.num.gte(1e5)) {
+      getEl('tabopenfactory').style.display = 'inline';
+   }
    if (player.num.gte(1e9)) {
       getEl('tabopenalpha').style.display = 'inline';
       getEl('tabopenomega').style.display = 'inline';
@@ -154,18 +162,17 @@ function passiveUnlockDisplay(): void {
    if (player.alphaNum.gte(1e9)) {
       getEl('tabopenbeta').style.display = 'inline';
    }
+   if (player.betaNum.gte(300)) {
+      getEl('tabopenreactor').style.display = 'inline';
+   }
    if (playerSettings.useExperimental) { //TODO: remove exprimental when you want
       getEl('tabopengamma').style.display = 'inline';
-   }
-   if (playerSettings.useExperimental) { //TODO: remove exprimental when you want
       getEl('tabopendelta').style.display = 'inline';
-   }
-   if (player.num.gte(1e5)) {
-      getEl('tabopenfactory').style.display = 'inline';
-   }
-   if (playerSettings.useExperimental) { //TODO: remove exprimental when you want
+      getEl('tabopenomegaomega').style.display = 'inline';
+      getEl('tabopenstats').style.display = 'inline';
       getEl('tabopenachievements').style.display = 'inline';
    }
+
 }
 
 function devToolsVisibilityUpdate() {
@@ -231,9 +238,22 @@ function fgbTestSingle() {
    }
 }
 
+let nuclearParticles = getUpgradeTimesBought('nuclearbuy')
+if(getUpgradeTimesBought('unlocknpboost').eq(1)) {
+   nuclearParticles = onBought(
+      ['nuclearbuy', '*', [D(1), '+', ['upgradenpboost', '+', D(1), '/', D(10)]]]
+   )
+}
+
 function amountUpdate() {
-   getEl('divnp').textContent =
+   if(getUpgradeTimesBought('unlocknpboost').eq(1)) {
+      getEl('divnp').textContent =
+      'Nuclear Particles: ' + formatD(nuclearParticles, 1);
+   }
+   else {
+      getEl('divnp').textContent =
       'Nuclear Particles: ' + formatb(getUpgradeTimesBought('nuclearbuy'));
+   }
    getEl('divnap').textContent =
       'Nuclear Alpha Particles: ' +
       formatb(getUpgradeTimesBought('nuclearalphabuy'));
@@ -254,11 +274,21 @@ function amountUpdate() {
 function loadMisc(): void {
    for (const upgradeName of UpgradeNames) {
       const upgrade = upgrades[upgradeName];
-      UpdateCostVal(
-         upgrade.costDiv,
-         getUpgradeCost(upgradeName),
-         upgrade.currency
-      );
+      if (typeof upgrade.costRounding === 'undefined') {
+         UpdateCostVal(
+           upgrade.costDiv,
+           getUpgradeCost(upgradeName),
+           upgrade.currency
+         );
+       }
+       else {
+         UpdateCostVal(
+           upgrade.costDiv,
+           getUpgradeCost(upgradeName),
+           upgrade.currency,
+           upgrade.costRounding
+         );
+       }
    }
 
    themeExec();
@@ -289,9 +319,11 @@ const tabElements = makeElementMap(
    'Factory',
    'Alpha',
    'Beta',
+   'Reactor',
    'Gamma',
    'Delta',
    'Omega',
+   'OmegaOmega',
    'Achievements',
    'Stats',
    'Settings',
@@ -303,8 +335,7 @@ const tabOmegaElements = makeElementMap(
    'oAlpha',
    'oBeta',
    'oGamma',
-   'oDelta',
-   'oOmega'
+   'oDelta'
 );
 
 function hideElements(elements: {
@@ -348,7 +379,8 @@ window.saveImportConfirm = function (): void {
    window.location.reload();
 };
 
-window.setting1e4 = function (): void { //TODO: fix formatting settings
+/* (these are completely abandoned)
+window.setting1e4 = function (): void { 
    playerSettings.eSetting = 4;
    loadMisc();
    saveSettings();
@@ -359,6 +391,7 @@ window.setting1e6 = function (): void {
    loadMisc();
    saveSettings();
 };
+*/
 
 window.experimentalToggle = function () {
    playerSettings.useExperimental = !playerSettings.useExperimental;
@@ -366,11 +399,13 @@ window.experimentalToggle = function () {
    if(playerSettings.useExperimental) {
       getEl('tabopengamma').style.display = 'inline';
       getEl('tabopendelta').style.display = 'inline';
+      getEl('tabopenomegaomega').style.display = 'inline';
       getEl('tabopenachievements').style.display = 'inline';
    }
    else {
       getEl('tabopengamma').style.display = 'none';
       getEl('tabopendelta').style.display = 'none';
+      getEl('tabopenomegaomega').style.display = 'none';
       getEl('tabopenachievements').style.display = 'none';
    }
    getEl('experimentoggle').textContent = playerSettings.useExperimental.toString();
@@ -392,15 +427,79 @@ window.devToggle = function () {
 
 createAchievementHTML();
 
+//early var init
 let machineProd = 10
 let clickerParticleMult = player.clickerParticles.div(100).plus(1).times(machineProd);
+
+const reactor = {
+   isActive: false,
+   fuelTime: D(300),
+   boost: D(1),
+   fuelMult: D(1),
+}
+
+function reactorHandler() {
+   reactor.fuelTime = onBought(
+      [D(300), '*', [D(1.25), '^', 'reactoruptime'], '/', [D(2), '^', 'reactorupmult']]
+   )
+
+   if(player.hyperfuel.lte(0)) {
+      player.hyperfuel = D(0);
+
+      if(player.superfuel.lte(0)) {
+         player.superfuel = D(0);
+
+         if(player.fuel.lte(0)) {
+            player.fuel = D(0);
+
+            reactor.isActive = false;
+         }
+         else {
+            reactor.fuelMult = D(1);
+            reactor.isActive = true;
+            player.fuel = player.fuel.minus(
+               D(1).div(reactor.fuelTime)
+            )
+         }
+      }
+      else {
+         reactor.fuelMult = D(3);
+         reactor.isActive = true;
+         player.superfuel = player.superfuel.minus(
+            D(1).div(reactor.fuelTime)
+         )
+      }
+   }
+   else {
+      reactor.fuelMult = D(6561);
+      reactor.isActive = true;
+      player.hyperfuel = player.hyperfuel.minus(
+         D(1).div(reactor.fuelTime)
+      )
+   }
+
+   if(reactor.isActive) {
+      reactor.boost = onBoughtInc(
+         [[D(1.25), '^', 'reactorupmult'], '*', reactor.fuelMult]
+      )
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      getEl('divreactorstatus').textContent = `Reactor status: Running (${formatD(player.fuel, 2)} Fuel)`
+   }
+   else {
+      reactor.boost = D(1)
+      getEl('divreactorstatus').textContent = "Reactor status: Out of fuel"
+   }
+   getEl('divreactorfuelusage').textContent = `When active, your reactor is using up 1 fuel every ${formatb(reactor.fuelTime.div(10))} seconds`
+}
+
+let totalBoostFromNP = nuclearParticles.times(reactor.boost)
 
 window.mbman = function (): void {
    const gain: Decimal = onBoughtInc(
       'mbup',
       '*',
-      'mbmult', '*', 'nuclearbuy'
-   ).times(clickerParticleMult);
+      'mbmult'
+   ).times(clickerParticleMult).times(totalBoostFromNP.plus(1));
 
    player.num = player.num.plus(gain);
    getEl('counter').textContent = formatb(player.num) + ' particles';
@@ -519,11 +618,45 @@ function merge(): void {
 }
 window.merge = merge;
 
+window.instantAutobuyerToggle = function(autobuyerVar: InstantAutobuyerName, autobuyerDiv: string): void {
+   player.instantAutobuyers[autobuyerVar] = !player.instantAutobuyers[autobuyerVar]
+   getEl(autobuyerDiv).textContent = player.instantAutobuyers[autobuyerVar] ? "On" : "Off" 
+}
+
+type fuels = 'player.fuel'|'player.superfuel'|'player.hyperfuel'
+
+window.buyFuel = function(fuelType: fuels) {
+   if(fuelType === 'player.fuel') {
+      if(player.num.gte('1e27') && player.alphaNum.gte('1e10') && player.betaNum.gte('50')) {
+         player.num = player.num.minus('1e27')
+         player.alphaNum = player.alphaNum.minus('1e10')
+         player.betaNum = player.betaNum.minus('50')
+         player.fuel = player.fuel.plus('1')
+      }
+   }
+   else {
+      //do this later TODO:
+   }
+}
+
 function fgbTestConst(): void {
    if (getUpgradeTimesBought('gen').gt(0)) {
       getEl('boostsection').style.display = 'flex';
       getEl('bigboosttext').style.display = 'block';
       getEl('veryouterboost').style.display = 'block';
+
+      if(getUpgradeTimesBought('unlocknpboost').eq(1)) {
+         nuclearParticles = onBought(
+            ['nuclearbuy', '*', [D(1), '+', ['upgradenpboost', '+', D(1), '/', D(10)]]]
+         )
+         getEl('npboostshow').style.display = 'block';
+         getEl('npboostunlockbutton').style.display = 'none'
+         getEl('divnpboostcost').style.display = 'none'
+      }
+      else {
+         nuclearParticles = getUpgradeTimesBought('nuclearbuy')
+         getEl('npboostshow').style.display = 'none';
+      }
 
       if (getUpgradeTimesBought('gen').eq(0)) {
          getEl('divgencost').textContent = 'Cost: Free';
@@ -531,8 +664,22 @@ function fgbTestConst(): void {
          UpdateCostVal('divgencost', getUpgradeCost('gen'));
       }
 
+      reactorHandler();
+
+      totalBoostFromNP = nuclearParticles.times(reactor.boost)
+
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      getEl('nptext').textContent = `Nuclear particles add a +${formatD(reactor.boost, 2)}x multiplier to generators, generator boost, and manual boost`
+
+
+      const boostsacmult: Decimal = D(1.5).pow(getUpgradeTimesBought('boostsacrifice'))
+
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      getEl('boostsactext').textContent = `Reset your Booster Particles, but increase Booster Particle and Alpha Particle gain. Currently ${formatD(boostsacmult, 1)}x.`
+
+
       if (player.genBoostTimeLeft.greaterThan(0)) {
-         player.genBoostMult = getUpgradeTimesBought('genboostupmult').times(5).plus(5);
+         player.genBoostMult = getUpgradeTimesBought('genboostupmult').times(1.5).plus(2);
       } else {
          player.genBoostMult = D(1);
       }
@@ -555,7 +702,7 @@ function fgbTestConst(): void {
       
       const alphaGain: Decimal = onBought(
          'alphaacc', ['perbang', '+', D(1)], ['nuclearalphabuy', '+', D(1)], [D(2), '^', 'alphamachinedouble']
-      );
+      ).times(boostsacmult);
 
       player.mergeTime = Math.ceil(
          300 / Math.pow(2, getUpgradeTimesBought('mergespeed').toNumber())
@@ -580,24 +727,27 @@ function fgbTestConst(): void {
          player.machineWear += 1
       }
 
-      clickerParticleMult = player.clickerParticles.div(100).plus(1);
+      clickerParticleMult = player.clickerParticles.div(50).plus(1);
 
       let abgbBoost: Decimal = D(1)
 
       if(getUpgradeTimesBought('unlockabgb').gt(0)) {
          abgbBoost  = onBoughtInc(
-            player.alphaNum, '/', D(100), '*', 'abgbefficiency', '+', D(1)
+            player.alphaNum.cbrt(), '/', D(100), '*', 'abgbefficiency', '+', D(1)
          )
       }
 
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      getEl('abgbtext').textContent = `Your alpha-based generator boost is multiplying your generators by ${formatb(abgbBoost)}x (cbrt(alpha)/100*${getUpgradeTimesBought("abgbefficiency").plus(1)})`
+
       const gain: Decimal = onBought(        
-            ['biggerbatches', '+', D(1)], '*', 'gen', '*', ['speed', '/', D(10), '+', D(0.1)], '*', player.genBoostMult, '*', [['nuclearbuy', '+', D(1)], '^', D(2)], '*', 
-            [D(3), '^', 'threeboost'], '*', [D(1), '+', [[player.boosterParticles, '+', D(1)], '/', D(100), '*', [['boosteruppercent', '+', D(1)], '/', D(100)]]], '*', abgbBoost
+            ['biggerbatches', '+', D(1)], '*', 'gen', '*', ['speed', '/', D(10), '+', D(0.1)], '*', player.genBoostMult, '*', [[totalBoostFromNP, '+', D(1)], '^', D(2)], '*', 
+            [D(3), '^', 'threeboost'], '*', [D(1), '+', [[player.boosterParticles, '+', D(1)], '/', D(100), '*', [['boosteruppercent', '+', D(1)], '/', D(100)]]], '*', abgbBoost, '*', boostsacmult
       );
       
       getEl('particlesperclick').textContent =
          'You are getting ' +
-                  formatb ( onBought( ['mbup', '+', D(1)], '*', ['mbmult', '+', D(1)], '*',['nuclearbuy', '+', D(1)]).times(clickerParticleMult)
+                  formatb ( onBought( ['mbup', '+', D(1)], '*', ['mbmult', '+', D(1)], '*',[totalBoostFromNP, '+', D(1)]).times(clickerParticleMult)
          ) +
          ' particles per click';
 
@@ -646,12 +796,12 @@ function fgbTestConst(): void {
       
       if(percentBoostDisplay.lt(100)) {
          getEl('boostersmaintext').textContent =
-            `You are currently getting ${formatb(bpGain.times(10))} booster particles per alpha particle per second,
+            `You are currently getting ${formatb(bpGain.times(10).div(player.alphaNum))} booster particles per alpha particle per second,
                resulting in a +${formatbSpecific(percentBoostDisplay)}% boost to base particle production`;
       }
       else {
          getEl('boostersmaintext').textContent =
-            `You are currently getting ${formatb(bpGain.times(10))} booster particles per alpha particle per second,
+            `You are currently getting ${formatb(bpGain.times(10).div(player.alphaNum))} booster particles per alpha particle per second,
                resulting in a ${formatbSpecific(percentBoostDisplay.div(100).plus(1))}x boost to base particle production`;
 
       }
@@ -668,17 +818,17 @@ function fgbTestConst(): void {
 
       getEl('omegabasecost').textContent =
          'Cost: ' + formatb(player.omegaBaseCost);
-      getEl('divobase').textContent = 'You have ' + formatb(player.omegaBase);
+      getEl('divobase').textContent = 'You have ' + formatD(player.omegaBase, 1);
       getEl('omegaalphacost').textContent =
          'Cost: ' + formatb(player.omegaAlphaCost);
-      getEl('divoalpha').textContent = 'You have ' + formatb(player.omegaAlpha);
+      getEl('divoalpha').textContent = 'You have ' + formatD(player.omegaAlpha, 1);
 
       player.num = player.num.plus(gain);
 
       getEl('particlespersecond').textContent =
          'You are getting ' + formatb(gain.times(10)) + ' particles/s';
-
-      if (player.num.gte(1e6)) {
+      
+      if (player.num.gte(1e8)) {
          getEl('nuclearreach').style.display = 'none';
          getEl('nuclearshow').style.display = 'block';
       }
@@ -689,13 +839,24 @@ function fgbTestConst(): void {
       }
 
       if (player.num.gte(1e9)) {
-         getEl('bangreach').style.display = 'none';
          getEl('bangshow').style.display = 'block';
       }
 
       if (player.alphaNum.gte(1e9)) {
          getEl('mergeshow').style.display = 'block';
+
+         getEl("oAlphauupre").style.display = 'none';
+         getEl("oAlphauupost").style.display = 'block';
       }
+
+      if (player.boosterParticles.gte(1e5) || getUpgradeTimesBought('boostsacrifice').gt(0)) {
+         getEl('bpsacshow').style.display = 'block';
+      }
+
+      const freeNuclearParticles = nuclearParticles.minus(getUpgradeTimesBought('nuclearbuy'))
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      getEl('npboosttext').textContent = `Your Nuclear Particles Boost is giving you ${formatD(freeNuclearParticles, 1)} free Nuclear Particles`
+
 
       getEl('counter').textContent = formatb(player.num) + ' particles';
       getEl('clickercounter').textContent = `You have ${formatb(player.clickerParticles)} Clicker Particles (${formatb(clickerParticleGain.times(10))}/s), which are making Manual Boost ${formatbSpecific(clickerParticleMult)}x stronger.`
@@ -703,6 +864,13 @@ function fgbTestConst(): void {
          formatb(player.alphaNum) + ' Alpha particles';
          getEl('betacounter').textContent =
          formatb(player.betaNum) + ' Beta particles';
+
+      if (getUpgradeTimesBought('alphaacc').eq(0)) {
+         getEl('bangwarn').style.display = 'block'
+      }
+      else {
+         getEl('bangwarn').style.display = 'none'
+      }
    }
 }
 
@@ -745,6 +913,57 @@ function baTestConst(): void {
    }
 }
 
+function instantAutobuyers() {
+   if(getUpgradeTimesBought('GnBBAunlock').eq(1)) {
+      if(player.instantAutobuyers.genAutobuyerToggle === true) {
+         buyUpgrade('gen');
+      }
+      if(player.instantAutobuyers.bbAutobuyerToggle === true) {
+         buyUpgrade('biggerbatches');
+      }
+      getEl('divGnBBA').style.display = 'none'
+   }
+   if(getUpgradeTimesBought('GBUAunlock').eq(1)) {
+      if(player.instantAutobuyers.genBoostTimeAutobuyerToggle === true) {
+         buyUpgrade('genboostuptime')
+      }
+      if(player.instantAutobuyers.genBoostMultAutobuyerToggle === true) {
+         buyUpgrade('genboostupmult')
+      }
+      getEl('divGBUA').style.display = 'none'
+   }
+   if(getUpgradeTimesBought('MBUAunlock').eq(1)) {
+      if(player.instantAutobuyers.manBoost1perClickAutobuyerToggle === true) {
+         buyUpgrade('mbup')
+      }
+      if(player.instantAutobuyers.manBoost1xperClickAutobuyerToggle === true) {
+         buyUpgrade('mbmult')
+      }
+      getEl('divMBUA').style.display = 'none'
+   }
+   if(getUpgradeTimesBought('NPAunlock').eq(1)) {
+      if(player.instantAutobuyers.nuclearParticlesAutobuyerToggle === true) {
+         buyUpgrade('nuclearbuy')
+      }
+      if(player.instantAutobuyers.nuclearAlphaParticlesAutobuyerToggle === true) {
+         buyUpgrade('nuclearalphabuy')
+      }
+      getEl('divNPA').style.display = 'none'
+   }
+   if(getUpgradeTimesBought('AAccAunlock').eq(1)) {
+      if(player.instantAutobuyers.AlphaAccAutobuyerToggle === true) {
+         buyUpgrade('alphaacc')
+      }
+      getEl('divAAccA').style.display = 'none'
+   }
+   if(getUpgradeTimesBought('SAunlock').eq(1)) {
+      if(player.instantAutobuyers.SpeedAutobuyerToggle === true) {
+         buyUpgrade('speed')
+      }
+      getEl('divSA').style.display = 'none'
+   }
+}
+
 function savinginloop(): void {
    playerSettings.autoSaveDelay -= 1;
 
@@ -760,6 +979,7 @@ setInterval(() => {
    pcaTestConst();
    baTestConst();
    fgbTestConst();
+   instantAutobuyers();
    getEl('stat').textContent = getSaveString()
       .replace(/","/g, '",\n"')
       .replace(/},"/g, '",\n"');

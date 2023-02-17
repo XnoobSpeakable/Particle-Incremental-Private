@@ -8,15 +8,18 @@ function Feature(x: Feature) { return x; }
 const features = { 
     GB: Feature({displayName: "Generator boost", unlocksAt: D(5000), currency: "num", next: 'Factory'}),
     Factory: Feature({displayName: "Factory", unlocksAt: D(1e5), currency: "num", next: 'NP'}),
-    NP: Feature({displayName: "Nuclear Particles", unlocksAt: D(1e6), currency: "num", next: 'Bang'}),
+    NP: Feature({displayName: "Nuclear Particles", unlocksAt: D(1e8), currency: "num", next: 'Bang'}),
     Bang: Feature({displayName: "Bang", unlocksAt: D(1e9), currency: "num", next: 'BA'}),
     BA: Feature({displayName: "Bang Autobuyer (in Omega tab)", unlocksAt: D(1e10), currency: "num", next: 'PCA'}),
-    PCA: Feature({displayName: "Particle Chunk Autobuyer", unlocksAt: D(20), currency: "alphaNum", next: 'NAP'}),
+    PCA: Feature({displayName: "Particle Chunk Autobuyer", unlocksAt: D(20), currency: "alphaNum", next: 'BS'}),
+    BS: Feature({displayName: "Boost Sacrifice", unlocksAt: D(1e5), currency: "boosterParticles", next: 'NAP'}),
     NAP: Feature({displayName: "Nuclear Alpha Particles", unlocksAt: D(1e6), currency: "alphaNum", next: 'Merge'}),
-    Merge: Feature({displayName: "Merge", unlocksAt: D(1e9), currency: "alphaNum", next: undefined}),
+    Merge: Feature({displayName: "Merge", unlocksAt: D(1e9), currency: "alphaNum", next: 'Reactor'}),
+    Reactor: Feature({displayName: "Reactor", unlocksAt: D(300), currency: "betaNum", next: 'DUMMY'}),
+    DUMMY: Feature({displayName: "End", unlocksAt: D(1e99), currency: "betaNum", next: undefined}),
 } as const;
 
-type FeatureKey = 'GB'|'Factory'|'NP'|'Bang'|'BA'|'PCA'|'NAP'|'Merge'
+type FeatureKey = 'GB'|'Factory'|'NP'|'Bang'|'BA'|'PCA'|'BS'|'NAP'|'Merge'|'Reactor'|'DUMMY'
         
 type Feature = {
     displayName: string,
