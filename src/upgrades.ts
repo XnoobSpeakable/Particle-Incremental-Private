@@ -261,6 +261,18 @@ export const upgrades = {
     costDiv: "divreactoruptimecost",
     currency: "betaNum",
   }),
+  unlocknapboost: Upgrade({
+    scaleFunction: scaleMultiplier(D(Infinity)),
+    costDiv: "divnapboostcost",
+    currency: "betaNum",
+    extra: NABExtra
+  }),
+  upgradenapboost: Upgrade({
+    scaleFunction: scaleMultiplier(D(4)),
+    costDiv: "divnapboostupcost",
+    currency: "betaNum",
+    extra: NABExtra
+  }),
 } as const;
 
 export function scaleMultiplier(multiplier: Decimal): (upgradeName: UpgradeName) => void {
@@ -364,8 +376,18 @@ export function NBExtra(): void {
 }
 
 export function NABExtra(): void {  
-  getEl("divnap").textContent =
-    "Nuclear Alpha Particles: " + formatb(getUpgradeTimesBought("nuclearalphabuy"));
+  let nuclearAlphaParticles = getUpgradeTimesBought('nuclearalphabuy')
+
+  if(getUpgradeTimesBought('unlocknapboost').eq(1)) {
+    nuclearAlphaParticles = onBought(
+        ['nuclearalphabuy', '*', [D(1), '+', ['upgradenapboost', '+', D(1), '/', D(10)]]]
+    )
+    getEl('divnap').textContent = "Nuclear Alpha Particles: " + formatD(nuclearAlphaParticles, 1);
+  }
+
+  else {
+    getEl('divnap').textContent = "Nuclear Alpha Particles: " + formatb(getUpgradeTimesBought('nuclearalphabuy'));
+  }
 }
 
 export function PCAExtra(): void {

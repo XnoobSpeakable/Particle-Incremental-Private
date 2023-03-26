@@ -53,6 +53,8 @@ export let player = {
         'upgradenpboost': { cost: D(2), timesBought: D(0)},
         'reactorupmult': { cost: D(1500), timesBought: D(0)},
         'reactoruptime': { cost: D(1250), timesBought: D(0)},
+        'unlocknapboost': { cost: D(15), timesBought: D(0)},
+        'upgradenapboost': { cost: D(15), timesBought: D(0)},
         },
     num: D(0),
     alphaNum: D(0),
@@ -101,7 +103,7 @@ export let player = {
 };
 
 export let playerSettings = {
-    version: "b2.0.0.1",
+    version: "b2.0.1.0",
     eSetting: 4,
     autoSaveDelay: 50, 
     autoSaveMode: 4, 
@@ -133,10 +135,10 @@ function updateGame() { //TODO: NEVER forget to change this when updating the ga
     if(stage !== 2) {
         localStorage.removeItem(window.location.pathname + "settings");
         localStorage.removeItem(window.location.pathname);
-        playerSettings.version = "b2.0.0.1";
+        playerSettings.version = "b2.0.1.0";
         window.location.reload();
     }
-    playerSettings.version = 'b2.0.0.1';
+    playerSettings.version = 'b2.0.1.0';
 }
 
 export function loadSettings() {

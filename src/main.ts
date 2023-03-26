@@ -26,6 +26,7 @@ import Decimal from 'break_eternity.js';
 declare var window: Window & Record<string, unknown>;
 
 loadSettings();
+load();
 
 const themes = [
    {
@@ -106,8 +107,9 @@ function themeExec(): void {
 
    //@ts-expect-error style isn't read only
    getEl('diventirebody').style =
-      'color: ' + textColor + "; font-family: 'Times New Roman'";
+      'color: ' + textColor + "; font-family: 'Arial'";
    document.body.style.backgroundColor = bgColor;
+   document.querySelector('html')!.style.backgroundColor = bgColor;
 
    const className = document.getElementsByClassName(
       'button'
@@ -132,6 +134,8 @@ function themeExec(): void {
 
    getEl('whattheme').textContent = 'Theme: ' + themeName;
 }
+
+themeExec()
 
 window.theme = function (): void {
    playerSettings.themeNumber = (playerSettings.themeNumber + 1) % themes.length;
@@ -244,6 +248,12 @@ if(getUpgradeTimesBought('unlocknpboost').eq(1)) {
       ['nuclearbuy', '*', [D(1), '+', ['upgradenpboost', '+', D(1), '/', D(10)]]]
    )
 }
+let nuclearAlphaParticles = getUpgradeTimesBought('nuclearalphabuy')
+if(getUpgradeTimesBought('unlocknapboost').eq(1)) {
+   nuclearAlphaParticles = onBought(
+      ['nuclearalphabuy', '*', [D(1), '+', ['upgradenapboost', '+', D(1), '/', D(10)]]]
+   )
+}
 
 function amountUpdate() {
    if(getUpgradeTimesBought('unlocknpboost').eq(1)) {
@@ -254,9 +264,14 @@ function amountUpdate() {
       getEl('divnp').textContent =
       'Nuclear Particles: ' + formatb(getUpgradeTimesBought('nuclearbuy'));
    }
-   getEl('divnap').textContent =
-      'Nuclear Alpha Particles: ' +
-      formatb(getUpgradeTimesBought('nuclearalphabuy'));
+   if(getUpgradeTimesBought('unlocknapboost').eq(1)) {
+      getEl('divnap').textContent =
+      'Nuclear Alpha Particles: ' + formatD(nuclearAlphaParticles, 1);
+   }
+   else {
+      getEl('divnap').textContent =
+      'Nuclear Alpha Particles: ' + formatb(getUpgradeTimesBought('nuclearalphabuy'));
+   }
    
    getEl('chunkamount').textContent =
       'Particle Chunks: ' + formatb(player.pChunks);
@@ -355,7 +370,6 @@ window.openTab = function (tab: string): void {
    getEl(tab).style.display = 'block';
 };
 
-load();
 loadMisc();
 
 window.saveExport = function (): void {
@@ -657,6 +671,18 @@ function fgbTestConst(): void {
          nuclearParticles = getUpgradeTimesBought('nuclearbuy')
          getEl('npboostshow').style.display = 'none';
       }
+      if(getUpgradeTimesBought('unlocknapboost').eq(1)) {
+         nuclearAlphaParticles = onBought(
+            ['nuclearalphabuy', '*', [D(1), '+', ['upgradenapboost', '+', D(1), '/', D(10)]]]
+         )
+         getEl('napboostshow').style.display = 'block';
+         getEl('napboostunlockbutton').style.display = 'none'
+         getEl('divnapboostcost').style.display = 'none'
+      }
+      else {
+         nuclearAlphaParticles = getUpgradeTimesBought('nuclearalphabuy')
+         getEl('napboostshow').style.display = 'none';
+      }
 
       if (getUpgradeTimesBought('gen').eq(0)) {
          getEl('divgencost').textContent = 'Cost: Free';
@@ -701,7 +727,7 @@ function fgbTestConst(): void {
       );
       
       const alphaGain: Decimal = onBought(
-         'alphaacc', ['perbang', '+', D(1)], ['nuclearalphabuy', '+', D(1)], [D(2), '^', 'alphamachinedouble']
+         'alphaacc', ['perbang', '+', D(1)], [nuclearAlphaParticles, '+', D(1)], [D(2), '^', 'alphamachinedouble']
       ).times(boostsacmult);
 
       player.mergeTime = Math.ceil(
@@ -856,7 +882,9 @@ function fgbTestConst(): void {
       const freeNuclearParticles = nuclearParticles.minus(getUpgradeTimesBought('nuclearbuy'))
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       getEl('npboosttext').textContent = `Your Nuclear Particles Boost is giving you ${formatD(freeNuclearParticles, 1)} free Nuclear Particles`
-
+      const freeNuclearAlphaParticles = nuclearAlphaParticles.minus(getUpgradeTimesBought('nuclearalphabuy'))
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      getEl('napboosttext').textContent = `Your Nuclear Alpha Particles Boost is giving you ${formatD(freeNuclearAlphaParticles, 1)} free Nuclear Alpha Particles`
 
       getEl('counter').textContent = formatb(player.num) + ' particles';
       getEl('clickercounter').textContent = `You have ${formatb(player.clickerParticles)} Clicker Particles (${formatb(clickerParticleGain.times(10))}/s), which are making Manual Boost ${formatbSpecific(clickerParticleMult)}x stronger.`

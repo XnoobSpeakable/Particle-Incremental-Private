@@ -12,7 +12,7 @@
 
   <body>
     <script defer src="./src/main.ts" type="module"></script>
-    <div id="diventirebody" style="color:black;">
+    <div id="diventirebody" style="opacity:0">
       <div id="nextfeature"></div>
       <div id="counter">0 particles</div>
       <div id="particlespersecond">You are getting 0 particles/s</div>
@@ -274,6 +274,17 @@
               <div id="divnpboostupcost">Cost: 3 beta</div>
               <br>
               <div id="npboosttext">Your Nuclear Particles Boost is giving you 0 free Nuclear Particles</div>
+            </div>
+          </div>
+          <div id="napboostbox" class="withtheoutline">
+            <h2>Nuclear Alpha Particles boost</h2>
+            <button onclick="buyUpgrade('unlocknapboost')" class="button" id="napboostunlockbutton">Unlock Nuclear Alpha Particles boost</button>
+            <div id="divnapboostcost">Cost: 15 Beta</div>
+            <div id="napboostshow" style="display:none">
+              <button onclick="buyUpgrade('upgradenapboost')" class="button">Nuclear Alpha Particle boost is stronger</button>
+              <div id="divnapboostupcost">Cost: 15 beta</div>
+              <br>
+              <div id="napboosttext">Your Nuclear Alpha Particles Boost is giving you 0 free Nuclear Alpha Particles</div>
             </div>
           </div>
         </div>
@@ -546,11 +557,11 @@
         <a href="https://github.com/typeholes">qhwood</a>
         for improving my code and helping me code.
         <br><br>
-        Version b2.0.0.1
+        Version b2.0.1.0
         <br>
         Changelog:
         <br>
-        Made omega tab more clear, changed some code relating to versions.
+        Added more of Beta tab
       </div>
       <div id="Tutorial" style="display:none">
         A generator gives you n particles every loop. Default is 1 loop per second and 1 particle per loop. <br>
@@ -605,5 +616,5 @@
           <button onclick="clearls()" class="button">clear ALL localStorage entries</button>
       </div>
     </div>
-    </body>
+  </body>
 </html>
