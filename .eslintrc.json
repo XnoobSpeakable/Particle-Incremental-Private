@@ -1,0 +1,36 @@
+{
+   "env": {
+      "browser": true
+   },
+   "parser": "@typescript-eslint/parser",
+   "plugins": ["@typescript-eslint"],
+   "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module",
+      "project": ["tsconfig.json"]
+   },
+   // eslint complained that this file 
+   // isn't included in any of the projects
+   "ignorePatterns": ["vite.config.ts"],
+   "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:@typescript-eslint/recommended-requiring-type-checking"
+   ],
+   "rules": {
+      "no-duplicate-imports": "error",
+      "no-self-compare": "error",
+      "eqeqeq": ["error", "always"],
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/ban-types": [
+         "error",
+         {
+            "types": {
+               // add a custom message to help explain why not to use it
+               "number": "use type jsnumber from util.js"
+            },
+            "extendDefaults": true
+         }
+      ]
+   }
+}
