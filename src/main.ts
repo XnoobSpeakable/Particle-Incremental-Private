@@ -1,3 +1,5 @@
+import "./style.css";
+import "./music"
 import {
    load,
    loadSettings,
@@ -7,135 +9,235 @@ import {
    playerSettings,
    UpgradeNames,
    getSaveString,
-   InstantAutobuyerName,
-} from './player';
-import { format, 
-   formatb, 
-   getEl, 
-   D,  
-   onBought, 
-   onBoughtInc, 
+   type InstantAutobuyerName,
+   isAutobuyerName
+} from "./player";
+import {
+   format,
+   formatb,
+   getElement,
+   D,
+   onBought,
+   onBoughtInc,
    formatbSpecific,
-   formatD } from './util';
-import { UpdateCostVal, upgrades, buyUpgrade } from './upgrades';
-import { createAchievementHTML } from './achievements';
-import { nextFeatureHandler } from './features';
-import Decimal from 'break_eternity.js';
+   formatD
+} from "./util";
+import { UpdateCostVal, upgrades, buyUpgrade } from "./upgrades";
+import { createAchievementHTML } from "./achievements";
+import { nextFeatureHandler } from "./features";
+import Decimal from "break_eternity.js";
 
-// eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
-declare var window: Window & Record<string, unknown>;
+declare global {
+   interface Window {
+      theme: VoidFunction;
+      autosavesettings: VoidFunction;
+      openTab: (tab: string) => void;
+      saveExport: () => Promise<void>;
+      saveImport: VoidFunction;
+      saveImportConfirm: VoidFunction;
+      experimentalToggle: VoidFunction;
+      devToggle: VoidFunction;
+      mbman: VoidFunction;
+      gbboost: VoidFunction;
+      makechunk: VoidFunction;
+      bang: VoidFunction;
+      togglepca: VoidFunction;
+      buyomegabase: VoidFunction;
+      buyomegaalpha: VoidFunction;
+      buyomegabeta: VoidFunction;
+      buyomegagamma: VoidFunction;
+      buyomegadelta: VoidFunction;
+      toggleba: VoidFunction;
+      makegroup: VoidFunction;
+      merge: VoidFunction;
+      instantAutobuyerToggle: (
+         autobuyerVar: InstantAutobuyerName, 
+         autobuyerDiv: string
+      ) => void;
+      buyFuel: (fuelType: Fuels) => void;
+      saveSettings: VoidFunction;
+      save: VoidFunction;
+      reset: VoidFunction;
+   }
+}
 
 loadSettings();
 load();
 
+const divEntireBody = getElement("diventirebody");
+const html = getElement("html");
+const tabOpeners = getElement("tabopeners");
+const whatTheme = getElement("whattheme");
+const tabOpenFactory = getElement("tabopenfactory");
+const tabOpenAlpha = getElement("tabopenalpha");
+const tabOpenBeta = getElement("tabopenbeta");
+const tabOpenGamma = getElement("tabopengamma");
+const tabOpenDelta = getElement("tabopendelta");
+const tabOpenOmega = getElement("tabopenomega");
+const tabOpenOmegaOmega = getElement("tabopenomegaomega");
+const tabOpenReactor = getElement("tabopenreactor");
+const tabOpenStats = getElement("tabopenstats");
+const tabOpenAchievements = getElement("tabopenachievements");
+const tabOpenDev = getElement("tabopendev");
+const devToggle = getElement("devtoggle");
+const autosaveElement = getElement("autosaving");
+
+const delayArray = [600, 300, 150, 100, 50, 20, 10, undefined];
+
 const themes = [
    {
-      textColor: '#EBEBEB',
-      bgColor: '#696969',
-      buttonColor: '#999999',
-      borderColor: '#000000',
-      themeName: 'Dark',
+      textColor: "#EBEBEB",
+      bgColor: "rgb(34, 36, 34)",
+      buttonColor: "",
+      borderColor: "#BABABA",
+      gradientColor: "black",
+      themeName: "Dark Rework",
    },
    {
-      textColor: '#EFEFEF',
-      bgColor: '#333333',
-      buttonColor: '#ADADAD',
-      borderColor: '#000000',
-      themeName: 'Darker',
+      textColor: "#D4D4D4",
+      bgColor: "rgb(14, 16, 14)",
+      buttonColor: "",
+      borderColor: "#000000",
+      gradientColor: "black",
+      themeName: "Darker Rework"
    },
    {
-      textColor: '#000000',
-      bgColor: '#EEEEEE',
-      buttonColor: '#DFDFDF',
-      borderColor: '#333333',
-      themeName: 'Light',
+      textColor: "#000000",
+      bgColor: "#CCCCCC",
+      buttonColor: "",
+      borderColor: "#333333",
+      gradientColor: "white",
+      buttonGradientOverride: true,
+      themeName: "Light Rework",
    },
    {
-      textColor: '#000000',
-      bgColor: '#EEEEEE',
-      buttonColor: '#DFDFDF',
-      borderColor: '#F33333',
-      themeName: 'Red Borders',
+      textColor: "#000000",
+      bgColor: "#CCCCCC",
+      buttonColor: "",
+      borderColor: "#DD1111",
+      gradientColor: "white",
+      buttonGradientOverride: true,
+      themeName: "Red Borders",
    },
    {
-      textColor: '#CCCCCC',
-      bgColor: '#000000',
-      buttonColor: '#CCCCCC',
-      borderColor: '#CCCCCC',
-      themeName: 'Black',
+      textColor: "#CCCCCC",
+      bgColor: "#000000",
+      buttonColor: "#CCCCCC",
+      borderColor: "#CCCCCC",
+      gradientColor: "#444444",
+      themeName: "Black",
    },
    {
-      textColor: '#EEEEEE',
-      bgColor: '#000000',
-      buttonColor: '#EEEEEE',
-      borderColor: '#EEEEEE',
-      themeName: 'High contrast black',
+      textColor: "#000000",
+      bgColor: "#FF91AF",
+      buttonColor: "#FFA1BF",
+      borderColor: "#FFD1FF",
+      gradientColor: "#FFA1BF",
+      themeName: "Pink",
    },
    {
-      textColor: '#000000',
-      bgColor: '#FF91AF',
-      buttonColor: '#FFA1BF',
-      borderColor: '#FFD1FF',
-      themeName: 'Pink',
+      textColor: "#3DD7DE",
+      bgColor: "#191970",
+      buttonColor: "#3DD7DE",
+      borderColor: "#3DD7DE",
+      gradientColor: "#7090FF",
+      buttonGradientOverride: true,
+      themeName: "Blue",
    },
    {
-      textColor: '#3DD7DE',
-      bgColor: '#191970',
-      buttonColor: '#3DD7DE',
-      borderColor: '#3DD7DE',
-      themeName: 'Blue',
+      textColor: "#000000",
+      bgColor: "#DEB2EF",
+      buttonColor: "#8A7AED",
+      borderColor: "#6A5ACD",
+      gradientColor: "#5A1C61",
+      buttonGradientOverride: true,
+      themeName: "Purple",
    },
    {
-      textColor: '#000000',
-      bgColor: '#FFFACD',
-      buttonColor: '#FFD700',
-      borderColor: '#FFD700',
-      themeName: 'Yellow',
+      textColor: "#EBEBEB",
+      bgColor: "#696969",
+      buttonColor: "#999999",
+      borderColor: "#000000",
+      gradientColor: "transparent",
+      themeName: "Classic",
    },
    {
-      textColor: '#000000',
-      bgColor: '#DEB2EF',
-      buttonColor: '#8A7AED',
-      borderColor: '#6A5ACD',
-      themeName: 'Purple',
-   },
+      textColor: "#EBEBEB",
+      bgColor: "#696969",
+      buttonColor: "#999999",
+      borderColor: "#000000",
+      gradientColor: "transparent",
+      themeName: "Classic Colors",
+   }
 ];
 
 function themeExec(): void {
-   const { textColor, bgColor, buttonColor, borderColor, themeName } =
-      themes[playerSettings.themeNumber];
+   const { 
+      textColor, 
+      bgColor, 
+      buttonColor, 
+      borderColor, 
+      gradientColor, 
+      buttonGradientOverride, 
+      themeName 
+   } = themes[playerSettings.themeNumber];
 
-   //@ts-expect-error style isn't read only
-   getEl('diventirebody').style =
-      'color: ' + textColor + "; font-family: 'Arial'";
+   divEntireBody.style.opacity = "1";
+   divEntireBody.style.color = textColor;
+   divEntireBody.style.fontFamily = "Arial"
    document.body.style.backgroundColor = bgColor;
-   document.querySelector('html')!.style.backgroundColor = bgColor;
+   html.style.backgroundColor = bgColor;
 
-   const className = document.getElementsByClassName(
-      'button'
-   ) as HTMLCollectionOf<HTMLElement>;
-   for (let i = 0; i < className.length; i++) {
-      className[i].style.backgroundColor = buttonColor;
+   const className = document.getElementsByClassName("button");
+   for (const element of className) {
+      if (!(element instanceof HTMLElement)) {
+         throw new Error(`element is not an HTMLElement`);
+      }
+      element.style.backgroundColor = buttonColor;
+
+      if (themeName === "Classic") {
+         element.style.border = "1px solid black";
+         element.style.borderRadius = "2px";
+         element.style.background = buttonColor;
+         element.style.color = "black";
+         element.style.fontWeight = "400";
+      }
+      else {
+         element.style.border = "2px solid black";
+         element.style.borderRadius = "8px";
+         element.style.color = "snow";
+         element.style.fontWeight = "500";
+
+         if (buttonGradientOverride === undefined) {
+            element.style.background = `linear-gradient(45deg, ${gradientColor}, transparent)`;
+         }
+         else {
+            element.style.background = "linear-gradient(45deg, black, transparent)";
+         }
+      }
    }
 
-   const className2 = document.getElementsByClassName(
-      'withtheoutline'
-   ) as HTMLCollectionOf<HTMLElement>;
-   for (let i = 0; i < className2.length; i++) {
-      className2[i].style.border = '0.2em solid ' + borderColor;
+   const className2 = document.getElementsByClassName("withtheoutline");
+   for (const element of className2) {
+      if (!(element instanceof HTMLElement)) {
+         throw new Error(`element is not an HTMLElement`);
+      }
+      element.style.border = `0.2em solid ${borderColor}`;
    }
 
-   const className3 = document.getElementsByClassName(
-      'redb'
-   ) as HTMLCollectionOf<HTMLElement>;
-   for (let i = 0; i < className3.length; i++) {
-      className3[i].style.backgroundColor = buttonColor;
+   const className3 = document.getElementsByClassName("redb");
+   for (const element of className3) {
+      if (!(element instanceof HTMLElement)) {
+         throw new Error(`element is not an HTMLElement`);
+      }
+      element.style.backgroundColor = buttonColor;
    }
 
-   getEl('whattheme').textContent = 'Theme: ' + themeName;
+   tabOpeners.style.background = `linear-gradient(${gradientColor}, transparent)`;
+   whatTheme.textContent = `Theme: ${themeName}`;
 }
 
-themeExec()
+themeExec();
 
 window.theme = function (): void {
    playerSettings.themeNumber = (playerSettings.themeNumber + 1) % themes.length;
@@ -144,60 +246,51 @@ window.theme = function (): void {
 };
 
 function prePUD(): void {
-   getEl('tabopenfactory').style.display = 'none';
-   getEl('tabopenalpha').style.display = 'none';
-   getEl('tabopenbeta').style.display = 'none';
-   getEl('tabopenreactor').style.display = 'none';
-   getEl('tabopengamma').style.display = 'none';
-   getEl('tabopendelta').style.display = 'none';
-   getEl('tabopenomega').style.display = 'none';
-   getEl('tabopenstats').style.display = 'none';
-   getEl('tabopenomegaomega').style.display = 'none';
+   tabOpenFactory.style.display = "none";
+   tabOpenAlpha.style.display = "none";
+   tabOpenBeta.style.display = "none";
+   tabOpenReactor.style.display = "none";
+   tabOpenGamma.style.display = "none";
+   tabOpenDelta.style.display = "none";
+   tabOpenOmega.style.display = "none";
+   tabOpenStats.style.display = "none";
+   tabOpenOmegaOmega.style.display = "none";
 }
 
 function passiveUnlockDisplay(): void {
    if (player.num.gte(1e5)) {
-      getEl('tabopenfactory').style.display = 'inline';
+      tabOpenFactory.style.display = "inline";
    }
    if (player.num.gte(1e9)) {
-      getEl('tabopenalpha').style.display = 'inline';
-      getEl('tabopenomega').style.display = 'inline';
+      tabOpenAlpha.style.display = "inline";
+      tabOpenOmega.style.display = "inline";
    }
    if (player.alphaNum.gte(1e9)) {
-      getEl('tabopenbeta').style.display = 'inline';
+      tabOpenBeta.style.display = "inline";
    }
    if (player.betaNum.gte(300)) {
-      getEl('tabopenreactor').style.display = 'inline';
+      tabOpenReactor.style.display = "inline";
    }
    if (playerSettings.useExperimental) { //TODO: remove exprimental when you want
-      getEl('tabopengamma').style.display = 'inline';
-      getEl('tabopendelta').style.display = 'inline';
-      getEl('tabopenomegaomega').style.display = 'inline';
-      getEl('tabopenstats').style.display = 'inline';
-      getEl('tabopenachievements').style.display = 'inline';
+      tabOpenGamma.style.display = "inline";
+      tabOpenDelta.style.display = "inline";
+      tabOpenOmegaOmega.style.display = "inline";
+      tabOpenStats.style.display = "inline";
+      tabOpenAchievements.style.display = "inline";
    }
-
 }
 
 function devToolsVisibilityUpdate() {
-   if(playerSettings.devToggled) {
-      getEl('tabopendev').style.display = 'inline';
-   }
-   else {
-      getEl('tabopendev').style.display = 'none';
-   }
-   getEl('devtoggle').textContent = playerSettings.devToggled.toString();
+   tabOpenDev.style.display = playerSettings.devToggled ? "inline" : "none";
+   devToggle.textContent = playerSettings.devToggled.toString();
 }
-
-const autosaveElement = getEl('autosaving');
-const delayArray = [600, 300, 150, 100, 50, 20, 10, undefined];
 
 function autoSaveSet(): void {
    const delay = delayArray[playerSettings.autoSaveMode];
    playerSettings.autoSaveSet = playerSettings.autoSaveDelay = delay ?? 1e308;
    autosaveElement.textContent = delay
-      ? 'On, delay: ' + format(delay / 10) + 's'
-      : 'Off';
+      ? `On, delay: ${format(delay / 10)}s`
+      : "Off";
 }
 
 window.autosavesettings = function (): void {
@@ -207,103 +300,142 @@ window.autosavesettings = function (): void {
 };
 
 function pcaTestSingle() {
-   if (getUpgradeTimesBought('unlockpca').eq(1)) {
-      getEl('untilpca').textContent =
+   if (getUpgradeTimesBought('unlockpca').eq(Decimal.dOne)) {
+      getElement('untilpca').textContent =
          format(player.chunkAutobuyerTimeLeft) + ' left until next autobuy';
-      getEl('divtogglepca').style.display = 'inline-block';
+      getElement('divtogglepca').style.display = 'inline-block';
 
       if (player.pcaToggle) {
-         getEl('divtogglepca').textContent = 'On';
+         getElement('divtogglepca').textContent = 'On';
       } else {
-         getEl('divtogglepca').textContent = 'Off';
+         getElement('divtogglepca').textContent = 'Off';
       }
    }
 }
 
 function baTestSingle() {
-   if (getUpgradeTimesBought('bangautobuyerunlock').eq(1)) {
-      getEl('untilba').textContent =
+   if (getUpgradeTimesBought('bangautobuyerunlock').eq(Decimal.dOne)) {
+      getElement('untilba').textContent =
          format(player.bangAutobuyerTimeLeft) + ' left until next autobuy';
-      getEl('divtoggleba').style.display = 'inline-block';
+      getElement('divtoggleba').style.display = 'inline-block';
 
       if (player.bangAutobuyerToggle) {
-         getEl('divtoggleba').textContent = 'On';
+         getElement('divtoggleba').textContent = 'On';
       } else {
-         getEl('divtoggleba').textContent = 'Off';
+         getElement('divtoggleba').textContent = 'Off';
       }
    }
 }
 
 function fgbTestSingle() {
-   if (getUpgradeTimesBought('gen').eq(0)) {
-      getEl('divgencost').textContent = 'Cost: Free';
+   if (getUpgradeTimesBought('gen').eq(Decimal.dZero)) {
+      getElement('divgencost').textContent = 'Cost: Free';
    } else {
       UpdateCostVal('divgencost', getUpgradeCost('gen'));
    }
 }
 
 let nuclearParticles = getUpgradeTimesBought('nuclearbuy')
-if(getUpgradeTimesBought('unlocknpboost').eq(1)) {
+if (getUpgradeTimesBought('unlocknpboost').eq(Decimal.dOne)) {
    nuclearParticles = onBought(
-      ['nuclearbuy', '*', [D(1), '+', ['upgradenpboost', '+', D(1), '/', D(10)]]]
+      [
+         'nuclearbuy',
+         '*',
+         [
+            Decimal.dOne, '+',
+            [
+               'upgradenpboost',
+               '+',
+               Decimal.dOne,
+               '/', Decimal.dTen
+            ]
+         ]
+      ]
    )
 }
 let nuclearAlphaParticles = getUpgradeTimesBought('nuclearalphabuy')
-if(getUpgradeTimesBought('unlocknapboost').eq(1)) {
+if (getUpgradeTimesBought('unlocknapboost').eq(Decimal.dOne)) {
    nuclearAlphaParticles = onBought(
-      ['nuclearalphabuy', '*', [D(1), '+', ['upgradenapboost', '+', D(1), '/', D(10)]]]
+      [
+         'nuclearalphabuy',
+         '*',
+         [
+            Decimal.dOne,
+            '+',
+            [
+               'upgradenapboost',
+               '+',
+               Decimal.dOne,
+               '/',
+               Decimal.dTen
+            ]
+         ]
+      ]
    )
 }
 
+function instantAutobuyerState(autobuyerVar: InstantAutobuyerName, autobuyerDiv: string): void {
+   getElement(autobuyerDiv).textContent = player.instantAutobuyers[autobuyerVar] ? "On" : "Off";
+}
+
 function amountUpdate() {
-   if(getUpgradeTimesBought('unlocknpboost').eq(1)) {
-      getEl('divnp').textContent =
-      'Nuclear Particles: ' + formatD(nuclearParticles, 1);
+   if (getUpgradeTimesBought('unlocknpboost').eq(Decimal.dOne)) {
+      getElement('divnp').textContent =
+         'Nuclear Particles: ' + formatD(nuclearParticles, 1);
    }
    else {
-      getEl('divnp').textContent =
-      'Nuclear Particles: ' + formatb(getUpgradeTimesBought('nuclearbuy'));
+      getElement('divnp').textContent =
+         'Nuclear Particles: ' + formatb(getUpgradeTimesBought('nuclearbuy'));
    }
-   if(getUpgradeTimesBought('unlocknapboost').eq(1)) {
-      getEl('divnap').textContent =
-      'Nuclear Alpha Particles: ' + formatD(nuclearAlphaParticles, 1);
+   if (getUpgradeTimesBought('unlocknapboost').eq(Decimal.dOne)) {
+      getElement('divnap').textContent =
+         'Nuclear Alpha Particles: ' + formatD(nuclearAlphaParticles, 1);
    }
    else {
-      getEl('divnap').textContent =
-      'Nuclear Alpha Particles: ' + formatb(getUpgradeTimesBought('nuclearalphabuy'));
+      getElement('divnap').textContent =
+         'Nuclear Alpha Particles: ' + formatb(getUpgradeTimesBought('nuclearalphabuy'));
    }
-   
-   getEl('chunkamount').textContent =
+
+   getElement('chunkamount').textContent =
       'Particle Chunks: ' + formatb(player.pChunks);
-   getEl('groupamount').textContent =
+   getElement('groupamount').textContent =
       'Particle Chunks: ' + formatb(player.aGroups);
-   
-   getEl('omegabasecost').textContent =
+
+   getElement('omegabasecost').textContent =
       'Cost: ' + formatb(player.omegaBaseCost);
-   getEl('divobase').textContent = 'You have ' + formatb(player.omegaBase);
-   getEl('omegaalphacost').textContent =
+   getElement('divobase').textContent = 'You have ' + formatb(player.omegaBase);
+   getElement('omegaalphacost').textContent =
       'Cost: ' + formatb(player.omegaAlphaCost);
-   getEl('divoalpha').textContent = 'You have ' + formatb(player.omegaAlpha);
+   getElement('divoalpha').textContent = 'You have ' + formatb(player.omegaAlpha);
+
+   for (const autobuyerName in player.instantAutobuyers) {
+      const autobuyerDiv = `div${autobuyerName}`;
+
+      if (!isAutobuyerName(autobuyerName)) {
+         throw new Error("autoBuyerName dosen't match InstantAutobuyerName type")
+      }
+      instantAutobuyerState(autobuyerName, autobuyerDiv);
+   }
 }
 
 function loadMisc(): void {
    for (const upgradeName of UpgradeNames) {
       const upgrade = upgrades[upgradeName];
-      if (typeof upgrade.costRounding === 'undefined') {
+      if (!("costRounding" in upgrade)) {
          UpdateCostVal(
-           upgrade.costDiv,
-           getUpgradeCost(upgradeName),
-           upgrade.currency
+            upgrade.costDiv,
+            getUpgradeCost(upgradeName),
+            upgrade.currency
          );
-       }
-       else {
+      }
+      else {
          UpdateCostVal(
-           upgrade.costDiv,
-           getUpgradeCost(upgradeName),
-           upgrade.currency,
-           upgrade.costRounding
+            upgrade.costDiv,
+            getUpgradeCost(upgradeName),
+            upgrade.currency,
+            upgrade.costRounding
          );
-       }
+      }
    }
 
    themeExec();
@@ -319,13 +451,15 @@ function loadMisc(): void {
    baTestSingle();
    fgbTestSingle();
 
+   getElement("counter").innerHTML = "<span style='color: #64ed93;'>" + formatb(player.num) + "</span> particles";
+   getElement("particlespersecond").innerHTML =
+      "You are getting <span style='color: #ed6464;'> 0 </span> particles/s";
+
    amountUpdate();
 }
 
-function makeElementMap(...names: string[]): { [k: string]: HTMLElement } {
-   const entries = names.map(function (x) {
-      return [x, getEl(x)] as const;
-   });
+function makeElementMap(...names: string[]): Record<string, HTMLElement> {
+   const entries = names.map(x => [x, getElement(x)] as const);
    return Object.fromEntries(entries);
 }
 
@@ -353,9 +487,7 @@ const tabOmegaElements = makeElementMap(
    'oDelta'
 );
 
-function hideElements(elements: {
-   [x: string]: { style: { display: string } };
-}) {
+function hideElements(elements: Record<string, HTMLElement>) {
    for (const name in elements) {
       elements[name].style.display = 'none';
    }
@@ -367,75 +499,57 @@ window.openTab = function (tab: string): void {
    } else {
       hideElements(tabElements);
    }
-   getEl(tab).style.display = 'block';
+   getElement(tab).style.display = 'block';
 };
 
 loadMisc();
 
-window.saveExport = function (): void {
-   // eslint-disable-next-line @typescript-eslint/no-floating-promises
-   navigator.clipboard.writeText(save());
+window.saveExport = async function (): Promise<void> {
+   await navigator.clipboard.writeText(save());
+   alert('Copied to clipboard!')
 };
 
 window.saveImport = function (): void {
-   getEl('importareaid').style.display = 'block';
-   getEl('saveimportconfirm').style.display = 'block';
+   getElement('importareaid').style.display = 'block';
+   getElement('saveimportconfirm').style.display = 'block';
 };
 
 window.saveImportConfirm = function (): void {
-   const saveEl = getEl('importareaid');
-
-   if (!(saveEl instanceof HTMLTextAreaElement)) {
-      throw new Error('wrong element type');
-   }
+   const saveEl = getElement('importareaid', 'textarea');
    const savefile = saveEl.value; // really should check for an empty value here
-   localStorage.setItem(window.location.pathname, savefile);
-   window.location.reload();
+   localStorage.setItem(location.pathname, savefile);
+   location.reload();
 };
-
-/* (these are completely abandoned)
-window.setting1e4 = function (): void { 
-   playerSettings.eSetting = 4;
-   loadMisc();
-   saveSettings();
-};
-
-window.setting1e6 = function (): void {
-   playerSettings.eSetting = 6;
-   loadMisc();
-   saveSettings();
-};
-*/
 
 window.experimentalToggle = function () {
    playerSettings.useExperimental = !playerSettings.useExperimental;
 
-   if(playerSettings.useExperimental) {
-      getEl('tabopengamma').style.display = 'inline';
-      getEl('tabopendelta').style.display = 'inline';
-      getEl('tabopenomegaomega').style.display = 'inline';
-      getEl('tabopenachievements').style.display = 'inline';
+   if (playerSettings.useExperimental) {
+      getElement('tabopengamma').style.display = 'inline';
+      getElement('tabopendelta').style.display = 'inline';
+      getElement('tabopenomegaomega').style.display = 'inline';
+      getElement('tabopenachievements').style.display = 'inline';
    }
    else {
-      getEl('tabopengamma').style.display = 'none';
-      getEl('tabopendelta').style.display = 'none';
-      getEl('tabopenomegaomega').style.display = 'none';
-      getEl('tabopenachievements').style.display = 'none';
+      getElement('tabopengamma').style.display = 'none';
+      getElement('tabopendelta').style.display = 'none';
+      getElement('tabopenomegaomega').style.display = 'none';
+      getElement('tabopenachievements').style.display = 'none';
    }
-   getEl('experimentoggle').textContent = playerSettings.useExperimental.toString();
+   getElement('experimentoggle').textContent = playerSettings.useExperimental.toString();
    saveSettings();
 }
 
 window.devToggle = function () {
    playerSettings.devToggled = !playerSettings.devToggled;
 
-   if(playerSettings.devToggled) {
-      getEl('tabopendev').style.display = 'inline';
+   if (playerSettings.devToggled) {
+      getElement('tabopendev').style.display = 'inline';
    }
    else {
-      getEl('tabopendev').style.display = 'none';
+      getElement('tabopendev').style.display = 'none';
    }
-   getEl('devtoggle').textContent = playerSettings.devToggled.toString();
+   getElement('devtoggle').textContent = playerSettings.devToggled.toString();
    saveSettings();
 }
 
@@ -443,36 +557,40 @@ createAchievementHTML();
 
 //early var init
 let machineProd = 10
-let clickerParticleMult = player.clickerParticles.div(100).plus(1).times(machineProd);
+let clickerParticleMult = player.
+    clickerParticles
+    .div(100)
+    .plus(Decimal.dOne)
+    .times(machineProd);
 
 const reactor = {
    isActive: false,
    fuelTime: D(300),
-   boost: D(1),
-   fuelMult: D(1),
+   boost: Decimal.dOne,
+   fuelMult: Decimal.dOne,
 }
 
 function reactorHandler() {
    reactor.fuelTime = onBought(
-      [D(300), '*', [D(1.25), '^', 'reactoruptime'], '/', [D(2), '^', 'reactorupmult']]
+      [D(300), '*', [D(1.25), '^', 'reactoruptime'], '/', [Decimal.dTwo, '^', 'reactorupmult']]
    )
 
-   if(player.hyperfuel.lte(0)) {
-      player.hyperfuel = D(0);
+   if (player.hyperfuel.lte(Decimal.dZero)) {
+      player.hyperfuel = Decimal.dZero;
 
-      if(player.superfuel.lte(0)) {
-         player.superfuel = D(0);
+      if (player.superfuel.lte(Decimal.dZero)) {
+         player.superfuel = Decimal.dZero;
 
-         if(player.fuel.lte(0)) {
-            player.fuel = D(0);
+         if (player.fuel.lte(Decimal.dZero)) {
+            player.fuel = Decimal.dZero;
 
             reactor.isActive = false;
          }
          else {
-            reactor.fuelMult = D(1);
+            reactor.fuelMult = Decimal.dOne;
             reactor.isActive = true;
             player.fuel = player.fuel.minus(
-               D(1).div(reactor.fuelTime)
+               Decimal.dOne.div(reactor.fuelTime)
             )
          }
       }
@@ -480,7 +598,7 @@ function reactorHandler() {
          reactor.fuelMult = D(3);
          reactor.isActive = true;
          player.superfuel = player.superfuel.minus(
-            D(1).div(reactor.fuelTime)
+            Decimal.dOne.div(reactor.fuelTime)
          )
       }
    }
@@ -488,35 +606,71 @@ function reactorHandler() {
       reactor.fuelMult = D(6561);
       reactor.isActive = true;
       player.hyperfuel = player.hyperfuel.minus(
-         D(1).div(reactor.fuelTime)
+         Decimal.dOne.div(reactor.fuelTime)
       )
    }
 
-   if(reactor.isActive) {
+   if (reactor.isActive) {
       reactor.boost = onBoughtInc(
          [[D(1.25), '^', 'reactorupmult'], '*', reactor.fuelMult]
       )
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      getEl('divreactorstatus').textContent = `Reactor status: Running (${formatD(player.fuel, 2)} Fuel)`
+      getElement('divreactorstatus').textContent = `Reactor status: Running (${formatD(player.fuel, 2)} Fuel)`
    }
    else {
-      reactor.boost = D(1)
-      getEl('divreactorstatus').textContent = "Reactor status: Out of fuel"
+      reactor.boost = Decimal.dOne;
+      getElement('divreactorstatus').textContent = "Reactor status: Out of fuel"
    }
-   getEl('divreactorfuelusage').textContent = `When active, your reactor is using up 1 fuel every ${formatb(reactor.fuelTime.div(10))} seconds`
+   getElement('divreactorfuelusage').textContent = `When active, your reactor is using up 1 fuel every ${formatb(reactor.fuelTime.div(10))} seconds`
+
+   //im doing weird stuff here and ill try to clean it up later ok, pay no attention to reactorHandler()
+
+
+   const NAPfactor: Decimal = reactor.boost.plus(Decimal.dOne).div(Decimal.dTwo);
+   const BPfactor: Decimal = reactor.boost.plus(3).div(4);
+   const MBfactor: Decimal = reactor.boost.sqr();
+   const GBfactor: Decimal = reactor.boost.plus(Decimal.dTwo).div(3);
+
+   let NAPtoggle = false;
+   let BPtoggle = false;
+   let MBtoggle = false;
+   let GBtoggle = false;
+
+   if (getUpgradeTimesBought('reactorUnlockNAP').eq(1)) NAPtoggle = true;
+   if (getUpgradeTimesBought('reactorUnlockBP').eq(1)) BPtoggle = true;
+   if (getUpgradeTimesBought('reactorUnlockNAP').eq(1)) MBtoggle = true;
+   if (getUpgradeTimesBought('reactorUnlockBP').eq(1)) GBtoggle = true; 
+
+
+
+
+   getElement('divreactormain').textContent = 
+       `Currently, your reactor is making Nuclear particles 
+       ${formatbSpecific(reactor.boost)}x, 
+       Nuclear Alpha Particles ${formatbSpecific(NAPfactor)}x, 
+       Manual Boost ${formatbSpecific(MBfactor)}x, 
+       Generator Boost ${formatbSpecific(GBfactor)}x as strong, 
+       and increasing Booster Particle gain by 
+       ${formatbSpecific(BPfactor)}x`
+   //getElement('divreactormain').textContent = `Currently, your reactor is making Nuclear particles ${formatbSpecific(reactor.boost)}x as strong`
 }
 
 let totalBoostFromNP = nuclearParticles.times(reactor.boost)
 
+const NAPfactor: Decimal = reactor.boost.plus(Decimal.dOne).div(Decimal.dTwo)
+const totalBoostFromNAP: Decimal = nuclearAlphaParticles.times(NAPfactor)
+
 window.mbman = function (): void {
    const gain: Decimal = onBoughtInc(
-      'mbup',
-      '*',
-      'mbmult'
-   ).times(clickerParticleMult).times(totalBoostFromNP.plus(1));
+      "mbup",
+      "*",
+      "mbmult"
+   ).times(clickerParticleMult).times(totalBoostFromNP.plus(Decimal.dOne));
 
    player.num = player.num.plus(gain);
-   getEl('counter').textContent = formatb(player.num) + ' particles';
+   getElement("counter").innerHTML =
+      `<span style="color: #64ed93"> 
+      ${formatb(player.num)} 
+      "</span> particles`;
 };
 
 window.gbboost = function (): void {
@@ -526,61 +680,58 @@ window.gbboost = function (): void {
 function makechunk(): void {
    if (player.num.gte(1e9)) {
       player.num = player.num.minus(1e9);
-      player.pChunks = player.pChunks.plus(1);
-      getEl('chunkamount').textContent =
+      player.pChunks = player.pChunks.plus(Decimal.dOne);
+      getElement('chunkamount').textContent =
          'Particle Chunks: ' + formatb(player.pChunks);
    }
 }
 window.makechunk = makechunk;
 
 function bang(): void {
-   if (player.pChunks.gte(2)) {
+   if (player.pChunks.gte(Decimal.dTwo)) {
       if (
-         getUpgradeTimesBought('alphaacc').gt(0) &&
+         getUpgradeTimesBought('alphaacc').gt(Decimal.dZero) &&
          !(player.bangTimeLeft >= 0 && player.bangTimeLeft <= player.bangTime)
       ) {
-         player.pChunks = player.pChunks.minus(2);
+         player.pChunks = player.pChunks.minus(Decimal.dTwo);
          player.bangTimeLeft = player.bangTime;
-         getEl('chunkamount').textContent =
+         getElement('chunkamount').textContent =
             'Particle Chunks: ' + formatb(player.pChunks);
-         getEl('boostersmaintext').style.display = 'block';
+         getElement('boostersmaintext').style.display = 'block';
       }
    }
 }
 window.bang = bang;
 
 window.togglepca = function (): void {
-   if (getUpgradeTimesBought('unlockpca').eq(1)) {
+   if (getUpgradeTimesBought('unlockpca').eq(Decimal.dOne)) {
       player.pcaToggle = !player.pcaToggle;
-      getEl('divtogglepca').style.display = 'inline-block';
+      getElement('divtogglepca').style.display = 'inline-block';
 
-      if (player.pcaToggle) {
-         getEl('divtogglepca').textContent = 'On';
-      } else {
-         getEl('divtogglepca').textContent = 'Off';
-      }
+      getElement('divtogglepca').textContent = 
+          player.pcaToggle ? "On" :"Off";
    }
 };
 
 window.buyomegabase = function (): void {
    if (player.num.gte(player.omegaBaseCost)) {
       player.num = player.num.minus(player.omegaBaseCost);
-      player.omegaBase = player.omegaBase.plus(1);
-      player.omegaBaseCost = player.omegaBaseCost.times(10);
-      getEl('omegabasecost').textContent =
+      player.omegaBase = player.omegaBase.plus(Decimal.dOne);
+      player.omegaBaseCost = player.omegaBaseCost.times(Decimal.dTen);
+      getElement('omegabasecost').textContent =
          'Cost: ' + formatb(player.omegaBaseCost);
-      getEl('divobase').textContent = 'You have ' + formatb(player.omegaBase);
+      getElement('divobase').textContent = 'You have ' + formatb(player.omegaBase);
    }
 };
 
 window.buyomegaalpha = function (): void {
    if (player.alphaNum.gte(player.omegaAlphaCost)) {
       player.alphaNum = player.alphaNum.minus(player.omegaAlphaCost);
-      player.omegaAlpha = player.omegaAlpha.plus(1);
+      player.omegaAlpha = player.omegaAlpha.plus(Decimal.dOne);
       player.omegaAlphaCost = player.omegaAlphaCost.times(100);
-      getEl('omegaalphacost').textContent =
+      getElement('omegaalphacost').textContent =
          'Cost: ' + formatb(player.omegaAlphaCost);
-      getEl('divoalpha').textContent = 'You have ' + formatb(player.omegaAlpha);
+      getElement('divoalpha').textContent = 'You have ' + formatb(player.omegaAlpha);
    }
 };
 
@@ -595,14 +746,14 @@ window.buyomegadelta = function (): void {
 };
 
 window.toggleba = function (): void {
-   if (getUpgradeTimesBought('bangautobuyerunlock').eq(1)) {
+   if (getUpgradeTimesBought('bangautobuyerunlock').eq(Decimal.dOne)) {
       player.bangAutobuyerToggle = !player.bangAutobuyerToggle;
-      getEl('divtoggleba').style.display = 'inline-block';
+      getElement('divtoggleba').style.display = 'inline-block';
 
       if (player.bangAutobuyerToggle) {
-         getEl('divtoggleba').textContent = 'On';
+         getElement('divtoggleba').textContent = 'On';
       } else {
-         getEl('divtoggleba').textContent = 'Off';
+         getElement('divtoggleba').textContent = 'Off';
       }
    }
 };
@@ -610,42 +761,44 @@ window.toggleba = function (): void {
 function makegroup(): void {
    if (player.alphaNum.gte(1e9)) {
       player.alphaNum = player.alphaNum.minus(1e9);
-      player.aGroups = player.aGroups.plus(1);
-      getEl('groupamount').textContent =
+      player.aGroups = player.aGroups.plus(Decimal.dOne);
+      getElement('groupamount').textContent =
          'Alpha Groups: ' + formatb(player.aGroups);
    }
 }
 window.makegroup = makegroup;
 
-function merge(): void {
-   if (player.aGroups.gte(2)) {
+window.merge = function (): void {
+   if (player.aGroups.gte(Decimal.dTwo)) {
       if (
-         getUpgradeTimesBought('betaacc').gt(0) &&
+         getUpgradeTimesBought('betaacc').gt(Decimal.dZero) &&
          !(player.mergeTimeLeft >= 0 && player.mergeTimeLeft <= player.mergeTime)
       ) {
-         player.aGroups = player.aGroups.minus(2);
+         player.aGroups = player.aGroups.minus(Decimal.dTwo);
          player.mergeTimeLeft = player.mergeTime;
-         getEl('groupamount').textContent =
-            'Alpha Groups: ' + formatb(player.aGroups);      
+         getElement('groupamount').textContent =
+            'Alpha Groups: ' + formatb(player.aGroups);
       }
    }
 }
-window.merge = merge;
 
-window.instantAutobuyerToggle = function(autobuyerVar: InstantAutobuyerName, autobuyerDiv: string): void {
+window.instantAutobuyerToggle = function (autobuyerVar: InstantAutobuyerName, autobuyerDiv: string): void {
    player.instantAutobuyers[autobuyerVar] = !player.instantAutobuyers[autobuyerVar]
-   getEl(autobuyerDiv).textContent = player.instantAutobuyers[autobuyerVar] ? "On" : "Off" 
+   getElement(autobuyerDiv).textContent = player.instantAutobuyers[autobuyerVar] ? "On" : "Off"
 }
 
-type fuels = 'player.fuel'|'player.superfuel'|'player.hyperfuel'
+type Fuels = 
+  | 'player.fuel' 
+  | 'player.superfuel' 
+  | 'player.hyperfuel';
 
-window.buyFuel = function(fuelType: fuels) {
-   if(fuelType === 'player.fuel') {
-      if(player.num.gte('1e27') && player.alphaNum.gte('1e10') && player.betaNum.gte('50')) {
-         player.num = player.num.minus('1e27')
-         player.alphaNum = player.alphaNum.minus('1e10')
-         player.betaNum = player.betaNum.minus('50')
-         player.fuel = player.fuel.plus('1')
+window.buyFuel = function (fuelType: Fuels) {
+   if (fuelType === 'player.fuel') {
+      if (player.num.gte(1e27) && player.alphaNum.gte(1e10) && player.betaNum.gte(50)) {
+         player.num = player.num.minus(1e27)
+         player.alphaNum = player.alphaNum.minus(1e10)
+         player.betaNum = player.betaNum.minus(50)
+         player.fuel = player.fuel.plus(Decimal.dOne)
       }
    }
    else {
@@ -654,38 +807,38 @@ window.buyFuel = function(fuelType: fuels) {
 }
 
 function fgbTestConst(): void {
-   if (getUpgradeTimesBought('gen').gt(0)) {
-      getEl('boostsection').style.display = 'flex';
-      getEl('bigboosttext').style.display = 'block';
-      getEl('veryouterboost').style.display = 'block';
+   if (getUpgradeTimesBought('gen').gt(Decimal.dZero)) {
+      getElement('boostsection').style.display = 'flex';
+      getElement('bigboosttext').style.display = 'block';
+      getElement('veryouterboost').style.display = 'block';
 
-      if(getUpgradeTimesBought('unlocknpboost').eq(1)) {
+      if (getUpgradeTimesBought('unlocknpboost').eq(Decimal.dOne)) {
          nuclearParticles = onBought(
-            ['nuclearbuy', '*', [D(1), '+', ['upgradenpboost', '+', D(1), '/', D(10)]]]
+            ['nuclearbuy', '*', [Decimal.dOne, '+', ['upgradenpboost', '+', Decimal.dOne, '/', D(10)]]]
          )
-         getEl('npboostshow').style.display = 'block';
-         getEl('npboostunlockbutton').style.display = 'none'
-         getEl('divnpboostcost').style.display = 'none'
+         getElement('npboostshow').style.display = 'block';
+         getElement('npboostunlockbutton').style.display = 'none'
+         getElement('divnpboostcost').style.display = 'none'
       }
       else {
          nuclearParticles = getUpgradeTimesBought('nuclearbuy')
-         getEl('npboostshow').style.display = 'none';
+         getElement('npboostshow').style.display = 'none';
       }
-      if(getUpgradeTimesBought('unlocknapboost').eq(1)) {
+      if (getUpgradeTimesBought('unlocknapboost').eq(Decimal.dOne)) {
          nuclearAlphaParticles = onBought(
-            ['nuclearalphabuy', '*', [D(1), '+', ['upgradenapboost', '+', D(1), '/', D(10)]]]
+            ['nuclearalphabuy', '*', [Decimal.dOne, '+', ['upgradenapboost', '+', Decimal.dOne, '/', D(10)]]]
          )
-         getEl('napboostshow').style.display = 'block';
-         getEl('napboostunlockbutton').style.display = 'none'
-         getEl('divnapboostcost').style.display = 'none'
+         getElement('napboostshow').style.display = 'block';
+         getElement('napboostunlockbutton').style.display = 'none'
+         getElement('divnapboostcost').style.display = 'none'
       }
       else {
          nuclearAlphaParticles = getUpgradeTimesBought('nuclearalphabuy')
-         getEl('napboostshow').style.display = 'none';
+         getElement('napboostshow').style.display = 'none';
       }
 
-      if (getUpgradeTimesBought('gen').eq(0)) {
-         getEl('divgencost').textContent = 'Cost: Free';
+      if (getUpgradeTimesBought('gen').eq(Decimal.dZero)) {
+         getElement('divgencost').textContent = 'Cost: Free';
       } else {
          UpdateCostVal('divgencost', getUpgradeCost('gen'));
       }
@@ -693,220 +846,234 @@ function fgbTestConst(): void {
       reactorHandler();
 
       totalBoostFromNP = nuclearParticles.times(reactor.boost)
+      totalBoostFromNP = nuclearParticles.times(NAPfactor)
 
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      getEl('nptext').textContent = `Nuclear particles add a +${formatD(reactor.boost, 2)}x multiplier to generators, generator boost, and manual boost`
-
-
-      const boostsacmult: Decimal = D(1.5).pow(getUpgradeTimesBought('boostsacrifice'))
-
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      getEl('boostsactext').textContent = `Reset your Booster Particles, but increase Booster Particle and Alpha Particle gain. Currently ${formatD(boostsacmult, 1)}x.`
+      getElement('nptext').textContent = `Nuclear particles add a +${formatD(reactor.boost, 2)}x multiplier to generators, generator boost, and manual boost`
 
 
-      if (player.genBoostTimeLeft.greaterThan(0)) {
-         player.genBoostMult = getUpgradeTimesBought('genboostupmult').times(1.5).plus(2);
+      const boostsacmult = D(1.5).pow(getUpgradeTimesBought('boostsacrifice'))
+
+      getElement('boostsactext').textContent = `Reset your Booster Particles, but increase Booster Particle and Alpha Particle gain. Currently ${formatD(boostsacmult, 1)}x.`
+
+
+      if (player.genBoostTimeLeft.greaterThan(Decimal.dZero)) {
+         player.genBoostMult = getUpgradeTimesBought('genboostupmult').times(1.5).plus(Decimal.dTwo);
       } else {
-         player.genBoostMult = D(1);
+         player.genBoostMult = Decimal.dOne;
       }
 
-      if (getUpgradeTimesBought('unlockgenboost').eq(1)) {
-         getEl('gbshow').style.display = 'block';
-         getEl('divgenunlockcost').style.display = 'none';
-         getEl('gbunlockbutton').style.display = 'none';
+      if (getUpgradeTimesBought('unlockgenboost').eq(Decimal.dOne)) {
+         getElement('gbshow').style.display = 'block';
+         getElement('divgenunlockcost').style.display = 'none';
+         getElement('gbunlockbutton').style.display = 'none';
       }
 
-      if (getUpgradeTimesBought('unlockabgb').eq(1)) {
-         getEl('abgbshow').style.display = 'block';
-         getEl('divabgbcost').style.display = 'none';
-         getEl('abgbunlockbutton').style.display = 'none';
+      if (getUpgradeTimesBought('unlockabgb').eq(Decimal.dOne)) {
+         getElement('abgbshow').style.display = 'block';
+         getElement('divabgbcost').style.display = 'none';
+         getElement('abgbunlockbutton').style.display = 'none';
       }
 
       player.bangTime = Math.ceil(
          300 / Math.pow(2, getUpgradeTimesBought('bangspeed').toNumber())
       );
-      
-      const alphaGain: Decimal = onBought(
-         'alphaacc', ['perbang', '+', D(1)], [nuclearAlphaParticles, '+', D(1)], [D(2), '^', 'alphamachinedouble']
+
+      const alphaGain = onBought(
+         'alphaacc', ['perbang', '+', Decimal.dOne], [totalBoostFromNAP, '+', Decimal.dOne], [Decimal.dTwo, '^', 'alphamachinedouble']
       ).times(boostsacmult);
 
       player.mergeTime = Math.ceil(
          300 / Math.pow(2, getUpgradeTimesBought('mergespeed').toNumber())
       );
 
-      const betaGain: Decimal = onBought(
-         'betaacc', ['permerge', '+', D(1)]
+      const betaGain = onBought(
+         'betaacc', ['permerge', '+', Decimal.dOne]
       );
 
       if (player.bangTimeLeft === 0) {
          player.alphaNum = player.alphaNum.plus(alphaGain);
-         getEl('bangtimeleft').textContent = '';
+         getElement('bangtimeleft').textContent = '';
       }
 
       if (player.mergeTimeLeft === 0) {
          player.betaNum = player.betaNum.plus(betaGain);
-         getEl('mergetimeleft').textContent = '';
+         getElement('mergetimeleft').textContent = '';
       }
 
-      if (getUpgradeTimesBought('machine').gte(1)) {
-         machineProd = (9/Math.log10(player.machineWear)) + 1
+      if (getUpgradeTimesBought('machine').gte(Decimal.dOne)) {
+         machineProd = (9 / Math.log10(player.machineWear)) + 1
          player.machineWear += 1
       }
 
-      clickerParticleMult = player.clickerParticles.div(50).plus(1);
+      clickerParticleMult = player.clickerParticles.div(50).plus(Decimal.dOne);
 
-      let abgbBoost: Decimal = D(1)
+      let abgbBoost = Decimal.dOne
 
-      if(getUpgradeTimesBought('unlockabgb').gt(0)) {
-         abgbBoost  = onBoughtInc(
-            player.alphaNum.cbrt(), '/', D(100), '*', 'abgbefficiency', '+', D(1)
+      if (getUpgradeTimesBought('unlockabgb').gt(Decimal.dZero)) {
+         abgbBoost = onBoughtInc(
+            player.alphaNum.cbrt(), '/', D(100), '*', 'abgbefficiency', '+', Decimal.dOne
          )
       }
 
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      getEl('abgbtext').textContent = `Your alpha-based generator boost is multiplying your generators by ${formatb(abgbBoost)}x (cbrt(alpha)/100*${getUpgradeTimesBought("abgbefficiency").plus(1)})`
+      getElement('abgbtext').textContent = `Your alpha-based generator boost is multiplying your generators by ${formatb(abgbBoost)}x (cbrt(alpha)/100*${formatD(getUpgradeTimesBought("abgbefficiency").plus(Decimal.dOne))})`
 
-      const gain: Decimal = onBought(        
-            ['biggerbatches', '+', D(1)], '*', 'gen', '*', ['speed', '/', D(10), '+', D(0.1)], '*', player.genBoostMult, '*', [[totalBoostFromNP, '+', D(1)], '^', D(2)], '*', 
-            [D(3), '^', 'threeboost'], '*', [D(1), '+', [[player.boosterParticles, '+', D(1)], '/', D(100), '*', [['boosteruppercent', '+', D(1)], '/', D(100)]]], '*', abgbBoost, '*', boostsacmult
+      const gain: Decimal = onBought(
+         ['biggerbatches', '+', Decimal.dOne], '*', 'gen', '*', ['speed', '/', D(10), '+', D(0.1)], '*', player.genBoostMult, '*', [[totalBoostFromNP, '+', Decimal.dOne], '^', Decimal.dTwo], '*',
+         [D(3), '^', 'threeboost'], '*', [Decimal.dOne, '+', [[player.boosterParticles, '+', Decimal.dOne], '/', D(100), '*', [['boosteruppercent', '+', Decimal.dOne], '/', D(100)]]], '*', abgbBoost, '*', boostsacmult
       );
-      
-      getEl('particlesperclick').textContent =
+
+      getElement('particlesperclick').textContent =
          'You are getting ' +
-                  formatb ( onBought( ['mbup', '+', D(1)], '*', ['mbmult', '+', D(1)], '*',[totalBoostFromNP, '+', D(1)]).times(clickerParticleMult)
+         formatb(onBought(['mbup', '+', Decimal.dOne], '*', ['mbmult', '+', Decimal.dOne], '*', [totalBoostFromNP, '+', Decimal.dOne]).times(clickerParticleMult)
          ) +
          ' particles per click';
 
-      getEl('alphapb').textContent =
+      getElement('alphapb').textContent =
          'You are getting ' + formatb(alphaGain) + ' Alpha/bang';
-      getEl('bangtimeconst').textContent =
+      getElement('bangtimeconst').textContent =
          'Currently, bangs take ' + format(player.bangTime / 10) + ' seconds.';
       player.bangTimeLeft -= 1;
 
       if (player.bangTimeLeft >= 0 && player.bangTimeLeft <= player.bangTime) {
-         getEl('bangtimeleft').textContent =
+         getElement('bangtimeleft').textContent =
             'Bang time left: ' + format(player.bangTimeLeft / 10);
-         getEl('bangbutton').style.display = 'none';
+         getElement('bangbutton').style.display = 'none';
       } else {
-         getEl('bangbutton').style.display = 'block';
+         getElement('bangbutton').style.display = 'block';
       }
 
-      getEl('betapb').textContent =
+      getElement('betapb').textContent =
          'You are getting ' + formatb(betaGain) + ' Beta/merge';
-      getEl('mergetimeconst').textContent =
+      getElement('mergetimeconst').textContent =
          'Currently, merges take ' + format(player.mergeTime / 10) + ' seconds.';
       player.mergeTimeLeft -= 1;
 
       if (player.mergeTimeLeft >= 0 && player.mergeTimeLeft <= player.mergeTime) {
-         getEl('mergetimeleft').textContent =
+         getElement('mergetimeleft').textContent =
             'Merge time left: ' + format(player.mergeTimeLeft / 10);
-         getEl('mergebutton').style.display = 'none';
+         getElement('mergebutton').style.display = 'none';
       } else {
-         getEl('mergebutton').style.display = 'block';
+         getElement('mergebutton').style.display = 'block';
       }
 
-      if (player.genBoostTimeLeft.gt(0)) {
-         player.genBoostTimeLeft = player.genBoostTimeLeft.minus(1);
+      if (player.genBoostTimeLeft.gt(Decimal.dZero)) {
+         player.genBoostTimeLeft = player.genBoostTimeLeft.minus(Decimal.dOne);
       }
-      getEl('divgbtl').textContent =
-         'Boost Time Left: ' + formatb(player.genBoostTimeLeft.div(10));
+      getElement('divgbtl').textContent =
+         'Boost Time Left: ' + formatb(player.genBoostTimeLeft.div(Decimal.dTen));
 
-      const bpGain: Decimal = (player.alphaNum.times(
-         getUpgradeTimesBought('boosterup').plus(1)
-      )).times(D(2)).div(10);
+      const bpGain = (player.alphaNum.times(
+         getUpgradeTimesBought('boosterup').plus(Decimal.dOne)
+      )).times(Decimal.dTwo).div(Decimal.dTen);
       player.boosterParticles = player.boosterParticles.plus(bpGain);
-      const percentBoostDisplay: Decimal = 
+      const percentBoostDisplay =
          player.boosterParticles.times(
-            getUpgradeTimesBought('boosteruppercent').plus(1).div(100)
+            getUpgradeTimesBought('boosteruppercent').plus(Decimal.dOne).div(100)
          );
-      
-      if(percentBoostDisplay.lt(100)) {
-         getEl('boostersmaintext').textContent =
-            `You are currently getting ${formatb(bpGain.times(10).div(player.alphaNum))} booster particles per alpha particle per second,
+
+      if (percentBoostDisplay.lt(100)) {
+         getElement('boostersmaintext').textContent =
+            `You are currently getting ${formatb(bpGain.times(Decimal.dTen).div(player.alphaNum))} booster particles per alpha particle per second,
                resulting in a +${formatbSpecific(percentBoostDisplay)}% boost to base particle production`;
       }
       else {
-         getEl('boostersmaintext').textContent =
-            `You are currently getting ${formatb(bpGain.times(10).div(player.alphaNum))} booster particles per alpha particle per second,
+         getElement('boostersmaintext').textContent =
+            `You are currently getting ${formatb(bpGain.times(Decimal.dTen).div(player.alphaNum))} booster particles per alpha particle per second,
                resulting in a ${formatbSpecific(percentBoostDisplay.div(100).plus(1))}x boost to base particle production`;
 
       }
 
-      getEl('bpamount').textContent =
+      getElement('bpamount').textContent =
          'You have ' + formatb(player.boosterParticles) + ' booster particles';
-      
-      const clickerParticleGain: Decimal = onBought(
-         [['machine', '*', [D(1.5), '^', 'speedparticle']], '/', D(10)]
+
+      const clickerParticleGain = onBought(
+         [['machine', '*', [D(1.5), '^', 'speedparticle']], '/', Decimal.dTen]
       ).times(machineProd)
       player.clickerParticles = player.clickerParticles.plus(clickerParticleGain);
 
       nextFeatureHandler();
 
-      getEl('omegabasecost').textContent =
+      getElement('omegabasecost').textContent =
          'Cost: ' + formatb(player.omegaBaseCost);
-      getEl('divobase').textContent = 'You have ' + formatD(player.omegaBase, 1);
-      getEl('omegaalphacost').textContent =
+      getElement('divobase').textContent = 'You have ' + formatD(player.omegaBase, 1);
+      getElement('omegaalphacost').textContent =
          'Cost: ' + formatb(player.omegaAlphaCost);
-      getEl('divoalpha').textContent = 'You have ' + formatD(player.omegaAlpha, 1);
+      getElement('divoalpha').textContent = 'You have ' + formatD(player.omegaAlpha, 1);
 
       player.num = player.num.plus(gain);
 
-      getEl('particlespersecond').textContent =
-         'You are getting ' + formatb(gain.times(10)) + ' particles/s';
-      
+      getElement("particlespersecond").innerHTML =
+         "You are getting <span style='color: #ed6464;'>" + formatb(gain.times(10)) + "</span> particles/s";
+
       if (player.num.gte(1e8)) {
-         getEl('nuclearreach').style.display = 'none';
-         getEl('nuclearshow').style.display = 'block';
+         getElement('nuclearreach').style.display = 'none';
+         getElement('nuclearshow').style.display = 'block';
       }
 
       if (player.alphaNum.gte(1e6)) {
-         getEl('nuclearalphareach').style.display = 'none';
-         getEl('nuclearalphashow').style.display = 'block';
+         getElement('nuclearalphareach').style.display = 'none';
+         getElement('nuclearalphashow').style.display = 'block';
       }
 
       if (player.num.gte(1e9)) {
-         getEl('bangshow').style.display = 'block';
+         getElement('bangshow').style.display = 'block';
       }
 
       if (player.alphaNum.gte(1e9)) {
-         getEl('mergeshow').style.display = 'block';
+         getElement('mergeshow').style.display = 'block';
 
-         getEl("oAlphauupre").style.display = 'none';
-         getEl("oAlphauupost").style.display = 'block';
+         getElement("oAlphauupre").style.display = 'none';
+         getElement("oAlphauupost").style.display = 'block';
       }
 
       if (player.boosterParticles.gte(1e5) || getUpgradeTimesBought('boostsacrifice').gt(0)) {
-         getEl('bpsacshow').style.display = 'block';
+         getElement('bpsacshow').style.display = 'block';
       }
 
       const freeNuclearParticles = nuclearParticles.minus(getUpgradeTimesBought('nuclearbuy'))
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      getEl('npboosttext').textContent = `Your Nuclear Particles Boost is giving you ${formatD(freeNuclearParticles, 1)} free Nuclear Particles`
-      const freeNuclearAlphaParticles = nuclearAlphaParticles.minus(getUpgradeTimesBought('nuclearalphabuy'))
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      getEl('napboosttext').textContent = `Your Nuclear Alpha Particles Boost is giving you ${formatD(freeNuclearAlphaParticles, 1)} free Nuclear Alpha Particles`
+      getElement('npboosttext').textContent = 
+          `Your Nuclear Particles Boost is giving you 
+          ${formatD(freeNuclearParticles, 1)} 
+          free Nuclear Particles`;
+      const freeNuclearAlphaParticles = nuclearAlphaParticles.minus(
+         getUpgradeTimesBought('nuclearalphabuy')
+      );
+      getElement('napboosttext').textContent = 
+          `Your Nuclear Alpha Particles Boost is giving you 
+          ${formatD(freeNuclearAlphaParticles, 1)} 
+          free Nuclear Alpha Particles`;
 
-      getEl('counter').textContent = formatb(player.num) + ' particles';
-      getEl('clickercounter').textContent = `You have ${formatb(player.clickerParticles)} Clicker Particles (${formatb(clickerParticleGain.times(10))}/s), which are making Manual Boost ${formatbSpecific(clickerParticleMult)}x stronger.`
-      getEl('alphacounter').textContent =
+      getElement("counter").innerHTML = 
+          `<span style="color: #64ed93">
+          ${formatb(player.num)}
+          </span> particles`;
+      getElement('clickercounter').textContent = 
+          `You have 
+          ${formatb(player.clickerParticles)} 
+          Clicker Particles 
+          (${formatb(clickerParticleGain.times(Decimal.dTen))}
+          /s), which are making Manual Boost 
+          ${formatbSpecific(clickerParticleMult)}
+          x stronger.`
+      getElement('alphacounter').textContent =
          formatb(player.alphaNum) + ' Alpha particles';
-         getEl('betacounter').textContent =
+      getElement('betacounter').textContent =
          formatb(player.betaNum) + ' Beta particles';
 
-      if (getUpgradeTimesBought('alphaacc').eq(0)) {
-         getEl('bangwarn').style.display = 'block'
+      if (getUpgradeTimesBought('alphaacc').eq(Decimal.dZero)) {
+         getElement('bangwarn').style.display = 'block'
       }
       else {
-         getEl('bangwarn').style.display = 'none'
+         getElement('bangwarn').style.display = 'none'
       }
    }
 }
 
 function pcaTestConst(): void {
-   if (getUpgradeTimesBought('unlockpca').eq(1)) {
-      getEl('pcashow').style.display = 'block';
-      getEl('divunlockpca').style.display = 'none';
-      getEl('divunlockpcabutton').style.display = 'none';
+   if (getUpgradeTimesBought('unlockpca').eq(Decimal.dOne)) {
+      getElement('pcashow').style.display = 'block';
+      getElement('divunlockpca').style.display = 'none';
+      getElement('divunlockpcabutton').style.display = 'none';
 
       if (player.pcaToggle === true) {
          if (player.chunkAutobuyerTimeLeft === 0) {
@@ -914,19 +1081,19 @@ function pcaTestConst(): void {
             makechunk();
          }
 
-         player.chunkAutobuyerTimeLeft -= 1;
-         getEl('untilpca').textContent =
+         player.chunkAutobuyerTimeLeft--;
+         getElement('untilpca').textContent =
             format(player.chunkAutobuyerTimeLeft / 10) + ' left until next autobuy';
       }
    }
 }
 
 function baTestConst(): void {
-   if (getUpgradeTimesBought('bangautobuyerunlock').eq(1)) {
-      getEl('bashow').style.display = 'block';
-      getEl('divbau').style.display = 'none';
-      getEl('divbauextra').style.display = 'none';
-      getEl('baunlockbutton').style.display = 'none';
+   if (getUpgradeTimesBought('bangautobuyerunlock').eq(Decimal.dOne)) {
+      getElement('bashow').style.display = 'block';
+      getElement('divbau').style.display = 'none';
+      getElement('divbauextra').style.display = 'none';
+      getElement('baunlockbutton').style.display = 'none';
 
       if (player.bangAutobuyerToggle === true) {
          if (player.bangAutobuyerTimeLeft === 0) {
@@ -934,66 +1101,72 @@ function baTestConst(): void {
             bang();
          }
 
-         player.bangAutobuyerTimeLeft -= 1;
-         getEl('untilba').textContent =
+         player.bangAutobuyerTimeLeft--;
+         getElement('untilba').textContent =
             format(player.bangAutobuyerTimeLeft) + ' left until next autobuy';
       }
    }
 }
 
-function instantAutobuyers() {
-   if(getUpgradeTimesBought('GnBBAunlock').eq(1)) {
-      if(player.instantAutobuyers.genAutobuyerToggle === true) {
+function instantAutobuyers() {  //TODO: make this function not look like absolute garbage
+   if (getUpgradeTimesBought('GnBBAunlock').eq(Decimal.dOne)) {
+      if (player.instantAutobuyers.genAutobuyerToggle) {
          buyUpgrade('gen');
       }
-      if(player.instantAutobuyers.bbAutobuyerToggle === true) {
+      if (player.instantAutobuyers.bbAutobuyerToggle) {
          buyUpgrade('biggerbatches');
       }
-      getEl('divGnBBA').style.display = 'none'
+      getElement('divGnBBA').style.display = 'none'
+      getElement('divGnBBAhide').style.display = 'block'
    }
-   if(getUpgradeTimesBought('GBUAunlock').eq(1)) {
-      if(player.instantAutobuyers.genBoostTimeAutobuyerToggle === true) {
+   if (getUpgradeTimesBought('GBUAunlock').eq(Decimal.dOne)) {
+      if (player.instantAutobuyers.genBoostTimeAutobuyerToggle) {
          buyUpgrade('genboostuptime')
       }
-      if(player.instantAutobuyers.genBoostMultAutobuyerToggle === true) {
+      if (player.instantAutobuyers.genBoostMultAutobuyerToggle) {
          buyUpgrade('genboostupmult')
       }
-      getEl('divGBUA').style.display = 'none'
+      getElement('divGBUA').style.display = 'none'
+      getElement('divGBUAhide').style.display = 'block'
    }
-   if(getUpgradeTimesBought('MBUAunlock').eq(1)) {
-      if(player.instantAutobuyers.manBoost1perClickAutobuyerToggle === true) {
+   if (getUpgradeTimesBought('MBUAunlock').eq(Decimal.dOne)) {
+      if (player.instantAutobuyers.manBoost1perClickAutobuyerToggle) {
          buyUpgrade('mbup')
       }
-      if(player.instantAutobuyers.manBoost1xperClickAutobuyerToggle === true) {
+      if (player.instantAutobuyers.manBoost1xperClickAutobuyerToggle) {
          buyUpgrade('mbmult')
       }
-      getEl('divMBUA').style.display = 'none'
+      getElement('divMBUA').style.display = 'none'
+      getElement('divMBUAhide').style.display = 'block'
    }
-   if(getUpgradeTimesBought('NPAunlock').eq(1)) {
-      if(player.instantAutobuyers.nuclearParticlesAutobuyerToggle === true) {
+   if (getUpgradeTimesBought('NPAunlock').eq(Decimal.dOne)) {
+      if (player.instantAutobuyers.nuclearParticlesAutobuyerToggle) {
          buyUpgrade('nuclearbuy')
       }
-      if(player.instantAutobuyers.nuclearAlphaParticlesAutobuyerToggle === true) {
+      if (player.instantAutobuyers.nuclearAlphaParticlesAutobuyerToggle) {
          buyUpgrade('nuclearalphabuy')
       }
-      getEl('divNPA').style.display = 'none'
+      getElement('divNPA').style.display = 'none'
+      getElement('divNPAhide').style.display = 'block'
    }
-   if(getUpgradeTimesBought('AAccAunlock').eq(1)) {
-      if(player.instantAutobuyers.AlphaAccAutobuyerToggle === true) {
+   if (getUpgradeTimesBought('AAccAunlock').eq(Decimal.dOne)) {
+      if (player.instantAutobuyers.AlphaAccAutobuyerToggle) {
          buyUpgrade('alphaacc')
       }
-      getEl('divAAccA').style.display = 'none'
+      getElement('divAAccA').style.display = 'none'
+      getElement('divAAccAhide').style.display = 'block'
    }
-   if(getUpgradeTimesBought('SAunlock').eq(1)) {
-      if(player.instantAutobuyers.SpeedAutobuyerToggle === true) {
+   if (getUpgradeTimesBought('SAunlock').eq(Decimal.dOne)) {
+      if (player.instantAutobuyers.SpeedAutobuyerToggle) {
          buyUpgrade('speed')
       }
-      getEl('divSA').style.display = 'none'
+      getElement('divSA').style.display = 'none'
+      getElement('divSAhide').style.display = 'block'
    }
 }
 
 function savinginloop(): void {
-   playerSettings.autoSaveDelay -= 1;
+   playerSettings.autoSaveDelay--;
 
    if (playerSettings.autoSaveDelay === 0) {
       playerSettings.autoSaveDelay = playerSettings.autoSaveSet;
@@ -1008,7 +1181,7 @@ setInterval(() => {
    baTestConst();
    fgbTestConst();
    instantAutobuyers();
-   getEl('stat').textContent = getSaveString()
+   getElement('stat').textContent = getSaveString()
       .replace(/","/g, '",\n"')
       .replace(/},"/g, '",\n"');
    savinginloop();
@@ -1023,25 +1196,27 @@ function saveReplace(_key: string, value: unknown): unknown {
 
 function saveSettings(): void {
    const settingfile = JSON.stringify(playerSettings);
-   localStorage.setItem(window.location.pathname + "settings", settingfile);
+   localStorage.setItem(location.pathname + "settings", settingfile);
 }
+
 window.saveSettings = saveSettings;
 
 function save(): string {
    const savefile = JSON.stringify(player, saveReplace);
-   localStorage.setItem(window.location.pathname, savefile);
+   localStorage.setItem(location.pathname, savefile);
    saveSettings();
    return savefile;
 }
+
 window.save = save;
 
 window.reset = function (): void {
    saveSettings();
-   localStorage.removeItem(window.location.pathname);
+   localStorage.removeItem(location.pathname);
 
    //make backup save
    const savefile = JSON.stringify(player, saveReplace);
-   localStorage.setItem(window.location.pathname + "backupsave", savefile);
+   localStorage.setItem(location.pathname + "backupsave", savefile);
 
-   window.location.reload();
+   location.reload();
 };

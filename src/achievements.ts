@@ -1,4 +1,4 @@
-import { getEl } from "./util"
+import { getElement } from "./util"
 
 //type Achievement = { text: string }
 
@@ -7,8 +7,8 @@ import { getEl } from "./util"
     { text: 'ach 2' },
 ]*/
 
-export function createAchievementHTML() {
+export function createAchievementHTML(): void {
     const newDiv = document.createElement("div")
     newDiv.innerText = "stuff"
-    getEl('achievementContainer').appendChild(newDiv)
+    getElement('achievementContainer').appendChild(newDiv)
 }

@@ -3,13 +3,17 @@ import {
   getUpgradeTimesBought,
   getUpgradeCost,
   setUpgradeCost,
-  UpgradeName
+  type UpgradeName
 } from "./player";
-import { formatb , getEl, D, onBought, formatD, jsnumber } from "./util"
+import { formatb, getElement, D, onBought, formatD } from "./util"
 import Decimal from "break_eternity.js";
 
-// eslint-disable-next-line no-var, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
-declare var window: Window & Record<string, unknown>
+declare global {
+  interface Window {
+    buyUpgrade: (upgrade: UpgradeName) => void;
+    buyFiftySpeed: VoidFunction;
+  }
+}
 
 export const currencyName = {
   num: "",
@@ -26,254 +30,278 @@ export function UpdateCostVal(
   elementID: string,
   variable: Decimal,
   currency: CurrencyName = "num",
-  prec: jsnumber = 2
+  precision = 2
 ) {
-  if(prec === 2) {
-    getEl(elementID).textContent =
-    "Cost: " + formatb(variable) + currencyName[currency];
+  if (precision === 2) {
+    getElement(elementID).textContent =
+      "Cost: " + formatb(variable) + currencyName[currency];
   }
   else {
-    getEl(elementID).textContent =
-    "Cost: " + formatD(variable, prec) + currencyName[currency];
+    getElement(elementID).textContent =
+      "Cost: " + formatD(variable, precision) + currencyName[currency];
   }
 }
 
-type Upgrade = {
+interface Upgrade {
   currency: CurrencyName;
   costDiv: string;
   scaleFunction: (upgradeName: UpgradeName) => void;
-  extra?: undefined | (() => void) ;
-  costRounding?: undefined | jsnumber;
-};
+  extra?: VoidFunction;
+  costRounding?: number;
+}
 
-function Upgrade(x: Upgrade) { return x; }
 
 export const upgrades = {
-  gen: Upgrade({
+  gen: {
     scaleFunction: scaleGen,
     costDiv: "divgencost",
     currency: "num",
-  }),
-  biggerbatches: Upgrade({
-    scaleFunction: scaleMultiplier(D(2)),
+  },
+  biggerbatches: {
+    scaleFunction: scaleMultiplier(Decimal.dTwo),
     costDiv: "divbbcost",
     currency: "num"
-  }),
-  speed: Upgrade({
+  },
+  speed: {
     scaleFunction: scaleSpeed,
     costDiv: "divspeedcost",
     currency: "num"
-  }),
-  mbup: Upgrade({
+  },
+  mbup: {
     scaleFunction: scaleMultiplier(D(1.5)),
     costDiv: "divmbupcost",
     currency: "num"
-  }),
-  mbmult: Upgrade({
-    scaleFunction: scaleMultiplier(D(2)),
+  },
+  mbmult: {
+    scaleFunction: scaleMultiplier(Decimal.dTwo),
     costDiv: "divmbmultcost",
     currency: "num"
-  }),
-  unlockgenboost: Upgrade({
-    scaleFunction: scaleMultiplier(D(Infinity)),
+  },
+  unlockgenboost: {
+    scaleFunction: scaleMultiplier(Decimal.dInf),
     costDiv: "divgenunlockcost",
     currency: "num"
-  }),
-  genboostuptime: Upgrade({
+  },
+  genboostuptime: {
     scaleFunction: scaleMultiplier(D(5)),
     costDiv: "divgbuptcost",
     currency: "num",
     extra: GBTExtra
-  }),
-  genboostupmult: Upgrade({
+  },
+  genboostupmult: {
     scaleFunction: scaleMultiplier(D(5)),
     costDiv: "divgbupmcost",
     currency: "num",
     extra: GBMExtra
-  }),
-  nuclearbuy: Upgrade({
+  },
+  nuclearbuy: {
     scaleFunction: scaleMultiplier(D(7)),
     costDiv: "divnuclearcost",
     currency: "num",
     extra: NBExtra
-  }),
-  speedparticle: Upgrade({
+  },
+  speedparticle: {
     scaleFunction: scaleMultiplier(D(5)),
     costDiv: "divspeedparticlecost",
     currency: "num"
-  }),
-  machine: Upgrade({
+  },
+  machine: {
     scaleFunction: scaleMultiplier(D(4)),
     costDiv: "divmachinecost",
     currency: "num",
     extra: MachineExtra
-  }),
-  alphaacc: Upgrade({
+  },
+  alphaacc: {
     scaleFunction: scaleMultiplier(D(1000)),
     costDiv: "divalphaacceleratorcost",
     currency: "num"
-  }),
-  threeboost: Upgrade({
+  },
+  threeboost: {
     scaleFunction: scaleMultiplier(D(4)),
     costDiv: "divthreeboostcost",
     currency: "alphaNum"
-  }),
-  perbang: Upgrade({
+  },
+  perbang: {
     scaleFunction: scaleMultiplier(D(4)),
     costDiv: "divperbangcost",
     currency: "alphaNum"
-  }),
-  bangspeed: Upgrade({
+  },
+  bangspeed: {
     scaleFunction: scaleBangSpeed,
     costDiv: "divbangspeedcost",
     currency: "alphaNum"
-  }),
-  unlockpca: Upgrade({
-    scaleFunction: scaleMultiplier(D(Infinity)),
+  },
+  unlockpca: {
+    scaleFunction: scaleMultiplier(Decimal.dInf),
     costDiv: "divunlockpca",
     currency: "alphaNum"
-  }),
-  upgradepca: Upgrade({
+  },
+  upgradepca: {
     scaleFunction: scaleMultiplier(D(3)),
     costDiv: "divupgradepcacost",
     currency: "alphaNum",
     extra: PCAExtra
-  }),
-  boosterup: Upgrade({
-    scaleFunction: scaleMultiplier(D(10)),
+  },
+  boosterup: {
+    scaleFunction: scaleMultiplier(Decimal.dTen),
     costDiv: "divboosterupcost",
     currency: "alphaNum"
-  }),
-  boosteruppercent: Upgrade({
-    scaleFunction: scaleMultiplier(D(10)),
+  },
+  boosteruppercent: {
+    scaleFunction: scaleMultiplier(Decimal.dTen),
     costDiv: "divboosteruppercentcost",
     currency: "alphaNum"
-  }),
-  nuclearalphabuy: Upgrade({
+  },
+  nuclearalphabuy: {
     scaleFunction: scaleMultiplier(D(7)),
     costDiv: "divnuclearalphacost",
     currency: "alphaNum",
     extra: NABExtra
-  }),
-  genboostdouble: Upgrade({
-    scaleFunction: scaleMultiplier(D(2)),
+  },
+  genboostdouble: {
+    scaleFunction: scaleMultiplier(Decimal.dTwo),
     costDiv: "gboostdouble",
     currency: "alphaNum",
     extra: GBDExtra
-  }),
-  alphamachinedouble: Upgrade({
+  },
+  alphamachinedouble: {
     scaleFunction: scaleMultiplier(D(3)),
     costDiv: "alphamachinedouble",
     currency: "alphaNum"
-  }),
-  bangautobuyerunlock: Upgrade({
-    scaleFunction: scaleMultiplier(D(Infinity)),
+  },
+  bangautobuyerunlock: {
+    scaleFunction: scaleMultiplier(Decimal.dInf),
     costDiv: "divbau",
     currency: "omegaBase"
-  }),
-  upgradebangautobuyer: Upgrade({
+  },
+  upgradebangautobuyer: {
     scaleFunction: scaleBA,
     costDiv: "divupgradeba",
     currency: "omegaBase",
     extra: BAExtra,
     costRounding: 1
-  }),
-  boostsacrifice: Upgrade({
-    scaleFunction: scaleMultiplier(D(10)),
+  },
+  boostsacrifice: {
+    scaleFunction: scaleMultiplier(Decimal.dTen),
     costDiv: "divboostsacrificecost",
     currency: "boosterParticles",
     extra: BSExtra
-  }),
-  betaacc: Upgrade({
+  },
+  betaacc: {
     scaleFunction: scaleMultiplier(D(1000)),
     costDiv: "divbetaacceleratorcost",
     currency: "alphaNum"
-  }),
-  unlockabgb: Upgrade({
-    scaleFunction: scaleMultiplier(D(Infinity)),
+  },
+  unlockabgb: {
+    scaleFunction: scaleMultiplier(Decimal.dInf),
     costDiv: "divabgbcost",
     currency: "betaNum"
-  }),
-  abgbefficiency: Upgrade({
-    scaleFunction: scaleMultiplier(D(2)),
+  },
+  abgbefficiency: {
+    scaleFunction: scaleMultiplier(Decimal.dTwo),
     costDiv: "divabgbefficiencycost",
     currency: "betaNum"
-  }),
-  permerge: Upgrade({
+  },
+  permerge: {
     scaleFunction: scaleMultiplier(D(4)),
     costDiv: "divpermergecost",
     currency: "betaNum"
-  }),
-  mergespeed: Upgrade({
+  },
+  mergespeed: {
     scaleFunction: scaleBangSpeed,
     costDiv: "divmergespeedcost",
     currency: "betaNum"
-  }),
-  GnBBAunlock: Upgrade({
-    scaleFunction: scaleMultiplier(D(Infinity)),
+  },
+  GnBBAunlock: {
+    scaleFunction: scaleMultiplier(Decimal.dInf),
     costDiv: "usewhencostdisplaynotneeded",
     currency: "omegaAlpha"
-  }),
-  GBUAunlock: Upgrade({
-    scaleFunction: scaleMultiplier(D(Infinity)),
+  },
+  GBUAunlock: {
+    scaleFunction: scaleMultiplier(Decimal.dInf),
     costDiv: "usewhencostdisplaynotneeded",
     currency: "omegaAlpha"
-  }),
-  MBUAunlock: Upgrade({
-    scaleFunction: scaleMultiplier(D(Infinity)),
+  },
+  MBUAunlock: {
+    scaleFunction: scaleMultiplier(Decimal.dInf),
     costDiv: "usewhencostdisplaynotneeded",
     currency: "omegaAlpha"
-  }),
-  NPAunlock: Upgrade({
-    scaleFunction: scaleMultiplier(D(Infinity)),
+  },
+  NPAunlock: {
+    scaleFunction: scaleMultiplier(Decimal.dInf),
     costDiv: "usewhencostdisplaynotneeded",
     currency: "omegaAlpha"
-  }),
-  AAccAunlock: Upgrade({
-    scaleFunction: scaleMultiplier(D(Infinity)),
+  },
+  AAccAunlock: {
+    scaleFunction: scaleMultiplier(Decimal.dInf),
     costDiv: "usewhencostdisplaynotneeded",
     currency: "omegaAlpha"
-  }),
-  SAunlock: Upgrade({
-    scaleFunction: scaleMultiplier(D(Infinity)),
+  },
+  SAunlock: {
+    scaleFunction: scaleMultiplier(Decimal.dInf),
     costDiv: "usewhencostdisplaynotneeded",
     currency: "omegaAlpha"
-  }),
-  unlocknpboost: Upgrade({
-    scaleFunction: scaleMultiplier(D(Infinity)),
+  },
+  unlocknpboost: {
+    scaleFunction: scaleMultiplier(Decimal.dInf),
     costDiv: "divnpboostcost",
     currency: "betaNum",
     extra: NBExtra
-  }),
-  upgradenpboost: Upgrade({
-    scaleFunction: scaleMultiplier(D(2)),
+  },
+  upgradenpboost: {
+    scaleFunction: scaleMultiplier(Decimal.dTwo),
     costDiv: "divnpboostupcost",
     currency: "betaNum",
     extra: NBExtra
-  }),
-  reactorupmult: Upgrade({
+  },
+  reactorupmult: {
     scaleFunction: scaleReactorUpMult,
     costDiv: "divreactorupmultcost",
     currency: "betaNum",
-  }),
-  reactoruptime: Upgrade({
+  },
+  reactoruptime: {
     scaleFunction: scaleReactorUpTime,
     costDiv: "divreactoruptimecost",
     currency: "betaNum",
-  }),
-  unlocknapboost: Upgrade({
-    scaleFunction: scaleMultiplier(D(Infinity)),
+  },
+  unlocknapboost: {
+    scaleFunction: scaleMultiplier(Decimal.dInf),
     costDiv: "divnapboostcost",
     currency: "betaNum",
     extra: NABExtra
-  }),
-  upgradenapboost: Upgrade({
+  },
+  upgradenapboost: {
     scaleFunction: scaleMultiplier(D(4)),
     costDiv: "divnapboostupcost",
     currency: "betaNum",
     extra: NABExtra
-  }),
-} as const;
+  },
+  reactorUnlockNAP: {
+    scaleFunction: scaleMultiplier(Decimal.dInf),
+    costDiv: "divreactorunlockNAPcost",
+    currency: "betaNum"
+  },
+  reactorUnlockBP: {
+    scaleFunction: scaleMultiplier(Decimal.dInf),
+    costDiv: "divreactorunlockBPcost",
+    currency: "betaNum"
+  },
+  reactorUnlockMB: {
+    scaleFunction: scaleMultiplier(Decimal.dInf),
+    costDiv: "divreactorunlockMBcost",
+    currency: "betaNum"
+  },
+  reactorUnlockGB: {
+    scaleFunction: scaleMultiplier(Decimal.dInf),
+    costDiv: "divreactorunlockGBcost",
+    currency: "betaNum",
+  },
+  reactorupMB: {
+    scaleFunction: scaleMultiplier(D(4)),
+    costDiv: "divnapboostupcost",
+    currency: "betaNum"
+  },
+} as const satisfies Record<string, Upgrade>;
 
 export function scaleMultiplier(multiplier: Decimal): (upgradeName: UpgradeName) => void {
   return function (upgradeName: UpgradeName) {
@@ -282,8 +310,8 @@ export function scaleMultiplier(multiplier: Decimal): (upgradeName: UpgradeName)
 }
 
 export function scaleBangSpeed(upgradeName: UpgradeName): void {
-  if (getUpgradeTimesBought(upgradeName).lte(2)) {
-    scaleMultiplier(D(2))(upgradeName);
+  if (getUpgradeTimesBought(upgradeName).lte(Decimal.dTwo)) {
+    scaleMultiplier(Decimal.dTwo)(upgradeName);
   } else {
     scaleMultiplier(D(5))(upgradeName);
   }
@@ -292,11 +320,11 @@ export function scaleBangSpeed(upgradeName: UpgradeName): void {
 export function scaleSpeed(upgradeName: UpgradeName): void {
   const x = getUpgradeTimesBought(upgradeName)
 
-  if(x.lt(10)) {
-    setUpgradeCost( upgradeName, D(10).times(x).plus(100) )
+  if (x.lt(Decimal.dTen)) {
+    setUpgradeCost(upgradeName, Decimal.dTen.times(x).plus(100))
   }
-  else if(x.gte(10) && x.lte(1000)) {
-    setUpgradeCost( upgradeName, D(40).times(x).minus(200) );
+  else if (x.gte(Decimal.dTen) && x.lte(1000)) {
+    setUpgradeCost(upgradeName, x.times(40).minus(200));
   }
   else {
     scaleMultiplier(D(1.1))(upgradeName)
@@ -304,7 +332,7 @@ export function scaleSpeed(upgradeName: UpgradeName): void {
 }
 
 export function scaleGen(upgradeName: UpgradeName): void {
-  if (getUpgradeCost(upgradeName).eq(0)) {
+  if (getUpgradeCost(upgradeName).eq(Decimal.dZero)) {
     setUpgradeCost(upgradeName, D(1000));
   } else {
     scaleMultiplier(D(4))(upgradeName);
@@ -328,12 +356,12 @@ export function scaleReactorUpMult(upgradeName: UpgradeName): void {
 
 export function scaleReactorUpTime(upgradeName: UpgradeName): void {
   if (getUpgradeTimesBought(upgradeName).lte(4)) {
-    scaleMultiplier(D(3))(upgradeName);
+    scaleMultiplier(D(2.75))(upgradeName);
   } else if (getUpgradeTimesBought(upgradeName).lte(8)) {
-    scaleMultiplier(D(7))(upgradeName);
+    scaleMultiplier(D(5.5))(upgradeName);
   }
   else {
-    scaleMultiplier(D(56))(upgradeName);
+    scaleMultiplier(D(44))(upgradeName);
   }
 }
 
@@ -341,18 +369,18 @@ export function GBTExtra(): void {
   player.genBoostTimeLeftCon = player.genBoostTimeLeftCon.plus(
     D(2).pow(getUpgradeTimesBought("genboostdouble")).times(20)
   );
-  player.genBoostTimeLeft = new Decimal(0);
+  player.genBoostTimeLeft = Decimal.dZero;
   player.genBoostTimeLeft = player.genBoostTimeLeftCon;
 }
 
 export function GBMExtra(): void {
-  player.genBoostTimeLeft = new Decimal(0);
+  player.genBoostTimeLeft = Decimal.dZero;
   player.genBoostTimeLeft = player.genBoostTimeLeftCon;
 }
 
 export function GBDExtra(): void {
-  player.genBoostTimeLeftCon = player.genBoostTimeLeftCon.times(2);
-  player.genBoostTimeLeft = new Decimal(0);
+  player.genBoostTimeLeftCon = player.genBoostTimeLeftCon.times(Decimal.dTwo);
+  player.genBoostTimeLeft = Decimal.dZero;
   player.genBoostTimeLeft = player.genBoostTimeLeftCon;
 }
 
@@ -360,33 +388,33 @@ export function MachineExtra(): void {
   player.machineWear = 10
 }
 
-export function NBExtra(): void {  
+export function NBExtra(): void {
   let nuclearParticles = getUpgradeTimesBought('nuclearbuy')
 
-  if(getUpgradeTimesBought('unlocknpboost').eq(1)) {
+  if (getUpgradeTimesBought('unlocknpboost').eq(Decimal.dOne)) {
     nuclearParticles = onBought(
-        ['nuclearbuy', '*', [D(1), '+', ['upgradenpboost', '+', D(1), '/', D(10)]]]
+      ['nuclearbuy', '*', [Decimal.dOne, '+', ['upgradenpboost', '+', Decimal.dOne, '/', Decimal.dTen]]]
     )
-    getEl('divnp').textContent = "Nuclear Particles: " + formatD(nuclearParticles, 1);
+    getElement('divnp').textContent = "Nuclear Particles: " + formatD(nuclearParticles, 1);
   }
 
   else {
-    getEl('divnp').textContent = "Nuclear Particles: " + formatb(getUpgradeTimesBought('nuclearbuy'));
+    getElement('divnp').textContent = "Nuclear Particles: " + formatb(getUpgradeTimesBought('nuclearbuy'));
   }
 }
 
-export function NABExtra(): void {  
+export function NABExtra(): void {
   let nuclearAlphaParticles = getUpgradeTimesBought('nuclearalphabuy')
 
-  if(getUpgradeTimesBought('unlocknapboost').eq(1)) {
+  if (getUpgradeTimesBought('unlocknapboost').eq(Decimal.dOne)) {
     nuclearAlphaParticles = onBought(
-        ['nuclearalphabuy', '*', [D(1), '+', ['upgradenapboost', '+', D(1), '/', D(10)]]]
+      ['nuclearalphabuy', '*', [Decimal.dOne, '+', ['upgradenapboost', '+', Decimal.dOne, '/', Decimal.dTen]]]
     )
-    getEl('divnap').textContent = "Nuclear Alpha Particles: " + formatD(nuclearAlphaParticles, 1);
+    getElement('divnap').textContent = "Nuclear Alpha Particles: " + formatD(nuclearAlphaParticles, 1);
   }
 
   else {
-    getEl('divnap').textContent = "Nuclear Alpha Particles: " + formatb(getUpgradeTimesBought('nuclearalphabuy'));
+    getElement('divnap').textContent = "Nuclear Alpha Particles: " + formatb(getUpgradeTimesBought('nuclearalphabuy'));
   }
 }
 
@@ -394,7 +422,7 @@ export function PCAExtra(): void {
   if (getUpgradeTimesBought("upgradepca").lte(4)) {
     player.pcaTime = Math.ceil(player.pcaTime / 2);
   } else {
-    player.pcaTime = (D(10).div(getUpgradeTimesBought("upgradepca").minus(3))).ceil().toNumber()
+    player.pcaTime = (Decimal.dTen.div(getUpgradeTimesBought("upgradepca").minus(3))).ceil().toNumber()
   }
 }
 
@@ -402,12 +430,12 @@ export function BAExtra(): void {
   if (getUpgradeTimesBought("upgradebangautobuyer").lte(4)) {
     player.bangAutobuyerTime = Math.ceil(player.bangAutobuyerTime / 2);
   } else {
-    player.bangAutobuyerTime = (D(10).div(getUpgradeTimesBought("upgradebangautobuyer").minus(3))).ceil().toNumber();
+    player.bangAutobuyerTime = (Decimal.dTen.div(getUpgradeTimesBought("upgradebangautobuyer").minus(3))).ceil().toNumber();
   }
 }
 
 export function BSExtra(): void {
-  player.boosterParticles = D(0)
+  player.boosterParticles = Decimal.dZero
 }
 
 export function buyUpgrade(upgradeName: UpgradeName): void {
@@ -418,10 +446,11 @@ export function buyUpgrade(upgradeName: UpgradeName): void {
     player.upgrades[upgradeName].timesBought = player.upgrades[upgradeName].timesBought.plus(1);
     player[upgrade.currency] = player[upgrade.currency].minus(oldCost);
     upgrade.scaleFunction(upgradeName);
+    if ("extra" in upgrade) { 
+      upgrade.extra();
+    }
 
-    if (typeof upgrade.extra !== 'undefined') { upgrade.extra(); }
-
-    if (typeof upgrade.costRounding === 'undefined') {
+    if (!("costRounding" in upgrade)) {
       UpdateCostVal(
         upgrade.costDiv,
         getUpgradeCost(upgradeName),
@@ -441,31 +470,10 @@ export function buyUpgrade(upgradeName: UpgradeName): void {
 window.buyUpgrade = buyUpgrade;
 
 window.buyFiftySpeed = function (): void {
-  for(let i = 0; i < 50; i++) {
-    if(player.num.gte(getUpgradeCost('speed'))) {
+  for (let i = 0; i < 50; i++) {
+    if (player.num.gte(getUpgradeCost('speed'))) {
       buyUpgrade('speed')
     }
-    else { return; }
+    else return;
   }
 };
-/*
-const className = document.getElementsByClassName(
-  'button'
-) as HTMLCollectionOf<HTMLElement>;
-for (let i = 0; i < className.length; i++) {
-  //console.log(className[i].onclick!.toString())
-  const str = className[i].onclick!.toString()
-
-  if(str.includes('buyUpgrade')) {
-     //console.log(str)
-     const upgr = str.substring(37, str.length-3)
-     console.log(upgr)
-     const upgrade = upgrades[upgr];
-     if (player[upgrade.currency].gte(getUpgradeCost(upgr))) {
-        className[i].style.backgroundColor = 'FF00FF'
-     }
-     else {
-        className[i].style.backgroundColor = 'FF0000'
-     }
-  }
-}*/
