@@ -1,3 +1,10 @@
 node_modules
+# npm lockfile
 package-lock.json
+# pnpm lockfile
+pnpm-lock.yaml
+# yarn lockfile
+yarn.lock
+# bun lockfile
+bun.locb
 dist
