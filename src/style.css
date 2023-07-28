@@ -1,382 +1,195 @@
-button:hover {
-  border-color: beige !important;
+:root {
+    --fill: #2a2a2a;
+    --fill-active: #2a2a2ab1;
+    --stroke: #333;
 }
 
-button:active {
-  border-color: #3d3d3d !important;
-}
+button:active { background: var(--fill-active); }
+button:hover { border-color: #505050; }
 
-#divgencost {
-  display: inline-block;
-}
+.inline-block { display: inline-block; }
+.inline { display: inline; }
 
-#divbbcost {
-  display: inline-block;
-  text-indent: 1.25em;
-}
-
-#divspeedcost {
-  display: inline-block;
-  text-indent: 1.25em;
-}
-
-#divtenspeedcost {
-  display: inline-block;
-  text-indent: 1.25em;
-}
+.OnePointTwoFiveEm { text-indent: 1.25em; }
 
 #counter {
-  font-size: x-large;
-  padding-bottom: 0.05em;
+	font-size: x-large;
+	padding-bottom: 0.05em;
 }
 
-#alphacounter {
-  font-size: x-large;
-}
+.xlarge { font-size: x-large; }
 
-#betacounter {
-  font-size: x-large;
-}
+#divmbupcost { text-indent: 6.5em; }
+#divmbmultcost { text-indent: 5.75em; }
+#pcosttext { text-indent: 4em; }
+#gcosttext { text-indent: 2.3em; }
+#divgbuptcost { text-indent: 7.5em; }
+#divgbupmcost { text-indent: 4.75em; }
+#divperbangcost { text-indent: 7.25em; }
+#divboosteruppercentcost { text-indent: 15em; }
+#divmachinecost { text-indent: 2em; }
+#divpermergecost { text-indent: 3em; }
 
-#divmbupcost {
-  display: inline-block;
-  text-indent: 6.5em;
-}
-
-#divmbmultcost {
-  display: inline-block;
-  text-indent: 5.75em;
-}
-
-#divalphaacceleratorcost {
-  display: inline-block;
-}
-
-#pcosttext {
-  display: inline-block;
-  text-indent: 4em;
-}
-
-#divbetaacceleratorcost {
-  display: inline-block;
-}
-
-#gcosttext {
-  display: inline-block;
-  text-indent: 2.3em;
-}
-
-#divgenboost {
-  display: inline-block;
-}
-
-#divgbuptcost {
-  display: inline-block;
-  text-indent: 7.5em;
-}
-
-#divgbupmcost {
-  display: inline-block;
-  text-indent: 4.75em;
-}
-
-#divthreeboostcost {
-  display: inline-block;
-}
-
-#divperbangcost {
-  display: inline-block;
-  text-indent: 7.25em;
-}
+#divtoggleba { text-indent: 6em; }
+#alphamachinedouble { text-indent: 7.4em; }
+#experimentoggle { text-indent: 1em; }
+#devtoggle { text-indent: 10em; }
 
 .redb {
-  background: transparent !important;
-  border: 2px solid rgb(237, 100, 100) !important;
-  width: 75%;
-  font-size: large;
+	background: transparent !important;
+	border: 2px solid rgb(237, 100, 100) !important;
+	width: 75%;
+	font-size: large;
 }
-
 .blueb {
-  background: transparent !important;
-  border: 2px solid cornflowerblue !important;
-  width: 75%;
-  font-size: large;
-}
-.blueb:hover {
-  border: 2px solid cornflowerblue !important;
-}
-.redb:hover {
-  border: 2px solid rgb(237, 100, 100) !important;
+	background: transparent !important;
+	border: 2px solid cornflowerblue !important;
+	width: 75%;
+	font-size: large;
 }
 
-.blueb:hover {
-  background: #0099FF25 !important;
-}
+.blueb:hover { background: #0099FF25 !important; }
+.blueb:active { background: #0044AA25 !important; }
 
-.blueb:active {
-  background: #0044AA25 !important;
-}
+.redb:hover { background: #FF000025 !important; }
+.redb:active { background: #AA000025 !important; }
 
-.redb:hover {
-  background: #FF000025 !important;
-}
-
-.redb:active {
-  background: #AA000025 !important;
-}
-
-#stat {
-  word-break: break-all;
-}
-
-#divunlockpca {
-  display: inline-block;
-}
-
-#divupgradepcacost {
-  display: inline-block;
-}
-
-#divboosterupcost {
-  display: inline-block;
-}
-
-#divboosteruppercentcost {
-  display: inline-block;
-  text-indent: 15em;
-}
-
-#divboostsacrificecost {
-  display: inline-block;
-}
-
-#boostsac2 {
-  display: inline-block;
-}
+#stat { word-break: break-all; }
 
 #boostsection {
-  flex: space-evenly;
-  flex-direction: row;
-  gap: 2.375em
+	flex: space-evenly;
+	flex-direction: row;
+	gap: 2.375em
 }
-
 #nbnb {
-  flex: space-evenly;
-  flex-direction: row;
-  gap: 1.5em
+	flex: space-evenly;
+	flex-direction: row;
+	gap: 1.5em
 }
-
-#divbau {
-  display: inline-block
-}
-
-#divupgradeba {
-  display: inline-block;
-}
-
-#divtoggleba {
-  display: inline-block;
-  text-indent: 6em;
-}
-
 #bnbn {
-  display: flex;
-  flex: space-evenly;
-  flex-direction: row;
-  gap: 1.5em
-}
-
-#gboostdouble {
-  display: inline-block;
-}
-
-#alphamachinedouble {
-  display: inline-block;
-  text-indent: 7.4em;
+	display: flex;
+	flex: space-evenly;
+	flex-direction: row;
+	gap: 1.5em
 }
 
 .button {
-  padding: 8px;
-  border-radius: 8px;
-  border: 2px solid black;
-  box-shadow: none;
-  font-weight: 500;
-  cursor: pointer;
-  background: linear-gradient(45deg, black, transparent);
-  color: snow;
+	padding: 8px;
+	border-radius: 8px;
+	border: 1px solid var(--stroke);
+	box-shadow: none;
+	font-weight: 500;
+	cursor: pointer;
+	background: var(--fill);
+	color: snow;
+	transition: 0.1s ease-in-out background;
 }
 
 .tabopener {
-  padding-left: 0.7em;
-  padding-right: 0.7em;
-  padding-top: 0.35em;
-  padding-bottom: 0.35em;
-  font-size: 18px;
+	padding-left: 0.7em;
+	padding-right: 0.7em;
+	padding-top: 0.35em;
+	padding-bottom: 0.35em;
+	font-size: 18px;
 }
 
 body {
-  display:flex;
-  flex-direction: column;
-  align-items: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 * {
-  text-align: center;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	text-align: center;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-#boostsection {
-  display:flex;
-  justify-content: center;
-}
-
-#bangshow {
-  display:flex;
-  justify-content: center;
-}
-
-#bangcenteringfix {
-  display:flex;
-  justify-content: center;
-}
-
-#mergecenteringfix {
-  display:flex;
-  justify-content: center;
+.simpleflexcenter {
+	display: flex;
+	justify-content: center;
 }
 
 #veryouterboost {
-  border:0.2em solid #333333; 
-  padding-left: 15px; 
-  padding-right: 15px;
-  padding-bottom: 10px; 
-  display:none; 
-  border-radius: 10px
+	border: 0.2em solid #333333;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 10px;
+	display: none;
+	border-radius: 10px
 }
 
 #nuclearshow {
-  display:none;
-  border:0.2em solid #333333; 
-  padding-left: 15px; 
-  padding-bottom: 10px; 
-  padding-right: 15px; 
-  border-radius: 10px
+	display: none;
+	border: 0.2em solid #333333;
+	padding-left: 15px;
+	padding-bottom: 10px;
+	padding-right: 15px;
+	border-radius: 10px;
 }
 
 #bangshow {
-  display: none; 
+	display: none;
 }
 
 #mergeshow {
-  display: none; 
+	display: none;
 }
 
 #nuclearalphashow {
-  display: none; 
+	display: none;
 }
 
 .withtheoutline {
-  border:0.2em solid #333333; 
-  padding-left: 15px; 
-  padding-bottom: 10px; 
-  padding-right: 15px; 
-  border-radius: 10px
+	border: 0.2em solid #333333;
+	padding-left: 15px;
+	padding-bottom: 10px;
+	padding-right: 15px;
+	border-radius: 10px
 }
 
 #nextfeature {
-  font-size:larger;
-  padding-bottom:0.3em;
-}
-
-#autosaving {
-  display:inline-block;
-}
-
-#divspeedparticlecost {
-  display: inline-block;
-}
-
-#divmachinecost {
-  display: inline-block;
-  text-indent: 2em;
-}
-
-#experimentoggle {
-  display:inline-block;
-  text-indent: 1em;
-}
-
-#devtoggle {
-  display:inline-block;
-  text-indent: 10em;
-}
-
-#divmergespeedcost {
-  display:inline-block;
-}
-
-#divpermergecost {
-  display:inline-block;
-  text-indent: 3em;
+	font-size: larger;
+	padding-bottom: 0.3em;
 }
 
 .flexycentering {
-  display:flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 3em;
 }
 
 #flexyreactor {
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1em;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1em;
 }
 
 .flexyreactorcosts {
-  display: flex;
-  gap: 9em;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	gap: 9em;
+	align-items: center;
+	justify-content: center;
 }
 
 #inlinereactor {
-  display: flex;
-  flex-direction: row;
-  flex-shrink: 100;
+	display: flex;
+	flex-direction: row;
+	flex-shrink: 100;
+	justify-content: center;
 }
 
-#divreactorstatus {
-  display: flex;
-  flex-shrink: 100;
-}
-
-#divreactormain {
-  display: flex;
-  flex-shrink: 100;
-}
-
-#divreactorfuelusage {
-  display: flex;
-  flex-shrink: 100;
+.flexshrink {
+	display: flex;
+	flex-shrink: 100;
 }
 
 #shrunkentop {
-  display: flex;
-  flex-shrink: 100;
-  flex-direction: column;
-  align-items: center;
+	display: flex;
+	flex-shrink: 100;
+	flex-direction: column;
+	align-items: center;
 }
 
-#whattheme {
-  display: inline;
-}
-
-#musicState {
-  display: inline;
-}
-
-html {
-  background-color: black
-}
+html { background-color: black }

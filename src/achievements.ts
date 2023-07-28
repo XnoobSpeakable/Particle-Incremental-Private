@@ -1,14 +1,10 @@
-import { getElement } from "./util"
+import { getElement } from "./util";
 
-//type Achievement = { text: string }
+const achievementContainer = getElement('achievementContainer');
 
-/*const achievements: Achievement[] = [
-    { text: 'ach 1' },
-    { text: 'ach 2' },
-]*/
-
+// not implemented yet, we will make achievements later
 export function createAchievementHTML(): void {
-    const newDiv = document.createElement("div")
-    newDiv.innerText = "stuff"
-    getElement('achievementContainer').appendChild(newDiv)
+	const newDiv = document.createElement("div")
+	newDiv.innerText = "stuff"
+	achievementContainer.appendChild(newDiv)
 }

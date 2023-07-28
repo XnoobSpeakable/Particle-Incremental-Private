@@ -9,12 +9,12 @@
       "sourceType": "module",
       "project": ["tsconfig.json"]
    },
+   "ignorePatterns": ["vite.config.ts"],
    "extends": [
       "eslint:recommended",
       "plugin:@typescript-eslint/recommended",
       "plugin:@typescript-eslint/recommended-requiring-type-checking"
    ],
-   "ignorePatterns": ["vite.config.ts"],
    "rules": {
       "no-duplicate-imports": "error",
       "no-self-compare": "error",
