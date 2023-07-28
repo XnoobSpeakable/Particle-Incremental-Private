@@ -1,4 +1,4 @@
-const p = function polyfill() {
+const p = function polyfill() { // Your Mom
     const relList = document.createElement('link').relList;
     if (relList && relList.supports && relList.supports('modulepreload')) {
         return;
