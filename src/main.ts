@@ -300,18 +300,18 @@ function passiveUnlockDisplay(): void {
     if (player.num.gte(1e5)) {
         tabOpenFactory.style.display = "inline";
     }
-    if (player.num.gte(1e9) || player.alphaNum.gt(0)) {
+    if (player.num.gte(1e9) || player.alphaNum.gt(Decimal.dZero)) {
         tabOpenAlpha.style.display = "inline";
         tabOpenOmega.style.display = "inline";
     }
-    if (player.alphaNum.gte(1e9) || player.betaNum.gt(0)) {
+    if (player.alphaNum.gte(1e9) || player.betaNum.gt(Decimal.dZero)) {
         tabOpenBeta.style.display = "inline";
     }
     if (player.betaNum.gte(300)) {
         tabOpenReactor.style.display = "inline";
     }
     if (playerSettings.useExperimental) {
-        //TODO: remove exprimental when you want
+        // TODO: remove exprimental when you want
         tabOpenGamma.style.display = "inline";
         tabOpenDelta.style.display = "inline";
         tabOpenOmegaOmega.style.display = "inline";
@@ -700,7 +700,7 @@ function reactorHandler() {
     getElement(
         "divreactorfuelusage"
     ).textContent = `When active, your reactor is using up 1 fuel every ${formatBig(
-        reactor.fuelTime.div(10)
+        reactor.fuelTime.div(Decimal.dTen)
     )} seconds`;
 
     let NAPtoggle = false;
@@ -973,7 +973,7 @@ window.buyFuel = function (fuelType: Fuels) {
 let alphaFromReturn = Decimal.dZero;
 
 function returnParticleHandler(): void {
-    if (getUpgradeTimesBought("buyreturngenerator").gt(0)) {
+    if (getUpgradeTimesBought("buyreturngenerator").gt(Decimal.dZero)) {
         const gain = onBought([
             new Decimal(10),
             "*",
@@ -1099,7 +1099,7 @@ function fgbTestConst(): void {
         }
 
         player.bangTime = Math.ceil(
-            300 / Math.pow(2, getUpgradeTimesBought("bangspeed").toNumber())
+            300 / 2 ** getUpgradeTimesBought("bangspeed").toNumber()
         );
 
         const alphaGain = onBought(
@@ -1110,13 +1110,13 @@ function fgbTestConst(): void {
         ).times(boostsacmult);
 
         player.mergeTime = Math.ceil(
-            300 / Math.pow(2, getUpgradeTimesBought("mergespeed").toNumber())
+            300 / 2 ** getUpgradeTimesBought("mergespeed").toNumber()
         );
 
         const betaGain = onBought(
             "betaacc",
             ["permerge", "+", Decimal.dOne],
-            [new Decimal(2), "^", "doublebeta"]
+            [Decimal.dTwo, "^", "doublebeta"]
         );
 
         if (player.bangTimeLeft === 0) {
@@ -1167,7 +1167,7 @@ function fgbTestConst(): void {
             "*",
             "gen",
             "*",
-            ["speed", "/", new Decimal(10), "+", new Decimal(0.1)],
+            ["speed", "/", Decimal.dTen, "+", new Decimal(0.1)],
             "*",
             player.genBoostMult,
             "*",
@@ -1272,7 +1272,7 @@ function fgbTestConst(): void {
                 .div(100)
         );
 
-        if (player.boosterParticles.eq(0)) {
+        if (player.boosterParticles.eq(Decimal.dZero)) {
             getElement(
                 "boostersmaintext"
             ).textContent = `You are currently getting 0 booster particles per alpha particle per second,
@@ -1329,17 +1329,17 @@ function fgbTestConst(): void {
             formatBig(gain.times(10)) +
             "</span> particles/s";
 
-        if (player.num.gte(1e8) || nuclearParticles.gt(0)) {
+        if (player.num.gte(1e8) || nuclearParticles.gt(Decimal.dZero)) {
             getElement("nuclearreach").style.display = "none";
             getElement("nuclearshow").style.display = "block";
         }
 
-        if (player.alphaNum.gte(1e6) || nuclearAlphaParticles.gt(0)) {
+        if (player.alphaNum.gte(1e6) || nuclearAlphaParticles.gt(Decimal.dZero)) {
             getElement("nuclearalphareach").style.display = "none";
             getElement("nuclearalphashow").style.display = "block";
         }
 
-        if (player.num.gte(1e9) || player.pChunks.gt(0)) {
+        if (player.num.gte(1e9) || player.pChunks.gt(Decimal.dZero)) {
             getElement("bangshow").style.display = "block";
         }
 
