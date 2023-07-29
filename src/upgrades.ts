@@ -78,12 +78,20 @@ export const upgrades = {
         cost: new Decimal(50),
         costFunction(upgradeAmount) {
             /* (amount === 0 ? 50 : 100) + 10 * min(amount, 10) +
-			min(amount - 10, 1000) * 40 +
-			1.1 ^ (amount - 1000)*/
+			min(max(amount - 10, 0), 1000) * 40 +
+			1.1 ^ (max(amount - 1000, 0))*/
             return new Decimal(upgradeAmount.eq(Decimal.dZero) ? 50 : 100)
                 .plus(Decimal.dTen.times(upgradeAmount.min(Decimal.dTen)))
-                .plus(upgradeAmount.minus(Decimal.dTen).min(1000).times(40))
-                .plus(upgradeAmount.minus(1000).pow_base(1.1));
+                .plus(
+                    upgradeAmount
+                        .minus(Decimal.dTen)
+                        .max(Decimal.dZero)
+                        .min(1000)
+                        .times(40)
+                )
+                .plus(
+                    upgradeAmount.minus(1000).max(Decimal.dZero).pow_base(1.1)
+                );
         },
         scaleFunction: scaleSpeed,
         costDiv: "divspeedcost",
@@ -204,12 +212,17 @@ export const upgrades = {
         cost: Decimal.dOne,
         costFunction(upgradeAmount) {
             /* 2 ^ min(amount, 2) +
-			5 ^ (amount - 2) +
+			5 ^ (max(amount - 2, 0)) +
 			2*/
             return upgradeAmount
                 .min(Decimal.dTwo)
                 .pow_base(Decimal.dTwo)
-                .plus(upgradeAmount.sub(Decimal.dTwo).pow_base(5))
+                .plus(
+                    upgradeAmount
+                        .sub(Decimal.dTwo)
+                        .max(Decimal.dZero)
+                        .pow_base(5)
+                )
                 .plus(Decimal.dTwo);
         },
         scaleFunction: scaleBangSpeed,
