@@ -27,7 +27,6 @@
 	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
 	<meta name="theme-color" content="#ffffff" />
 </head>
-
 <body>
 	<audio id="audio" loop>
 		<source src="/hikaru_miles.mp3" type="audio/mpeg" />
@@ -446,7 +445,7 @@
 						<div class="flexyreactorcosts">
 							<div id="divreactorupmultcost">Cost: 1500 beta</div>
 							<div id="divreactoruptimecost">Cost: 1250 beta</div>
-							<di id="divreactorupMBcost">Cost: x beta
+							<div id="divreactorupMBcost">Cost: x beta
 						</div>
 						<div><br></div>
 					</div>
@@ -570,7 +569,6 @@
 						</div>
 					</div>
 					<br>
-
 					<div class="withtheoutline">
 						<br>
 						<div id="divGBUA">
@@ -592,12 +590,12 @@
 						</div>
 					</div>
 					<br>
-
 					<div class="withtheoutline">
 						<br>
 						<div id="divMBUA">
 							<button onclick="buyUpgrade('MBUAunlock')" class="button">Unlock autobuyers for Manual Boost
-								upgrades</button>
+								upgrades
+							</button>
 							Cost: 0.5 Ω<sub>α</sub>
 						</div>
 						<br>
@@ -614,7 +612,6 @@
 						</div>
 					</div>
 					<br>
-
 					<div class="withtheoutline">
 						<br>
 						<div id="divNPA">
@@ -636,7 +633,6 @@
 						</div>
 					</div>
 					<br>
-
 					<div class="withtheoutline">
 						<br>
 						<div id="divAAccA">
@@ -653,7 +649,6 @@
 						</div>
 					</div>
 					<br>
-
 					<div class="withtheoutline">
 						<br>
 						<div id="divSA">
@@ -668,10 +663,8 @@
 							<div id="divSpeedAutobuyerToggle">Off</div>
 						</div>
 					</div>
-
 				</div>
 				<br>
-
 				<div class="flexycentering">
 					<br>
 					<div class="withtheoutline">
@@ -683,7 +676,6 @@
 							<sub>α</sub>
 						</div>
 					</div>
-
 					<div class="withtheoutline">
 						<br>
 						<button id="divunlockagabutton" onclick="buyUpgrade('unlockaga')" class="button">Unlock Alpha
@@ -693,7 +685,6 @@
 							<span class="inline-block">Cost: 0.25</span> Ω
 							<sub>α</sub>
 						</div>
-
 						<div id="agashow" style="display:none">
 							<div class="btn-group">
 								<button onclick="buyUpgrade('upgradeaga')" class="button">Make AGA faster</button>
@@ -706,7 +697,6 @@
 						</div>
 
 					</div>
-
 					<div class="withtheoutline">
 						<br>
 						<button id="maunlockbutton" onclick="buyUpgrade('mergeautobuyerunlock')" class="button">Unlock
@@ -715,7 +705,6 @@
 							<span id="divmau" class="inline-block">Cost: 0.25</span> Ω
 							<sub>α</sub>
 						</div>
-
 						<div id="mashow" style="display:none">
 							<div class="btn-group">
 								<button onclick="buyUpgrade('upgrademergeautobuyer')" class="button">Make merge
@@ -727,14 +716,11 @@
 							<div id="divtogglema" class="inline-block">On</div>
 							<div id="untilma">0</div>
 						</div>
-
 					</div>
-
 				</div>
 				<div id="usewhencostdisplaynotneeded" style="display:none"></div>
 			</div>
 		</div>
-
 		<div id="oBeta" style="display:none">
 			<br>
 			<div id="oBetauupre">Reach the Gamma layer to unlock!</div>
@@ -742,7 +728,6 @@
 				<button class="button"></button>
 			</div>
 		</div>
-
 		<div id="oGamma" style="display:none">
 			<br>
 			<div id="oGammauupre">Reach the Delta layer to unlock!</div>
@@ -750,7 +735,6 @@
 				<button class="button"></button>
 			</div>
 		</div>
-
 		<div id="oDelta" style="display:none">
 			<br>
 			<div id="oDeltauupre">Reach ?????????? to unlock!</div>
@@ -759,48 +743,33 @@
 			</div>
 		</div>
 		<br>
-
 	</div>
-
-
 	<div id="OmegaOmega" style="display:none">
 		<br>
 		nothing here yet
 	</div>
-
-
 	<div id="Stats" style="display:none">
 		<pre id="stat"></pre>
 	</div>
-
-
 	<div id="Achievements" style="display:none">
 		<div id="achievementContainer">
 			WORK IN PROGRESS
 		</div>
 	</div>
-
-
 	<div id="Settings" style="display:none">
 		<br>
-		<!--         <button onclick="setting1e4()" class="button">Make scientific notation start at 1e4</button>
-				<button onclick="setting1e6()" class="button">Make scientific notation start at 1e6</button>
-				<br>
-				<br> -->
 		<button onclick="theme()" class="button" style="margin-left: 4em;">Change Theme</button>
 		<button onclick="musicSwitch()" class="button" style="margin-left: 4em;">Toggle Music</button>
 		<br>
 		<div id="whattheme" class="inline">Theme: Light</div>
 		<div id="musicState" style="margin-left: 4em;" class="inline">Off</div>
 		<br><br>
-
 		<button onclick="experimentalToggle()" class="button">Toggle Experimental Features</button>
 		<button onclick="devToggle()" class="button">Toggle Developer Features</button>
 		<br>
 		<div id="experimentoggle" class="inline-block">false</div>
 		<div id="devtoggle" class="inline-block">false</div>
 		<br>
-
 		<h2 style="color: cornflowerblue;">Saving</h2>
 		<button onclick="save()" class="button blueb">Save</button><br><br>
 		<button onclick="saveExport()" class="button blueb" style="width: 37.5%;">Export Save</button>
@@ -812,7 +781,6 @@
 		<br><br>
 		<button onclick="autosavesettings()" class="button blueb">Toggle Autosave, Autosave Speed</button>
 		<br>
-
 		<div id="autosaving" class="inline-block">On, Delay: 30s</div>
 		<h2 style="color: rgb(237, 100, 100);">Danger</h2>
 		<button onclick="reset()" class="button redb">Reset Save</button> <br><br>
@@ -820,10 +788,8 @@
 			<p style="text-align: left; font-size: small; opacity: .2; margin: 0;">(if one exists)</p>
 		</button>
 		<br><br>
-
 		<a href="https://discord.gg/skd7JmDvQu">Official Particle Incremental Discord server. Click here to join.</a>
 		<br><br>
-
 		Special thanks to: <br>
 		<a href="https://github.com/Cosmic47">Cosmic47</a>
 		for keeping me motivated, helping me come up with ideas, and more. <br>
@@ -834,7 +800,6 @@
 		<a href="https://github.com/jakub791">jakub791</a>
 		for doing a LOT of coding and code changes.
 		<br><br>
-		
 		Version b2.3.0.0
 		<br>
 		Changelog:
@@ -846,10 +811,7 @@
 		copyright strike you for it, that strike is false.<br>
 		About Particle Incremental itself: you are free to make derivative works, but do not try to impersonate me or
 		hide the fact that THIS is the original.
-
 	</div>
-
-
 	<div id="Tutorial" style="display:none">
 		A generator gives you n particles every loop. Default is 1 loop per second and 1 particle per loop. <br>
 		The bigger batches upgrade adds 1 to the n (first upgrade makes it 2 particles per loop, 2nd 3 per loop etc).
@@ -876,9 +838,6 @@
 		<a href="https://discord.gg/skd7JmDvQu">Need help? Click here to join the official Particle Incremental Discord
 			server.</a>
 	</div>
-
-
-
 	<div id="Dev" style="display: none">
 		<br>
 		<div id="cheat">
@@ -888,8 +847,5 @@
 		</div>
 		<button onclick="clearls()" class="button">clear ALL localStorage entries</button>
 	</div>
-
-
 </body>
-
 </html>
