@@ -210,12 +210,12 @@ const tabThemes = [
 	},
 	{
 		textColor: "#EBEBEB",
-		bgColor: "rgb(34, 98, 34)",
-		buttonColor: "#64DD17",
-		borderColor: "#BABABA",
-		gradientColor: "#64DD17",
-		themeName: "Dark Rework",
-		disableGradient: true,
+		bgColor: "#0e0e0e",
+		buttonColor: "#193b19",
+		borderColor: "#226222",
+		gradientColor: "#64DA17",
+		themeName: "Alpha",
+		radialGradient: true
 	},
 	{
 		textColor: "#EBEBEB",
@@ -223,7 +223,7 @@ const tabThemes = [
 		buttonColor: "",
 		borderColor: "#BABABA",
 		gradientColor: "black",
-		themeName: "Dark Rework",
+		themeName: "Beta",
 		disableGradient: true
 	},
 	{
@@ -232,7 +232,7 @@ const tabThemes = [
 		buttonColor: "",
 		borderColor: "#000000",
 		gradientColor: "black",
-		themeName: "Darker Rework",
+		themeName: "Omega",
 		disableGradient: true
 	},
 ]
@@ -256,7 +256,8 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
 		gradientColor,
 		buttonGradientOverride,
 		themeName,
-		disableGradient
+		disableGradient,
+		radialGradient //TODO: make this not error
 	} = theme;
 
     divEntireBody.style.opacity = "1";
@@ -295,10 +296,19 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
                 element.style.background = `linear-gradient(45deg, ${gradientColor}, transparent)`;
             } else if (disableGradient) {
                 element.style.background = `linear-gradient(45deg, black, transparent)`;
+			} else if (radialGradient) {
+				element.style.background = `radial-gradient(${buttonColor}, ${gradientColor})`
+				element.style.boxShadow = `0 0 3px 3px white` //TODO: make this all not suck
             } else {
                 element.style.background = buttonColor;
             }
         }
+
+		if(element.classList.contains('tabopener')) { //temporary detector of tab buttons, will make it do smth else later
+			element.style.background = ''
+			element.style.boxShadow = ''
+			element.style.backgroundColor = '#ff00ff'
+		}
     }
 
     const className2 = document.getElementsByClassName("withtheoutline");
@@ -316,6 +326,8 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
         }
         element.style.backgroundColor = buttonColor;
     }
+
+	
 
     tabOpeners.style.background = `linear-gradient(${gradientColor}, transparent)`;
     whatTheme.textContent = `Theme: ${themeName}`;
