@@ -210,7 +210,7 @@ const tabThemes = [
 	},
 	{
 		textColor: "#EBEBEB",
-		bgColor: "#5F5F5F",
+		bgColor: "rgb(34, 98, 34)",
 		buttonColor: "#64DD17",
 		borderColor: "#BABABA",
 		gradientColor: "#64DD17",
