@@ -198,8 +198,54 @@ const themes = [
 	}
 ];
 
-function themeExec(): void {
-	const theme = themes[playerSettings.themeNumber];
+const tabThemes = [
+	{
+		textColor: "#000000",
+		bgColor: "#CCCCCC",
+		buttonColor: "",
+		borderColor: "#333333",
+		gradientColor: "white",
+		buttonGradientOverride: true,
+		themeName: "Base",
+		disableGradient: false
+	},
+	{
+		textColor: "#EBEBEB",
+		bgColor: "#5F5F5F",
+		buttonColor: "#64DD17",
+		borderColor: "#BABABA",
+		gradientColor: "#64DD17",
+		themeName: "Dark Rework",
+		disableGradient: true,
+	},
+	{
+		textColor: "#EBEBEB",
+		bgColor: "rgb(100, 49, 34)",
+		buttonColor: "",
+		borderColor: "#BABABA",
+		gradientColor: "black",
+		themeName: "Dark Rework",
+		disableGradient: true
+	},
+	{
+		textColor: "#D4D4D4",
+		bgColor: "rgb(98, 16, 98)",
+		buttonColor: "",
+		borderColor: "#000000",
+		gradientColor: "black",
+		themeName: "Darker Rework",
+		disableGradient: true
+	},
+]
+
+function themeExec(isTabSwitch = false, tabNum = 0): void {
+	let theme = null
+	if(!isTabSwitch) {
+		theme = themes[playerSettings.themeNumber];
+	}
+	else {
+		theme = tabThemes[tabNum]
+	}
 	if (theme === undefined) {
 		throw new Error("theme dosen't exist!");
 	}
@@ -515,6 +561,31 @@ function loadMisc(): void {
 	amountUpdate();
 }
 
+function changeLayerTheme(tab: string) {
+	switch(tab) {
+		case 'Base':
+			themeExec(true, 0)
+			break;
+		case 'Factory':
+			themeExec(true, 0)
+			break;
+		case 'Alpha':
+			themeExec(true, 1)
+			break;
+		case 'Beta':
+			themeExec(true, 2)
+			break;
+		case 'Reactor':
+			themeExec(true, 2)
+			break;
+		case 'Omega':
+			themeExec(true, 3)
+			break;
+		default:
+			themeExec(true, 0)
+	}
+}
+
 function makeElementMap(...names: string[]): Record<string, HTMLElement> {
 	return Object.fromEntries(names.map(x => [x, getElement(x)] as const));
 }
@@ -560,6 +631,8 @@ window.openTab = function (tab: string): void {
 		hideElements(tabElements);
 	}
 	getElement(tab).style.display = 'block';
+
+	changeLayerTheme(tab)
 };
 
 loadMisc();
