@@ -198,67 +198,63 @@ const themes = [
 ];
 
 const tabThemes = [
-	{
-		textColor: "#000000",
-		bgColor: "#CCCCCC",
-		buttonColor: "",
-		borderColor: "#333333",
-		gradientColor: "white",
-		buttonGradientOverride: true,
-		themeName: "Base",
-		disableGradient: false
-	},
-	{
-		textColor: "#EBEBEB",
-		bgColor: "#0e0e0e",
-		buttonColor: "#193b19",
-		borderColor: "#226222",
-		gradientColor: "#64DA17",
-		themeName: "Alpha",
-		radialGradient: true
-	},
-	{
-		textColor: "#EBEBEB",
-		bgColor: "rgb(100, 49, 34)",
-		buttonColor: "",
-		borderColor: "#BABABA",
-		gradientColor: "black",
-		themeName: "Beta",
-		disableGradient: true
-	},
-	{
-		textColor: "#D4D4D4",
-		bgColor: "rgb(98, 16, 98)",
-		buttonColor: "",
-		borderColor: "#000000",
-		gradientColor: "black",
-		themeName: "Omega",
-		disableGradient: true
-	},
-]
+    {
+        textColor: "#000000",
+        bgColor: "#CCCCCC",
+        buttonColor: "",
+        borderColor: "#333333",
+        gradientColor: "white",
+        buttonGradientOverride: true,
+        themeName: "Base",
+        disableGradient: false
+    },
+    {
+        textColor: "#EBEBEB",
+        bgColor: "#0e0e0e",
+        buttonColor: "#193b19",
+        borderColor: "#226222",
+        gradientColor: "#64DA17",
+        themeName: "Alpha",
+        radialGradient: true
+    },
+    {
+        textColor: "#EBEBEB",
+        bgColor: "rgb(100, 49, 34)",
+        buttonColor: "",
+        borderColor: "#BABABA",
+        gradientColor: "black",
+        themeName: "Beta",
+        disableGradient: true
+    },
+    {
+        textColor: "#D4D4D4",
+        bgColor: "rgb(98, 16, 98)",
+        buttonColor: "",
+        borderColor: "#000000",
+        gradientColor: "black",
+        themeName: "Omega",
+        disableGradient: true
+    }
+];
 
 function themeExec(isTabSwitch = false, tabNum = 0): void {
-	let theme = null
-	if(!isTabSwitch) {
-		theme = themes[playerSettings.themeNumber];
-	}
-	else {
-		theme = tabThemes[tabNum]
-	}
-	if (theme === undefined) {
-		throw new Error("theme dosen't exist!");
-	}
-	const {
-		textColor,
-		bgColor,
-		buttonColor,
-		borderColor,
-		gradientColor,
-		buttonGradientOverride,
-		themeName,
-		disableGradient,
-		radialGradient //TODO: make this not error
-	} = theme;
+    const theme = !isTabSwitch
+        ? themes[playerSettings.themeNumber]
+        : tabThemes[tabNum];
+    if (theme === undefined) {
+        throw new Error("theme dosen't exist!");
+    }
+    const {
+        textColor,
+        bgColor,
+        buttonColor,
+        borderColor,
+        gradientColor,
+        buttonGradientOverride,
+        themeName,
+        disableGradient,
+        radialGradient //TODO: make this not error
+    } = theme;
 
     divEntireBody.style.opacity = "1";
     divEntireBody.style.color = textColor;
@@ -296,19 +292,20 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
                 element.style.background = `linear-gradient(45deg, ${gradientColor}, transparent)`;
             } else if (disableGradient) {
                 element.style.background = `linear-gradient(45deg, black, transparent)`;
-			} else if (radialGradient) {
-				element.style.background = `radial-gradient(${buttonColor}, ${gradientColor})`
-				element.style.boxShadow = `0 0 3px 3px white` //TODO: make this all not suck
+            } else if (radialGradient) {
+                element.style.background = `radial-gradient(${buttonColor}, ${gradientColor})`;
+                element.style.boxShadow = `0 0 3px 3px white`; //TODO: make this all not suck
             } else {
                 element.style.background = buttonColor;
             }
         }
 
-		if(element.classList.contains('tabopener')) { //temporary detector of tab buttons, will make it do smth else later
-			element.style.background = ''
-			element.style.boxShadow = ''
-			element.style.backgroundColor = '#ff00ff'
-		}
+        if (element.classList.contains("tabopener")) {
+            //temporary detector of tab buttons, will make it do smth else later
+            element.style.background = "";
+            element.style.boxShadow = "";
+            element.style.backgroundColor = "#ff00ff";
+        }
     }
 
     const className2 = document.getElementsByClassName("withtheoutline");
@@ -326,8 +323,6 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
         }
         element.style.backgroundColor = buttonColor;
     }
-
-	
 
     tabOpeners.style.background = `linear-gradient(${gradientColor}, transparent)`;
     whatTheme.textContent = `Theme: ${themeName}`;
@@ -575,28 +570,28 @@ function loadMisc(): void {
 }
 
 function changeLayerTheme(tab: string) {
-	switch(tab) {
-		case 'Base':
-			themeExec(true, 0)
-			break;
-		case 'Factory':
-			themeExec(true, 0)
-			break;
-		case 'Alpha':
-			themeExec(true, 1)
-			break;
-		case 'Beta':
-			themeExec(true, 2)
-			break;
-		case 'Reactor':
-			themeExec(true, 2)
-			break;
-		case 'Omega':
-			themeExec(true, 3)
-			break;
-		default:
-			themeExec(true, 0)
-	}
+    switch (tab) {
+        case "Base":
+            themeExec(true, 0);
+            break;
+        case "Factory":
+            themeExec(true, 0);
+            break;
+        case "Alpha":
+            themeExec(true, 1);
+            break;
+        case "Beta":
+            themeExec(true, 2);
+            break;
+        case "Reactor":
+            themeExec(true, 2);
+            break;
+        case "Omega":
+            themeExec(true, 3);
+            break;
+        default:
+            themeExec(true, 0);
+    }
 }
 
 function makeElementMap(...names: string[]): Record<string, HTMLElement> {
@@ -638,14 +633,14 @@ function hideElements(elements: Record<string, HTMLElement>) {
 }
 
 window.openTab = function (tab: string): void {
-	if (tab in tabOmegaElements) {
-		hideElements(tabOmegaElements);
-	} else {
-		hideElements(tabElements);
-	}
-	getElement(tab).style.display = 'block';
+    if (tab in tabOmegaElements) {
+        hideElements(tabOmegaElements);
+    } else {
+        hideElements(tabElements);
+    }
+    getElement(tab).style.display = "block";
 
-	changeLayerTheme(tab)
+    changeLayerTheme(tab);
 };
 
 loadMisc();
