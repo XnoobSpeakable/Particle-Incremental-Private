@@ -211,11 +211,10 @@ const tabThemes = [
 	{
 		textColor: "#EBEBEB",
 		bgColor: "#0e0e0e",
-		buttonColor: "#64DA17",
+		buttonColor: "#193b19",
 		borderColor: "#226222",
 		gradientColor: "#64DA17",
-		themeName: "Dark Rework",
-		buttonGradientOverride: true,
+		themeName: "Alpha",
 		radialGradient: true
 	},
 	{
@@ -224,7 +223,7 @@ const tabThemes = [
 		buttonColor: "",
 		borderColor: "#BABABA",
 		gradientColor: "black",
-		themeName: "Dark Rework",
+		themeName: "Beta",
 		disableGradient: true
 	},
 	{
@@ -233,7 +232,7 @@ const tabThemes = [
 		buttonColor: "",
 		borderColor: "#000000",
 		gradientColor: "black",
-		themeName: "Darker Rework",
+		themeName: "Omega",
 		disableGradient: true
 	},
 ]
@@ -298,12 +297,18 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
             } else if (disableGradient) {
                 element.style.background = `linear-gradient(45deg, black, transparent)`;
 			} else if (radialGradient) {
-				element.style.background = `radial-gradient(${bgColor}, ${gradientColor})`
+				element.style.background = `radial-gradient(${buttonColor}, ${gradientColor})`
 				element.style.boxShadow = `0 0 3px 3px white` //TODO: make this all not suck
             } else {
                 element.style.background = buttonColor;
             }
         }
+
+		if(element.classList.contains('tabopener')) { //temporary detector of tab buttons, will make it do smth else later
+			element.style.background = ''
+			element.style.boxShadow = ''
+			element.style.backgroundColor = '#ff00ff'
+		}
     }
 
     const className2 = document.getElementsByClassName("withtheoutline");
@@ -321,6 +326,8 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
         }
         element.style.backgroundColor = buttonColor;
     }
+
+	
 
     tabOpeners.style.background = `linear-gradient(${gradientColor}, transparent)`;
     whatTheme.textContent = `Theme: ${themeName}`;
