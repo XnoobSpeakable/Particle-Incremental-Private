@@ -1355,7 +1355,9 @@ function fgbTestConst(): void {
             getElement(
                 "boostersmaintext"
             ).textContent = `You are currently getting ${formatBig(
-                bpGain.times(Decimal.dTen).div(player.alphaNum.max(1))
+                bpGain
+                    .times(Decimal.dTen)
+                    .div(player.alphaNum.max(Decimal.dOne))
             )} booster particles per alpha particle per second,
                resulting in a +${formatBigSpecific(
                    percentBoostDisplay
@@ -1367,7 +1369,7 @@ function fgbTestConst(): void {
                 bpGain.times(Decimal.dTen).div(player.alphaNum)
             )} booster particles per alpha particle per second,
                resulting in a ${formatBigSpecific(
-                   percentBoostDisplay.div(100).plus(1)
+                   percentBoostDisplay.div(100).plus(Decimal.dOne)
                )}x boost to base particle production`;
         }
 
@@ -1407,7 +1409,10 @@ function fgbTestConst(): void {
             getElement("nuclearshow").style.display = "block";
         }
 
-        if (player.alphaNum.gte(1e6) || nuclearAlphaParticles.gt(Decimal.dZero)) {
+        if (
+            player.alphaNum.gte(1e6) ||
+            nuclearAlphaParticles.gt(Decimal.dZero)
+        ) {
             getElement("nuclearalphareach").style.display = "none";
             getElement("nuclearalphashow").style.display = "block";
         }

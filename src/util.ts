@@ -8,7 +8,7 @@ import Decimal from "break_eternity.js";
 
 declare global {
     interface Window {
-        changeCheatMode: VoidFunction;
+        changeCheatMode?: VoidFunction;
         cheat?: VoidFunction;
         clearls: VoidFunction;
     }
@@ -222,12 +222,6 @@ export const onBoughtInc = onDecimal(isUpgradeName, key =>
     getUpgradeTimesBought(key).plus(Decimal.dOne)
 );
 
-window.changeCheatMode = function (): void {
-    playerSettings.cheatMode = (playerSettings.cheatMode + 1) % 6;
-    getElement("cheatmodediv").textContent =
-        playerSettings.cheatMode.toString();
-};
-
 // dev only
 if (import.meta.env.DEV)
     window.cheat = function (): void {
@@ -259,6 +253,12 @@ if (import.meta.env.DEV)
                     .times(Decimal.dTwo);
                 break;
         }
+
+        window.changeCheatMode = function (): void {
+            playerSettings.cheatMode = (playerSettings.cheatMode + 1) % 6;
+            getElement("cheatmodediv").textContent =
+                playerSettings.cheatMode.toString();
+        };
     };
 else {
     getElement("cheat").style.display = "none";
