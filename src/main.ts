@@ -210,12 +210,13 @@ const tabThemes = [
 	},
 	{
 		textColor: "#EBEBEB",
-		bgColor: "rgb(34, 98, 34)",
-		buttonColor: "#64DD17",
-		borderColor: "#BABABA",
-		gradientColor: "#64DD17",
+		bgColor: "#0e0e0e",
+		buttonColor: "#64DA17",
+		borderColor: "#226222",
+		gradientColor: "#64DA17",
 		themeName: "Dark Rework",
-		disableGradient: true,
+		buttonGradientOverride: true,
+		radialGradient: true
 	},
 	{
 		textColor: "#EBEBEB",
@@ -256,7 +257,8 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
 		gradientColor,
 		buttonGradientOverride,
 		themeName,
-		disableGradient
+		disableGradient,
+		radialGradient //TODO: make this not error
 	} = theme;
 
     divEntireBody.style.opacity = "1";
@@ -295,6 +297,9 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
                 element.style.background = `linear-gradient(45deg, ${gradientColor}, transparent)`;
             } else if (disableGradient) {
                 element.style.background = `linear-gradient(45deg, black, transparent)`;
+			} else if (radialGradient) {
+				element.style.background = `radial-gradient(${bgColor}, ${gradientColor})`
+				element.style.boxShadow = `0 0 3px 3px white` //TODO: make this all not suck
             } else {
                 element.style.background = buttonColor;
             }
