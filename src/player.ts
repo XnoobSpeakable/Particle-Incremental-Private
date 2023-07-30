@@ -10,7 +10,13 @@ declare global {
     }
 }
 
+/**
+ * The player save data object.
+ */
 export const player = {
+    /**
+     * All the upgrades.
+     */
     upgrades: {
         gen: {
             cost: Decimal.dZero,
@@ -286,15 +292,37 @@ export const player = {
     returnParticles: Decimal.dZero
 };
 
+/**
+ * The player settings object.
+ */
 export const playerSettings = {
+    /**
+     * Current version of the game.
+     */
     version: "b2.3.0.0",
+    /**
+     * The number of seconds every which the game gets automatically saved.
+     */
     autoSaveDelay: 50,
     autoSaveMode: 4,
     autoSaveSet: 50,
+    /**
+     * Number of the currently active theme.
+     */
     themeNumber: 0,
     useExperimental: false,
+    /**
+     * Whether or not you're in development mode.
+     */
     devToggled: false,
+    /**
+     * The current cheat mode, changes which resource you will gain from
+     * cheating.
+     */
     cheatMode: 0,
+    /**
+     * Whether or not the music is enabled.
+     */
     playMusic: false
 };
 
@@ -304,12 +332,19 @@ if (import.meta.env.DEV) {
     window.Decimal = Decimal;
 }
 
+/**
+ * This function is run when the game loads. Use this to perform any
+ * save migrations.
+ */
 function updateGame(): void {
-    //TODO: NEVER forget to change this when updating the game
+    // TODO: NEVER forget to change this when updating the game
     playerSettings.version = "b2.3.0.0";
     if ("eSetting" in playerSettings) delete playerSettings.eSetting;
 }
 
+/**
+ * Loads the player settings from localStorage.
+ */
 export function loadSettings(): void {
     const settings = localStorage.getItem(location.pathname + "settings");
     if (settings !== null) {
@@ -341,6 +376,10 @@ Decimal.prototype.toJSON = function (): string {
     return "D#" + this.toString();
 };
 
+/**
+ * A utility function used when deserializing the player object, used to
+ * handle Decimal values.
+ */
 function saveRevive(_key: string, value: unknown): unknown {
     if (typeof value === "string" && value.startsWith("D#")) {
         return new Decimal(value.slice(2));
@@ -348,6 +387,12 @@ function saveRevive(_key: string, value: unknown): unknown {
     return value;
 }
 
+/**
+ * Recursively merge two objects.
+ * @param source The object to which copy the property values from the
+ * other object.
+ * @param data The object from which to copy property values.
+ */
 function deepMerge<T extends object>(source: T, data: T): void {
     for (const key in data) {
         const value = data[key];
@@ -368,6 +413,9 @@ function deepMerge<T extends object>(source: T, data: T): void {
     }
 }
 
+/**
+ * Loads the player save from localStorage, if one exists.
+ */
 export function load(): void {
     const save = localStorage.getItem(location.pathname);
     if (save === null) return;
@@ -375,6 +423,9 @@ export function load(): void {
     deepMerge(player, JSON.parse(decodedSave, saveRevive));
 }
 
+/**
+ * Loads the backup save from localStorage, if one exists.
+ */
 window.loadbackup = function (): void {
     const backup = localStorage.getItem(location.pathname + "backupsave");
     if (backup === null) return;
@@ -384,6 +435,10 @@ window.loadbackup = function (): void {
 
 export type InstantAutobuyerName = keyof typeof player.instantAutobuyers;
 
+/**
+ * @returns Whether or not the given value is the name of one of the
+ * autobuyers.
+ */
 export function isAutobuyerName(x: string): x is InstantAutobuyerName {
     return x in player.instantAutobuyers;
 }
@@ -391,21 +446,40 @@ export function isAutobuyerName(x: string): x is InstantAutobuyerName {
 export type UpgradeName = keyof typeof player.upgrades;
 export const UpgradeNames = Object.keys(player.upgrades) as UpgradeName[];
 
+/**
+ * @returns Whether or not the given value is the name of one of the
+ * upgrades.
+ */
 export function isUpgradeName(x: unknown): x is UpgradeName {
     return typeof x === "string" && x in player.upgrades;
 }
 
+/**
+ * A utility function to get the current cost of an upgrade.
+ * @param upgradeName The name of the upgrade.
+ * @returns The cost of the given upgrade.
+ */
 export function getUpgradeCost(upgradeName: UpgradeName): Decimal {
     return player.upgrades[upgradeName].cost;
 }
 
+/**
+ * A utility function to change the cost of an upgade.
+ * @param upgradeName The name of the upgrade.
+ * @param newCost The new cost of the given upgrade.
+ */
 export function setUpgradeCost(
     upgradeName: UpgradeName,
-    costIn: Decimal
+    newCost: Decimal
 ): void {
-    player.upgrades[upgradeName].cost = costIn;
+    player.upgrades[upgradeName].cost = newCost;
 }
 
+/**
+ * A utility function to get the current level of an upgrade.
+ * @param upgradeName The name of the upgrade.
+ * @returns The current level of the given upgrade.
+ */
 export function getUpgradeTimesBought(upgradeName: UpgradeName): Decimal {
     return player.upgrades[upgradeName].timesBought;
 }
