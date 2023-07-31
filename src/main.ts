@@ -67,6 +67,25 @@ if (import.meta.env.DEV) window.Decimal = Decimal;
 loadSettings();
 load();
 
+function switchTab(tab: string) {
+    switch(tab) {
+		case 'Base':
+			return 0
+		case 'Factory':
+			return 0
+		case 'Alpha':
+			return 1
+		case 'Beta':
+			return 2
+		case 'Reactor':
+			return 2
+		case 'Omega':
+			return 3
+		default:
+			return 0
+	}
+}
+
 const divEntireBody = getElement("diventirebody");
 const html = getElement("html");
 const tabOpeners = getElement("tabopeners");
@@ -193,7 +212,9 @@ const themes = [
         borderColor: "#000000",
         gradientColor: "transparent",
         themeName: "Classic Colors",
-        disableGradient: false
+        disableGradient: false,
+        radialGradient: false,
+        boxShadow: ''
     }
 ];
 
@@ -215,25 +236,28 @@ const tabThemes = [
 		borderColor: "#226222",
 		gradientColor: "#64DA17",
 		themeName: "Alpha",
-		radialGradient: true
+		radialGradient: true,
+        boxShadow: `0 0 3px 3px white`
 	},
 	{
 		textColor: "#EBEBEB",
-		bgColor: "rgb(100, 49, 34)",
-		buttonColor: "",
-		borderColor: "#BABABA",
-		gradientColor: "black",
+        bgColor: "rgb(100, 49, 34)",
+        buttonColor: "#AA4412",
+        borderColor: "#BABABA",
+        gradientColor: "black",
 		themeName: "Beta",
-		disableGradient: true
+		radialGradient: true,
+        boxShadow: `0 0 2px 2px #AA4412`
 	},
-	{
-		textColor: "#D4D4D4",
-		bgColor: "rgb(98, 16, 98)",
-		buttonColor: "",
-		borderColor: "#000000",
-		gradientColor: "black",
+	{   
+        textColor: "#D4D4D4",
+        bgColor: "rgb(98. 16, 98)",
+        buttonColor: "#661066",
+        borderColor: "black",
+        gradientColor: "black",
 		themeName: "Omega",
-		disableGradient: true
+		radialGradient: true,
+        boxShadow: `0 0 2px 2px #330533`
 	},
 ]
 
@@ -257,7 +281,8 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
 		buttonGradientOverride,
 		themeName,
 		disableGradient,
-		radialGradient //TODO: make this not error
+		radialGradient,
+        boxShadow
 	} = theme;
 
     divEntireBody.style.opacity = "1";
@@ -298,16 +323,49 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
                 element.style.background = `linear-gradient(45deg, black, transparent)`;
 			} else if (radialGradient) {
 				element.style.background = `radial-gradient(${buttonColor}, ${gradientColor})`
-				element.style.boxShadow = `0 0 3px 3px white` //TODO: make this all not suck
             } else {
                 element.style.background = buttonColor;
             }
-        }
 
-		if(element.classList.contains('tabopener')) { //temporary detector of tab buttons, will make it do smth else later
-			element.style.background = ''
-			element.style.boxShadow = ''
-			element.style.backgroundColor = '#ff00ff'
+            if (boxShadow) {
+                element.style.boxShadow = boxShadow
+            } else {
+                element.style.boxShadow = ''
+            }
+        }
+        //This custom tab button code is something I am NOT proud of. it kinda bad. But this is just "proof of concept"
+		if(element.classList.contains('tabopener')) {
+            const tabName = element.innerText
+            
+			element.style.border = "";
+            element.style.borderRadius = "8px";
+            element.style.color = "snow";
+            element.style.fontWeight = "500";
+
+            const tabButtonColor = tabThemes[switchTab(tabName)]!.buttonColor
+            const tabButtonGradientOverride = tabThemes[switchTab(tabName)]!.buttonGradientOverride
+            const tabDisableGradient = tabThemes[switchTab(tabName)]!.disableGradient
+            const tabGradientColor = tabThemes[switchTab(tabName)]!.gradientColor
+            const tabRadialGradient = tabThemes[switchTab(tabName)]!.radialGradient
+            const tabBoxShadow = tabThemes[switchTab(tabName)]!.boxShadow
+
+            element.style.backgroundColor = tabButtonColor;
+
+            if (tabButtonGradientOverride === undefined && tabDisableGradient) {
+                element.style.background = `linear-gradient(45deg, ${tabGradientColor}, transparent)`;
+            } else if (tabDisableGradient) {
+                element.style.background = `linear-gradient(45deg, black, transparent)`;
+			} else if (tabRadialGradient) {
+				element.style.background = `radial-gradient(${tabButtonColor}, ${tabGradientColor})`
+            } else {
+                element.style.background = tabButtonColor;
+            }
+
+            if (tabBoxShadow) {
+                element.style.boxShadow = tabBoxShadow
+            } else {
+                element.style.boxShadow = ''
+            }
 		}
     }
 
@@ -575,28 +633,7 @@ function loadMisc(): void {
 }
 
 function changeLayerTheme(tab: string) {
-	switch(tab) {
-		case 'Base':
-			themeExec(true, 0)
-			break;
-		case 'Factory':
-			themeExec(true, 0)
-			break;
-		case 'Alpha':
-			themeExec(true, 1)
-			break;
-		case 'Beta':
-			themeExec(true, 2)
-			break;
-		case 'Reactor':
-			themeExec(true, 2)
-			break;
-		case 'Omega':
-			themeExec(true, 3)
-			break;
-		default:
-			themeExec(true, 0)
-	}
+	themeExec(true, switchTab(tab))
 }
 
 function makeElementMap(...names: string[]): Record<string, HTMLElement> {
