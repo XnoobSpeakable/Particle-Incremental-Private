@@ -262,28 +262,24 @@ const tabThemes = [
 ]
 
 function themeExec(isTabSwitch = false, tabNum = 0): void {
-	let theme = null
-	if(!isTabSwitch) {
-		theme = themes[playerSettings.themeNumber];
-	}
-	else {
-		theme = tabThemes[tabNum]
-	}
-	if (theme === undefined) {
-		throw new Error("theme dosen't exist!");
-	}
-	const {
-		textColor,
-		bgColor,
-		buttonColor,
-		borderColor,
-		gradientColor,
-		buttonGradientOverride,
-		themeName,
-		disableGradient,
-		radialGradient,
+    const theme = !isTabSwitch
+        ? themes[playerSettings.themeNumber]
+        : tabThemes[tabNum];
+    if (theme === undefined) {
+        throw new Error("theme dosen't exist!");
+    }
+    const {
+        textColor,
+        bgColor,
+        buttonColor,
+        borderColor,
+        gradientColor,
+        buttonGradientOverride,
+        themeName,
+        disableGradient,
+        radialGradient,
         boxShadow
-	} = theme;
+    } = theme;
 
     divEntireBody.style.opacity = "1";
     divEntireBody.style.color = textColor;
@@ -384,8 +380,6 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
         }
         element.style.backgroundColor = buttonColor;
     }
-
-	
 
     tabOpeners.style.background = `linear-gradient(${gradientColor}, transparent)`;
     whatTheme.textContent = `Theme: ${themeName}`;
@@ -675,14 +669,14 @@ function hideElements(elements: Record<string, HTMLElement>) {
 }
 
 window.openTab = function (tab: string): void {
-	if (tab in tabOmegaElements) {
-		hideElements(tabOmegaElements);
-	} else {
-		hideElements(tabElements);
-	}
-	getElement(tab).style.display = 'block';
+    if (tab in tabOmegaElements) {
+        hideElements(tabOmegaElements);
+    } else {
+        hideElements(tabElements);
+    }
+    getElement(tab).style.display = "block";
 
-	changeLayerTheme(tab)
+    changeLayerTheme(tab);
 };
 
 loadMisc();
