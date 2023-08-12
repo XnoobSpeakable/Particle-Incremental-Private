@@ -31,50 +31,6 @@ button:hover {
     font-size: x-large;
 }
 
-#divmbupcost {
-    text-indent: 6.5em;
-}
-#divmbmultcost {
-    text-indent: 5.75em;
-}
-#pcosttext {
-    text-indent: 4em;
-}
-#gcosttext {
-    text-indent: 2.3em;
-}
-#divgbuptcost {
-    text-indent: 7.5em;
-}
-#divgbupmcost {
-    text-indent: 4.75em;
-}
-#divperbangcost {
-    text-indent: 7.25em;
-}
-#divboosteruppercentcost {
-    text-indent: 15em;
-}
-#divmachinecost {
-    text-indent: 2em;
-}
-#divpermergecost {
-    text-indent: 3em;
-}
-
-#divtoggleba {
-    text-indent: 6em;
-}
-#alphamachinedouble {
-    text-indent: 7.4em;
-}
-#experimentoggle {
-    text-indent: 1em;
-}
-#devtoggle {
-    text-indent: 10em;
-}
-
 .redb {
     background: transparent !important;
     border: 2px solid rgb(237, 100, 100) !important;
