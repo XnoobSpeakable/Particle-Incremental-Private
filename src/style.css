@@ -118,21 +118,11 @@ body {
 }
 
 #veryouterboost {
-    border: 0.2em solid #333333;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 10px;
     display: none;
-    border-radius: 10px;
 }
 
 #nuclearshow {
     display: none;
-    border: 0.2em solid #333333;
-    padding-left: 15px;
-    padding-bottom: 10px;
-    padding-right: 15px;
-    border-radius: 10px;
 }
 
 #bangshow {
