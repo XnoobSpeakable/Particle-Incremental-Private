@@ -150,25 +150,29 @@ body {
     padding-bottom: 0.3em;
 }
 
-.flexycentering {
+.flex {
     display: flex;
+}
+
+.flex.center {
     align-items: center;
     justify-content: center;
     gap: 3em;
 }
 
-#flexyreactor {
-    display: flex;
+.flex.shrink {
+    flex-shrink: 100;
+}
+
+
+.flex.reactor {
     flex-direction: column;
     align-items: center;
     gap: 1em;
 }
 
-.flexyreactorcosts {
-    display: flex;
-    gap: 9em;
-    align-items: center;
-    justify-content: center;
+.flex.center.reactorcosts {
+    gap: 10.5em;
 }
 
 #inlinereactor {
@@ -176,11 +180,6 @@ body {
     flex-direction: row;
     flex-shrink: 100;
     justify-content: center;
-}
-
-.flexshrink {
-    display: flex;
-    flex-shrink: 100;
 }
 
 #shrunkentop {
