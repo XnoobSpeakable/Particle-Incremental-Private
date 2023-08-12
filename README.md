@@ -23,3 +23,20 @@ npm run build
 ```
 npm run preview
 ```
+
+## Encountering errors? Check your npm and node versions.
+For npm:
+```
+npm -v
+```
+Should output 9.8.1 (or higher, I can't guarantee i will keep this readme up to date)
+If it doesn't, run
+```
+npm install -g npm@9.8.1
+```
+For node:
+```
+node -v
+```
+Should output v18.16.0 (or higher, I can't guarantee i will keep this readme up to date)
+If it doesn't, find the node installer online (https://nodejs.org/en/download/current)
