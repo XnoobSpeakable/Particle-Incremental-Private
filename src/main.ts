@@ -87,7 +87,6 @@ function switchTab(tab: string) {
 }
 
 const divEntireBody = getElement("diventirebody");
-const html = getElement("html");
 const tabOpeners = getElement("tabopeners");
 const whatTheme = getElement("whattheme");
 const tabOpenFactory = getElement("tabopenfactory");
@@ -287,7 +286,7 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
     getElement("Tutorial").style.color = textColor;
     getElement("Omega").style.color = textColor;
     document.body.style.backgroundColor = bgColor;
-    html.style.backgroundColor = bgColor;
+    document.body.style.backgroundColor = bgColor;
 
     const className = document.getElementsByClassName("button");
     for (const element of className) {
