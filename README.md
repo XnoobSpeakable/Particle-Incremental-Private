@@ -46,4 +46,4 @@ node -v
 ```
 
 Should output v18.16.0 (or higher, I can't guarantee i will keep this readme up to date)
-If it doesn't, find the node installer online (https://nodejs.org/en/download/current)
+If it doesn't, [download the latest version here](https://nodejs.org/en/download/current)
