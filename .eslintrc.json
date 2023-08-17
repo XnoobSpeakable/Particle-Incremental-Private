@@ -16,7 +16,6 @@
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
     "rules": {
-        "no-duplicate-imports": "error",
         "no-self-compare": "error",
         "eqeqeq": ["error", "always"]
     }
