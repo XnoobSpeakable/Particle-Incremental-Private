@@ -6,5 +6,5 @@ pnpm-lock.yaml
 # yarn lockfile
 yarn.lock
 # bun lockfile
-bun.locb
+bun.lockb
 dist
