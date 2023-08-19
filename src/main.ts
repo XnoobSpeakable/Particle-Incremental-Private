@@ -67,7 +67,7 @@ if (import.meta.env.DEV) window.Decimal = Decimal;
 loadSettings();
 load();
 
-function switchTab(tab: string) {
+function switchTab(tab: string): 0 | 1 | 2 | 3 {
     switch (tab) {
         case "Base":
             return 0;
