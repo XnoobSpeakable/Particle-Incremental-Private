@@ -47,7 +47,7 @@ interface Upgrade {
     cost: Decimal;
     currency: CurrencyName;
     costDiv: string;
-    costFunction?: (upgradeAmount: Decimal) => Decimal;
+    costFunction?: ((upgradeAmount: Decimal) => Decimal) | null;
     scaleFunction: (upgradeName: UpgradeName) => void;
     extra?: VoidFunction;
     costRounding?: number;
@@ -231,6 +231,7 @@ export const upgrades = {
     },
     unlockpca: {
         cost: new Decimal(20),
+        costFunction: null,
         scaleFunction: scaleMultiplier(Decimal.dInf),
         costDiv: "divunlockpca",
         currency: "alphaNum"
@@ -290,18 +291,27 @@ export const upgrades = {
     },
     alphamachinedouble: {
         cost: new Decimal(1000),
+        costFunction(upgradeAmount) {
+            // 1000 * 3 ^ amount
+            return upgradeAmount.pow_base(3).times(1000);
+        },
         scaleFunction: scaleMultiplier(new Decimal(3)),
         costDiv: "alphamachinedouble",
         currency: "alphaNum"
     },
     bangautobuyerunlock: {
         cost: Decimal.dOne,
+        costFunction: null,
         scaleFunction: scaleMultiplier(Decimal.dInf),
         costDiv: "divbau",
         currency: "omegaBase"
     },
     upgradebangautobuyer: {
         cost: Decimal.dOne,
+        costFunction(upgradeAmount) {
+            // 1 + amount / 2
+            return upgradeAmount.div(Decimal.dTwo).plus(Decimal.dOne);
+        },
         scaleFunction: scaleBA,
         costDiv: "divupgradeba",
         currency: "omegaBase",
@@ -310,6 +320,10 @@ export const upgrades = {
     },
     boostsacrifice: {
         cost: new Decimal(1e5),
+        costFunction(upgradeAmount) {
+            // 1e5 * 10 ^ amount
+            return upgradeAmount.pow_base(Decimal.dTen).times(1e5);
+        },
         scaleFunction: scaleMultiplier(Decimal.dTen),
         costDiv: "divboostsacrificecost",
         currency: "boosterParticles",
@@ -317,24 +331,37 @@ export const upgrades = {
     },
     betaacc: {
         cost: new Decimal(1e10),
+        costFunction(upgradeAmount) {
+            // 1e10 * 1000 ^ amount
+            return upgradeAmount.pow_base(1000).times(1e10);
+        },
         scaleFunction: scaleMultiplier(new Decimal(1000)),
         costDiv: "divbetaacceleratorcost",
         currency: "alphaNum"
     },
     unlockabgb: {
         cost: Decimal.dOne,
+        costFunction: null,
         scaleFunction: scaleMultiplier(Decimal.dInf),
         costDiv: "divabgbcost",
         currency: "betaNum"
     },
     abgbefficiency: {
         cost: new Decimal(3),
+        costFunction(upgradeAmount) {
+            // 4 * (amount + 1)
+            return upgradeAmount.plus(Decimal.dOne).pow_base(Decimal.dTwo);
+        },
         scaleFunction: scaleMultiplier(Decimal.dTwo),
         costDiv: "divabgbefficiencycost",
         currency: "betaNum"
     },
     permerge: {
         cost: new Decimal(4),
+        costFunction(upgradeAmount) {
+            // 4 ^ (amount + 1)
+            return upgradeAmount.plus(Decimal.dOne).pow_base(Decimal.dTen);
+        },
         scaleFunction: scaleMultiplier(new Decimal(4)),
         costDiv: "divpermergecost",
         currency: "betaNum"
@@ -729,8 +756,7 @@ window.buyUpgrade = buyUpgrade;
 
 window.buyFiftySpeed = function (): void {
     for (let i = 0; i < 50; i++) {
-        if (player.num.gte(getUpgradeCost("speed"))) {
-            buyUpgrade("speed");
-        } else return;
+        if (player.num.lt(getUpgradeCost("speed"))) return;
+        buyUpgrade("speed");
     }
 };
