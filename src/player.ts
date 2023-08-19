@@ -381,10 +381,9 @@ Decimal.prototype.toJSON = function (): string {
  * handle Decimal values.
  */
 function saveRevive(_key: string, value: unknown): unknown {
-    if (typeof value === "string" && value.startsWith("D#")) {
-        return new Decimal(value.slice(2));
-    }
-    return value;
+    return typeof value === "string" && value.startsWith("D#")
+        ? new Decimal(value.slice(2))
+        : value;
 }
 
 /**
@@ -419,15 +418,17 @@ function deepMerge<T extends object>(source: T, data: T): void {
 export function load(): void {
     const save = localStorage.getItem(location.pathname);
     if (save === null) return;
-    const decodedSave = save.startsWith("{") ? save : atob(save);
-    deepMerge(player, JSON.parse(decodedSave, saveRevive));
+    deepMerge(
+        player,
+        JSON.parse(save.startsWith("{") ? save : atob(save), saveRevive)
+    );
 }
 
 /**
  * Loads the backup save from localStorage, if one exists.
  */
 window.loadbackup = function (): void {
-    const backup = localStorage.getItem(location.pathname + "backupsave");
+    const backup = localStorage.getItem(`${location.pathname}backupsave`);
     if (backup === null) return;
     localStorage.setItem(location.pathname, backup);
     location.reload();

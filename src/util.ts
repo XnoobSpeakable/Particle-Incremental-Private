@@ -14,20 +14,17 @@ declare global {
     }
 }
 
-const MAX_ES_IN_A_ROW = 5;
-
 function decimalPlaces(
     value: number,
     places: number,
     trunc = (x: number) => x
 ): number {
-    const len = places + 1;
-    const numDigits = Math.ceil(Math.log10(Math.abs(value)));
+    const length = places + 1;
+    const digitsCount = Math.ceil(Math.log10(Math.abs(value)));
     const rounded =
-        Math.round(value * Math.pow(10, len - numDigits)) *
-        Math.pow(10, numDigits - len);
-    const ret = Number(rounded.toFixed(Math.max(len - numDigits, 0)));
-    return trunc(ret);
+        Math.round(value * 10 ** (length - digitsCount)) *
+        10 ** (digitsCount - length);
+    return trunc(Number(rounded.toFixed(Math.max(length - digitsCount, 0))));
 }
 
 export function formatDecimal(d: Decimal, places = 3, ePlaces = 99): string {
@@ -47,8 +44,7 @@ export function formatDecimal(d: Decimal, places = 3, ePlaces = 99): string {
             Math.round
         )}`;
     } else {
-        //layer 2+
-        if (d.layer <= MAX_ES_IN_A_ROW) {
+        if (d.layer <= 5) {
             return `${d.sign === -1 ? "-" : ""}${"e".repeat(d.layer)}
         ${decimalPlaces(d.mag, ePlaces, Math.round)}`;
         } else {

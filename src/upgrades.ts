@@ -728,8 +728,9 @@ export function buyUpgrade(upgradeName: UpgradeName): void {
     const oldCost = getUpgradeCost(upgradeName);
 
     if (player[upgrade.currency].gte(oldCost)) {
-        player.upgrades[upgradeName].timesBought =
-            player.upgrades[upgradeName].timesBought.plus(1);
+        player.upgrades[upgradeName].timesBought = player.upgrades[
+            upgradeName
+        ].timesBought.plus(Decimal.dOne);
         player[upgrade.currency] = player[upgrade.currency].minus(oldCost);
         upgrade.scaleFunction(upgradeName);
         if ("extra" in upgrade) {
