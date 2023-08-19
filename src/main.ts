@@ -747,13 +747,13 @@ const reactor = {
     fuelMult: Decimal.dOne
 };
 //did a bunch of work here
-let NAPfactor: Decimal = Decimal.dOne;
-let BPfactor: Decimal = Decimal.dOne;
-let MBfactor: Decimal = Decimal.dOne;
-let GBfactor: Decimal = Decimal.dOne;
+let NAPfactor = Decimal.dOne;
+let BPfactor = Decimal.dOne;
+let MBfactor = Decimal.dOne;
+let GBfactor = Decimal.dOne;
 
 let totalBoostFromNP = nuclearParticles.times(reactor.boost);
-let totalBoostFromNAP: Decimal = nuclearAlphaParticles.times(NAPfactor);
+let totalBoostFromNAP = nuclearAlphaParticles.times(NAPfactor);
 let totalMBBoost = MBfactor.times(
     Decimal.dTwo.pow(getUpgradeTimesBought("reactorupMB"))
 );
@@ -898,7 +898,7 @@ function reactorHandler() {
 }
 
 window.mbman = function (): void {
-    const gain: Decimal = onBoughtInc(
+    const gain = onBoughtInc(
         "mbup",
         "*",
         "mbmult",
