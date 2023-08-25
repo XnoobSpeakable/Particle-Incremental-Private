@@ -368,6 +368,21 @@ export const upgrades = {
     },
     mergespeed: {
         cost: Decimal.dOne,
+        costFunction(upgradeAmount) {
+            /* 2 ^ min(amount, 2) +
+			5 ^ (max(amount - 2, 0)) +
+			2*/
+            return upgradeAmount
+                .min(Decimal.dTwo)
+                .pow_base(Decimal.dTwo)
+                .plus(
+                    upgradeAmount
+                        .sub(Decimal.dTwo)
+                        .max(Decimal.dZero)
+                        .pow_base(5)
+                )
+                .plus(Decimal.dTwo);
+        },
         scaleFunction: scaleBangSpeed,
         costDiv: "divmergespeedcost",
         currency: "betaNum"
@@ -417,6 +432,10 @@ export const upgrades = {
     },
     upgradenpboost: {
         cost: Decimal.dTwo,
+        costFunction(upgradeAmount) {
+            // 2 6 amount
+            return Decimal.dTwo.pow(upgradeAmount);
+        },
         scaleFunction: scaleMultiplier(Decimal.dTwo),
         costDiv: "divnpboostupcost",
         currency: "betaNum",
@@ -554,7 +573,7 @@ export function scaleBangSpeed(upgradeName: UpgradeName): void {
     }
 }
 
-export function scaleSpeed(upgradeName: UpgradeName): void {
+function scaleSpeed(upgradeName: UpgradeName): void {
     const x = getUpgradeTimesBought(upgradeName);
 
     if (x.lt(Decimal.dTen)) {
@@ -566,7 +585,7 @@ export function scaleSpeed(upgradeName: UpgradeName): void {
     }
 }
 
-export function scaleGen(upgradeName: UpgradeName): void {
+function scaleGen(upgradeName: UpgradeName): void {
     if (getUpgradeCost(upgradeName).eq(Decimal.dZero)) {
         setUpgradeCost(upgradeName, new Decimal(1000));
     } else {
@@ -574,19 +593,19 @@ export function scaleGen(upgradeName: UpgradeName): void {
     }
 }
 
-export function scaleBA(upgradeName: UpgradeName): void {
+function scaleBA(upgradeName: UpgradeName): void {
     setUpgradeCost(upgradeName, getUpgradeCost(upgradeName).plus(0.5));
 }
 
-export function scaleOmegaAlpha(upgradeName: UpgradeName): void {
+function scaleOmegaAlpha(upgradeName: UpgradeName): void {
     setUpgradeCost(upgradeName, getUpgradeCost(upgradeName).plus(0.25));
 }
 
-export function scaleOmegaAlphaWeak(upgradeName: UpgradeName): void {
+function scaleOmegaAlphaWeak(upgradeName: UpgradeName): void {
     setUpgradeCost(upgradeName, getUpgradeCost(upgradeName).plus(0.2));
 }
 
-export function scaleReactorUpMult(upgradeName: UpgradeName): void {
+function scaleReactorUpMult(upgradeName: UpgradeName): void {
     if (getUpgradeTimesBought(upgradeName).lte(4)) {
         scaleMultiplier(new Decimal(4))(upgradeName);
     } else if (getUpgradeTimesBought(upgradeName).lte(8)) {
@@ -596,7 +615,7 @@ export function scaleReactorUpMult(upgradeName: UpgradeName): void {
     }
 }
 
-export function scaleReactorUpTime(upgradeName: UpgradeName): void {
+function scaleReactorUpTime(upgradeName: UpgradeName): void {
     if (getUpgradeTimesBought(upgradeName).lte(4)) {
         scaleMultiplier(new Decimal(2.6))(upgradeName);
     } else if (getUpgradeTimesBought(upgradeName).lte(8)) {
@@ -606,7 +625,7 @@ export function scaleReactorUpTime(upgradeName: UpgradeName): void {
     }
 }
 
-export function GBTExtra(): void {
+function GBTExtra(): void {
     player.genBoostTimeLeftCon = player.genBoostTimeLeftCon.plus(
         Decimal.dTwo.pow(getUpgradeTimesBought("genboostdouble")).times(20)
     );
@@ -614,22 +633,22 @@ export function GBTExtra(): void {
     player.genBoostTimeLeft = player.genBoostTimeLeftCon;
 }
 
-export function GBMExtra(): void {
+function GBMExtra(): void {
     player.genBoostTimeLeft = Decimal.dZero;
     player.genBoostTimeLeft = player.genBoostTimeLeftCon;
 }
 
-export function GBDExtra(): void {
+function GBDExtra(): void {
     player.genBoostTimeLeftCon = player.genBoostTimeLeftCon.times(Decimal.dTwo);
     player.genBoostTimeLeft = Decimal.dZero;
     player.genBoostTimeLeft = player.genBoostTimeLeftCon;
 }
 
-export function MachineExtra(): void {
+function MachineExtra(): void {
     player.machineWear = 10;
 }
 
-export function NBExtra(): void {
+function NBExtra(): void {
     let nuclearParticles = getUpgradeTimesBought("nuclearbuy");
 
     if (getUpgradeTimesBought("unlocknpboost").eq(Decimal.dOne)) {
@@ -651,7 +670,7 @@ export function NBExtra(): void {
     }
 }
 
-export function NABExtra(): void {
+function NABExtra(): void {
     let nuclearAlphaParticles = getUpgradeTimesBought("nuclearalphabuy");
 
     if (getUpgradeTimesBought("unlocknapboost").eq(Decimal.dOne)) {
@@ -674,7 +693,7 @@ export function NABExtra(): void {
     }
 }
 
-export function PCAExtra(): void {
+function PCAExtra(): void {
     if (getUpgradeTimesBought("upgradepca").lte(4)) {
         player.pcaTime = Math.ceil(player.pcaTime / 2);
     } else {
@@ -685,7 +704,7 @@ export function PCAExtra(): void {
     }
 }
 
-export function AGAExtra(): void {
+function AGAExtra(): void {
     if (getUpgradeTimesBought("upgradeaga").lte(4)) {
         player.agaTime = Math.ceil(player.agaTime / 2);
     } else {
@@ -696,7 +715,7 @@ export function AGAExtra(): void {
     }
 }
 
-export function BAExtra(): void {
+function BAExtra(): void {
     if (getUpgradeTimesBought("upgradebangautobuyer").lte(4)) {
         player.bangAutobuyerTime = Math.ceil(player.bangAutobuyerTime / 2);
     } else {
@@ -707,7 +726,7 @@ export function BAExtra(): void {
     }
 }
 
-export function MAExtra(): void {
+function MAExtra(): void {
     //TODO:
     if (getUpgradeTimesBought("upgrademergeautobuyer").lte(4)) {
         player.mergeAutobuyerTime = Math.ceil(player.mergeAutobuyerTime / 2);
@@ -719,7 +738,7 @@ export function MAExtra(): void {
     }
 }
 
-export function BSExtra(): void {
+function BSExtra(): void {
     player.boosterParticles = Decimal.dZero;
 }
 
