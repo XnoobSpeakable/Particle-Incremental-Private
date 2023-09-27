@@ -390,25 +390,25 @@ export const upgrades = {
     GnBBAunlock: {
         cost: new Decimal(0.5),
         scaleFunction: scaleMultiplier(Decimal.dInf),
-        costDiv: "usewhencostdisplaynotneeded",
+        costDiv: "usewhencostdisplaynotneeded", //TODO: woudlnt it be cool to remove these somehow?
         currency: "omegaAlpha"
     },
     GBUAunlock: {
         cost: new Decimal(0.5),
         scaleFunction: scaleMultiplier(Decimal.dInf),
-        costDiv: "usewhencostdisplaynotneeded",
+        costDiv: "usewhencostdisplaynotneeded", //TODO: woudlnt it be cool to remove these somehow?
         currency: "omegaAlpha"
     },
     MBUAunlock: {
         cost: new Decimal(0.5),
         scaleFunction: scaleMultiplier(Decimal.dInf),
-        costDiv: "usewhencostdisplaynotneeded",
+        costDiv: "usewhencostdisplaynotneeded", //TODO: woudlnt it be cool to remove these somehow?
         currency: "omegaAlpha"
     },
     NPAunlock: {
         cost: new Decimal(0.5),
         scaleFunction: scaleMultiplier(Decimal.dInf),
-        costDiv: "usewhencostdisplaynotneeded",
+        costDiv: "usewhencostdisplaynotneeded", //TODO: costDiv: "usewhencostdisplaynotneeded"
         currency: "omegaAlpha"
     },
     AAccAunlock: {
@@ -551,6 +551,13 @@ export const upgrades = {
         scaleFunction: scaleMultiplier(new Decimal(20)),
         costDiv: "divrpmultcost",
         currency: "betaNum"
+    },
+    omegabooster: {
+        cost: new Decimal(12),
+        scaleFunction: scaleMultiplier(Decimal.dOne),  //TODO: ah yes, scaling by 1. I failed to make scaleFunction and costDiv optional
+        costDiv: "usewhencostdisplaynotneeded",
+        currency: "omegaBase",
+        extra: OBExtra
     }
 } as const satisfies Record<string, Upgrade>; // will fix later
 
@@ -727,7 +734,6 @@ function BAExtra(): void {
 }
 
 function MAExtra(): void {
-    //TODO:
     if (getUpgradeTimesBought("upgrademergeautobuyer").lte(4)) {
         player.mergeAutobuyerTime = Math.ceil(player.mergeAutobuyerTime / 2);
     } else {
@@ -740,6 +746,17 @@ function MAExtra(): void {
 
 function BSExtra(): void {
     player.boosterParticles = Decimal.dZero;
+}
+
+function OBExtra(): void {
+    if (getUpgradeTimesBought("omegabooster").lte(3)) {
+        player.omegaAlpha = player.omegaAlpha.plus(2);
+        getElement("divomegaboostersbought").textContent =
+            `Bought: ${getUpgradeTimesBought("omegabooster").toString()}/3`;
+        if (getUpgradeTimesBought("omegabooster").gte(3)) {
+            getElement("omegaboosterbutton").style.display = "none"
+        }
+    }
 }
 
 export function buyUpgrade(upgradeName: UpgradeName): void {

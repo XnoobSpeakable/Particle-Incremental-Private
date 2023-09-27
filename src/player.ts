@@ -237,6 +237,10 @@ export const player = {
         rpmult: {
             cost: new Decimal(4e5),
             timesBought: Decimal.dZero
+        },
+        omegabooster: {
+            cost: new Decimal(12),
+            timesBought: Decimal.dZero
         }
     },
     num: Decimal.dZero,

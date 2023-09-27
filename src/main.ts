@@ -67,27 +67,7 @@ if (import.meta.env.DEV) window.Decimal = Decimal;
 loadSettings();
 load();
 
-function switchTab(tab: string): 0 | 1 | 2 | 3 {
-    switch (tab) {
-        case "Base":
-            return 0;
-        case "Factory":
-            return 0;
-        case "Alpha":
-            return 1;
-        case "Beta":
-            return 2;
-        case "Reactor":
-            return 2;
-        case "Omega":
-            return 3;
-        default:
-            return 0;
-    }
-}
-
 const divEntireBody = getElement("diventirebody");
-const tabOpeners = getElement("tabopeners");
 const whatTheme = getElement("whattheme");
 const tabOpenFactory = getElement("tabopenfactory");
 const tabOpenAlpha = getElement("tabopenalpha");
@@ -212,58 +192,11 @@ const themes = [
         gradientColor: "transparent",
         themeName: "Classic Colors",
         disableGradient: false,
-        radialGradient: false,
-        boxShadow: ""
     }
 ];
 
-const tabThemes = [
-    {
-        textColor: "#000000",
-        bgColor: "#CCCCCC",
-        buttonColor: "",
-        borderColor: "#333333",
-        gradientColor: "white",
-        buttonGradientOverride: true,
-        themeName: "Base",
-        disableGradient: false
-    },
-    {
-        textColor: "#EBEBEB",
-        bgColor: "#0e0e0e",
-        buttonColor: "#193b19",
-        borderColor: "#226222",
-        gradientColor: "#64DA17",
-        themeName: "Alpha",
-        radialGradient: true,
-        boxShadow: `0 0 3px 3px white`
-    },
-    {
-        textColor: "#EBEBEB",
-        bgColor: "rgb(100, 49, 34)",
-        buttonColor: "#AA4412",
-        borderColor: "#BABABA",
-        gradientColor: "black",
-        themeName: "Beta",
-        radialGradient: true,
-        boxShadow: `0 0 2px 2px #AA4412`
-    },
-    {
-        textColor: "#D4D4D4",
-        bgColor: "rgb(98. 16, 98)",
-        buttonColor: "#661066",
-        borderColor: "black",
-        gradientColor: "black",
-        themeName: "Omega",
-        radialGradient: true,
-        boxShadow: `0 0 2px 2px #330533`
-    }
-];
-
-function themeExec(isTabSwitch = false, tabNum = 0): void {
-    const theme = !isTabSwitch
-        ? themes[playerSettings.themeNumber]
-        : tabThemes[tabNum];
+function themeExec(): void {
+    const theme = themes[playerSettings.themeNumber];
     if (theme === undefined) {
         throw new Error("theme dosen't exist!");
     }
@@ -276,8 +209,6 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
         buttonGradientOverride,
         themeName,
         disableGradient,
-        radialGradient,
-        boxShadow
     } = theme;
 
     divEntireBody.style.opacity = "1";
@@ -316,54 +247,8 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
                 element.style.background = `linear-gradient(45deg, ${gradientColor}, transparent)`;
             } else if (disableGradient) {
                 element.style.background = `linear-gradient(45deg, black, transparent)`;
-            } else if (radialGradient) {
-                element.style.background = `radial-gradient(${buttonColor}, ${gradientColor})`;
             } else {
                 element.style.background = buttonColor;
-            }
-
-            if (boxShadow) {
-                element.style.boxShadow = boxShadow;
-            } else {
-                element.style.boxShadow = "";
-            }
-        }
-        //This custom tab button code is something I am NOT proud of. it kinda bad. But this is just "proof of concept"
-        if (element.classList.contains("tabopener")) {
-            const tabName = element.innerText;
-
-            element.style.border = "";
-            element.style.borderRadius = "8px";
-            element.style.color = "snow";
-            element.style.fontWeight = "500";
-
-            const tabButtonColor = tabThemes[switchTab(tabName)]!.buttonColor;
-            const tabButtonGradientOverride =
-                tabThemes[switchTab(tabName)]!.buttonGradientOverride;
-            const tabDisableGradient =
-                tabThemes[switchTab(tabName)]!.disableGradient;
-            const tabGradientColor =
-                tabThemes[switchTab(tabName)]!.gradientColor;
-            const tabRadialGradient =
-                tabThemes[switchTab(tabName)]!.radialGradient;
-            const tabBoxShadow = tabThemes[switchTab(tabName)]!.boxShadow;
-
-            element.style.backgroundColor = tabButtonColor;
-
-            if (tabButtonGradientOverride === undefined && tabDisableGradient) {
-                element.style.background = `linear-gradient(45deg, ${tabGradientColor}, transparent)`;
-            } else if (tabDisableGradient) {
-                element.style.background = `linear-gradient(45deg, black, transparent)`;
-            } else if (tabRadialGradient) {
-                element.style.background = `radial-gradient(${tabButtonColor}, ${tabGradientColor})`;
-            } else {
-                element.style.background = tabButtonColor;
-            }
-
-            if (tabBoxShadow) {
-                element.style.boxShadow = tabBoxShadow;
-            } else {
-                element.style.boxShadow = "";
             }
         }
     }
@@ -384,7 +269,6 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
         element.style.backgroundColor = buttonColor;
     }
 
-    tabOpeners.style.background = `linear-gradient(${gradientColor}, transparent)`;
     whatTheme.textContent = `Theme: ${themeName}`;
 }
 
@@ -573,6 +457,14 @@ function amountUpdate() {
     getElement("divoalpha").textContent =
         "You have " + formatBig(player.omegaAlpha);
 
+    if (getUpgradeTimesBought("omegabooster").lte(3)) {
+        getElement("divomegaboostersbought").textContent =
+            `Bought: ${getUpgradeTimesBought("omegabooster").toString()}/3`;
+        if (getUpgradeTimesBought("omegabooster").gte(3)) {
+            getElement("omegaboosterbutton").style.display = "none"
+        }
+    }
+
     for (const autobuyerName in player.instantAutobuyers) {
         const autobuyerDiv = `div${autobuyerName}`;
 
@@ -629,10 +521,6 @@ function loadMisc(): void {
     amountUpdate();
 }
 
-function changeLayerTheme(tab: string) {
-    themeExec(true, switchTab(tab));
-}
-
 function makeElementMap(...names: string[]): Record<string, HTMLElement> {
     return Object.fromEntries(names.map(x => [x, getElement(x)] as const));
 }
@@ -678,8 +566,6 @@ window.openTab = function (tab: string): void {
         hideElements(tabElements);
     }
     getElement(tab).style.display = "block";
-
-    changeLayerTheme(tab);
 };
 
 loadMisc();
