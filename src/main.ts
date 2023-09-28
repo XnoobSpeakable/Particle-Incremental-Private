@@ -1,4 +1,5 @@
 import "./style.css";
+import "./style-2.css";
 import "./music";
 import {
     load,
@@ -18,7 +19,8 @@ import {
     onBought,
     onBoughtInc,
     formatBigSpecific,
-    formatDecimal
+    formatDecimal,
+    serverPathHelper
 } from "./util";
 import { UpdateCostDisplay, upgrades, buyUpgrade } from "./upgrades";
 import { createAchievementHTML } from "./achievements";
@@ -1698,17 +1700,21 @@ function saveReplace(_key: string, value: unknown): unknown {
 }
 
 function saveSettings(): void {
-    const settingfile = JSON.stringify(playerSettings);
-    localStorage.setItem(location.pathname + "settings", settingfile);
+    //@ts-expect-error
+    serverPathHelper('save', parseInt(getElement<HTMLInputElement>('settings/saveid', 'input').value), playerSettings)
+    // localStorage.setItem(location.pathname + "settings", settingfile);
 }
 
 window.saveSettings = saveSettings;
 
 function save(): string {
-    const savefile = btoa(JSON.stringify(player, saveReplace));
-    localStorage.setItem(location.pathname, savefile);
-    saveSettings();
-    return savefile;
+    const savefile: object = JSON.parse(JSON.stringify(player, saveReplace))
+    // localStorage.setItem(location.pathname, savefile);
+    // saveSettings();
+    // return savefile;
+    //@ts-expect-error
+    serverPathHelper('save', parseInt(getElement<HTMLInputElement>('settings/saveid', 'input').value), savefile)
+    return JSON.stringify(savefile) // lmao
 }
 
 window.save = save;

@@ -6,6 +6,7 @@ import {
 } from "./player";
 import Decimal from "break_eternity.js";
 
+export const SERVER_URL = 'https://jn5l3z-3000.csb.app';
 declare global {
     interface Window {
         changeCheatMode?: VoidFunction;
@@ -25,6 +26,36 @@ function decimalPlaces(
         Math.round(value * 10 ** (length - digitsCount)) *
         10 ** (digitsCount - length);
     return trunc(Number(rounded.toFixed(Math.max(length - digitsCount, 0))));
+}
+
+export function newServerPath(path: string) {return `${SERVER_URL}/${path}`;}
+
+export type ServerHelperModes = "save" | "load";
+export function serverPathHelper(type: ServerHelperModes, userid?: number, saveobj?: object) {
+    let path = "<InvalidPath>";
+    let body = {};
+    switch (type) {
+        case 'load':
+            console.info('Loading save data...');
+            path = newServerPath('load')
+            body = {filename: userid?.toString()}
+            break;
+        case "save":
+            console.info('Saving data...');
+            path = newServerPath('save')
+            body = {filename: userid?.toString(), data: saveobj}
+            break;
+    
+        default:
+            console.error('Invalid type specified');
+            return
+    }
+    return fetch(path, {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    })
 }
 
 export function formatDecimal(d: Decimal, places = 3, ePlaces = 99): string {

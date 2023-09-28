@@ -1,0 +1,18 @@
+/* i needed to split up because 1 file was getting too much */
+input[type="text"].button {
+    cursor: text;
+}
+
+input[type=text] {
+    text-align: left;
+}
+
+.pad_ez.v {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.pad_ez.h {
+    padding-left: 5px;
+    padding-right: 5px;
+}
