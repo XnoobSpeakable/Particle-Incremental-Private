@@ -3,8 +3,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
     base: "./",
     build: {
-        target: "esnext",
-        sourcemap: true
+        target: "esnext"
     },
     esbuild: {
         target: "esnext",
