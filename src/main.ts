@@ -101,7 +101,7 @@ const themes = [
     },
     {
         textColor: "#EBEBEB",
-        bgColor: "rgb(34, 36, 34)",
+        bgColor: "#222422",
         buttonColor: "",
         borderColor: "#BABABA",
         gradientColor: "black",
