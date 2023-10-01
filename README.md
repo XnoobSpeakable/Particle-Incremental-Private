@@ -34,7 +34,7 @@ node -v
 ```
 
 Should output v18.16.0 (or higher, I can't guarantee i will keep this readme up to date)
-(node 20.5.0 or greeater is required to update to npm version 10.1.0 or higher)
+(node 20.5.0 or greater is required to update to npm version 10.1.0 or higher)
 If it doesn't, [download the latest version here](https://nodejs.org/en/download/current)
 
 For npm:
