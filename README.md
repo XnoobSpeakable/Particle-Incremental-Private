@@ -26,6 +26,17 @@ npm run preview
 
 ## Encountering errors? Check your npm and node versions.
 
+For node:
+
+to check your node version, run
+```
+node -v
+```
+
+Should output v18.16.0 (or higher, I can't guarantee i will keep this readme up to date)
+(node 20.5.0 or greeater is required to update to npm version 10.1.0 or higher)
+If it doesn't, [download the latest version here](https://nodejs.org/en/download/current)
+
 For npm:
 
 ```
@@ -36,14 +47,7 @@ Should output 9.8.1 (or higher, I can't guarantee i will keep this readme up to 
 If it doesn't, run
 
 ```
-npm install -g npm@9.8.1
+npm install -g npm@latest
 ```
+(npm 9.8.1 should be fine, but being more up to date, such as having version 10.1.0 is a good idea)
 
-For node:
-
-```
-node -v
-```
-
-Should output v18.16.0 (or higher, I can't guarantee i will keep this readme up to date)
-If it doesn't, [download the latest version here](https://nodejs.org/en/download/current)
