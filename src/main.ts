@@ -813,6 +813,9 @@ function reactorHandler() {
     )}x`;
 }
 
+/**
+ * Executes when manual boost button is clicked. Calcuates and adds a gain to the num variable / particle amount
+ */
 window.mbman = function (): void {
     const gain = onBoughtInc(
         "mbup",
@@ -830,10 +833,16 @@ window.mbman = function (): void {
     getElement("counter").textContent = formatBig(player.num) + " particles";
 };
 
+/**
+ * Executes when generator boost button is pressed. Sets the genBoostTimeLeft to the correct value.
+ */
 window.gbboost = function (): void {
     player.genBoostTimeLeft = player.genBoostTimeLeftCon;
 };
 
+/**
+ * Function responsible for buying a particle chunk when clicking on said button.
+ */
 function makechunk(): void {
     if (player.num.gte(1e9)) {
         player.num = player.num.minus(1e9);
@@ -844,6 +853,9 @@ function makechunk(): void {
 }
 window.makechunk = makechunk;
 
+/**
+ * Function responsible for executing Bang when clicking on said button.
+ */
 function bang(): void {
     if (player.pChunks.gte(Decimal.dTwo)) {
         if (
@@ -863,6 +875,9 @@ function bang(): void {
 }
 window.bang = bang;
 
+/**
+ * Toggles particle chunk autobuyer when toggle button is clicked.
+ */
 window.togglepca = function (): void {
     if (getUpgradeTimesBought("unlockpca").eq(Decimal.dOne)) {
         player.pcaToggle = !player.pcaToggle;
@@ -874,6 +889,9 @@ window.togglepca = function (): void {
     }
 };
 
+/**
+ * Toggles alpha group autobuyer when toggle button is clicked.
+ */
 window.toggleaga = function (): void {
     if (getUpgradeTimesBought("unlockaga").eq(Decimal.dOne)) {
         player.agaToggle = !player.agaToggle;
@@ -885,6 +903,9 @@ window.toggleaga = function (): void {
     }
 };
 
+/**
+ * Function responsible for buying Omega_Base perticles when said button is clicked.
+ */
 window.buyomegabase = function (): void {
     if (player.num.gte(player.omegaBaseCost)) {
         player.num = player.num.minus(player.omegaBaseCost);
@@ -897,6 +918,9 @@ window.buyomegabase = function (): void {
     }
 };
 
+/**
+ * Function responsible for buying Omega_Alpha perticles when said button is clicked.
+ */
 window.buyomegaalpha = function (): void {
     if (player.alphaNum.gte(player.omegaAlphaCost)) {
         player.alphaNum = player.alphaNum.minus(player.omegaAlphaCost);
@@ -919,6 +943,9 @@ window.buyomegadelta = function (): void {
     /* TODO: implement this */
 };
 
+/**
+ * Toggles bang autobuyer when toggle button is clicked.
+ */
 window.toggleba = function (): void {
     if (getUpgradeTimesBought("bangautobuyerunlock").eq(Decimal.dOne)) {
         player.bangAutobuyerToggle = !player.bangAutobuyerToggle;
@@ -932,6 +959,9 @@ window.toggleba = function (): void {
     }
 };
 
+/**
+ * Toggles merge autobuyer when toggle button is clicked.
+ */
 window.togglema = function (): void {
     if (getUpgradeTimesBought("mergeautobuyerunlock").eq(Decimal.dOne)) {
         player.mergeAutobuyerToggle = !player.mergeAutobuyerToggle;
