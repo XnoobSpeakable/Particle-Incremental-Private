@@ -672,7 +672,7 @@ let totalMBBoost = MBfactor.times(
 );
 
 /**
- * The player settings object.
+ * The function responsible for updating everything about the Reactor feature
  */
 function reactorHandler() {
     reactor.fuelTime = onBought([
