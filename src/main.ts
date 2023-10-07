@@ -87,8 +87,14 @@ const untilPcaElement = getElement("untilpca");
 const divToggleAgaElement = getElement("divtoggleaga");
 const untilAgaElement = getElement("untilaga");
 
+/**
+ * Array, listing the amount of time in deciseconds/game ticks before the next autosave, for each autosave mode.
+ */
 const delayArray = [600, 300, 150, 100, 50, 20, 10];
 
+/**
+ * Array, listing the properties of each game theme.
+ */
 const themes = [
     {
         textColor: "#EBEBEB",
@@ -195,6 +201,9 @@ const themes = [
     }
 ];
 
+/**
+ * Executes the changing of game theme.
+ */
 function themeExec(): void {
     const theme = themes[playerSettings.themeNumber];
     if (theme === undefined) {
@@ -274,6 +283,9 @@ function themeExec(): void {
 
 themeExec();
 
+/**
+ * Switches over to the next game theme
+ */
 window.theme = function (): void {
     playerSettings.themeNumber =
         (playerSettings.themeNumber + 1) % themes.length;
@@ -281,6 +293,9 @@ window.theme = function (): void {
     saveSettings();
 };
 
+/**
+ * Hides the buttons for accessing all tabs that are not unlocked by default.
+ */
 function prePUD(): void {
     tabOpenFactory.style.display = "none";
     tabOpenAlpha.style.display = "none";
@@ -293,6 +308,9 @@ function prePUD(): void {
     tabOpenOmegaOmega.style.display = "none";
 }
 
+/**
+ * Shows a new feature when the player has progressed enough to unlock a feature that unlocks passively.
+ */
 function passiveUnlockDisplay(): void {
     if (player.num.gte(1e5)) {
         tabOpenFactory.style.display = "inline";
@@ -317,11 +335,17 @@ function passiveUnlockDisplay(): void {
     }
 }
 
+/**
+ * Displays Dev tab when the setting to display it is turned on. Does opposite when said setting is turned off.
+ */
 function devToolsVisibilityUpdate(): void {
     tabOpenDev.style.display = playerSettings.devToggled ? "inline" : "none";
     devToggle.textContent = playerSettings.devToggled.toString();
 }
 
+/**
+ * Changes the delay between autosaves.
+ */
 function autoSaveSet(): void {
     const delay = delayArray[playerSettings.autoSaveMode];
     playerSettings.autoSaveSet = playerSettings.autoSaveDelay = delay ?? 1e308;
@@ -329,6 +353,9 @@ function autoSaveSet(): void {
         delay !== undefined ? `On, delay: ${format(delay / 10)}s` : "Off";
 }
 
+/**
+ * Changes autosave delay setting.
+ */
 window.autosavesettings = function (): void {
     playerSettings.autoSaveMode =
         (playerSettings.autoSaveMode + 1) % delayArray.length;
@@ -644,6 +671,9 @@ let totalMBBoost = MBfactor.times(
     Decimal.dTwo.pow(getUpgradeTimesBought("reactorupMB"))
 );
 
+/**
+ * The player settings object.
+ */
 function reactorHandler() {
     reactor.fuelTime = onBought([
         new Decimal(300),
@@ -1007,7 +1037,7 @@ function returnParticleHandler(): void {
         )} Alpha particles per second`;
     }
 }
-//<div id="returnboosttext">Your 0 Return particles (+0/s) are returning 0 Alpha particles per second
+
 function fgbTestConst(): void {
     if (getUpgradeTimesBought("gen").gt(Decimal.dZero)) {
         getElement("boostsection").style.display = "flex";
@@ -1496,6 +1526,7 @@ function maTestConst(): void {
     }
 }
 
+
 function instantAutobuyers() {
     //TODO: make this function not look like absolute garbage
     if (getUpgradeTimesBought("GnBBAunlock").eq(Decimal.dOne)) {
@@ -1554,6 +1585,9 @@ function instantAutobuyers() {
     }
 }
 
+/**
+ * Function responsible for keeping track of time left before next autosave and autosaving when needed.
+ */
 function savinginloop(): void {
     playerSettings.autoSaveDelay--;
 
@@ -1563,7 +1597,8 @@ function savinginloop(): void {
     }
 }
 
-//game loop
+
+//Game loop, repeatedly run every 100ms.
 setInterval(() => {
     passiveUnlockDisplay();
     pcaTestConst();
@@ -1578,11 +1613,17 @@ setInterval(() => {
     savinginloop();
 }, 100);
 
+/**
+ * Adds a D# to Decimal type numbers in the savefile so they can be differentiated from regular numbers when loading.
+ */
 function saveReplace(_key: string, value: unknown): unknown {
     if (value instanceof Decimal) return "D#" + value.toString();
     return value;
 }
 
+/**
+ * Saves the game settings and writes them into localStorage.
+ */
 function saveSettings(): void {
     const settingfile = JSON.stringify(playerSettings);
     localStorage.setItem(location.pathname + "settings", settingfile);
@@ -1590,6 +1631,9 @@ function saveSettings(): void {
 
 window.saveSettings = saveSettings;
 
+/**
+ * Saves the game and writes savefile into localStorage.
+ */
 function save(): string {
     const savefile = btoa(JSON.stringify(player, saveReplace));
     localStorage.setItem(location.pathname, savefile);
@@ -1599,6 +1643,9 @@ function save(): string {
 
 window.save = save;
 
+/**
+ * Resets player's savefile and makes a backup of it.
+ */
 window.reset = function (): void {
     saveSettings();
     localStorage.removeItem(location.pathname);

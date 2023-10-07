@@ -220,6 +220,9 @@ export const onBoughtInc = onDecimal(isUpgradeName, key =>
 
 // dev only
 if (import.meta.env.DEV)
+    /**
+    * Switches between the cheat modes for the Dev tab.
+    */
     window.cheat = function (): void {
         switch (playerSettings.cheatMode) {
             case 0:
@@ -261,6 +264,9 @@ else {
     getElement("devtoggle").style.display = "none";
 }
 
+/**
+ * Clears localStorage.
+ */
 window.clearls = function (): void {
     localStorage.clear();
     location.reload();

@@ -305,10 +305,16 @@ export const playerSettings = {
      */
     version: "b2.3.0.0",
     /**
-     * The number of seconds every which the game gets automatically saved.
+     * The number of deciseconds/game ticks until the next autosave.
      */
     autoSaveDelay: 50,
+    /**
+     * Which autosave mode is currently set. Controls if autosaving is enabled/disabled and frequency of autosaves.
+     */
     autoSaveMode: 4,
+    /**
+     * The number of deciseconds/game ticks every which the game gets automatically saved.
+     */
     autoSaveSet: 50,
     /**
      * Number of the currently active theme.
