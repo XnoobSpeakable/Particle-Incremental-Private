@@ -219,10 +219,7 @@ export const onBoughtInc = onDecimal(isUpgradeName, key =>
 );
 
 // dev only
-if (import.meta.env.DEV)
-    /**
-    * Switches between the cheat modes for the Dev tab.
-    */
+if (import.meta.env.DEV) {
     window.cheat = function (): void {
         switch (playerSettings.cheatMode) {
             case 0:
@@ -252,13 +249,14 @@ if (import.meta.env.DEV)
                     .times(Decimal.dTwo);
                 break;
         }
-
-        window.changeCheatMode = function (): void {
-            playerSettings.cheatMode = (playerSettings.cheatMode + 1) % 6;
-            getElement("cheatmodediv").textContent =
-                playerSettings.cheatMode.toString();
-        };
     };
+
+    window.changeCheatMode = function (): void {
+        playerSettings.cheatMode = (playerSettings.cheatMode + 1) % 6;
+        getElement("cheatmodediv").textContent =
+            playerSettings.cheatMode.toString();
+    };
+}  
 else {
     getElement("cheat").style.display = "none";
     getElement("devtoggle").style.display = "none";
