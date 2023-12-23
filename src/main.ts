@@ -1040,7 +1040,7 @@ let alphaFromReturn = Decimal.dZero;
 function returnParticleHandler(): void {
     if (getUpgradeTimesBought("buyreturngenerator").gt(Decimal.dZero)) {
         const gain = onBought([
-            new Decimal(10),
+            new Decimal(0.1),
             "*",
             "buyreturngenerator",
             "*",
@@ -1051,7 +1051,9 @@ function returnParticleHandler(): void {
         player.returnParticles = player.returnParticles.plus(gain);
 
         alphaFromReturn = onBought([
-            new Decimal("1e9 "),
+            new Decimal(0.1),
+            "*",
+            player.returnParticles,
             "*",
             [Decimal.dTwo, "^", "rpmult"],
             [totalBoostFromNAP, "+", Decimal.dOne],
@@ -1061,9 +1063,9 @@ function returnParticleHandler(): void {
         getElement("returnboosttext").textContent = `Your ${formatBig(
             player.returnParticles
         )} Return particles (+${formatBig(
-            gain.div(10)
+            gain.times(10)
         )}/s) are returning ${formatBig(
-            alphaFromReturn.div(10)
+            alphaFromReturn.times(10)
         )} Alpha particles per second`;
     }
 }
@@ -1117,6 +1119,7 @@ function fgbTestConst(): void {
 
         reactorHandler();
         returnParticleHandler();
+        player.alphaNum = player.alphaNum.plus(alphaFromReturn);
 
         getElement(
             "nptext"
@@ -1187,7 +1190,6 @@ function fgbTestConst(): void {
         if (player.bangTimeLeft === 0) {
             player.alphaNum = player.alphaNum
                 .plus(alphaGain)
-                .plus(alphaFromReturn);
             getElement("bangtimeleft").textContent = "";
         }
 
