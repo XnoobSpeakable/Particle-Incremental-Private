@@ -17,5 +17,5 @@
         "noImplicitReturns": true,
         "types": ["vite/client"]
     },
-    "include": ["src/*.ts"]
+    "include": ["src"]
 }
