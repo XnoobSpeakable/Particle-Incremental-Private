@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "target": "ESNext",
-        "module": "ESNext",
+        "target": "esNext",
+        "module": "esNext",
         "moduleResolution": "bundler",
         "strict": true,
         "exactOptionalPropertyTypes": true,
