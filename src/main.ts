@@ -538,12 +538,8 @@ function loadMisc(): void {
     maTestSingle();
     fgbTestSingle();
 
-    getElement("counter").innerHTML =
-        "<span style='color: #64ed93;'>" +
-        formatBig(player.num) +
-        "</span> particles";
-    getElement("particlespersecond").innerHTML =
-        "You are getting <span style='color: #ed6464;'> 0 </span> particles/s";
+    getElement("counter").textContent = formatBig(player.num);
+    getElement("particlespersecond").textContent = "0";
 
     amountUpdate();
 }
@@ -586,7 +582,7 @@ function hideElements(elements: Record<string, HTMLElement>) {
     }
 }
 
-window.openTab = function (tab: string): void {
+export const openTab = function (tab: string): void {
     if (tab in tabOmegaElements) {
         hideElements(tabOmegaElements);
     } else {
@@ -594,6 +590,7 @@ window.openTab = function (tab: string): void {
     }
     getElement(tab).style.display = "block";
 };
+window.openTab = openTab;
 
 loadMisc();
 
@@ -1453,9 +1450,7 @@ function fgbTestConst(): void {
           ${formatDecimal(freeNuclearAlphaParticles, 1)} 
           free Nuclear Alpha Particles`;
 
-        getElement("counter").innerHTML = `<span style="color: #64ed93">
-          ${formatBig(player.num)}
-          </span> particles`;
+        getElement("counter").textContent = formatBig(player.num);
         getElement("clickercounter").textContent = `You have 
           ${formatBig(player.clickerParticles)} 
           Clicker Particles 

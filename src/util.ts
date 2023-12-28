@@ -14,6 +14,23 @@ declare global {
     }
 }
 
+export const tabNames = [
+    "Base",
+    "Factory",
+    "Alpha",
+    "Beta",
+    "Reactor",
+    "Gamma",
+    "Delta",
+    "Omega",
+    "OmegaOmega",
+    "Achievements",
+    "Stats",
+    "Settings",
+    "Tutorial",
+    "Dev"
+]
+
 function decimalPlaces(
     value: number,
     places: number,

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Particle Incremental</title>
     <script src="src/main.ts" type="module"></script>
+    <script src="src/init.ts" type="module"></script>
     <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png" />
     <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png" />
     <link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png" />
@@ -29,59 +30,16 @@
     <audio id="audio" loop>
         <source src="hikaru_miles.mp3" type="audio/mpeg" />
     </audio>
-    <div id="diventirebody" style="opacity: 0; width: 100%">
-        <div id="nextfeature">Calculating feature progress...</div>
-        <span style="color: #64ed93" id="counter">0 particles</span>
-        <div id="particlespersecond">You are getting 0 particles/s</div>
+    <div id="diventirebody">
+        <main>
+            <p id="nextfeature"></p>
+            <p id="counter">0 particles</p>
+            <span><span id="particlespersecond">0</span> p/s</span>
+        </main>
         <br />
-        <div id="tabopeners" style="
-                    background: linear-gradient(#f8f8f826, transparent);
-                    padding: 24px;
-                    border-radius: 16px;
-                    width: 75%;
-                    margin: auto;
-                ">
-            <button onclick="openTab('Base')" class="button tabopener" id="tabopenbase">
-                Base
-            </button>
-            <button onclick="openTab('Factory')" class="button tabopener" id="tabopenfactory">
-                Factory
-            </button>
-            <button onclick="openTab('Alpha')" class="button tabopener" id="tabopenalpha">
-                Alpha
-            </button>
-            <button onclick="openTab('Beta')" class="button tabopener" id="tabopenbeta">
-                Beta
-            </button>
-            <button onclick="openTab('Reactor')" class="button tabopener" id="tabopenreactor">
-                Reactor
-            </button>
-            <button onclick="openTab('Gamma')" class="button tabopener" id="tabopengamma">
-                Gamma
-            </button>
-            <button onclick="openTab('Delta')" class="button tabopener" id="tabopendelta">
-                Delta
-            </button>
-            <button onclick="openTab('Omega')" class="button tabopener" id="tabopenomega">
-                Omega
-            </button>
-            <button onclick="openTab('OmegaOmega')" class="button tabopener" id="tabopenomegaomega">
-                Ω<sub>Ω</sub>
-            </button>
-            <button onclick="openTab('Achievements')" class="button tabopener" id="tabopenachievements">
-                Achievements
-            </button>
-            <button onclick="openTab('Stats')" class="button tabopener" id="tabopenstats">
-                Stats
-            </button>
-            <button onclick="openTab('Settings')" class="button tabopener">
-                Settings
-            </button>
-            <button onclick="openTab('Tutorial')" class="button tabopener" id="tabopentutorial">
-                Tutorial
-            </button>
-            <button onclick="openTab('Dev')" class="button tabopener" id="tabopendev" style="display: none">
-                Dev
+        <div id="tabopeners">
+            <button onclick="openTab('whateverthefuck')" class="button tabopener hidden" id="tabopentemplate">
+                Template
             </button>
         </div>
         <div id="Base">
