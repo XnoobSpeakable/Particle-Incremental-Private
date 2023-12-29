@@ -22,7 +22,7 @@
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="msapplication-TileImage" content="ms-icon-144x144.png" />
     <meta name="theme-color" content="#ffffff" />
-  <script type="module" crossorigin src="./assets/index-F3rZS_1M.js"></script>
+  <script type="module" crossorigin src="./assets/index-IP-bbsA4.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-wpY4_eO0.css">
 </head>
 
@@ -541,12 +541,19 @@
                         <button onclick="buyFuel('player.fuel')" class="button">
                             Buy 1 fuel
                         </button>
+                        <button onclick="buyFuel('player.fuel', new Decimal(100))" class="button">
+                            Buy 100 fuel
+                        </button>
                         <br />
-                        <p>Cost: 1e42 base, 1e14 Alpha and 50 Beta</p>
+                        <p>Cost: 1e42 base, 1e14 Alpha and 50 Beta<br>
+                        100x Cost: 1e44 base, 1e16 Alpha and 5000 Beta</p>
                     </div>
                     <div>
                         <button onclick="buyFuel('player.superfuel')" class="button">
                             Buy 1 superfuel
+                        </button>
+                        <button onclick="buyFuel('player.superfuel', new Decimal(100))" class="button">
+                            Buy 100 superfuel
                         </button>
                         <br />
                         <p>Cost: Out of stock</p>
@@ -1140,11 +1147,11 @@
             <a href="https://github.com/jakub791">jakub791</a>
             for doing a LOT of coding and code changes.
             <br /><br />
-            Version b2.3.0.0
+            Version alpha23 (b2.3.1.0)
             <br />
             Changelog:
             <br />
-            New content, more code and savefile changes, bugfixes, UI fixes, balancing changes, added favicon.
+            Added bulk buy fuel
             <br /><br />
             Copyright notice: The in-game music "Hikaru - Miles" is
             non-copyright. For YouTubers: if anyone tries to copyright
