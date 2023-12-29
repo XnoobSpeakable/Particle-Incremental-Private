@@ -7,6 +7,6 @@ export default defineConfig({
         sourcemap: true
     },
     esbuild: {
-        target: "esnext",
+        target: "esNext"
     }
 });
