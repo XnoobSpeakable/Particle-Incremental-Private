@@ -1018,20 +1018,20 @@ window.instantAutobuyerToggle = function (
 
 type Fuels = "player.fuel" | "player.superfuel" | "player.hyperfuel";
 
-window.buyFuel = function (fuelType: Fuels) {
+window.buyFuel = function (fuelType: Fuels, bulk = Decimal.dOne) {
     if (fuelType === "player.fuel") {
         if (
-            player.num.gte(1e42) &&
-            player.alphaNum.gte(1e14) &&
-            player.betaNum.gte(50)
+            player.num.gte(bulk.times(1e42)) &&
+            player.alphaNum.gte(bulk.times(1e14)) &&
+            player.betaNum.gte(bulk.times(50))
         ) {
-            player.num = player.num.minus(1e42);
-            player.alphaNum = player.alphaNum.minus(1e14);
-            player.betaNum = player.betaNum.minus(50);
-            player.fuel = player.fuel.plus(Decimal.dOne);
+            player.num = player.num.minus(bulk.times(1e42));
+            player.alphaNum = player.alphaNum.minus(bulk.times(1e14));
+            player.betaNum = player.betaNum.minus(bulk.times(50));
+            player.fuel = player.fuel.plus(bulk);
         }
     } else {
-        //do this later TODO:
+        //do this later TODO: add superfuel and hyperfuel buying
     }
 };
 

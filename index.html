@@ -1015,8 +1015,14 @@
                             >
                                 Buy 1 fuel
                             </button>
-                            <br />
-                            <p>Cost: 1e42 base, 1e14 Alpha and 50 Beta</p>
+                            <button
+                                onclick="buyFuel('player.fuel', new Decimal(100))"
+                                class="button"
+                            >
+                                Buy 100 fuel
+                            </button>
+                            <p>Cost: 1e42 base, 1e14 Alpha and 50 Beta<br>
+                            100x Cost: 1e44 base, 1e16 Alpha and 5000 Beta</p>
                         </div>
                         <div>
                             <button
@@ -1025,7 +1031,12 @@
                             >
                                 Buy 1 superfuel
                             </button>
-                            <br />
+                            <button
+                                onclick="buyFuel('player.superfuel', new Decimal(100))"
+                                class="button"
+                            >
+                                Buy 100 superfuel
+                            </button>
                             <p>Cost: Out of stock</p>
                         </div>
                         <div>
@@ -1035,7 +1046,12 @@
                             >
                                 Buy 1 hyperfuel
                             </button>
-                            <br />
+                            <button
+                                onclick="buyFuel('player.hyperfuel', new Decimal(100))"
+                                class="button"
+                            >
+                                Buy 100 hyperfuel
+                            </button>
                             <p>Cost: Out of stock</p>
                         </div>
                         <div>
@@ -1962,11 +1978,11 @@
                 <a href="https://github.com/jakub791">jakub791</a>
                 for doing a LOT of coding and code changes.
                 <br /><br />
-                Version b2.3.0.0
+                Version alpha23 (b2.3.1.0)
                 <br />
                 Changelog:
                 <br />
-                New content, more code and savefile changes, bugfixes, UI fixes, balancing changes, added favicon.
+                Added bulk buy fuel
                 <br /><br />
                 Copyright notice: The in-game music "Hikaru - Miles" is
                 non-copyright. For YouTubers: if anyone tries to copyright
