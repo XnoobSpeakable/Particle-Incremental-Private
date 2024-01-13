@@ -67,8 +67,6 @@ if (import.meta.env.DEV) window.Decimal = Decimal;
 loadSettings();
 load();
 
-const divEntireBody = getElement("diventirebody");
-const whatTheme = getElement("whattheme");
 const tabOpenFactory = getElement("tabopenfactory");
 const tabOpenAlpha = getElement("tabopenalpha");
 const tabOpenBeta = getElement("tabopenbeta");
@@ -92,206 +90,6 @@ const untilAgaElement = getElement("untilaga");
  */
 const delayArray = [600, 300, 150, 100, 50, 20, 10];
 
-/**
- * Array, listing the properties of each game theme.
- */
-const themes = [
-    {
-        textColor: "#EBEBEB",
-        bgColor: "#0e0e0e",
-        buttonColor: "",
-        borderColor: "",
-        gradientColor: "",
-        themeName: "Dark Rework v2",
-        disableGradient: true
-    },
-    {
-        textColor: "#EBEBEB",
-        bgColor: "#222422",
-        buttonColor: "",
-        borderColor: "#BABABA",
-        gradientColor: "black",
-        themeName: "Dark Rework",
-        disableGradient: false
-    },
-    {
-        textColor: "#D4D4D4",
-        bgColor: "rgb(14, 16, 14)",
-        buttonColor: "",
-        borderColor: "#000000",
-        gradientColor: "black",
-        themeName: "Darker Rework",
-        disableGradient: false
-    },
-    {
-        textColor: "#000000",
-        bgColor: "#CCCCCC",
-        buttonColor: "",
-        borderColor: "#333333",
-        gradientColor: "white",
-        buttonGradientOverride: true,
-        themeName: "Light Rework",
-        disableGradient: false
-    },
-    {
-        textColor: "#000000",
-        bgColor: "#CCCCCC",
-        buttonColor: "",
-        borderColor: "#DD1111",
-        gradientColor: "white",
-        buttonGradientOverride: true,
-        themeName: "Red Borders",
-        disableGradient: false
-    },
-    {
-        textColor: "#CCCCCC",
-        bgColor: "#000000",
-        buttonColor: "#444444",
-        borderColor: "#CCCCCC",
-        gradientColor: "#444444",
-        themeName: "Black",
-        disableGradient: false
-    },
-    {
-        textColor: "#000000",
-        bgColor: "#FF91AF",
-        buttonColor: "#FFA1BF",
-        borderColor: "#FFD1FF",
-        gradientColor: "#FFA1BF",
-        themeName: "Pink",
-        disableGradient: false
-    },
-    {
-        textColor: "#3DD7DE",
-        bgColor: "#191970",
-        buttonColor: "#3DD7DE",
-        borderColor: "#3DD7DE",
-        gradientColor: "#7090FF",
-        buttonGradientOverride: true,
-        themeName: "Blue",
-        disableGradient: false
-    },
-    {
-        textColor: "#000000",
-        bgColor: "#DEB2EF",
-        buttonColor: "#8A7AED",
-        borderColor: "#6A5ACD",
-        gradientColor: "#5A1C61",
-        buttonGradientOverride: true,
-        themeName: "Purple",
-        disableGradient: false
-    },
-    {
-        textColor: "#EBEBEB",
-        bgColor: "#696969",
-        buttonColor: "#999999",
-        borderColor: "#000000",
-        gradientColor: "transparent",
-        themeName: "Classic",
-        disableGradient: false
-    },
-    {
-        textColor: "#EBEBEB",
-        bgColor: "#696969",
-        buttonColor: "#999999",
-        borderColor: "#000000",
-        gradientColor: "transparent",
-        themeName: "Classic Colors",
-        disableGradient: false,
-    }
-];
-
-/**
- * Executes the changing of game theme.
- */
-function themeExec(): void {
-    const theme = themes[playerSettings.themeNumber];
-    if (theme === undefined) {
-        throw new Error("theme dosen't exist!");
-    }
-    const {
-        textColor,
-        bgColor,
-        buttonColor,
-        borderColor,
-        gradientColor,
-        buttonGradientOverride,
-        themeName,
-        disableGradient,
-    } = theme;
-
-    divEntireBody.style.opacity = "1";
-    divEntireBody.style.color = textColor;
-    getElement("Settings").style.color = textColor;
-    getElement("Tutorial").style.color = textColor;
-    getElement("Omega").style.color = textColor;
-    document.body.style.backgroundColor = bgColor;
-    document.body.style.backgroundColor = bgColor;
-
-    const className = document.getElementsByClassName("button");
-    for (const element of className) {
-        if (!(element instanceof HTMLElement)) {
-            throw new Error(`element is not an HTMLElement`);
-        }
-        element.style.backgroundColor = buttonColor;
-
-        if (themeName === "Classic") {
-            element.style.border = "1px solid black";
-            element.style.borderRadius = "2px";
-            element.style.background = buttonColor;
-            element.style.color = "black";
-            element.style.fontWeight = "400";
-        } else if (themeName === "Classic Colors") {
-            element.style.border = "";
-            element.style.borderRadius = "8px";
-            element.style.color = "black";
-            element.style.fontWeight = "500";
-        } else {
-            element.style.border = "";
-            element.style.borderRadius = "8px";
-            element.style.color = "snow";
-            element.style.fontWeight = "500";
-
-            if (buttonGradientOverride === undefined && disableGradient) {
-                element.style.background = `linear-gradient(45deg, ${gradientColor}, transparent)`;
-            } else if (disableGradient) {
-                element.style.background = `linear-gradient(45deg, black, transparent)`;
-            } else {
-                element.style.background = buttonColor;
-            }
-        }
-    }
-
-    const className2 = document.getElementsByClassName("withtheoutline");
-    for (const element of className2) {
-        if (!(element instanceof HTMLElement)) {
-            throw new Error(`element is not an HTMLElement`);
-        }
-        element.style.border = `0.2em solid ${borderColor}`;
-    }
-
-    const className3 = document.getElementsByClassName("redb");
-    for (const element of className3) {
-        if (!(element instanceof HTMLElement)) {
-            throw new Error(`element is not an HTMLElement`);
-        }
-        element.style.backgroundColor = buttonColor;
-    }
-
-    whatTheme.textContent = `Theme: ${themeName}`;
-}
-
-themeExec();
-
-/**
- * Switches over to the next game theme
- */
-window.theme = function (): void {
-    playerSettings.themeNumber =
-        (playerSettings.themeNumber + 1) % themes.length;
-    themeExec();
-    saveSettings();
-};
 
 /**
  * Hides the buttons for accessing all tabs that are not unlocked by default.
@@ -522,8 +320,6 @@ function loadMisc(): void {
             );
         }
     }
-
-    themeExec();
 
     prePUD();
     passiveUnlockDisplay();
@@ -1354,8 +1150,8 @@ function fgbTestConst(): void {
                     .div(player.alphaNum.max(Decimal.dOne))
             )} booster particles per alpha particle per second,
                resulting in a +${formatBigSpecific(
-                   percentBoostDisplay
-               )}% boost to base particle production`;
+                percentBoostDisplay
+            )}% boost to base particle production`;
         } else {
             getElement(
                 "boostersmaintext"
@@ -1363,8 +1159,8 @@ function fgbTestConst(): void {
                 bpGain.times(Decimal.dTen).div(player.alphaNum)
             )} booster particles per alpha particle per second,
                resulting in a ${formatBigSpecific(
-                   percentBoostDisplay.div(100).plus(Decimal.dOne)
-               )}x boost to base particle production`;
+                percentBoostDisplay.div(100).plus(Decimal.dOne)
+            )}x boost to base particle production`;
         }
 
         getElement("bpamount").textContent =
