@@ -1,0 +1,37 @@
+:root {
+    --bg: #2e2e2e;
+    --card-color: #f99;
+    --fg: #fcfcfc;
+    --bg-alt: #3a3a3a;
+}
+body {
+    color: var(--fg);
+    background: var(--bg);
+    font-family: 'Roboto', 'Segoe UI', 'SF Pro', system-ui;
+}
+.card {
+    border: 2.7px solid var(--card-color);
+    border-radius: 6px;
+    padding: 5px 10px;
+    background: var(--bg);
+}
+.card > * {
+    cursor: default;
+    user-select: none;
+}
+.card.foldable > div.foldable-header > * {
+    display: inline;
+}
+.card.foldable > div.foldable-header > p.foldable-name {
+    position: relative;
+    left: -70px;
+}
+.card.foldable > div.foldable-header {
+    border: 2px solid rgb(from var(--card-color) 255 128 128);
+    padding: 8px;
+    border-radius: 4px;
+    transition: 0.1s ease-in-out background;
+}
+.card.foldable > div.foldable-header:hover {
+    background: var(--bg-alt);
+}

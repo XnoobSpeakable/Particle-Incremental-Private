@@ -1,3 +1,5 @@
+import './init';
+import './strata.css';
 import "./style.css";
 import "./music";
 import {
