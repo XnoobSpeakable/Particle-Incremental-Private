@@ -334,12 +334,9 @@ function loadMisc(): void {
     maTestSingle();
     fgbTestSingle();
 
-    getElement("counter").innerHTML =
-        "<span style='color: #64ed93;'>" +
-        formatBig(player.num) +
-        "</span> particles";
-    getElement("particlespersecond").innerHTML =
-        "You are getting <span style='color: #ed6464;'> 0 </span> particles/s";
+    getElement("counter").textContent = formatBig(player.num);
+    // getElement("particlespersecond").innerHTML =
+    //     "You are getting <span style='color: #ed6464;'> 0 </span> particles/s";
 
     amountUpdate();
 }
@@ -1189,11 +1186,7 @@ function fgbTestConst(): void {
 
         player.num = player.num.plus(gain);
 
-        getElement("particlespersecond").innerHTML =
-            "You are getting <span style='color: #ed6464;'>" +
-            formatBig(gain.times(10)) +
-            "</span> particles/s";
-
+        getElement("particlespersecond").textContent = formatBig(gain.times(10))
         if (player.num.gte(1e8) || nuclearParticles.gt(Decimal.dZero)) {
             getElement("nuclearreach").style.display = "none";
             getElement("nuclearshow").style.display = "block";
