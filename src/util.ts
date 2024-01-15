@@ -169,7 +169,7 @@ export function onDecimal<T = string>(
     is: (x: unknown) => x is T,
     lookup: (key: T) => Decimal
 ) {
-    const fn = function (
+    function fn(
         start: T | Decimal | D2Arg<T>[],
         ...terms: D2Arg<T>[]
     ): Decimal {
@@ -204,7 +204,7 @@ export function onDecimal<T = string>(
                 } else {
                     const left = result;
                     const method = (d: Decimal) =>
-                        Decimal[operatorMap[token]](left, d); //ERROR HERE AND IN LINE BELOW
+                        Decimal[operatorMap[token]](left, d);
                     result = x => {
                         if (x instanceof Decimal) {
                             return method(x);
@@ -221,7 +221,7 @@ export function onDecimal<T = string>(
             }
         });
         return result;
-    };
+    }
 
     function splitArgs(args: D2Arg<T>[]): [T | Decimal, D2Arg<T>[]] {
         const arr = [...args];
