@@ -1,37 +1,58 @@
 :root {
     --bg: #2e2e2e;
-    --card-color: #f99;
+    --card-color: #f33;
     --fg: #fcfcfc;
     --bg-alt: #3a3a3a;
 }
+
 body {
     color: var(--fg);
     background: var(--bg);
     font-family: 'Roboto', 'Segoe UI', 'SF Pro', system-ui;
 }
+
 .card {
     border: 2.7px solid var(--card-color);
     border-radius: 6px;
     padding: 5px 10px;
     background: var(--bg);
+    width: 182px;
 }
-.card > * {
+
+.card>* {
     cursor: default;
     user-select: none;
 }
-.card.foldable > div.foldable-header > * {
+
+.card.foldable>div.foldable-header>* {
     display: inline;
 }
-.card.foldable > div.foldable-header > p.foldable-name {
+
+.card.foldable>div.foldable-header>p.foldable-name {
     position: relative;
-    left: -70px;
+    left: -55%;
 }
-.card.foldable > div.foldable-header {
-    border: 2px solid rgb(from var(--card-color) 255 128 128);
+
+.card.foldable>div.foldable-header {
+    border-bottom: 2px solid rgb(from var(--card-color) 255 128 128);
     padding: 8px;
     border-radius: 4px;
-    transition: 0.1s ease-in-out background;
+    transition: 0.1s ease-in-out;
+    transition-property: background, border-bottom-width;
 }
-.card.foldable > div.foldable-header:hover {
+
+.card.foldable>div.foldable-header:hover {
     background: var(--bg-alt);
+}
+
+.card.foldable>div.foldable-header>div.foldable-wrapper {
+    position: relative;
+    display: inline-block;
+    transition: 0.25s ease-in-out rotate;
+    rotate: 0deg;
+    /* margin-right: 64px; */
+}
+
+.card.foldable>div.foldable-header>div.foldable-wrapper>p {
+    margin: 0;
 }

@@ -35,7 +35,9 @@
     <main class="card foldable" id="card/particles">
         <div class="foldable-header" id="card/particles/head">
             <p class="foldable-name">Particles</p>
-            <p class="foldable-icon">v</p>
+            <div class="foldable-wrapper">
+                <p class="foldable-icon">v</p>
+            </div>
         </div>
         <p>Particles: <span id="counter">0</span></p>
         <p>Particles per second: <span id="particlespersecond">0</span></p>
@@ -552,7 +554,7 @@
                     </button>
                     <br />
                     <p>Cost: 1e42 base, 1e14 Alpha and 50 Beta<br>
-                    100x Cost: 1e44 base, 1e16 Alpha and 5000 Beta</p>
+                        100x Cost: 1e44 base, 1e16 Alpha and 5000 Beta</p>
                 </div>
                 <div>
                     <button onclick="buyFuel('player.superfuel')" class="button">
@@ -948,8 +950,7 @@
                         </div>
                         <br />
                         <div style="display: none" id="divSAhide">
-                            <button
-                                onclick="instantAutobuyerToggle('SpeedAutobuyerToggle', 'divSpeedAutobuyerToggle')"
+                            <button onclick="instantAutobuyerToggle('SpeedAutobuyerToggle', 'divSpeedAutobuyerToggle')"
                                 class="button">
                                 Toggle Speed autobuyer
                             </button>
