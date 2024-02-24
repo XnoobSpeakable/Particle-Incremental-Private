@@ -67,27 +67,7 @@ if (import.meta.env.DEV) window.Decimal = Decimal;
 loadSettings();
 load();
 
-function switchTab(tab: string): 0 | 1 | 2 | 3 {
-    switch (tab) {
-        case "Base":
-            return 0;
-        case "Factory":
-            return 0;
-        case "Alpha":
-            return 1;
-        case "Beta":
-            return 2;
-        case "Reactor":
-            return 2;
-        case "Omega":
-            return 3;
-        default:
-            return 0;
-    }
-}
-
 const divEntireBody = getElement("diventirebody");
-const tabOpeners = getElement("tabopeners");
 const whatTheme = getElement("whattheme");
 const tabOpenFactory = getElement("tabopenfactory");
 const tabOpenAlpha = getElement("tabopenalpha");
@@ -107,8 +87,14 @@ const untilPcaElement = getElement("untilpca");
 const divToggleAgaElement = getElement("divtoggleaga");
 const untilAgaElement = getElement("untilaga");
 
+/**
+ * Array, listing the amount of time in deciseconds/game ticks before the next autosave, for each autosave mode.
+ */
 const delayArray = [600, 300, 150, 100, 50, 20, 10];
 
+/**
+ * Array, listing the properties of each game theme.
+ */
 const themes = [
     {
         textColor: "#EBEBEB",
@@ -121,7 +107,7 @@ const themes = [
     },
     {
         textColor: "#EBEBEB",
-        bgColor: "rgb(34, 36, 34)",
+        bgColor: "#222422",
         buttonColor: "",
         borderColor: "#BABABA",
         gradientColor: "black",
@@ -212,58 +198,14 @@ const themes = [
         gradientColor: "transparent",
         themeName: "Classic Colors",
         disableGradient: false,
-        radialGradient: false,
-        boxShadow: ""
     }
 ];
 
-const tabThemes = [
-    {
-        textColor: "#000000",
-        bgColor: "#CCCCCC",
-        buttonColor: "",
-        borderColor: "#333333",
-        gradientColor: "white",
-        buttonGradientOverride: true,
-        themeName: "Base",
-        disableGradient: false
-    },
-    {
-        textColor: "#EBEBEB",
-        bgColor: "#0e0e0e",
-        buttonColor: "#193b19",
-        borderColor: "#226222",
-        gradientColor: "#64DA17",
-        themeName: "Alpha",
-        radialGradient: true,
-        boxShadow: `0 0 3px 3px white`
-    },
-    {
-        textColor: "#EBEBEB",
-        bgColor: "rgb(100, 49, 34)",
-        buttonColor: "#AA4412",
-        borderColor: "#BABABA",
-        gradientColor: "black",
-        themeName: "Beta",
-        radialGradient: true,
-        boxShadow: `0 0 2px 2px #AA4412`
-    },
-    {
-        textColor: "#D4D4D4",
-        bgColor: "rgb(98. 16, 98)",
-        buttonColor: "#661066",
-        borderColor: "black",
-        gradientColor: "black",
-        themeName: "Omega",
-        radialGradient: true,
-        boxShadow: `0 0 2px 2px #330533`
-    }
-];
-
-function themeExec(isTabSwitch = false, tabNum = 0): void {
-    const theme = !isTabSwitch
-        ? themes[playerSettings.themeNumber]
-        : tabThemes[tabNum];
+/**
+ * Executes the changing of game theme.
+ */
+function themeExec(): void {
+    const theme = themes[playerSettings.themeNumber];
     if (theme === undefined) {
         throw new Error("theme dosen't exist!");
     }
@@ -276,8 +218,6 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
         buttonGradientOverride,
         themeName,
         disableGradient,
-        radialGradient,
-        boxShadow
     } = theme;
 
     divEntireBody.style.opacity = "1";
@@ -316,54 +256,8 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
                 element.style.background = `linear-gradient(45deg, ${gradientColor}, transparent)`;
             } else if (disableGradient) {
                 element.style.background = `linear-gradient(45deg, black, transparent)`;
-            } else if (radialGradient) {
-                element.style.background = `radial-gradient(${buttonColor}, ${gradientColor})`;
             } else {
                 element.style.background = buttonColor;
-            }
-
-            if (boxShadow) {
-                element.style.boxShadow = boxShadow;
-            } else {
-                element.style.boxShadow = "";
-            }
-        }
-        //This custom tab button code is something I am NOT proud of. it kinda bad. But this is just "proof of concept"
-        if (element.classList.contains("tabopener")) {
-            const tabName = element.innerText;
-
-            element.style.border = "";
-            element.style.borderRadius = "8px";
-            element.style.color = "snow";
-            element.style.fontWeight = "500";
-
-            const tabButtonColor = tabThemes[switchTab(tabName)]!.buttonColor;
-            const tabButtonGradientOverride =
-                tabThemes[switchTab(tabName)]!.buttonGradientOverride;
-            const tabDisableGradient =
-                tabThemes[switchTab(tabName)]!.disableGradient;
-            const tabGradientColor =
-                tabThemes[switchTab(tabName)]!.gradientColor;
-            const tabRadialGradient =
-                tabThemes[switchTab(tabName)]!.radialGradient;
-            const tabBoxShadow = tabThemes[switchTab(tabName)]!.boxShadow;
-
-            element.style.backgroundColor = tabButtonColor;
-
-            if (tabButtonGradientOverride === undefined && tabDisableGradient) {
-                element.style.background = `linear-gradient(45deg, ${tabGradientColor}, transparent)`;
-            } else if (tabDisableGradient) {
-                element.style.background = `linear-gradient(45deg, black, transparent)`;
-            } else if (tabRadialGradient) {
-                element.style.background = `radial-gradient(${tabButtonColor}, ${tabGradientColor})`;
-            } else {
-                element.style.background = tabButtonColor;
-            }
-
-            if (tabBoxShadow) {
-                element.style.boxShadow = tabBoxShadow;
-            } else {
-                element.style.boxShadow = "";
             }
         }
     }
@@ -384,12 +278,14 @@ function themeExec(isTabSwitch = false, tabNum = 0): void {
         element.style.backgroundColor = buttonColor;
     }
 
-    tabOpeners.style.background = `linear-gradient(${gradientColor}, transparent)`;
     whatTheme.textContent = `Theme: ${themeName}`;
 }
 
 themeExec();
 
+/**
+ * Switches over to the next game theme
+ */
 window.theme = function (): void {
     playerSettings.themeNumber =
         (playerSettings.themeNumber + 1) % themes.length;
@@ -397,6 +293,9 @@ window.theme = function (): void {
     saveSettings();
 };
 
+/**
+ * Hides the buttons for accessing all tabs that are not unlocked by default.
+ */
 function prePUD(): void {
     tabOpenFactory.style.display = "none";
     tabOpenAlpha.style.display = "none";
@@ -409,6 +308,9 @@ function prePUD(): void {
     tabOpenOmegaOmega.style.display = "none";
 }
 
+/**
+ * Shows a new feature when the player has progressed enough to unlock a feature that unlocks passively.
+ */
 function passiveUnlockDisplay(): void {
     if (player.num.gte(1e5)) {
         tabOpenFactory.style.display = "inline";
@@ -433,11 +335,17 @@ function passiveUnlockDisplay(): void {
     }
 }
 
+/**
+ * Displays Dev tab when the setting to display it is turned on. Does opposite when said setting is turned off.
+ */
 function devToolsVisibilityUpdate(): void {
     tabOpenDev.style.display = playerSettings.devToggled ? "inline" : "none";
     devToggle.textContent = playerSettings.devToggled.toString();
 }
 
+/**
+ * Changes the delay between autosaves.
+ */
 function autoSaveSet(): void {
     const delay = delayArray[playerSettings.autoSaveMode];
     playerSettings.autoSaveSet = playerSettings.autoSaveDelay = delay ?? 1e308;
@@ -445,6 +353,9 @@ function autoSaveSet(): void {
         delay !== undefined ? `On, delay: ${format(delay / 10)}s` : "Off";
 }
 
+/**
+ * Changes autosave delay setting.
+ */
 window.autosavesettings = function (): void {
     playerSettings.autoSaveMode =
         (playerSettings.autoSaveMode + 1) % delayArray.length;
@@ -573,6 +484,14 @@ function amountUpdate() {
     getElement("divoalpha").textContent =
         "You have " + formatBig(player.omegaAlpha);
 
+    if (getUpgradeTimesBought("omegabooster").lte(3)) {
+        getElement("divomegaboostersbought").textContent =
+            `Bought: ${getUpgradeTimesBought("omegabooster").toString()}/3`;
+        if (getUpgradeTimesBought("omegabooster").gte(3)) {
+            getElement("omegaboosterbutton").style.display = "none"
+        }
+    }
+
     for (const autobuyerName in player.instantAutobuyers) {
         const autobuyerDiv = `div${autobuyerName}`;
 
@@ -629,10 +548,6 @@ function loadMisc(): void {
     amountUpdate();
 }
 
-function changeLayerTheme(tab: string) {
-    themeExec(true, switchTab(tab));
-}
-
 function makeElementMap(...names: string[]): Record<string, HTMLElement> {
     return Object.fromEntries(names.map(x => [x, getElement(x)] as const));
 }
@@ -678,8 +593,6 @@ window.openTab = function (tab: string): void {
         hideElements(tabElements);
     }
     getElement(tab).style.display = "block";
-
-    changeLayerTheme(tab);
 };
 
 loadMisc();
@@ -758,6 +671,9 @@ let totalMBBoost = MBfactor.times(
     Decimal.dTwo.pow(getUpgradeTimesBought("reactorupMB"))
 );
 
+/**
+ * The function responsible for updating everything about the Reactor feature
+ */
 function reactorHandler() {
     reactor.fuelTime = onBought([
         new Decimal(300),
@@ -897,6 +813,9 @@ function reactorHandler() {
     )}x`;
 }
 
+/**
+ * Executes when manual boost button is clicked. Calcuates and adds a gain to the num variable / particle amount
+ */
 window.mbman = function (): void {
     const gain = onBoughtInc(
         "mbup",
@@ -914,10 +833,16 @@ window.mbman = function (): void {
     getElement("counter").textContent = formatBig(player.num) + " particles";
 };
 
+/**
+ * Executes when generator boost button is pressed. Sets the genBoostTimeLeft to the correct value.
+ */
 window.gbboost = function (): void {
     player.genBoostTimeLeft = player.genBoostTimeLeftCon;
 };
 
+/**
+ * Function responsible for buying a particle chunk when clicking on said button.
+ */
 function makechunk(): void {
     if (player.num.gte(1e9)) {
         player.num = player.num.minus(1e9);
@@ -928,6 +853,9 @@ function makechunk(): void {
 }
 window.makechunk = makechunk;
 
+/**
+ * Function responsible for executing Bang when clicking on said button.
+ */
 function bang(): void {
     if (player.pChunks.gte(Decimal.dTwo)) {
         if (
@@ -947,6 +875,9 @@ function bang(): void {
 }
 window.bang = bang;
 
+/**
+ * Toggles particle chunk autobuyer when toggle button is clicked.
+ */
 window.togglepca = function (): void {
     if (getUpgradeTimesBought("unlockpca").eq(Decimal.dOne)) {
         player.pcaToggle = !player.pcaToggle;
@@ -958,6 +889,9 @@ window.togglepca = function (): void {
     }
 };
 
+/**
+ * Toggles alpha group autobuyer when toggle button is clicked.
+ */
 window.toggleaga = function (): void {
     if (getUpgradeTimesBought("unlockaga").eq(Decimal.dOne)) {
         player.agaToggle = !player.agaToggle;
@@ -969,6 +903,9 @@ window.toggleaga = function (): void {
     }
 };
 
+/**
+ * Function responsible for buying Omega_Base perticles when said button is clicked.
+ */
 window.buyomegabase = function (): void {
     if (player.num.gte(player.omegaBaseCost)) {
         player.num = player.num.minus(player.omegaBaseCost);
@@ -981,6 +918,9 @@ window.buyomegabase = function (): void {
     }
 };
 
+/**
+ * Function responsible for buying Omega_Alpha perticles when said button is clicked.
+ */
 window.buyomegaalpha = function (): void {
     if (player.alphaNum.gte(player.omegaAlphaCost)) {
         player.alphaNum = player.alphaNum.minus(player.omegaAlphaCost);
@@ -1003,6 +943,9 @@ window.buyomegadelta = function (): void {
     /* TODO: implement this */
 };
 
+/**
+ * Toggles bang autobuyer when toggle button is clicked.
+ */
 window.toggleba = function (): void {
     if (getUpgradeTimesBought("bangautobuyerunlock").eq(Decimal.dOne)) {
         player.bangAutobuyerToggle = !player.bangAutobuyerToggle;
@@ -1016,6 +959,9 @@ window.toggleba = function (): void {
     }
 };
 
+/**
+ * Toggles merge autobuyer when toggle button is clicked.
+ */
 window.togglema = function (): void {
     if (getUpgradeTimesBought("mergeautobuyerunlock").eq(Decimal.dOne)) {
         player.mergeAutobuyerToggle = !player.mergeAutobuyerToggle;
@@ -1072,20 +1018,20 @@ window.instantAutobuyerToggle = function (
 
 type Fuels = "player.fuel" | "player.superfuel" | "player.hyperfuel";
 
-window.buyFuel = function (fuelType: Fuels) {
+window.buyFuel = function (fuelType: Fuels, bulk = Decimal.dOne) {
     if (fuelType === "player.fuel") {
         if (
-            player.num.gte(1e42) &&
-            player.alphaNum.gte(1e14) &&
-            player.betaNum.gte(50)
+            player.num.gte(bulk.times(1e42)) &&
+            player.alphaNum.gte(bulk.times(1e14)) &&
+            player.betaNum.gte(bulk.times(50))
         ) {
-            player.num = player.num.minus(1e42);
-            player.alphaNum = player.alphaNum.minus(1e14);
-            player.betaNum = player.betaNum.minus(50);
-            player.fuel = player.fuel.plus(Decimal.dOne);
+            player.num = player.num.minus(bulk.times(1e42));
+            player.alphaNum = player.alphaNum.minus(bulk.times(1e14));
+            player.betaNum = player.betaNum.minus(bulk.times(50));
+            player.fuel = player.fuel.plus(bulk);
         }
     } else {
-        //do this later TODO:
+        //do this later TODO: add superfuel and hyperfuel buying
     }
 };
 
@@ -1094,7 +1040,7 @@ let alphaFromReturn = Decimal.dZero;
 function returnParticleHandler(): void {
     if (getUpgradeTimesBought("buyreturngenerator").gt(Decimal.dZero)) {
         const gain = onBought([
-            new Decimal(10),
+            new Decimal(0.1),
             "*",
             "buyreturngenerator",
             "*",
@@ -1105,7 +1051,9 @@ function returnParticleHandler(): void {
         player.returnParticles = player.returnParticles.plus(gain);
 
         alphaFromReturn = onBought([
-            new Decimal("1e9 "),
+            new Decimal(0.1),
+            "*",
+            player.returnParticles,
             "*",
             [Decimal.dTwo, "^", "rpmult"],
             [totalBoostFromNAP, "+", Decimal.dOne],
@@ -1115,13 +1063,13 @@ function returnParticleHandler(): void {
         getElement("returnboosttext").textContent = `Your ${formatBig(
             player.returnParticles
         )} Return particles (+${formatBig(
-            gain.div(10)
+            gain.times(10)
         )}/s) are returning ${formatBig(
-            alphaFromReturn.div(10)
+            alphaFromReturn.times(10)
         )} Alpha particles per second`;
     }
 }
-//<div id="returnboosttext">Your 0 Return particles (+0/s) are returning 0 Alpha particles per second
+
 function fgbTestConst(): void {
     if (getUpgradeTimesBought("gen").gt(Decimal.dZero)) {
         getElement("boostsection").style.display = "flex";
@@ -1171,6 +1119,7 @@ function fgbTestConst(): void {
 
         reactorHandler();
         returnParticleHandler();
+        player.alphaNum = player.alphaNum.plus(alphaFromReturn);
 
         getElement(
             "nptext"
@@ -1241,7 +1190,6 @@ function fgbTestConst(): void {
         if (player.bangTimeLeft === 0) {
             player.alphaNum = player.alphaNum
                 .plus(alphaGain)
-                .plus(alphaFromReturn);
             getElement("bangtimeleft").textContent = "";
         }
 
@@ -1610,6 +1558,7 @@ function maTestConst(): void {
     }
 }
 
+
 function instantAutobuyers() {
     //TODO: make this function not look like absolute garbage
     if (getUpgradeTimesBought("GnBBAunlock").eq(Decimal.dOne)) {
@@ -1668,6 +1617,9 @@ function instantAutobuyers() {
     }
 }
 
+/**
+ * Function responsible for keeping track of time left before next autosave and autosaving when needed.
+ */
 function savinginloop(): void {
     playerSettings.autoSaveDelay--;
 
@@ -1677,7 +1629,8 @@ function savinginloop(): void {
     }
 }
 
-//game loop
+
+//Game loop, repeatedly run every 100ms.
 setInterval(() => {
     passiveUnlockDisplay();
     pcaTestConst();
@@ -1692,11 +1645,17 @@ setInterval(() => {
     savinginloop();
 }, 100);
 
+/**
+ * Adds a D# to Decimal type numbers in the savefile so they can be differentiated from regular numbers when loading.
+ */
 function saveReplace(_key: string, value: unknown): unknown {
     if (value instanceof Decimal) return "D#" + value.toString();
     return value;
 }
 
+/**
+ * Saves the game settings and writes them into localStorage.
+ */
 function saveSettings(): void {
     const settingfile = JSON.stringify(playerSettings);
     localStorage.setItem(location.pathname + "settings", settingfile);
@@ -1704,6 +1663,9 @@ function saveSettings(): void {
 
 window.saveSettings = saveSettings;
 
+/**
+ * Saves the game and writes savefile into localStorage.
+ */
 function save(): string {
     const savefile = btoa(JSON.stringify(player, saveReplace));
     localStorage.setItem(location.pathname, savefile);
@@ -1713,6 +1675,9 @@ function save(): string {
 
 window.save = save;
 
+/**
+ * Resets player's savefile and makes a backup of it.
+ */
 window.reset = function (): void {
     saveSettings();
     localStorage.removeItem(location.pathname);

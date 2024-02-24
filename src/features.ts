@@ -3,6 +3,10 @@ import { player } from "./player";
 import { type CurrencyName, currencyName } from "./upgrades";
 import Decimal from "break_eternity.js";
 
+
+/**
+ * The list of features the play can unlock, and their properties.
+ */
 const features: Record<FeatureKey, Feature> = {
     GB: {
         displayName: "Generator boost",
@@ -93,6 +97,9 @@ interface Feature {
 
 let goal: FeatureKey | undefined = "GB";
 
+/**
+ * The code for the text at the top of the screen, displaying what the next feature the player will unlock is, along with the progress to unlocking it.
+ */
 export function nextFeatureHandler(): void {
     if (goal === undefined) {
         getElement("nextfeature").textContent =

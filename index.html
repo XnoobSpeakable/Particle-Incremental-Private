@@ -524,12 +524,19 @@
 						<button onclick="buyFuel('player.fuel')" class="button">
 							Buy 1 fuel
 						</button>
+						<button onclick="buyFuel('player.fuel', new Decimal(100))" class="button">
+							Buy 100 fuel
+						</button>
 						<br />
-						<p>Cost: 1e42 base, 1e14 Alpha and 50 Beta</p>
+						<p>Cost: 1e42 base, 1e14 Alpha and 50 Beta<br>
+							100x Cost: 1e44 base, 1e16 Alpha and 5000 Beta</p>
 					</div>
 					<div>
 						<button onclick="buyFuel('player.superfuel')" class="button">
 							Buy 1 superfuel
+						</button>
+						<button onclick="buyFuel('player.superfuel', new Decimal(100))" class="button">
+							Buy 100 superfuel
 						</button>
 						<br />
 						<p>Cost: Out of stock</p>
@@ -743,6 +750,23 @@
 						On
 					</div>
 					<div id="untilba">0</div>
+				</div>
+				<br />
+				<div>
+					<div id="omegaboosterbutton">
+						<button onclick="buyUpgrade('omegabooster')" class="button">
+							Buy Omega Booster
+						</button>
+					</div>
+					<span class="inline-block">Cost: 12</span>
+					Ω
+					<sub>B</sub>
+					<br />
+					<span class="inline-block">Effect: +2 free </span>
+					Ω
+					<sub>α</sub>
+					<br />
+					<span id="divomegaboostersbought" class="inline-block">Bought: 0/3</span>
 				</div>
 			</div>
 			<div id="oAlpha" style="display: none">
@@ -1017,7 +1041,7 @@
 		<div id="Achievements" style="display: none">
 			<div id="achievementContainer">WORK IN PROGRESS</div>
 		</div>
-		<div id="Settings" style="display: none">
+		<div id="Settings" style="display: none; width: 67%; margin: auto">
 			<br />
 			<button onclick="theme()" class="button" style="margin-left: 4em">
 				Change Theme
@@ -1181,5 +1205,7 @@
 		</div>
 	</div>
 </body>
+
+</html>
 
 </html>

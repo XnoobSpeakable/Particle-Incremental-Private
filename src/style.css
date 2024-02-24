@@ -4,6 +4,9 @@
     --stroke: #333;
 }
 
+:link { color: #0077ff; }
+:visited { color: #8400ff; }
+
 button:active {
     background: var(--fill-active);
 }
@@ -29,6 +32,10 @@ button:hover {
 
 .xlarge {
     font-size: x-large;
+}
+
+.large {
+    font-size: large;
 }
 
 .redb {
