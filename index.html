@@ -1,1203 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
 
-    <link rel="manifest" href="./assets/manifest-G6ZTsR42.json" />
-  <script type="module" crossorigin src="./assets/index-IP-bbsA4.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-wpY4_eO0.css">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Particle Incremental</title>
+	<link rel="shortcut icon" href="./assets/favicon-3kmT_vz1.ico" type="image/x-icon">
+  <script type="module" crossorigin src="./assets/index-JsTr5cKS.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DCljj947.css">
 </head>
 
 <body>
-    <audio id="audio" loop>
-        <source src="hikaru_miles.mp3" type="audio/mpeg" />
-    </audio>
-    <div id="diventirebody" style="opacity: 0; width: 100%">
-        <div id="nextfeature">Calculating feature progress...</div>
-        <span style="color: #64ed93" id="counter">0 particles</span>
-        <div id="particlespersecond">You are getting 0 particles/s</div>
-        <br />
-        <div id="tabopeners" style="
+	<audio id="audio" loop>
+		<source src="./hikaru_miles.mp3" type="audio/mpeg" />
+	</audio>
+	<div id="diventirebody" style="opacity: 0; width: 100%">
+		<div id="nextfeature">Calculating feature progress...</div>
+		<span style="color: #64ed93" id="counter">0 particles</span>
+		<div id="particlespersecond">You are getting 0 particles/s</div>
+		<br />
+		<div id="tabopeners" style="
                     background: linear-gradient(#f8f8f826, transparent);
                     padding: 24px;
                     border-radius: 16px;
                     width: 75%;
                     margin: auto;
                 ">
-            <button onclick="openTab('Base')" class="button tabopener" id="tabopenbase">
-                Base
-            </button>
-            <button onclick="openTab('Factory')" class="button tabopener" id="tabopenfactory">
-                Factory
-            </button>
-            <button onclick="openTab('Alpha')" class="button tabopener" id="tabopenalpha">
-                Alpha
-            </button>
-            <button onclick="openTab('Beta')" class="button tabopener" id="tabopenbeta">
-                Beta
-            </button>
-            <button onclick="openTab('Reactor')" class="button tabopener" id="tabopenreactor">
-                Reactor
-            </button>
-            <button onclick="openTab('Gamma')" class="button tabopener" id="tabopengamma">
-                Gamma
-            </button>
-            <button onclick="openTab('Delta')" class="button tabopener" id="tabopendelta">
-                Delta
-            </button>
-            <button onclick="openTab('Omega')" class="button tabopener" id="tabopenomega">
-                Omega
-            </button>
-            <button onclick="openTab('OmegaOmega')" class="button tabopener" id="tabopenomegaomega">
-                Ω<sub>Ω</sub>
-            </button>
-            <button onclick="openTab('Achievements')" class="button tabopener" id="tabopenachievements">
-                Achievements
-            </button>
-            <button onclick="openTab('Stats')" class="button tabopener" id="tabopenstats">
-                Stats
-            </button>
-            <button onclick="openTab('Settings')" class="button tabopener">
-                Settings
-            </button>
-            <button onclick="openTab('Tutorial')" class="button tabopener" id="tabopentutorial">
-                Tutorial
-            </button>
-            <button onclick="openTab('Dev')" class="button tabopener" id="tabopendev" style="display: none">
-                Dev
-            </button>
-        </div>
-        <div id="Base">
-            <br />
-            <div class="btn-group">
-                <button onclick="buyUpgrade('gen')" class="button" id="divgenbutton">
-                    Buy generator
-                </button>
-                <button onclick="buyUpgrade('biggerbatches')" class="button">
-                    Bigger batches
-                </button>
-                <button onclick="buyUpgrade('speed')" class="button">
-                    Speed
-                </button>
-                <button onclick="buyFiftySpeed()" class="button">
-                    Buy up to 50 Speed
-                </button>
-            </div>
-            <div id="divgencost" class="inline-block">
-                Cost: Free
-            </div>
-            <div id="divbbcost" class="inline-block OnePointTwoFiveEm">
-                Cost: 2000
-            </div>
-            <div id="divspeedcost" class="inline-block OnePointTwoFiveEm">
-                Cost: 50
-            </div>
-            <div id="divtenspeedcost" class="inline-block OnePointTwoFiveEm">
-                Cost: unknown
-            </div>
-            <br />
-            <br />
+			<button onclick="openTab('Base')" class="button tabopener" id="tabopenbase">
+				Base
+			</button>
+			<button onclick="openTab('Factory')" class="button tabopener" id="tabopenfactory">
+				Factory
+			</button>
+			<button onclick="openTab('Alpha')" class="button tabopener" id="tabopenalpha">
+				Alpha
+			</button>
+			<button onclick="openTab('Beta')" class="button tabopener" id="tabopenbeta">
+				Beta
+			</button>
+			<button onclick="openTab('Reactor')" class="button tabopener" id="tabopenreactor">
+				Reactor
+			</button>
+			<button onclick="openTab('Gamma')" class="button tabopener" id="tabopengamma">
+				Gamma
+			</button>
+			<button onclick="openTab('Delta')" class="button tabopener" id="tabopendelta">
+				Delta
+			</button>
+			<button onclick="openTab('Omega')" class="button tabopener" id="tabopenomega">
+				Omega
+			</button>
+			<button onclick="openTab('OmegaOmega')" class="button tabopener" id="tabopenomegaomega">
+				Ω<sub>Ω</sub>
+			</button>
+			<button onclick="openTab('Achievements')" class="button tabopener" id="tabopenachievements">
+				Achievements
+			</button>
+			<button onclick="openTab('Stats')" class="button tabopener" id="tabopenstats">
+				Stats
+			</button>
+			<button onclick="openTab('Settings')" class="button tabopener">
+				Settings
+			</button>
+			<button onclick="openTab('Tutorial')" class="button tabopener" id="tabopentutorial">
+				Tutorial
+			</button>
+			<button onclick="openTab('Dev')" class="button tabopener" id="tabopendev" style="display: none">
+				Dev
+			</button>
+		</div>
+		<div id="Base">
+			<br />
+			<div class="btn-group">
+				<button onclick="buyUpgrade('gen')" class="button" id="divgenbutton">
+					Buy generator
+				</button>
+				<button onclick="buyUpgrade('biggerbatches')" class="button">
+					Bigger batches
+				</button>
+				<button onclick="buyUpgrade('speed')" class="button">
+					Speed
+				</button>
+				<button onclick="buyFiftySpeed()" class="button">
+					Buy up to 50 Speed
+				</button>
+			</div>
+			<div id="divgencost" class="inline-block">
+				Cost: Free
+			</div>
+			<div id="divbbcost" class="inline-block OnePointTwoFiveEm">
+				Cost: 2000
+			</div>
+			<div id="divspeedcost" class="inline-block OnePointTwoFiveEm">
+				Cost: 50
+			</div>
+			<div id="divtenspeedcost" class="inline-block OnePointTwoFiveEm">
+				Cost: unknown
+			</div>
+			<br />
+			<br />
 
-            <div class="withtheoutline" id="veryouterboost" style="width: 65%; margin: auto">
-                <h2 id="bigboosttext" style="display: none">
-                    Boost
-                </h2>
-                <div id="boostsection" class="simpleflexcenter" style="display: none">
-                    <div id="manboostsection">
-                        <h3>Manual boost</h3>
-                        <div class="btn-group">
-                            <button onclick="mbman()" class="button">
-                                Manual Boost
-                            </button>
-                            <button onclick="buyUpgrade('mbup')" class="button">
-                                Manual Boost +1/click
-                            </button>
-                            <button onclick="buyUpgrade('mbmult')" class="button">
-                                Manual Boost +1x/click
-                            </button>
-                        </div>
-                        <div id="divmbupcost" class="inline-block" style="text-indent: 6.5em">
-                            Cost: 50
-                        </div>
-                        <div id="divmbmultcost" class="inline-block" style="text-indent: 5.75em">
-                            Cost: 1000
-                        </div>
-                        <div id="particlesperclick">
-                            You are getting 1 particle per click
-                        </div>
-                    </div>
-                    <br />
-                    <div id="genboostsection">
-                        <h3>Generator boost</h3>
-                        <button id="gbunlockbutton" onclick="buyUpgrade('unlockgenboost')" class="button">
-                            Unlock generator boost
-                        </button>
-                        <div id="divgenunlockcost">Cost: 5000</div>
-                        <div id="gbshow" style="display: none">
-                            <div class="btn-group">
-                                <button onclick="gbboost()" class="button">
-                                    Generator Boost
-                                </button>
-                                <button onclick="buyUpgrade('genboostuptime')" class="button">
-                                    Generator Boost +2s
-                                </button>
-                                <button onclick="buyUpgrade('genboostupmult')" class="button">
-                                    Generator Boost +1.5x boost
-                                </button>
-                            </div>
-                            <div id="divgenboost" class="inline-block"></div>
-                            <div id="divgbuptcost" class="inline-block" style="text-indent: 7.5em">
-                                Cost: 50
-                            </div>
-                            <div id="divgbupmcost" class="inline-block" style="text-indent: 4.75em">
-                                Cost: 10000
-                            </div>
-                            <div id="divgbtl">Boost Time Left: 0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <br />
-            <div id="nbnb" style="display: flex; width: 80%; margin: auto">
-                <div id="nuclearshow" class="withtheoutline">
-                    <h2>Nuclear boost</h2>
-                    <button onclick="buyUpgrade('nuclearbuy')" class="button">
-                        Buy Nuclear Particle
-                    </button>
-                    <div id="divnuclearcost">Cost: 1e6</div>
-                    <div id="divnp">Nuclear Particles: 0</div>
-                    <div id="nptext">
-                        Nuclear particles add a +1x multiplier to
-                        generators, generator boost, and manual boost
-                    </div>
-                    <br />
-                    <br />
-                </div>
-                <div id="nuclearreach"></div>
-                <div id="bangshow" class="withtheoutline simpleflexcenter">
-                    <h2>Bang!</h2>
-                    Using an alpha accelerator, you can bang two particle
-                    chunks together to make alpha particles
-                    <br />
-                    <br />
-                    <div class="btn-group">
-                        <button id="aabutton" onclick="buyUpgrade('alphaacc')" class="button">
-                            Buy Alpha Accelerator
-                        </button>
-                        <button onclick="makechunk()" class="button">
-                            Make Particle Chunk
-                        </button>
-                    </div>
-                    <div id="divalphaacceleratorcost" class="inline-block">
-                        Cost: 1e12
-                    </div>
-                    <div id="pcosttext" class="inline-block" style="text-indent: 4em">
-                        Cost: 1e9
-                    </div>
-                    <br />
-                    <h4 style="display: none" id="bangwarn">
-                        WARNING: You cannot Bang, because you don't have any
-                        Alpha Accelerators
-                    </h4>
-                    <br />
-                    <div id="bangcenteringfix" class="simpleflexcenter">
-                        <button id="bangbutton" onclick="bang()" class="button">
-                            BANG!
-                        </button>
-                    </div>
-                    <div>Cost: 2 Particle Chunks</div>
-                    <div id="chunkamount">Particle Chunks: 0</div>
-                    <div id="bangtimeleft"></div>
-                    <div id="bangtimeconst">
-                        Currently, bangs take 30 seconds.
-                    </div>
-                </div>
-            </div>
-            <br />
-            <br />
-        </div>
-        <div id="Factory" style="display: none; width: 65%; margin: auto">
-            <br />
-            <div id="divclickerparticles" class="withtheoutline">
-                <br />
-                <div id="clickercounter">
-                    You have 0 Clicker Particles (+0/s), which are making
-                    Manual Boost 1x stronger.
-                </div>
-                <br /><br />
-                <div class="btn-group">
-                    <button onclick="buyUpgrade('speedparticle')" class="button">
-                        Buy speed particle
-                    </button>
-                    <button onclick="buyUpgrade('machine')" class="button">
-                        Buy machine
-                    </button>
-                </div>
-                <div id="divspeedparticlecost" class="inline-block">
-                    Cost: 5e4 Particles
-                </div>
-                <div id="divmachinecost" class="inline-block" style="text-indent: 2em">
-                    Cost: 2e4 Particles
-                </div>
-                <br /><br />
-            </div>
-        </div>
-        <div id="Alpha" style="display: none">
-            <div id="alphacounter" class="xlarge">
-                0 Alpha particles
-            </div>
-            <div id="alphapb">You are getting 1 alpha/bang</div>
-            <br />
-            <div class="btn-group">
-                <button onclick="buyUpgrade('threeboost')" class="button">
-                    3x boost to base (multiplicative)
-                </button>
-                <button onclick="buyUpgrade('perbang')" class="button">
-                    +1 Alpha per bang
-                </button>
-            </div>
-            <div id="divthreeboostcost" class="inline-block">
-                Cost: 1 Alpha
-            </div>
-            <div id="divperbangcost" class="inline-block" style="text-indent: 7.25em">
-                Cost: 4 Alpha
-            </div>
-            <br />
-            <br />
-            <div id="bnbn" style="margin: auto; width: 71.2%">
-                <div id="pcabox" class="withtheoutline">
-                    <h2>Base automation</h2>
-                    <br />
-                    <div>
-                        <button onclick="buyUpgrade('bangspeed')" class="button">
-                            Make bang twice as fast
-                        </button>
-                        <div id="divbangspeedcost">Cost: 1 Alpha</div>
-                        <br />
+			<div class="withtheoutline" id="veryouterboost" style="width: 65%; margin: auto">
+				<h2 id="bigboosttext" style="display: none">
+					Boost
+				</h2>
+				<div id="boostsection" class="simpleflexcenter" style="display: none">
+					<div id="manboostsection">
+						<h3>Manual boost</h3>
+						<div class="btn-group">
+							<button onclick="mbman()" class="button">
+								Manual Boost
+							</button>
+							<button onclick="buyUpgrade('mbup')" class="button">
+								Manual Boost +1/click
+							</button>
+							<button onclick="buyUpgrade('mbmult')" class="button">
+								Manual Boost +1x/click
+							</button>
+						</div>
+						<div id="divmbupcost" class="inline-block" style="text-indent: 6.5em">
+							Cost: 50
+						</div>
+						<div id="divmbmultcost" class="inline-block" style="text-indent: 5.75em">
+							Cost: 1000
+						</div>
+						<div id="particlesperclick">
+							You are getting 1 particle per click
+						</div>
+					</div>
+					<br />
+					<div id="genboostsection">
+						<h3>Generator boost</h3>
+						<button id="gbunlockbutton" onclick="buyUpgrade('unlockgenboost')" class="button">
+							Unlock generator boost
+						</button>
+						<div id="divgenunlockcost">Cost: 5000</div>
+						<div id="gbshow" style="display: none">
+							<div class="btn-group">
+								<button onclick="gbboost()" class="button">
+									Generator Boost
+								</button>
+								<button onclick="buyUpgrade('genboostuptime')" class="button">
+									Generator Boost +2s
+								</button>
+								<button onclick="buyUpgrade('genboostupmult')" class="button">
+									Generator Boost +1.5x boost
+								</button>
+							</div>
+							<div id="divgenboost" class="inline-block"></div>
+							<div id="divgbuptcost" class="inline-block" style="text-indent: 7.5em">
+								Cost: 50
+							</div>
+							<div id="divgbupmcost" class="inline-block" style="text-indent: 4.75em">
+								Cost: 10000
+							</div>
+							<div id="divgbtl">Boost Time Left: 0</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br />
+			<br />
+			<div id="nbnb" style="display: flex; width: 80%; margin: auto">
+				<div id="nuclearshow" class="withtheoutline">
+					<h2>Nuclear boost</h2>
+					<button onclick="buyUpgrade('nuclearbuy')" class="button">
+						Buy Nuclear Particle
+					</button>
+					<div id="divnuclearcost">Cost: 1e6</div>
+					<div id="divnp">Nuclear Particles: 0</div>
+					<div id="nptext">
+						Nuclear particles add a +1x multiplier to
+						generators, generator boost, and manual boost
+					</div>
+					<br />
+					<br />
+				</div>
+				<div id="nuclearreach"></div>
+				<div id="bangshow" class="withtheoutline simpleflexcenter">
+					<h2>Bang!</h2>
+					Using an alpha accelerator, you can bang two particle
+					chunks together to make alpha particles
+					<br />
+					<br />
+					<div class="btn-group">
+						<button id="aabutton" onclick="buyUpgrade('alphaacc')" class="button">
+							Buy Alpha Accelerator
+						</button>
+						<button onclick="makechunk()" class="button">
+							Make Particle Chunk
+						</button>
+					</div>
+					<div id="divalphaacceleratorcost" class="inline-block">
+						Cost: 1e12
+					</div>
+					<div id="pcosttext" class="inline-block" style="text-indent: 4em">
+						Cost: 1e9
+					</div>
+					<br />
+					<h4 style="display: none" id="bangwarn">
+						WARNING: You cannot Bang, because you don't have any
+						Alpha Accelerators
+					</h4>
+					<br />
+					<div id="bangcenteringfix" class="simpleflexcenter">
+						<button id="bangbutton" onclick="bang()" class="button">
+							BANG!
+						</button>
+					</div>
+					<div>Cost: 2 Particle Chunks</div>
+					<div id="chunkamount">Particle Chunks: 0</div>
+					<div id="bangtimeleft"></div>
+					<div id="bangtimeconst">
+						Currently, bangs take 30 seconds.
+					</div>
+				</div>
+			</div>
+			<br />
+			<br />
+		</div>
+		<div id="Factory" style="display: none; width: 65%; margin: auto">
+			<br />
+			<div id="divclickerparticles" class="withtheoutline">
+				<br />
+				<div id="clickercounter">
+					You have 0 Clicker Particles (+0/s), which are making
+					Manual Boost 1x stronger.
+				</div>
+				<br /><br />
+				<div class="btn-group">
+					<button onclick="buyUpgrade('speedparticle')" class="button">
+						Buy speed particle
+					</button>
+					<button onclick="buyUpgrade('machine')" class="button">
+						Buy machine
+					</button>
+				</div>
+				<div id="divspeedparticlecost" class="inline-block">
+					Cost: 5e4 Particles
+				</div>
+				<div id="divmachinecost" class="inline-block" style="text-indent: 2em">
+					Cost: 2e4 Particles
+				</div>
+				<br /><br />
+			</div>
+		</div>
+		<div id="Alpha" style="display: none">
+			<div id="alphacounter" class="xlarge">
+				0 Alpha particles
+			</div>
+			<div id="alphapb">You are getting 1 alpha/bang</div>
+			<br />
+			<div class="btn-group">
+				<button onclick="buyUpgrade('threeboost')" class="button">
+					3x boost to base (multiplicative)
+				</button>
+				<button onclick="buyUpgrade('perbang')" class="button">
+					+1 Alpha per bang
+				</button>
+			</div>
+			<div id="divthreeboostcost" class="inline-block">
+				Cost: 1 Alpha
+			</div>
+			<div id="divperbangcost" class="inline-block" style="text-indent: 7.25em">
+				Cost: 4 Alpha
+			</div>
+			<br />
+			<br />
+			<div id="bnbn" style="margin: auto; width: 71.2%">
+				<div id="pcabox" class="withtheoutline">
+					<h2>Base automation</h2>
+					<br />
+					<div>
+						<button onclick="buyUpgrade('bangspeed')" class="button">
+							Make bang twice as fast
+						</button>
+						<div id="divbangspeedcost">Cost: 1 Alpha</div>
+						<br />
 
-                        <button id="divunlockpcabutton" onclick="buyUpgrade('unlockpca')" class="button">
-                            Unlock Particle Chunk Autobuyer (PCA)
-                        </button>
-                        <br />
-                        <div id="divunlockpca" class="inline-block">
-                            Cost: 20 Alpha
-                        </div>
-                        <div id="pcashow" style="display: none">
-                            <div class="btn-group">
-                                <button onclick="buyUpgrade('upgradepca')" class="button">
-                                    Make PCA faster
-                                </button>
-                                <button onclick="togglepca()" class="button">
-                                    Toggle PCA
-                                </button>
-                            </div>
-                            <div id="divupgradepcacost" class="inline-block">
-                                Cost: 2 Alpha
-                            </div>
-                            <div id="divtogglepca">On</div>
-                            <div id="untilpca"></div>
-                        </div>
-                    </div>
-                </div>
-                <div id="talbox" class="withtheoutline">
-                    <h2>TAL Machine</h2>
-                    <div class="btn-group">
-                        <button onclick="buyUpgrade('genboostdouble')" class="button">
-                            Double Generator Boost Length
-                        </button>
-                        <button onclick="buyUpgrade('alphamachinedouble')" class="button">
-                            Double Alpha Gain
-                        </button>
-                    </div>
-                    <div id="gboostdouble" class="inline-block">
-                        Cost: 1 Alpha
-                    </div>
-                    <div id="alphamachinedouble" class="inline-block" style="text-indent: 7.4em">
-                        Cost: 1000 Alpha
-                    </div>
-                </div>
-                <div id="nuclearalphashow" class="withtheoutline">
-                    <h2>Nuclear Alpha boost</h2>
-                    <button onclick="buyUpgrade('nuclearalphabuy')" class="button">
-                        Buy Nuclear Alpha Particle
-                    </button>
-                    <div id="divnuclearalphacost">Cost: 1e6 Alpha</div>
-                    <div id="divnap">Nuclear Alpha Particles: 0</div>
-                    <div id="naptext">
-                        Nuclear Alpha particles add a +1x multiplier to
-                        Alpha gain
-                    </div>
-                    <br />
-                    <br />
-                </div>
-                <div id="nuclearalphareach"></div>
-            </div>
-            <br />
-            <div id="bpsection" class="withtheoutline" style="width: 69%; margin: auto">
-                <h2>Booster particles</h2>
-                <div id="boostersmaintext">
-                    You are currently getting 0 booster particles per alpha
-                    particle per second, resulting in a +0% boost to base
-                    particle production
-                </div>
-                <div id="bpamount">You have 0 booster particles</div>
-                <br />
-                <div class="btn-group">
-                    <button onclick="buyUpgrade('boosterup')" class="button">
-                        +2 booster particles per alpha particle per second
-                    </button>
-                    <button onclick="buyUpgrade('boosteruppercent')" class="button">
-                        +1 percent boost per booster particle
-                    </button>
-                </div>
-                <div id="divboosterupcost" class="inline-block">
-                    100 Alpha
-                </div>
-                <div id="divboosteruppercentcost" class="inline-block" style="text-indent: 15em">
-                    100 Alpha
-                </div>
-                <br />
-                <br />
-                <div id="bpsacshow" style="display: none">
-                    <button onclick="buyUpgrade('boostsacrifice')" class="button">
-                        Boost sacrifice (resets your Booster Particles)
-                    </button>
-                    <br />
-                    <div id="divboostsacrificecost" class="inline-block">
-                        Cost: 5e4 Alpha
-                    </div>
-                    <br />
-                    <div id="boostsactext">
-                        Reset your Booster Particles, but double their and
-                        Alpha Particle gain. Currently 1x.
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div id="mergeshow" class="withtheoutline" style="width: 69%; margin: auto">
-                <h2>Merge!</h2>
-                Using a beta accelerator, you can merge two alpha groups
-                together to make beta particles
-                <br />
-                <br />
-                <div class="btn-group">
-                    <button onclick="buyUpgrade('betaacc')" class="button">
-                        Buy Beta Accelerator
-                    </button>
-                    <button onclick="makegroup()" class="button">
-                        Make Alpha Group
-                    </button>
-                </div>
-                <div id="divbetaacceleratorcost" class="inline-block">
-                    Cost: 1e12 Alpha
-                </div>
-                <div id="gcosttext" class="inline-block" style="text-indent: 2.3em">
-                    Cost: 1e9 Alpha
-                </div>
-                <br />
-                <br />
+						<button id="divunlockpcabutton" onclick="buyUpgrade('unlockpca')" class="button">
+							Unlock Particle Chunk Autobuyer (PCA)
+						</button>
+						<br />
+						<div id="divunlockpca" class="inline-block">
+							Cost: 20 Alpha
+						</div>
+						<div id="pcashow" style="display: none">
+							<div class="btn-group">
+								<button onclick="buyUpgrade('upgradepca')" class="button">
+									Make PCA faster
+								</button>
+								<button onclick="togglepca()" class="button">
+									Toggle PCA
+								</button>
+							</div>
+							<div id="divupgradepcacost" class="inline-block">
+								Cost: 2 Alpha
+							</div>
+							<div id="divtogglepca">On</div>
+							<div id="untilpca"></div>
+						</div>
+					</div>
+				</div>
+				<div id="talbox" class="withtheoutline">
+					<h2>TAL Machine</h2>
+					<div class="btn-group">
+						<button onclick="buyUpgrade('genboostdouble')" class="button">
+							Double Generator Boost Length
+						</button>
+						<button onclick="buyUpgrade('alphamachinedouble')" class="button">
+							Double Alpha Gain
+						</button>
+					</div>
+					<div id="gboostdouble" class="inline-block">
+						Cost: 1 Alpha
+					</div>
+					<div id="alphamachinedouble" class="inline-block" style="text-indent: 7.4em">
+						Cost: 1000 Alpha
+					</div>
+				</div>
+				<div id="nuclearalphashow" class="withtheoutline">
+					<h2>Nuclear Alpha boost</h2>
+					<button onclick="buyUpgrade('nuclearalphabuy')" class="button">
+						Buy Nuclear Alpha Particle
+					</button>
+					<div id="divnuclearalphacost">Cost: 1e6 Alpha</div>
+					<div id="divnap">Nuclear Alpha Particles: 0</div>
+					<div id="naptext">
+						Nuclear Alpha particles add a +1x multiplier to
+						Alpha gain
+					</div>
+					<br />
+					<br />
+				</div>
+				<div id="nuclearalphareach"></div>
+			</div>
+			<br />
+			<div id="bpsection" class="withtheoutline" style="width: 69%; margin: auto">
+				<h2>Booster particles</h2>
+				<div id="boostersmaintext">
+					You are currently getting 0 booster particles per alpha
+					particle per second, resulting in a +0% boost to base
+					particle production
+				</div>
+				<div id="bpamount">You have 0 booster particles</div>
+				<br />
+				<div class="btn-group">
+					<button onclick="buyUpgrade('boosterup')" class="button">
+						+2 booster particles per alpha particle per second
+					</button>
+					<button onclick="buyUpgrade('boosteruppercent')" class="button">
+						+1 percent boost per booster particle
+					</button>
+				</div>
+				<div id="divboosterupcost" class="inline-block">
+					100 Alpha
+				</div>
+				<div id="divboosteruppercentcost" class="inline-block" style="text-indent: 15em">
+					100 Alpha
+				</div>
+				<br />
+				<br />
+				<div id="bpsacshow" style="display: none">
+					<button onclick="buyUpgrade('boostsacrifice')" class="button">
+						Boost sacrifice (resets your Booster Particles)
+					</button>
+					<br />
+					<div id="divboostsacrificecost" class="inline-block">
+						Cost: 5e4 Alpha
+					</div>
+					<br />
+					<div id="boostsactext">
+						Reset your Booster Particles, but double their and
+						Alpha Particle gain. Currently 1x.
+					</div>
+				</div>
+			</div>
+			<br />
+			<div id="mergeshow" class="withtheoutline" style="width: 69%; margin: auto">
+				<h2>Merge!</h2>
+				Using a beta accelerator, you can merge two alpha groups
+				together to make beta particles
+				<br />
+				<br />
+				<div class="btn-group">
+					<button onclick="buyUpgrade('betaacc')" class="button">
+						Buy Beta Accelerator
+					</button>
+					<button onclick="makegroup()" class="button">
+						Make Alpha Group
+					</button>
+				</div>
+				<div id="divbetaacceleratorcost" class="inline-block">
+					Cost: 1e12 Alpha
+				</div>
+				<div id="gcosttext" class="inline-block" style="text-indent: 2.3em">
+					Cost: 1e9 Alpha
+				</div>
+				<br />
+				<br />
 
-                <div id="mergecenteringfix" class="simpleflexcenter">
-                    <button id="mergebutton" onclick="merge()" class="button">
-                        MERGE!
-                    </button>
-                </div>
-                <div>Cost: 2 Alpha Groups</div>
-                <div id="groupamount">Alpha Groups: 0</div>
-                <div id="mergetimeleft"></div>
-                <div id="mergetimeconst">
-                    Currently, merges take 30 seconds.
-                </div>
-            </div>
-        </div>
-        <div id="Beta" style="display: none; margin: auto">
-            <div id="betacounter" class="xlarge">
-                0 Beta particles
-            </div>
-            <div id="betapb">You are getting 1 beta/merge</div>
-            <br />
-            <div class="btn-group">
-                <button onclick="buyUpgrade('mergespeed')" class="button">
-                    Make merge twice as fast
-                </button>
-                <button onclick="buyUpgrade('permerge')" class="button">
-                    +1 Beta per merge
-                </button>
-            </div>
-            <div id="divmergespeedcost" class="inline-block">
-                Cost: 1 Alpha
-            </div>
-            <div id="divpermergecost" class="inline-block" style="text-indent: 3em">
-                Cost: 4 Alpha
-            </div>
-            <br />
-            <br />
-            <div class="flex center">
-                <div id="abgbbox" class="withtheoutline">
-                    <h2>Alpha-based Generator boost</h2>
-                    <button onclick="buyUpgrade('unlockabgb')" class="button" id="abgbunlockbutton">
-                        Unlock Alpha-based Generator boost
-                    </button>
-                    <div id="divabgbcost">Cost: 1 Beta</div>
-                    <div id="abgbshow" style="display: none">
-                        <button onclick="buyUpgrade('abgbefficiency')" class="button">
-                            ABGB is stronger
-                        </button>
-                        <div id="divabgbefficiencycost">Cost: 3 beta</div>
-                        <br />
-                        <div id="abgbtext">
-                            Your alpha-based generator boost is multiplying
-                            your generators by 1x (cbrt(alpha)/100*1)
-                        </div>
-                    </div>
-                </div>
-                <div id="npboostbox" class="withtheoutline">
-                    <h2>Nuclear Particles boost</h2>
-                    <button onclick="buyUpgrade('unlocknpboost')" class="button" id="npboostunlockbutton">
-                        Unlock Nuclear Particles boost
-                    </button>
-                    <div id="divnpboostcost">Cost: 1 Beta</div>
-                    <div id="npboostshow" style="display: none">
-                        <button onclick="buyUpgrade('upgradenpboost')" class="button">
-                            Nuclear Particle boost is stronger
-                        </button>
-                        <div id="divnpboostupcost">Cost: 3 beta</div>
-                        <br />
-                        <div id="npboosttext">
-                            Your Nuclear Particles Boost is giving you 0
-                            free Nuclear Particles
-                        </div>
-                    </div>
-                </div>
-                <div id="napboostbox" class="withtheoutline">
-                    <h2>Nuclear Alpha Particles boost</h2>
-                    <button onclick="buyUpgrade('unlocknapboost')" class="button" id="napboostunlockbutton">
-                        Unlock Nuclear Alpha Particles boost
-                    </button>
-                    <div id="divnapboostcost">Cost: 15 Beta</div>
-                    <div id="napboostshow" style="display: none">
-                        <button onclick="buyUpgrade('upgradenapboost')" class="button">
-                            Nuclear Alpha Particle boost is stronger
-                        </button>
-                        <div id="divnapboostupcost">Cost: 15 beta</div>
-                        <br />
-                        <div id="napboosttext">
-                            Your Nuclear Alpha Particles Boost is giving you
-                            0 free Nuclear Alpha Particles
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="flex center">
-                <div id="returnbox" class="withtheoutline" style="display: none">
-                    <h2>Return</h2>
-                    <button onclick="buyUpgrade('buyreturngenerator')" class="button">
-                        Buy Return Particle Generator
-                    </button>
-                    <div id="divreturngeneratorcost">Cost: 100000 Beta</div>
-                    <br />
-                    <button onclick="buyUpgrade('rpup')" class="button">
-                        +1x Return Particle Gain
-                    </button>
-                    <div id="divrpupcost">Cost: 250000 Beta</div>
-                    <br />
-                    <button onclick="buyUpgrade('rpmult')" class="button">
-                        Return Particles 2x as powerful
-                    </button>
-                    <div id="divrpmultcost">Cost: 400000 Beta</div>
-                    <br />
-                    <div id="returnboosttext">
-                        Your 0 Return particles (+0/s) are returning 0 Alpha
-                        particles per second
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="Reactor" style="display: none">
-            <div class="flex shrink row">
-                <div>
-                    <br /><br />
-                    <div>
-                        <button onclick="buyFuel('player.fuel')" class="button">
-                            Buy 1 fuel
-                        </button>
-                        <button onclick="buyFuel('player.fuel', new Decimal(100))" class="button">
-                            Buy 100 fuel
-                        </button>
-                        <br />
-                        <p>Cost: 1e42 base, 1e14 Alpha and 50 Beta<br>
-                        100x Cost: 1e44 base, 1e16 Alpha and 5000 Beta</p>
-                    </div>
-                    <div>
-                        <button onclick="buyFuel('player.superfuel')" class="button">
-                            Buy 1 superfuel
-                        </button>
-                        <button onclick="buyFuel('player.superfuel', new Decimal(100))" class="button">
-                            Buy 100 superfuel
-                        </button>
-                        <br />
-                        <p>Cost: Out of stock</p>
-                    </div>
-                    <div>
-                        <button onclick="buyFuel('player.hyperfuel')" class="button">
-                            Buy 1 hyperfuel
-                        </button>
-                        <br />
-                        <p>Cost: Out of stock</p>
-                    </div>
-                    <div>
-                        <button onclick="buyFuel('a')" class="button">
-                            Coming soon
-                        </button>
-                        <br />
-                        <p>Cost: Out of stock</p>
-                    </div>
-                    <div>
-                        <button onclick="buyFuel('a')" class="button">
-                            Coming "soon"
-                        </button>
-                        <br />
-                        <p>Cost: Out of stock</p>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex reactor">
-                        <div class="flex shrink top">
-                            <div id="divreactorstatus" class="flex shrink">
-                                Reactor status: Out of fuel
-                            </div>
-                            <div><br /></div>
-                            <div id="divreactormain" class="flex shrink">
-                                Calculating status...
-                            </div>
-                            <div id="divreactornp">
-                                Calculating status...
-                            </div>
-                            <div id="divreactormb" style="display: none">
-                                Calculating status...
-                            </div>
-                            <div id="divreactornap" style="display: none">
-                                Calculating status...
-                            </div>
-                            <div id="divreactorgb" style="display: none">
-                                Calculating status...
-                            </div>
-                            <div id="divreactorbp" style="display: none">
-                                Calculating status...
-                            </div>
-                            <div><br /></div>
-                            <div id="divreactorfuelusage" class="flex shrink">
-                                When active, your reactor is using up 1 fuel
-                                every 30 seconds
-                            </div>
-                            <div><br /></div>
-                            <div><br /></div>
-                        </div>
-                        <div>
-                            <button onclick="buyUpgrade('reactorupmult')" class="button">
-                                Reactor's boost increased by 25%, but it
-                                uses fuel 50% faster
-                            </button>
-                            <button onclick="buyUpgrade('reactoruptime')" class="button">
-                                Reactor's fuel lasts 25% longer
-                            </button>
-                            <button onclick="buyUpgrade('reactorupMB')" class="button">
-                                Reactor's boost to Manual Boost
-                                significantly stronger
-                            </button>
-                        </div>
-                        <div class="flex center reactorcosts">
-                            <div id="divreactorupmultcost">
-                                Cost: 1500 beta
-                            </div>
-                            <div id="divreactoruptimecost">
-                                Cost: 1250 beta
-                            </div>
-                            <div id="divreactorupMBcost">Cost: x beta</div>
-                            <div><br /></div>
-                        </div>
-                        <br />
-                        <div>
-                            <button onclick="buyUpgrade('reactorUnlockMB')" class="button">
-                                Reactor now boosts Manual Boost
-                            </button>
-                            <button onclick="buyUpgrade('reactorUnlockNAP')" class="button">
-                                Reactor now boosts Nuclear Alpha Particles
-                            </button>
-                            <button onclick="buyUpgrade('reactorUnlockGB')" class="button">
-                                Reactor now boosts Generator Boost
-                            </button>
-                            <button onclick="buyUpgrade('reactorUnlockBP')" class="button">
-                                Reactor now boosts Booster Particle gain
-                            </button>
-                        </div>
-                        <br />
-                        <div class="flex center reactorcosts">
-                            <div id="divreactorunlockMBcost">
-                                Cost: x beta
-                            </div>
-                            <div id="divreactorunlockNAPcost">
-                                Cost: 1e5 beta
-                            </div>
-                            <div id="divreactorunlockGBcost">
-                                Cost: x beta
-                            </div>
-                            <div id="divreactorunlockBPcost">
-                                Cost: x beta
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="Gamma" style="display: none">
-            nothing here yet
-        </div>
-        <div id="Delta" style="display: none">
-            nothing here yet
-        </div>
-        <div id="Omega" style="display: none">
-            <div class="flex center">
-                <div>
-                    <button onclick="buyomegabase()" class="button" id="obb">
-                        Buy Ω<sub>B</sub> particles
-                    </button>
-                    <br />
-                    <div id="omegabasecost" style="display: inline">
-                        Cost: 1e10
-                    </div>
-                    <div id="divobase">You have 0</div>
-                </div>
-                <div>
-                    <button onclick="buyomegaalpha()" class="button" id="oab">
-                        Buy Ω<sub>α</sub> particles
-                    </button>
-                    <br />
-                    <div id="omegaalphacost" style="display: inline">
-                        Cost: 1e12
-                    </div>
-                    <span style="display: inline">α</span>
-                    <div id="divoalpha">You have 0</div>
-                </div>
-                <div>
-                    <button onclick="buyomegabeta()" class="button" id="obeb">
-                        Buy Ω<sub>β</sub> particles
-                    </button>
-                    <br />
-                    <div id="omegabetacost" style="display: inline">
-                        Cost: 1e14
-                    </div>
-                    <span style="display: inline">β</span>
-                    <div id="divobeta">You have 0</div>
-                </div>
-                <div>
-                    <button onclick="buyomegagamma()" class="button">
-                        Buy Ω<sub>γ</sub> particles
-                    </button>
-                    <div id="omegagammacost">Cost: Out of stock</div>
-                    <div id="divogamma">You have 0</div>
-                </div>
-                <div>
-                    <button onclick="buyomegadelta()" class="button">
-                        Buy Ω<sub>δ</sub> particles
-                    </button>
-                    <div id="omegadeltacost">Cost: Out of stock</div>
-                    <div id="divodelta">You have 0</div>
-                </div>
-            </div>
-            <br />
-            <button onclick="openTab('oBase')" class="button">
-                Base upgrades
-            </button>
-            <button onclick="openTab('oAlpha')" class="button">
-                Alpha upgrades
-            </button>
-            <button onclick="openTab('oBeta')" class="button">
-                Beta upgrades
-            </button>
-            <button onclick="openTab('oGamma')" class="button">
-                Gamma upgrades
-            </button>
-            <button onclick="openTab('oDelta')" class="button">
-                Delta upgrades
-            </button>
-            <div id="oBase" style="display: block">
-                <br />
-                <button id="baunlockbutton" onclick="buyUpgrade('bangautobuyerunlock')" class="button">
-                    Unlock bang autobuyer
-                </button>
-                <div id="divbauextra">
-                    <span id="divbau" class="inline-block">Cost: 1</span>
-                    Ω
-                    <sub>B</sub>
-                </div>
-                <div id="bashow" style="display: none">
-                    <div class="btn-group">
-                        <button onclick="buyUpgrade('upgradebangautobuyer')" class="button">
-                            Make bang autobuyer faster
-                        </button>
-                        <button onclick="toggleba()" class="button">
-                            Toggle bang autobuyer
-                        </button>
-                    </div>
-                    <span id="divupgradeba" class="inline-block">Cost: 1</span>
-                    Ω
-                    <sub>B</sub>
-                    <div id="divtoggleba" class="inline-block" style="text-indent: 6em">
-                        On
-                    </div>
-                    <div id="untilba">0</div>
-                </div>
-                <br />
-                <div>
-                    <div id="omegaboosterbutton">
-                        <button onclick="buyUpgrade('omegabooster')" class="button">
-                            Buy Omega Booster
-                        </button>
-                    </div>
-                    <span class="inline-block">Cost: 12</span>
-                    Ω
-                    <sub>B</sub>
-                    <br />
-                    <span class="inline-block">Effect: +2 free </span>
-                    Ω
-                    <sub>α</sub>
-                    <br />
-                    <span id="divomegaboostersbought" class="inline-block">Bought: 0/3</span>
-                </div>
-            </div>
-            <div id="oAlpha" style="display: none">
-                <br />
-                <div id="oAlphauupre">Reach the Beta layer to unlock!</div>
-                <div id="oAlphauupost" style="display: none">
-                    <div class="flex center">
-                        <br />
-                        <div class="withtheoutline">
-                            <br />
-                            <div id="divGnBBA">
-                                <button onclick="buyUpgrade('GnBBAunlock')" class="button">
-                                    Unlock Generator and Bigger Batches
-                                    autobuyers
-                                </button>
-                                Cost: 0.5 Ω<sub>α</sub>
-                            </div>
-                            <br />
-                            <div style="display: none" id="divGnBBAhide">
-                                <button onclick="instantAutobuyerToggle('genAutobuyerToggle', 'divgenAutobuyerToggle')"
-                                    class="button">
-                                    Toggle Generator autobuyer
-                                </button>
-                                <div id="divgenAutobuyerToggle">Off</div>
-                                <br />
-                                <button onclick="instantAutobuyerToggle('bbAutobuyerToggle', 'divbbAutobuyerToggle')"
-                                    class="button">
-                                    Toggle Bigger Batches autobuyer
-                                </button>
-                                <div id="divbbAutobuyerToggle">Off</div>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="withtheoutline">
-                            <br />
-                            <div id="divGBUA">
-                                <button onclick="buyUpgrade('GBUAunlock')" class="button">
-                                    Unlock autobuyers for Generator Boost
-                                    upgrades
-                                </button>
-                                Cost: 0.5 Ω<sub>α</sub>
-                            </div>
-                            <br />
-                            <div style="display: none" id="divGBUAhide">
-                                <button
-                                    onclick="instantAutobuyerToggle('genBoostTimeAutobuyerToggle', 'divgenBoostTimeAutobuyerToggle')"
-                                    class="button">
-                                    Toggle Generator boost time autobuyer
-                                </button>
-                                <div id="divgenBoostTimeAutobuyerToggle">
-                                    Off
-                                </div>
-                                <br />
-                                <button
-                                    onclick="instantAutobuyerToggle('genBoostMultAutobuyerToggle', 'divgenBoostMultAutobuyerToggle')"
-                                    class="button">
-                                    Toggle Generator boost multiplier
-                                    autobuyer
-                                </button>
-                                <div id="divgenBoostMultAutobuyerToggle">
-                                    Off
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="withtheoutline">
-                            <br />
-                            <div id="divMBUA">
-                                <button onclick="buyUpgrade('MBUAunlock')" class="button">
-                                    Unlock autobuyers for Manual Boost
-                                    upgrades
-                                </button>
-                                Cost: 0.5 Ω<sub>α</sub>
-                            </div>
-                            <br />
-                            <div style="display: none" id="divMBUAhide">
-                                <button
-                                    onclick="instantAutobuyerToggle('manBoost1perClickAutobuyerToggle', 'divmanBoost1perClickAutobuyerToggle')"
-                                    class="button">
-                                    Toggle Manual boost upgrade 1 autobuyer
-                                </button>
-                                <div id="divmanBoost1perClickAutobuyerToggle">
-                                    Off
-                                </div>
-                                <br />
-                                <button
-                                    onclick="instantAutobuyerToggle('manBoost1xperClickAutobuyerToggle', 'divmanBoost1xperClickAutobuyerToggle')"
-                                    class="button">
-                                    Toggle Manual boost upgrade 2 autobuyer
-                                </button>
-                                <div id="divmanBoost1xperClickAutobuyerToggle">
-                                    Off
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="withtheoutline">
-                            <br />
-                            <div id="divNPA">
-                                <button onclick="buyUpgrade('NPAunlock')" class="button">
-                                    Unlock Nuclear Particles and Nuclear
-                                    Alpha Particles autobuyers
-                                </button>
-                                Cost: 0.5 Ω<sub>α</sub>
-                            </div>
-                            <br />
-                            <div style="display: none" id="divNPAhide">
-                                <button
-                                    onclick="instantAutobuyerToggle('nuclearParticlesAutobuyerToggle', 'divnuclearParticlesAutobuyerToggle')"
-                                    class="button">
-                                    Toggle Nuclear particles autobuyer
-                                </button>
-                                <div id="divnuclearParticlesAutobuyerToggle">
-                                    Off
-                                </div>
-                                <br />
-                                <button
-                                    onclick="instantAutobuyerToggle('nuclearAlphaParticlesAutobuyerToggle', 'divnuclearAlphaParticlesAutobuyerToggle')"
-                                    class="button">
-                                    Toggle Nuclear Alpha particles autobuyer
-                                </button>
-                                <div id="divnuclearAlphaParticlesAutobuyerToggle">
-                                    Off
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="withtheoutline">
-                            <br />
-                            <div id="divAAccA">
-                                <button onclick="buyUpgrade('AAccAunlock')" class="button">
-                                    Unlock Alpha Accelerator autobuyer
-                                </button>
-                                Cost: 0.5 Ω<sub>α</sub>
-                            </div>
-                            <br />
-                            <div style="display: none" id="divAAccAhide">
-                                <button
-                                    onclick="instantAutobuyerToggle('AlphaAccAutobuyerToggle', 'divAlphaAccAutobuyerToggle')"
-                                    class="button">
-                                    Toggle Alpha Accelerator autobuyer
-                                </button>
-                                <div id="divAlphaAccAutobuyerToggle">
-                                    Off
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="withtheoutline">
-                            <br />
-                            <div id="divSA">
-                                <button onclick="buyUpgrade('SAunlock')" class="button">
-                                    Unlock Speed upgrade autobuyer
-                                </button>
-                                Cost: 0.5 Ω<sub>α</sub>
-                            </div>
-                            <br />
-                            <div style="display: none" id="divSAhide">
-                                <button
-                                    onclick="instantAutobuyerToggle('SpeedAutobuyerToggle', 'divSpeedAutobuyerToggle')"
-                                    class="button">
-                                    Toggle Speed autobuyer
-                                </button>
-                                <div id="divSpeedAutobuyerToggle">Off</div>
-                            </div>
-                        </div>
-                    </div>
-                    <br />
-                    <div class="flex center">
-                        <br />
-                        <div class="withtheoutline">
-                            <br />
-                            <div>
-                                <button onclick="buyUpgrade('doublebeta')" class="button">
-                                    Double Beta gain
-                                </button>
-                                <br />
-                                <span id="divdoublebetacost" class="inline-block">Cost: 0.5</span>
-                                Ω
-                                <sub>α</sub>
-                            </div>
-                        </div>
-                        <div class="withtheoutline">
-                            <br />
-                            <button id="divunlockagabutton" onclick="buyUpgrade('unlockaga')" class="button">
-                                Unlock Alpha Group Autobuyer (AGA)
-                            </button>
-                            <div id="divunlockaga">
-                                <br />
-                                <span class="inline-block">Cost: 0.25</span>
-                                Ω
-                                <sub>α</sub>
-                            </div>
-                            <div id="agashow" style="display: none">
-                                <div class="btn-group">
-                                    <button onclick="buyUpgrade('upgradeaga')" class="button">
-                                        Make AGA faster
-                                    </button>
-                                    <button onclick="toggleaga()" class="button">
-                                        Toggle AGA
-                                    </button>
-                                </div>
-                                <span id="divupgradeagacost" class="inline-block">Cost: 0.25</span>
-                                Ω
-                                <sub>α</sub>
-                                <div id="divtoggleaga">On</div>
-                                <div id="untilaga"></div>
-                            </div>
-                        </div>
-                        <div class="withtheoutline">
-                            <br />
-                            <button id="maunlockbutton" onclick="buyUpgrade('mergeautobuyerunlock')" class="button">
-                                Unlock merge autobuyer
-                            </button>
-                            <div id="divmauextra">
-                                <span id="divmau" class="inline-block">Cost: 0.25</span>
-                                Ω
-                                <sub>α</sub>
-                            </div>
-                            <div id="mashow" style="display: none">
-                                <div class="btn-group">
-                                    <button onclick="buyUpgrade('upgrademergeautobuyer')" class="button">
-                                        Make merge autobuyer faster
-                                    </button>
-                                    <button onclick="togglema()" class="button">
-                                        Toggle merge autobuyer
-                                    </button>
-                                </div>
-                                <span id="divupgradema" class="inline-block">Cost: 0.25</span>
-                                Ω
-                                <sub>α</sub>
-                                <div id="divtogglema" class="inline-block">
-                                    On
-                                </div>
-                                <div id="untilma">0</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="usewhencostdisplaynotneeded" style="display: none"></div>
-                </div>
-            </div>
-            <div id="oBeta" style="display: none">
-                <br />
-                <div id="oBetauupre">Reach the Gamma layer to unlock!</div>
-                <div id="oBetauupost" style="display: none">
-                    <button class="button"></button>
-                </div>
-            </div>
-            <div id="oGamma" style="display: none">
-                <br />
-                <div id="oGammauupre">Reach the Delta layer to unlock!</div>
-                <div id="oGammauupost" style="display: none">
-                    <button class="button"></button>
-                </div>
-            </div>
-            <div id="oDelta" style="display: none">
-                <br />
-                <div id="oDeltauupre">Reach ?????????? to unlock!</div>
-                <div id="oDeltauupost" style="display: none">
-                    <button class="button"></button>
-                </div>
-            </div>
-            <br />
-        </div>
-        <div id="OmegaOmega" style="display: none">
-            <br />
-            nothing here yet
-        </div>
-        <div id="Stats" style="display: none">
-            <pre id="stat"></pre>
-        </div>
-        <div id="Achievements" style="display: none">
-            <div id="achievementContainer">WORK IN PROGRESS</div>
-        </div>
-        <div id="Settings" style="display: none; width: 67%; margin: auto">
-            <br />
-            <button onclick="theme()" class="button" style="margin-left: 4em">
-                Change Theme
-            </button>
-            <button onclick="musicSwitch()" class="button" style="margin-left: 4em">
-                Toggle Music
-            </button>
-            <br />
-            <div id="whattheme" class="inline">
-                Theme: Light
-            </div>
-            <div id="musicState" style="margin-left: 4em" class="inline">
-                Off
-            </div>
-            <br /><br />
-            <button onclick="experimentalToggle()" class="button">
-                Toggle Experimental Features
-            </button>
-            <button onclick="devToggle()" class="button">
-                Toggle Developer Features
-            </button>
-            <br />
-            <div id="experimentoggle" class="inline-block" style="text-indent: 1em">
-                false
-            </div>
-            <div id="devtoggle" class="inline-block" style="text-indent: 10em">
-                false
-            </div>
-            <br />
-            <h2 style="color: cornflowerblue">Saving</h2>
-            <button onclick="save()" class="button blueb">
-                Save</button><br /><br />
-            <button onclick="saveExport()" class="button blueb" style="width: 37.5%">
-                Export Save
-            </button>
-            <button onclick="saveImport()" class="button blueb" style="width: 37.5%">
-                Import Save
-            </button>
-            <textarea id="importareaid" name="importarea" rows="4" cols="50"
-                style="display: none; text-align: left"></textarea>
-            <button onclick="saveImportConfirm()" id="saveimportconfirm" class="button" style="display: none">
-                Import Save
-            </button>
-            <br /><br />
-            <button onclick="autosavesettings()" class="button blueb">
-                Toggle Autosave, Autosave Speed
-            </button>
-            <br />
-            <div id="autosaving" class="inline-block">
-                On, Delay: 30s
-            </div>
-            <h2 style="color: rgb(237, 100, 100)">Danger</h2>
-            <button onclick="reset()" class="button redb">
-                Reset Save
-            </button>
-            <br /><br />
-            <button onclick="loadbackup()" class="button redb">
-                Load Backup
-                <br />
-                <span style="
+				<div id="mergecenteringfix" class="simpleflexcenter">
+					<button id="mergebutton" onclick="merge()" class="button">
+						MERGE!
+					</button>
+				</div>
+				<div>Cost: 2 Alpha Groups</div>
+				<div id="groupamount">Alpha Groups: 0</div>
+				<div id="mergetimeleft"></div>
+				<div id="mergetimeconst">
+					Currently, merges take 30 seconds.
+				</div>
+			</div>
+		</div>
+		<div id="Beta" style="display: none; margin: auto">
+			<div id="betacounter" class="xlarge">
+				0 Beta particles
+			</div>
+			<div id="betapb">You are getting 1 beta/merge</div>
+			<br />
+			<div class="btn-group">
+				<button onclick="buyUpgrade('mergespeed')" class="button">
+					Make merge twice as fast
+				</button>
+				<button onclick="buyUpgrade('permerge')" class="button">
+					+1 Beta per merge
+				</button>
+			</div>
+			<div id="divmergespeedcost" class="inline-block">
+				Cost: 1 Alpha
+			</div>
+			<div id="divpermergecost" class="inline-block" style="text-indent: 3em">
+				Cost: 4 Alpha
+			</div>
+			<br />
+			<br />
+			<div class="flex center">
+				<div id="abgbbox" class="withtheoutline">
+					<h2>Alpha-based Generator boost</h2>
+					<button onclick="buyUpgrade('unlockabgb')" class="button" id="abgbunlockbutton">
+						Unlock Alpha-based Generator boost
+					</button>
+					<div id="divabgbcost">Cost: 1 Beta</div>
+					<div id="abgbshow" style="display: none">
+						<button onclick="buyUpgrade('abgbefficiency')" class="button">
+							ABGB is stronger
+						</button>
+						<div id="divabgbefficiencycost">Cost: 3 beta</div>
+						<br />
+						<div id="abgbtext">
+							Your alpha-based generator boost is multiplying
+							your generators by 1x (cbrt(alpha)/100*1)
+						</div>
+					</div>
+				</div>
+				<div id="npboostbox" class="withtheoutline">
+					<h2>Nuclear Particles boost</h2>
+					<button onclick="buyUpgrade('unlocknpboost')" class="button" id="npboostunlockbutton">
+						Unlock Nuclear Particles boost
+					</button>
+					<div id="divnpboostcost">Cost: 1 Beta</div>
+					<div id="npboostshow" style="display: none">
+						<button onclick="buyUpgrade('upgradenpboost')" class="button">
+							Nuclear Particle boost is stronger
+						</button>
+						<div id="divnpboostupcost">Cost: 3 beta</div>
+						<br />
+						<div id="npboosttext">
+							Your Nuclear Particles Boost is giving you 0
+							free Nuclear Particles
+						</div>
+					</div>
+				</div>
+				<div id="napboostbox" class="withtheoutline">
+					<h2>Nuclear Alpha Particles boost</h2>
+					<button onclick="buyUpgrade('unlocknapboost')" class="button" id="napboostunlockbutton">
+						Unlock Nuclear Alpha Particles boost
+					</button>
+					<div id="divnapboostcost">Cost: 15 Beta</div>
+					<div id="napboostshow" style="display: none">
+						<button onclick="buyUpgrade('upgradenapboost')" class="button">
+							Nuclear Alpha Particle boost is stronger
+						</button>
+						<div id="divnapboostupcost">Cost: 15 beta</div>
+						<br />
+						<div id="napboosttext">
+							Your Nuclear Alpha Particles Boost is giving you
+							0 free Nuclear Alpha Particles
+						</div>
+					</div>
+				</div>
+			</div>
+			<br />
+			<div class="flex center">
+				<div id="returnbox" class="withtheoutline" style="display: none">
+					<h2>Return</h2>
+					<button onclick="buyUpgrade('buyreturngenerator')" class="button">
+						Buy Return Particle Generator
+					</button>
+					<div id="divreturngeneratorcost">Cost: 100000 Beta</div>
+					<br />
+					<button onclick="buyUpgrade('rpup')" class="button">
+						+1x Return Particle Gain
+					</button>
+					<div id="divrpupcost">Cost: 250000 Beta</div>
+					<br />
+					<button onclick="buyUpgrade('rpmult')" class="button">
+						Return Particles 2x as powerful
+					</button>
+					<div id="divrpmultcost">Cost: 400000 Beta</div>
+					<br />
+					<div id="returnboosttext">
+						Your 0 Return particles (+0/s) are returning 0 Alpha
+						particles per second
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="Reactor" style="display: none">
+			<div class="flex shrink row">
+				<div>
+					<br /><br />
+					<div>
+						<button onclick="buyFuel('player.fuel')" class="button">
+							Buy 1 fuel
+						</button>
+						<button onclick="buyFuel('player.fuel', new Decimal(100))" class="button">
+							Buy 100 fuel
+						</button>
+						<br />
+						<p>Cost: 1e42 base, 1e14 Alpha and 50 Beta<br>
+							100x Cost: 1e44 base, 1e16 Alpha and 5000 Beta</p>
+					</div>
+					<div>
+						<button onclick="buyFuel('player.superfuel')" class="button">
+							Buy 1 superfuel
+						</button>
+						<button onclick="buyFuel('player.superfuel', new Decimal(100))" class="button">
+							Buy 100 superfuel
+						</button>
+						<br />
+						<p>Cost: Out of stock</p>
+					</div>
+					<div>
+						<button onclick="buyFuel('player.hyperfuel')" class="button">
+							Buy 1 hyperfuel
+						</button>
+						<br />
+						<p>Cost: Out of stock</p>
+					</div>
+					<div>
+						<button onclick="buyFuel('a')" class="button">
+							Coming soon
+						</button>
+						<br />
+						<p>Cost: Out of stock</p>
+					</div>
+					<div>
+						<button onclick="buyFuel('a')" class="button">
+							Coming "soon"
+						</button>
+						<br />
+						<p>Cost: Out of stock</p>
+					</div>
+				</div>
+				<div>
+					<div class="flex reactor">
+						<div class="flex shrink top">
+							<div id="divreactorstatus" class="flex shrink">
+								Reactor status: Out of fuel
+							</div>
+							<div><br /></div>
+							<div id="divreactormain" class="flex shrink">
+								Calculating status...
+							</div>
+							<div id="divreactornp">
+								Calculating status...
+							</div>
+							<div id="divreactormb" style="display: none">
+								Calculating status...
+							</div>
+							<div id="divreactornap" style="display: none">
+								Calculating status...
+							</div>
+							<div id="divreactorgb" style="display: none">
+								Calculating status...
+							</div>
+							<div id="divreactorbp" style="display: none">
+								Calculating status...
+							</div>
+							<div><br /></div>
+							<div id="divreactorfuelusage" class="flex shrink">
+								When active, your reactor is using up 1 fuel
+								every 30 seconds
+							</div>
+							<div><br /></div>
+							<div><br /></div>
+						</div>
+						<div>
+							<button onclick="buyUpgrade('reactorupmult')" class="button">
+								Reactor's boost increased by 25%, but it
+								uses fuel 50% faster
+							</button>
+							<button onclick="buyUpgrade('reactoruptime')" class="button">
+								Reactor's fuel lasts 25% longer
+							</button>
+							<button onclick="buyUpgrade('reactorupMB')" class="button">
+								Reactor's boost to Manual Boost
+								significantly stronger
+							</button>
+						</div>
+						<div class="flex center reactorcosts">
+							<div id="divreactorupmultcost">
+								Cost: 1500 beta
+							</div>
+							<div id="divreactoruptimecost">
+								Cost: 1250 beta
+							</div>
+							<div id="divreactorupMBcost">Cost: x beta</div>
+							<div><br /></div>
+						</div>
+						<br />
+						<div>
+							<button onclick="buyUpgrade('reactorUnlockMB')" class="button">
+								Reactor now boosts Manual Boost
+							</button>
+							<button onclick="buyUpgrade('reactorUnlockNAP')" class="button">
+								Reactor now boosts Nuclear Alpha Particles
+							</button>
+							<button onclick="buyUpgrade('reactorUnlockGB')" class="button">
+								Reactor now boosts Generator Boost
+							</button>
+							<button onclick="buyUpgrade('reactorUnlockBP')" class="button">
+								Reactor now boosts Booster Particle gain
+							</button>
+						</div>
+						<br />
+						<div class="flex center reactorcosts">
+							<div id="divreactorunlockMBcost">
+								Cost: x beta
+							</div>
+							<div id="divreactorunlockNAPcost">
+								Cost: 1e5 beta
+							</div>
+							<div id="divreactorunlockGBcost">
+								Cost: x beta
+							</div>
+							<div id="divreactorunlockBPcost">
+								Cost: x beta
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="Gamma" style="display: none">
+			nothing here yet
+		</div>
+		<div id="Delta" style="display: none">
+			nothing here yet
+		</div>
+		<div id="Omega" style="display: none">
+			<div class="flex center">
+				<div>
+					<button onclick="buyomegabase()" class="button" id="obb">
+						Buy Ω<sub>B</sub> particles
+					</button>
+					<br />
+					<div id="omegabasecost" style="display: inline">
+						Cost: 1e10
+					</div>
+					<div id="divobase">You have 0</div>
+				</div>
+				<div>
+					<button onclick="buyomegaalpha()" class="button" id="oab">
+						Buy Ω<sub>α</sub> particles
+					</button>
+					<br />
+					<div id="omegaalphacost" style="display: inline">
+						Cost: 1e12
+					</div>
+					<span style="display: inline">α</span>
+					<div id="divoalpha">You have 0</div>
+				</div>
+				<div>
+					<button onclick="buyomegabeta()" class="button" id="obeb">
+						Buy Ω<sub>β</sub> particles
+					</button>
+					<br />
+					<div id="omegabetacost" style="display: inline">
+						Cost: 1e14
+					</div>
+					<span style="display: inline">β</span>
+					<div id="divobeta">You have 0</div>
+				</div>
+				<div>
+					<button onclick="buyomegagamma()" class="button">
+						Buy Ω<sub>γ</sub> particles
+					</button>
+					<div id="omegagammacost">Cost: Out of stock</div>
+					<div id="divogamma">You have 0</div>
+				</div>
+				<div>
+					<button onclick="buyomegadelta()" class="button">
+						Buy Ω<sub>δ</sub> particles
+					</button>
+					<div id="omegadeltacost">Cost: Out of stock</div>
+					<div id="divodelta">You have 0</div>
+				</div>
+			</div>
+			<br />
+			<button onclick="openTab('oBase')" class="button">
+				Base upgrades
+			</button>
+			<button onclick="openTab('oAlpha')" class="button">
+				Alpha upgrades
+			</button>
+			<button onclick="openTab('oBeta')" class="button">
+				Beta upgrades
+			</button>
+			<button onclick="openTab('oGamma')" class="button">
+				Gamma upgrades
+			</button>
+			<button onclick="openTab('oDelta')" class="button">
+				Delta upgrades
+			</button>
+			<div id="oBase" style="display: block">
+				<br />
+				<button id="baunlockbutton" onclick="buyUpgrade('bangautobuyerunlock')" class="button">
+					Unlock bang autobuyer
+				</button>
+				<div id="divbauextra">
+					<span id="divbau" class="inline-block">Cost: 1</span>
+					Ω
+					<sub>B</sub>
+				</div>
+				<div id="bashow" style="display: none">
+					<div class="btn-group">
+						<button onclick="buyUpgrade('upgradebangautobuyer')" class="button">
+							Make bang autobuyer faster
+						</button>
+						<button onclick="toggleba()" class="button">
+							Toggle bang autobuyer
+						</button>
+					</div>
+					<span id="divupgradeba" class="inline-block">Cost: 1</span>
+					Ω
+					<sub>B</sub>
+					<div id="divtoggleba" class="inline-block" style="text-indent: 6em">
+						On
+					</div>
+					<div id="untilba">0</div>
+				</div>
+				<br />
+				<div>
+					<div id="omegaboosterbutton">
+						<button onclick="buyUpgrade('omegabooster')" class="button">
+							Buy Omega Booster
+						</button>
+					</div>
+					<span class="inline-block">Cost: 12</span>
+					Ω
+					<sub>B</sub>
+					<br />
+					<span class="inline-block">Effect: +2 free </span>
+					Ω
+					<sub>α</sub>
+					<br />
+					<span id="divomegaboostersbought" class="inline-block">Bought: 0/3</span>
+				</div>
+			</div>
+			<div id="oAlpha" style="display: none">
+				<br />
+				<div id="oAlphauupre">Reach the Beta layer to unlock!</div>
+				<div id="oAlphauupost" style="display: none">
+					<div class="flex center">
+						<br />
+						<div class="withtheoutline">
+							<br />
+							<div id="divGnBBA">
+								<button onclick="buyUpgrade('GnBBAunlock')" class="button">
+									Unlock Generator and Bigger Batches
+									autobuyers
+								</button>
+								Cost: 0.5 Ω<sub>α</sub>
+							</div>
+							<br />
+							<div style="display: none" id="divGnBBAhide">
+								<button onclick="instantAutobuyerToggle('genAutobuyerToggle', 'divgenAutobuyerToggle')"
+									class="button">
+									Toggle Generator autobuyer
+								</button>
+								<div id="divgenAutobuyerToggle">Off</div>
+								<br />
+								<button onclick="instantAutobuyerToggle('bbAutobuyerToggle', 'divbbAutobuyerToggle')"
+									class="button">
+									Toggle Bigger Batches autobuyer
+								</button>
+								<div id="divbbAutobuyerToggle">Off</div>
+							</div>
+						</div>
+						<br />
+						<div class="withtheoutline">
+							<br />
+							<div id="divGBUA">
+								<button onclick="buyUpgrade('GBUAunlock')" class="button">
+									Unlock autobuyers for Generator Boost
+									upgrades
+								</button>
+								Cost: 0.5 Ω<sub>α</sub>
+							</div>
+							<br />
+							<div style="display: none" id="divGBUAhide">
+								<button
+									onclick="instantAutobuyerToggle('genBoostTimeAutobuyerToggle', 'divgenBoostTimeAutobuyerToggle')"
+									class="button">
+									Toggle Generator boost time autobuyer
+								</button>
+								<div id="divgenBoostTimeAutobuyerToggle">
+									Off
+								</div>
+								<br />
+								<button
+									onclick="instantAutobuyerToggle('genBoostMultAutobuyerToggle', 'divgenBoostMultAutobuyerToggle')"
+									class="button">
+									Toggle Generator boost multiplier
+									autobuyer
+								</button>
+								<div id="divgenBoostMultAutobuyerToggle">
+									Off
+								</div>
+							</div>
+						</div>
+						<br />
+						<div class="withtheoutline">
+							<br />
+							<div id="divMBUA">
+								<button onclick="buyUpgrade('MBUAunlock')" class="button">
+									Unlock autobuyers for Manual Boost
+									upgrades
+								</button>
+								Cost: 0.5 Ω<sub>α</sub>
+							</div>
+							<br />
+							<div style="display: none" id="divMBUAhide">
+								<button
+									onclick="instantAutobuyerToggle('manBoost1perClickAutobuyerToggle', 'divmanBoost1perClickAutobuyerToggle')"
+									class="button">
+									Toggle Manual boost upgrade 1 autobuyer
+								</button>
+								<div id="divmanBoost1perClickAutobuyerToggle">
+									Off
+								</div>
+								<br />
+								<button
+									onclick="instantAutobuyerToggle('manBoost1xperClickAutobuyerToggle', 'divmanBoost1xperClickAutobuyerToggle')"
+									class="button">
+									Toggle Manual boost upgrade 2 autobuyer
+								</button>
+								<div id="divmanBoost1xperClickAutobuyerToggle">
+									Off
+								</div>
+							</div>
+						</div>
+						<br />
+						<div class="withtheoutline">
+							<br />
+							<div id="divNPA">
+								<button onclick="buyUpgrade('NPAunlock')" class="button">
+									Unlock Nuclear Particles and Nuclear
+									Alpha Particles autobuyers
+								</button>
+								Cost: 0.5 Ω<sub>α</sub>
+							</div>
+							<br />
+							<div style="display: none" id="divNPAhide">
+								<button
+									onclick="instantAutobuyerToggle('nuclearParticlesAutobuyerToggle', 'divnuclearParticlesAutobuyerToggle')"
+									class="button">
+									Toggle Nuclear particles autobuyer
+								</button>
+								<div id="divnuclearParticlesAutobuyerToggle">
+									Off
+								</div>
+								<br />
+								<button
+									onclick="instantAutobuyerToggle('nuclearAlphaParticlesAutobuyerToggle', 'divnuclearAlphaParticlesAutobuyerToggle')"
+									class="button">
+									Toggle Nuclear Alpha particles autobuyer
+								</button>
+								<div id="divnuclearAlphaParticlesAutobuyerToggle">
+									Off
+								</div>
+							</div>
+						</div>
+						<br />
+						<div class="withtheoutline">
+							<br />
+							<div id="divAAccA">
+								<button onclick="buyUpgrade('AAccAunlock')" class="button">
+									Unlock Alpha Accelerator autobuyer
+								</button>
+								Cost: 0.5 Ω<sub>α</sub>
+							</div>
+							<br />
+							<div style="display: none" id="divAAccAhide">
+								<button
+									onclick="instantAutobuyerToggle('AlphaAccAutobuyerToggle', 'divAlphaAccAutobuyerToggle')"
+									class="button">
+									Toggle Alpha Accelerator autobuyer
+								</button>
+								<div id="divAlphaAccAutobuyerToggle">
+									Off
+								</div>
+							</div>
+						</div>
+						<br />
+						<div class="withtheoutline">
+							<br />
+							<div id="divSA">
+								<button onclick="buyUpgrade('SAunlock')" class="button">
+									Unlock Speed upgrade autobuyer
+								</button>
+								Cost: 0.5 Ω<sub>α</sub>
+							</div>
+							<br />
+							<div style="display: none" id="divSAhide">
+								<button
+									onclick="instantAutobuyerToggle('SpeedAutobuyerToggle', 'divSpeedAutobuyerToggle')"
+									class="button">
+									Toggle Speed autobuyer
+								</button>
+								<div id="divSpeedAutobuyerToggle">Off</div>
+							</div>
+						</div>
+					</div>
+					<br />
+					<div class="flex center">
+						<br />
+						<div class="withtheoutline">
+							<br />
+							<div>
+								<button onclick="buyUpgrade('doublebeta')" class="button">
+									Double Beta gain
+								</button>
+								<br />
+								<span id="divdoublebetacost" class="inline-block">Cost: 0.5</span>
+								Ω
+								<sub>α</sub>
+							</div>
+						</div>
+						<div class="withtheoutline">
+							<br />
+							<button id="divunlockagabutton" onclick="buyUpgrade('unlockaga')" class="button">
+								Unlock Alpha Group Autobuyer (AGA)
+							</button>
+							<div id="divunlockaga">
+								<br />
+								<span class="inline-block">Cost: 0.25</span>
+								Ω
+								<sub>α</sub>
+							</div>
+							<div id="agashow" style="display: none">
+								<div class="btn-group">
+									<button onclick="buyUpgrade('upgradeaga')" class="button">
+										Make AGA faster
+									</button>
+									<button onclick="toggleaga()" class="button">
+										Toggle AGA
+									</button>
+								</div>
+								<span id="divupgradeagacost" class="inline-block">Cost: 0.25</span>
+								Ω
+								<sub>α</sub>
+								<div id="divtoggleaga">On</div>
+								<div id="untilaga"></div>
+							</div>
+						</div>
+						<div class="withtheoutline">
+							<br />
+							<button id="maunlockbutton" onclick="buyUpgrade('mergeautobuyerunlock')" class="button">
+								Unlock merge autobuyer
+							</button>
+							<div id="divmauextra">
+								<span id="divmau" class="inline-block">Cost: 0.25</span>
+								Ω
+								<sub>α</sub>
+							</div>
+							<div id="mashow" style="display: none">
+								<div class="btn-group">
+									<button onclick="buyUpgrade('upgrademergeautobuyer')" class="button">
+										Make merge autobuyer faster
+									</button>
+									<button onclick="togglema()" class="button">
+										Toggle merge autobuyer
+									</button>
+								</div>
+								<span id="divupgradema" class="inline-block">Cost: 0.25</span>
+								Ω
+								<sub>α</sub>
+								<div id="divtogglema" class="inline-block">
+									On
+								</div>
+								<div id="untilma">0</div>
+							</div>
+						</div>
+					</div>
+					<div id="usewhencostdisplaynotneeded" style="display: none"></div>
+				</div>
+			</div>
+			<div id="oBeta" style="display: none">
+				<br />
+				<div id="oBetauupre">Reach the Gamma layer to unlock!</div>
+				<div id="oBetauupost" style="display: none">
+					<button class="button"></button>
+				</div>
+			</div>
+			<div id="oGamma" style="display: none">
+				<br />
+				<div id="oGammauupre">Reach the Delta layer to unlock!</div>
+				<div id="oGammauupost" style="display: none">
+					<button class="button"></button>
+				</div>
+			</div>
+			<div id="oDelta" style="display: none">
+				<br />
+				<div id="oDeltauupre">Reach ?????????? to unlock!</div>
+				<div id="oDeltauupost" style="display: none">
+					<button class="button"></button>
+				</div>
+			</div>
+			<br />
+		</div>
+		<div id="OmegaOmega" style="display: none">
+			<br />
+			nothing here yet
+		</div>
+		<div id="Stats" style="display: none">
+			<pre id="stat"></pre>
+		</div>
+		<div id="Achievements" style="display: none">
+			<div id="achievementContainer">WORK IN PROGRESS</div>
+		</div>
+		<div id="Settings" style="display: none; width: 67%; margin: auto">
+			<br />
+			<button onclick="theme()" class="button" style="margin-left: 4em">
+				Change Theme
+			</button>
+			<button onclick="musicSwitch()" class="button" style="margin-left: 4em">
+				Toggle Music
+			</button>
+			<br />
+			<div id="whattheme" class="inline">
+				Theme: Light
+			</div>
+			<div id="musicState" style="margin-left: 4em" class="inline">
+				Off
+			</div>
+			<br /><br />
+			<button onclick="experimentalToggle()" class="button">
+				Toggle Experimental Features
+			</button>
+			<button onclick="devToggle()" class="button">
+				Toggle Developer Features
+			</button>
+			<br />
+			<div id="experimentoggle" class="inline-block" style="text-indent: 1em">
+				false
+			</div>
+			<div id="devtoggle" class="inline-block" style="text-indent: 10em">
+				false
+			</div>
+			<br />
+			<h2 style="color: cornflowerblue">Saving</h2>
+			<button onclick="save()" class="button blueb">
+				Save</button><br /><br />
+			<button onclick="saveExport()" class="button blueb" style="width: 37.5%">
+				Export Save
+			</button>
+			<button onclick="saveImport()" class="button blueb" style="width: 37.5%">
+				Import Save
+			</button>
+			<textarea id="importareaid" name="importarea" rows="4" cols="50"
+				style="display: none; text-align: left"></textarea>
+			<button onclick="saveImportConfirm()" id="saveimportconfirm" class="button" style="display: none">
+				Import Save
+			</button>
+			<br /><br />
+			<button onclick="autosavesettings()" class="button blueb">
+				Toggle Autosave, Autosave Speed
+			</button>
+			<br />
+			<div id="autosaving" class="inline-block">
+				On, Delay: 30s
+			</div>
+			<h2 style="color: rgb(237, 100, 100)">Danger</h2>
+			<button onclick="reset()" class="button redb">
+				Reset Save
+			</button>
+			<br /><br />
+			<button onclick="loadbackup()" class="button redb">
+				Load Backup
+				<br />
+				<span style="
                             text-align: left;
                             font-size: small;
                             opacity: 0.2;
                             margin: 0;
                         ">
-                    (if one exists)
-                </span>
-            </button>
-            <br /><br />
-            <a href="https://discord.gg/skd7JmDvQu" class="large">
-                Official Particle Incremental Discord server. Click here to
-                join.
-            </a>
-            <br /><br />
-            Special thanks to:
-            <br />
-            <a href="https://github.com/Cosmic47">Cosmic47</a>
-            for keeping me motivated, helping me come up with ideas, and
-            more. <br />
-            <a href="https://github.com/typeholes">qhwood</a>
-            for improving my code and helping me code.
-            <br />
-            <a href="https://github.com/frinkifail">frinkfail</a>
-            for starting the UI redesign.
-            <br />
-            <a href="https://github.com/jakub791">jakub791</a>
-            for doing a LOT of coding and code changes.
-            <br /><br />
-            Version alpha23 (b2.3.1.0)
-            <br />
-            Changelog:
-            <br />
-            Added bulk buy fuel
-            <br /><br />
-            Copyright notice: The in-game music "Hikaru - Miles" is
-            non-copyright. For YouTubers: if anyone tries to copyright
-            strike you for it, that strike is false.
-            <br />
-            About Particle Incremental itself: you are free to make
-            derivative works, but do not try to impersonate me or hide the
-            fact that THIS is the original.
-        </div>
-        <div id="Tutorial" style="display: none">
-            A generator gives you n particles every loop. Default is 1 loop
-            per second and 1 particle per loop.
-            <br />
-            The bigger batches upgrade adds 1 to the n (first upgrade makes
-            it 2 particles per loop, 2nd 3 per loop etc).
-            <br />
-            The speed upgrade makes generators do 1 more loop per second
-            (1st upgrade 2loops/s, 2nd upgrade 3l/s etc).
-            <br />
-            The way that the speed upgrade works makes it have diminishing
-            returns. Every upgrade does less that the previous one.
-            <br /><br />
-            Manual boost adds n particles to your particles when clicked.
-            <br />
-            The +1/click upgrade increases n by 1.
-            <br />
-            The +1x/click multiplies n by some m (starting at 1) that gets
-            incremented when you buy this upgrade. <br />
-            1st upgrade doubles n, 2nd triples it etc.
-            <br /><br />
-            The generator boost multiplies particle production by n for m
-            seconds.
-            <br /><br />
-            Every nuclear particle adds a +1x multiplier to both boosts and
-            particle production.
-            <br />
-            (1st particle 2x, 2nd particle 3x etc).
-            <br /><br />
-            The buy particle chunk button is self explanatory.
-            <br />
-            The bang button makes an alpha particle from 2 particle chunks.
-            <br />
-            You need at least 1 alpha accelerator to bang.
-            <br />
-            Buying more alpha accelerators multiplies alpha particle gain
-            from the bangs by the total number of accelerators you have.
-            <br /><br />
-            <a href="https://discord.gg/skd7JmDvQu">
-                Need help? Click here to join the official Particle
-                Incremental Discord server.
-            </a>
-        </div>
-        <div id="Dev" style="display: none">
-            <br />
-            <div id="cheat">
-                <button onclick="cheat()" class="button">
-                    cheat
-                </button>
-                <button onclick="changeCheatMode()" class="button">
-                    cheatmode
-                </button>
-                <div id="cheatmodediv">0</div>
-            </div>
-            <button onclick="clearls()" class="button">
-                clear ALL localStorage entries
-            </button>
-        </div>
-    </div>
+					(if one exists)
+				</span>
+			</button>
+			<br /><br />
+			<a href="https://discord.gg/skd7JmDvQu">
+				Official Particle Incremental Discord server. Click here to
+				join.
+			</a>
+			<br /><br />
+			Special thanks to:
+			<br />
+			<a href="https://github.com/Cosmic47">Cosmic47</a>
+			for keeping me motivated, helping me come up with ideas, and
+			more. <br />
+			<a href="https://github.com/typeholes">qhwood</a>
+			for improving my code and helping me code.
+			<br />
+			<a href="https://github.com/frinkifail">frinkfail</a>
+			for starting the UI redesign.
+			<br />
+			<a href="https://github.com/jakub791">jakub791</a>
+			for doing a LOT of coding and code changes.
+			<br /><br />
+			Version alpha18
+			<br />
+			Changelog:
+			<br />
+			New content, more code and savefile changes, bugfixes, UI fixes,
+			balancing changes, added favicon.
+			<br /><br />
+			Copyright notice: The in-game music "Hikaru - Miles" is
+			non-copyright. For YouTubers: if anyone tries to copyright
+			strike you for it, that strike is false.
+			<br />
+			About Particle Incremental itself: you are free to make
+			derivative works, but do not try to impersonate me or hide the
+			fact that THIS is the original.
+		</div>
+		<div id="Tutorial" style="display: none">
+			A generator gives you n particles every loop. Default is 1 loop
+			per second and 1 particle per loop.
+			<br />
+			The bigger batches upgrade adds 1 to the n (first upgrade makes
+			it 2 particles per loop, 2nd 3 per loop etc).
+			<br />
+			The speed upgrade makes generators do 1 more loop per second
+			(1st upgrade 2loops/s, 2nd upgrade 3l/s etc).
+			<br />
+			The way that the speed upgrade works makes it have diminishing
+			returns. Every upgrade does less that the previous one.
+			<br /><br />
+			Manual boost adds n particles to your particles when clicked.
+			<br />
+			The +1/click upgrade increases n by 1.
+			<br />
+			The +1x/click multiplies n by some m (starting at 1) that gets
+			incremented when you buy this upgrade. <br />
+			1st upgrade doubles n, 2nd triples it etc.
+			<br /><br />
+			The generator boost multiplies particle production by n for m
+			seconds.
+			<br /><br />
+			Every nuclear particle adds a +1x multiplier to both boosts and
+			particle production.
+			<br />
+			(1st particle 2x, 2nd particle 3x etc).
+			<br /><br />
+			The buy particle chunk button is self explanatory.
+			<br />
+			The bang button makes an alpha particle from 2 particle chunks.
+			<br />
+			You need at least 1 alpha accelerator to bang.
+			<br />
+			Buying more alpha accelerators multiplies alpha particle gain
+			from the bangs by the total number of accelerators you have.
+			<br /><br />
+			<a href="https://discord.gg/skd7JmDvQu">
+				Need help? Click here to join the official Particle
+				Incremental Discord server.
+			</a>
+		</div>
+		<div id="Dev" style="display: none">
+			<br />
+			<div id="cheat">
+				<button onclick="cheat()" class="button">
+					cheat
+				</button>
+				<button onclick="changeCheatMode()" class="button">
+					cheatmode
+				</button>
+				<div id="cheatmodediv">0</div>
+			</div>
+			<button onclick="clearls()" class="button">
+				clear ALL localStorage entries
+			</button>
+		</div>
+	</div>
 </body>
+
+</html>
 
 </html>
