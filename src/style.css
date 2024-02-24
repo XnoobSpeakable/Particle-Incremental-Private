@@ -1,7 +1,7 @@
 :root {
     --fill: #2a2a2a;
     --fill-active: #2a2a2ab1;
-    --stroke: #333;
+    --stroke: #333333;
 }
 
 :link { color: #0077ff; }

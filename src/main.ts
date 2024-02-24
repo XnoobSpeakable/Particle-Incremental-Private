@@ -1630,6 +1630,16 @@ function savinginloop(): void {
 }
 
 
+function costHighlighting(): void {
+    const className = document.getElementsByClassName("button");
+    for (const element of className) {
+        if (!(element instanceof HTMLElement)) {
+            throw new Error(`element is not an HTMLElement`);
+        }
+        //document.documentElement.style.setProperty('--fill', '#ffffff');
+    }
+}
+
 //Game loop, repeatedly run every 100ms.
 setInterval(() => {
     passiveUnlockDisplay();
@@ -1639,6 +1649,7 @@ setInterval(() => {
     maTestConst();
     fgbTestConst();
     instantAutobuyers();
+    costHighlighting();
     getElement("stat").textContent = JSON.stringify(player)
         .replace(/","/g, '",\n"')
         .replace(/},"/g, '",\n"');
