@@ -9,7 +9,8 @@ import {
     playerSettings,
     UpgradeNames,
     type InstantAutobuyerName,
-    isAutobuyerName
+    isAutobuyerName,
+    type UpgradeName
 } from "./player";
 import {
     format,
@@ -1157,13 +1158,13 @@ function fgbTestConst(): void {
         if (getUpgradeTimesBought("unlockgenboost").eq(Decimal.dOne)) {
             getElement("gbshow").style.display = "block";
             getElement("divgenunlockcost").style.display = "none";
-            getElement("gbunlockbutton").style.display = "none";
+            getElement("unlockgenboost").style.display = "none";
         }
 
         if (getUpgradeTimesBought("unlockabgb").eq(Decimal.dOne)) {
             getElement("abgbshow").style.display = "block";
             getElement("divabgbcost").style.display = "none";
-            getElement("abgbunlockbutton").style.display = "none";
+            getElement("unlockabgb").style.display = "none";
         }
 
         player.bangTime = Math.ceil(
@@ -1480,7 +1481,7 @@ function pcaTestConst(): void {
     if (getUpgradeTimesBought("unlockpca").eq(Decimal.dOne)) {
         getElement("pcashow").style.display = "block";
         getElement("divunlockpca").style.display = "none";
-        getElement("divunlockpcabutton").style.display = "none";
+        getElement("unlockpca").style.display = "none";
 
         if (player.pcaToggle === true) {
             if (player.chunkAutobuyerTimeLeft === 0) {
@@ -1500,7 +1501,7 @@ function agaTestConst(): void {
     if (getUpgradeTimesBought("unlockaga").eq(Decimal.dOne)) {
         getElement("agashow").style.display = "block";
         getElement("divunlockaga").style.display = "none";
-        getElement("divunlockagabutton").style.display = "none";
+        getElement("unlockaga").style.display = "none";
 
         if (player.agaToggle === true) {
             if (player.groupAutobuyerTimeLeft === 0) {
@@ -1521,7 +1522,7 @@ function baTestConst(): void {
         getElement("bashow").style.display = "block";
         getElement("divbau").style.display = "none";
         getElement("divbauextra").style.display = "none";
-        getElement("baunlockbutton").style.display = "none";
+        getElement("bangautobuyerunlock").style.display = "none";
 
         if (player.bangAutobuyerToggle === true) {
             if (player.bangAutobuyerTimeLeft === 0) {
@@ -1542,7 +1543,7 @@ function maTestConst(): void {
         getElement("mashow").style.display = "block";
         getElement("divmau").style.display = "none";
         getElement("divmauextra").style.display = "none";
-        getElement("maunlockbutton").style.display = "none";
+        getElement("mergeautobuyerunlock").style.display = "none";
 
         if (player.mergeAutobuyerToggle === true) {
             if (player.mergeAutobuyerTimeLeft === 0) {
@@ -1629,14 +1630,25 @@ function savinginloop(): void {
     }
 }
 
+function highlightButton(upgradeName: UpgradeName): void {
+    const upgrade = upgrades[upgradeName];
+    const cost = getUpgradeCost(upgradeName);
+
+    if (player[upgrade.currency].gte(cost)) {
+        getElement(upgrade.buttonDiv).style.setProperty('border', '1px solid #888888')
+        getElement(upgrade.buttonDiv).style.setProperty('cursor', 'pointer')
+    }
+    else {
+        getElement(upgrade.buttonDiv).style.setProperty('border', '1px solid #333333')
+        getElement(upgrade.buttonDiv).style.setProperty('cursor', 'not-allowed')
+    }
+}
 
 function costHighlighting(): void {
-    const className = document.getElementsByClassName("button");
-    for (const element of className) {
-        if (!(element instanceof HTMLElement)) {
-            throw new Error(`element is not an HTMLElement`);
-        }
-        //document.documentElement.style.setProperty('--fill', '#ffffff');
+    let key: UpgradeName
+
+    for(key in upgrades) {
+        highlightButton(key)
     }
 }
 
