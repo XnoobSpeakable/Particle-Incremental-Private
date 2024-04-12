@@ -166,7 +166,7 @@ const themes = [
         textColor: "#3DD7DE",
         bgColor: "#191970",
         buttonColor: "#3DD7DE",
-        borderColor: "#3DD7DE",
+        borderColor: "#23A6D0",
         gradientColor: "#7090FF",
         buttonGradientOverride: true,
         themeName: "Blue",
@@ -291,6 +291,8 @@ window.theme = function (): void {
     playerSettings.themeNumber =
         (playerSettings.themeNumber + 1) % themes.length;
     themeExec();
+    arbitraryHighlight("manualboost");
+    arbitraryHighlight("generatorboost");
     saveSettings();
 };
 
@@ -1636,6 +1638,10 @@ function arbitraryHighlight(h: string) {
         getElement(h).style.setProperty('border', '1px solid #00FF00')
         getElement(h).style.setProperty('box-shadow', 'inset 0 0 5px #00FF00')
     }
+    else if(playerSettings.themeNumber === 7) {
+        getElement(h).style.setProperty('border', '1px solid #FFFFFF')
+        getElement(h).style.setProperty('box-shadow', 'inset 0 0 5px #FFFFFF')
+    }
     else if(playerSettings.themeNumber > 5) {
         getElement(h).style.setProperty('border', '1px solid #000000')
         getElement(h).style.setProperty('box-shadow', 'inset 0 0 5px #000000')
@@ -1669,6 +1675,9 @@ function costHighlighting(): void {
     }
 }
 
+arbitraryHighlight("manualboost");
+arbitraryHighlight("generatorboost");
+
 //Game loop, repeatedly run every 100ms.
 setInterval(() => {
     passiveUnlockDisplay();
@@ -1678,12 +1687,21 @@ setInterval(() => {
     maTestConst();
     fgbTestConst();
     instantAutobuyers();
+
     costHighlighting();
-    arbitraryHighlight("manualboost");
-    arbitraryHighlight("generatorboost");
+    if(player.num.gte(getUpgradeCost("speed"))) {
+        arbitraryHighlight("fiftyspeed")
+    }
+    else {
+        getElement("fiftyspeed").style.setProperty('border', '1px solid #333333')
+        getElement("fiftyspeed").style.setProperty('box-shadow', 'none')
+        getElement("fiftyspeed").style.setProperty('cursor', 'not-allowed')
+    }
+
     getElement("stat").textContent = JSON.stringify(player)
         .replace(/","/g, '",\n"')
         .replace(/},"/g, '",\n"');
+
     savinginloop();
 }, 100);
 
