@@ -1652,6 +1652,7 @@ function costHighlightHandle(upgradeName: UpgradeName): void {
     }
     else {
         getElement(upgrade.buttonDiv).style.setProperty('border', '1px solid #333333')
+        getElement(upgrade.buttonDiv).style.setProperty('box-shadow', 'none')
         getElement(upgrade.buttonDiv).style.setProperty('cursor', 'not-allowed')
     }
 }
