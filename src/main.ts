@@ -1630,12 +1630,24 @@ function savinginloop(): void {
     }
 }
 
-function highlightButton(upgradeName: UpgradeName): void {
+
+function costHighlightHandle(upgradeName: UpgradeName): void {
     const upgrade = upgrades[upgradeName];
     const cost = getUpgradeCost(upgradeName);
 
     if (player[upgrade.currency].gte(cost)) {
-        getElement(upgrade.buttonDiv).style.setProperty('border', '1px solid #888888')
+        if(playerSettings.themeNumber > 2 && playerSettings.themeNumber < 5) {
+            getElement(upgrade.buttonDiv).style.setProperty('border', '1px solid #00FF00')
+            getElement(upgrade.buttonDiv).style.setProperty('box-shadow', 'inset 0 0 5px #00FF00')
+        }
+        else if(playerSettings.themeNumber > 5) {
+            getElement(upgrade.buttonDiv).style.setProperty('border', '1px solid #000000')
+            getElement(upgrade.buttonDiv).style.setProperty('box-shadow', 'inset 0 0 5px #000000')
+        }
+        else {
+            getElement(upgrade.buttonDiv).style.setProperty('border', '1px solid #888888')
+            getElement(upgrade.buttonDiv).style.setProperty('box-shadow', 'inset 0 0 5px #888888')
+        }
         getElement(upgrade.buttonDiv).style.setProperty('cursor', 'pointer')
     }
     else {
@@ -1648,7 +1660,7 @@ function costHighlighting(): void {
     let key: UpgradeName
 
     for(key in upgrades) {
-        highlightButton(key)
+       costHighlightHandle(key)
     }
 }
 
