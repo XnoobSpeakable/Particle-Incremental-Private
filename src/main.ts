@@ -1647,6 +1647,9 @@ function arbitraryHighlight(h: string) {
     getElement(h).style.setProperty('cursor', 'pointer')
 }
 
+arbitraryHighlight("manualboost");
+arbitraryHighlight("generatorboost");
+
 function costHighlightHandle(upgradeName: UpgradeName): void {
     const upgrade = upgrades[upgradeName];
     const cost = getUpgradeCost(upgradeName);
@@ -1668,7 +1671,6 @@ function costHighlighting(): void {
        costHighlightHandle(key)
     }
 }
-
 
 //Game loop, repeatedly run every 100ms.
 setInterval(() => {
