@@ -1088,7 +1088,7 @@ function fgbTestConst(): void {
                 ]
             ]);
             getElement("npboostshow").style.display = "block";
-            getElement("npboostunlockbutton").style.display = "none";
+            getElement("unlocknpboost").style.display = "none";
             getElement("divnpboostcost").style.display = "none";
         } else {
             nuclearParticles = getUpgradeTimesBought("nuclearbuy");
@@ -1105,7 +1105,7 @@ function fgbTestConst(): void {
                 ]
             ]);
             getElement("napboostshow").style.display = "block";
-            getElement("napboostunlockbutton").style.display = "none";
+            getElement("unlocknapboost").style.display = "none";
             getElement("divnapboostcost").style.display = "none";
         } else {
             nuclearAlphaParticles = getUpgradeTimesBought("nuclearalphabuy");
@@ -1631,24 +1631,28 @@ function savinginloop(): void {
 }
 
 
+function arbitraryHighlight(h: string) {
+    if(playerSettings.themeNumber > 2 && playerSettings.themeNumber < 5) {
+        getElement(h).style.setProperty('border', '1px solid #00FF00')
+        getElement(h).style.setProperty('box-shadow', 'inset 0 0 5px #00FF00')
+    }
+    else if(playerSettings.themeNumber > 5) {
+        getElement(h).style.setProperty('border', '1px solid #000000')
+        getElement(h).style.setProperty('box-shadow', 'inset 0 0 5px #000000')
+    }
+    else {
+        getElement(h).style.setProperty('border', '1px solid #888888')
+        getElement(h).style.setProperty('box-shadow', 'inset 0 0 5px #888888')
+    }
+    getElement(h).style.setProperty('cursor', 'pointer')
+}
+
 function costHighlightHandle(upgradeName: UpgradeName): void {
     const upgrade = upgrades[upgradeName];
     const cost = getUpgradeCost(upgradeName);
 
     if (player[upgrade.currency].gte(cost)) {
-        if(playerSettings.themeNumber > 2 && playerSettings.themeNumber < 5) {
-            getElement(upgrade.buttonDiv).style.setProperty('border', '1px solid #00FF00')
-            getElement(upgrade.buttonDiv).style.setProperty('box-shadow', 'inset 0 0 5px #00FF00')
-        }
-        else if(playerSettings.themeNumber > 5) {
-            getElement(upgrade.buttonDiv).style.setProperty('border', '1px solid #000000')
-            getElement(upgrade.buttonDiv).style.setProperty('box-shadow', 'inset 0 0 5px #000000')
-        }
-        else {
-            getElement(upgrade.buttonDiv).style.setProperty('border', '1px solid #888888')
-            getElement(upgrade.buttonDiv).style.setProperty('box-shadow', 'inset 0 0 5px #888888')
-        }
-        getElement(upgrade.buttonDiv).style.setProperty('cursor', 'pointer')
+        arbitraryHighlight(upgrade.buttonDiv)
     }
     else {
         getElement(upgrade.buttonDiv).style.setProperty('border', '1px solid #333333')
@@ -1664,6 +1668,7 @@ function costHighlighting(): void {
        costHighlightHandle(key)
     }
 }
+
 
 //Game loop, repeatedly run every 100ms.
 setInterval(() => {
