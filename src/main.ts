@@ -1647,9 +1647,6 @@ function arbitraryHighlight(h: string) {
     getElement(h).style.setProperty('cursor', 'pointer')
 }
 
-arbitraryHighlight("manualboost");
-arbitraryHighlight("generatorboost");
-
 function costHighlightHandle(upgradeName: UpgradeName): void {
     const upgrade = upgrades[upgradeName];
     const cost = getUpgradeCost(upgradeName);
@@ -1682,6 +1679,8 @@ setInterval(() => {
     fgbTestConst();
     instantAutobuyers();
     costHighlighting();
+    arbitraryHighlight("manualboost");
+    arbitraryHighlight("generatorboost");
     getElement("stat").textContent = JSON.stringify(player)
         .replace(/","/g, '",\n"')
         .replace(/},"/g, '",\n"');

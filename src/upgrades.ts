@@ -318,7 +318,7 @@ export const upgrades = {
             return upgradeAmount.pow_base(3).times(1000);
         },
         scaleFunction: scaleMultiplier(new Decimal(3)),
-        costDiv: "alphamachinedouble",
+        costDiv: "divalphamachinedoublecost",
         buttonDiv: "alphamachinedouble",
         currency: "alphaNum"
     },
