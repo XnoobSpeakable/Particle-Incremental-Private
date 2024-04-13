@@ -4,12 +4,8 @@
     --stroke: #333333;
 }
 
-:link {
-    color: #0077ff;
-}
-:visited {
-    color: #8400ff;
-}
+:link { color: #0077ff; }
+:visited { color: #8400ff; }
 
 button:active {
     background: var(--fill-active);

@@ -610,7 +610,7 @@ export const upgrades = {
     },
     omegabooster: {
         cost: new Decimal(12),
-        scaleFunction: scaleMultiplier(Decimal.dOne), //TODO: ah yes, scaling by 1. I failed to make scaleFunction and costDiv optional
+        scaleFunction: scaleMultiplier(Decimal.dOne),  //TODO: ah yes, scaling by 1. I failed to make scaleFunction and costDiv optional
         costDiv: "usewhencostdisplaynotneeded",
         buttonDiv: "omegabooster",
         currency: "omegaBase",
@@ -808,13 +808,10 @@ function BSExtra(): void {
 function OBExtra(): void {
     if (getUpgradeTimesBought("omegabooster").lte(3)) {
         player.omegaAlpha = player.omegaAlpha.plus(2);
-        getElement(
-            "divomegaboostersbought"
-        ).textContent = `Bought: ${getUpgradeTimesBought(
-            "omegabooster"
-        ).toString()}/3`;
+        getElement("divomegaboostersbought").textContent =
+            `Bought: ${getUpgradeTimesBought("omegabooster").toString()}/3`;
         if (getUpgradeTimesBought("omegabooster").gte(3)) {
-            getElement("omegaboosterbutton").style.display = "none";
+            getElement("omegaboosterbutton").style.display = "none"
         }
     }
 }
