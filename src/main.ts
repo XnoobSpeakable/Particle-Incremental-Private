@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import "./style.css";
 import "./music";
 import {
@@ -1640,7 +1641,7 @@ function arbitraryHighlight(h: string) {
     }
     else if(playerSettings.themeNumber === 7) {
         getElement(h).style.setProperty('border', '1px solid #FFFFFF')
-        getElement(h).style.setProperty('box-shadow', 'inset 0 0 5px #FFFFFF')
+        getElement(h).style.setProperty('box-shadow', 'inset 0 0 7px #FFFFFF')
     }
     else if(playerSettings.themeNumber > 5) {
         getElement(h).style.setProperty('border', '1px solid #000000')
@@ -1678,6 +1679,15 @@ function costHighlighting(): void {
 arbitraryHighlight("manualboost");
 arbitraryHighlight("generatorboost");
 
+function statsUpdate() {
+    getElement("stat").textContent = 
+    `Raw values:\n
+    Particles: ${player.num}\n
+    Alpha Particles: ${player.alphaNum}\n
+    Beta Particles: ${player.betaNum}\n
+    `
+}
+
 //Game loop, repeatedly run every 100ms.
 setInterval(() => {
     passiveUnlockDisplay();
@@ -1687,7 +1697,6 @@ setInterval(() => {
     maTestConst();
     fgbTestConst();
     instantAutobuyers();
-
     costHighlighting();
     if(player.num.gte(getUpgradeCost("speed"))) {
         arbitraryHighlight("fiftyspeed")
@@ -1697,11 +1706,7 @@ setInterval(() => {
         getElement("fiftyspeed").style.setProperty('box-shadow', 'none')
         getElement("fiftyspeed").style.setProperty('cursor', 'not-allowed')
     }
-
-    getElement("stat").textContent = JSON.stringify(player)
-        .replace(/","/g, '",\n"')
-        .replace(/},"/g, '",\n"');
-
+    statsUpdate()
     savinginloop();
 }, 100);
 
