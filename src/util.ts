@@ -44,16 +44,14 @@ export function formatDecimal(d: Decimal, places = 3, ePlaces = 99): string {
             Math.round
         )}`;
     } else {
-        if (d.layer <= 5) {
-            return `${d.sign === -1 ? "-" : ""}${"e".repeat(d.layer)}
-        ${decimalPlaces(d.mag, ePlaces, Math.round)}`;
-        } else {
-            return `${d.sign === -1 ? "-" : ""}(e^${d.layer})${decimalPlaces(
-                d.mag,
-                ePlaces,
-                Math.round
-            )}`;
-        }
+        return d.layer <= 5
+            ? `${d.sign === -1 ? "-" : ""}${"e".repeat(d.layer)}
+        ${decimalPlaces(d.mag, ePlaces, Math.round)}`
+            : `${d.sign === -1 ? "-" : ""}(e^${d.layer})${decimalPlaces(
+                  d.mag,
+                  ePlaces,
+                  Math.round
+              )}`;
     }
 }
 
@@ -162,31 +160,27 @@ export function onDecimal<T = string>(
                     const operand = is(token) ? lookup(token) : token;
                     result = result(operand);
                 }
+            } else if (token instanceof Decimal) {
+                result = result.times(token);
+            } else if (is(token)) {
+                result = result.times(lookup(token));
+            } else if (Array.isArray(token)) {
+                const [first, args] = splitArgs(token);
+                result = result.times(fn(first, ...args));
             } else {
-                if (token instanceof Decimal) {
-                    result = result.times(token);
-                } else if (is(token)) {
-                    result = result.times(lookup(token));
-                } else if (Array.isArray(token)) {
-                    const [first, args] = splitArgs(token);
-                    result = result.times(fn(first, ...args));
-                } else {
-                    const left = result;
-                    const method = (d: Decimal) =>
-                        Decimal[operatorMap[token]](left, d);
-                    result = x => {
-                        if (x instanceof Decimal) {
-                            return method(x);
-                        }
-                        if (Decimal[x as never]) {
-                            throw new Error(
-                                "cannot have two operations in a row"
-                            );
-                        }
+                const left = result;
+                const method = (d: Decimal) =>
+                    Decimal[operatorMap[token]](left, d);
+                result = x => {
+                    if (x instanceof Decimal) {
+                        return method(x);
+                    }
+                    if (Decimal[x as never]) {
+                        throw new Error("cannot have two operations in a row");
+                    }
 
-                        return method(lookup(x as T));
-                    };
-                }
+                    return method(lookup(x as T));
+                };
             }
         });
         return result;
@@ -196,10 +190,10 @@ export function onDecimal<T = string>(
         const arr = [...args];
         const head = arr.shift();
         if (head === undefined) {
-            throw new Error("arr is empty");
+            throw new TypeError("arr is empty");
         }
         if (isOperator(head)) {
-            throw new Error("first token cannot be an operator");
+            throw new TypeError("first token cannot be an operator");
         }
         if (Array.isArray(head)) {
             const [first, rest] = splitArgs(head);
@@ -256,8 +250,7 @@ if (import.meta.env.DEV) {
         getElement("cheatmodediv").textContent =
             playerSettings.cheatMode.toString();
     };
-}  
-else {
+} else {
     getElement("cheat").style.display = "none";
     getElement("devtoggle").style.display = "none";
 }
