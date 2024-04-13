@@ -293,7 +293,8 @@ export const player = {
     agaToggle: true,
     agaTime: 160,
     groupAutobuyerTimeLeft: 0,
-    returnParticles: Decimal.dZero
+    returnParticles: Decimal.dZero,
+    floatBugfix: false
 };
 
 /**
