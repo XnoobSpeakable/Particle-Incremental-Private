@@ -1648,8 +1648,8 @@ function arbitraryHighlight(h: string) {
         getElement(h).style.setProperty('box-shadow', 'inset 0 0 5px #000000')
     }
     else {
-        getElement(h).style.setProperty('border', '1px solid #888888')
-        getElement(h).style.setProperty('box-shadow', 'inset 0 0 5px #888888')
+        getElement(h).style.setProperty('border', '1px solid #999999')
+        getElement(h).style.setProperty('box-shadow', 'inset 0 0 6px #999999')
     }
     getElement(h).style.setProperty('cursor', 'pointer')
 }
