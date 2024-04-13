@@ -1711,6 +1711,12 @@ setInterval(() => {
     savinginloop();
 }, 100);
 
+if(!player.floatBugfix) {
+    player.omegaBase = player.omegaBase.plus(0.000001)
+    player.omegaAlpha = player.omegaAlpha.plus(0.000001)
+    player.floatBugfix = true
+}
+
 /**
  * Adds a D# to Decimal type numbers in the savefile so they can be differentiated from regular numbers when loading.
  */
