@@ -384,7 +384,7 @@ export function loadSettings(): void {
 }
 
 Decimal.prototype.toJSON = function (): string {
-    return "D#" + this.toString();
+    return `D#${this.toString()}`;
 };
 
 /**

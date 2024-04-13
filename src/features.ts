@@ -3,7 +3,6 @@ import { player } from "./player";
 import { type CurrencyName, currencyName } from "./upgrades";
 import Decimal from "break_eternity.js";
 
-
 /**
  * The list of features the play can unlock, and their properties.
  */
