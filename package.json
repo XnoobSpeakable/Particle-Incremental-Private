@@ -16,7 +16,7 @@
         "vite": "^5.0.10"
     },
     "dependencies": {
-        "break_eternity.js": "^1.4.0"
+        "break_eternity.js": "^1.4.2"
     },
     "engines": {
         "npm": "^9.8.1",

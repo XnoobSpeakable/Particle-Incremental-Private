@@ -1229,9 +1229,9 @@ function fgbTestConst(): void {
             "abgbtext"
         ).textContent = `Your alpha-based generator boost is multiplying your generators by ${formatBig(
             abgbBoost
-        )}x (cbrt(alpha)/100*${formatBig(
+        )}x ( (cbrt(alpha)/100)*${formatBig(
             getUpgradeTimesBought("abgbefficiency").plus(Decimal.dOne)
-        )})`;
+        )} )`;
 
         const gain: Decimal = onBought(
             ["biggerbatches", "+", Decimal.dOne],
@@ -1674,6 +1674,15 @@ function costHighlighting(): void {
     for(key in upgrades) {
        costHighlightHandle(key)
     }
+
+    if(player.num.gte(getUpgradeCost("speed"))) {
+        arbitraryHighlight("fiftyspeed")
+    }
+    else {
+        getElement("fiftyspeed").style.setProperty('border', '1px solid #333333')
+        getElement("fiftyspeed").style.setProperty('box-shadow', 'none')
+        getElement("fiftyspeed").style.setProperty('cursor', 'not-allowed')
+    }
 }
 
 arbitraryHighlight("manualboost");
@@ -1698,14 +1707,6 @@ setInterval(() => {
     fgbTestConst();
     instantAutobuyers();
     costHighlighting();
-    if(player.num.gte(getUpgradeCost("speed"))) {
-        arbitraryHighlight("fiftyspeed")
-    }
-    else {
-        getElement("fiftyspeed").style.setProperty('border', '1px solid #333333')
-        getElement("fiftyspeed").style.setProperty('box-shadow', 'none')
-        getElement("fiftyspeed").style.setProperty('cursor', 'not-allowed')
-    }
     statsUpdate()
     savinginloop();
 }, 100);
