@@ -304,7 +304,7 @@ export const playerSettings = {
     /**
      * Current version of the game.
      */
-    version: "b2.3.0.0",
+    version: "b2.3.1.0",
     /**
      * The number of deciseconds/game ticks until the next autosave.
      */
@@ -348,8 +348,8 @@ if (import.meta.env.DEV) {
  * save migrations.
  */
 function updateGame(): void {
-    // TODO: NEVER forget to change this when updating the game
-    playerSettings.version = "b2.3.0.0";
+    // TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO:TODO: NEVER forget to change this when updating the game
+    playerSettings.version = "b2.3.1.0";
     if ("eSetting" in playerSettings) delete playerSettings.eSetting;
 }
 

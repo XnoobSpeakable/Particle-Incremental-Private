@@ -56,7 +56,7 @@ interface Upgrade {
 
 export const upgrades = {
     gen: {
-        cost: Decimal.dInf,
+        cost: Decimal.dZero,
         costFunction(upgradeAmount) {
             // 1000 * 4 ^ amount
             return upgradeAmount.pow_base(4).times(1000);
@@ -67,7 +67,7 @@ export const upgrades = {
         currency: "num"
     },
     biggerbatches: {
-        cost: Decimal.dInf,
+        cost: new Decimal(2000),
         costFunction(upgradeAmount) {
             // 2000 * 2 ^ amount
             return upgradeAmount.pow_base(Decimal.dTwo).times(2000);
@@ -126,7 +126,7 @@ export const upgrades = {
     },
     unlockgenboost: {
         cost: new Decimal(5000),
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "divgenunlockcost",
         buttonDiv: "unlockgenboost",
         currency: "num"
@@ -248,7 +248,7 @@ export const upgrades = {
     unlockpca: {
         cost: new Decimal(20),
         costFunction: null,
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "divunlockpca",
         buttonDiv: "unlockpca",
         currency: "alphaNum"
@@ -325,7 +325,7 @@ export const upgrades = {
     bangautobuyerunlock: {
         cost: Decimal.dOne,
         costFunction: null,
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "divbau",
         buttonDiv: "bangautobuyerunlock",
         currency: "omegaBase"
@@ -369,7 +369,7 @@ export const upgrades = {
     unlockabgb: {
         cost: Decimal.dOne,
         costFunction: null,
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "divabgbcost",
         buttonDiv: "unlockabgb",
         currency: "betaNum"
@@ -420,49 +420,49 @@ export const upgrades = {
     },
     GnBBAunlock: {
         cost: new Decimal(0.5),
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "usewhencostdisplaynotneeded", //TODO: woudlnt it be cool to remove these somehow?
         buttonDiv: "GnBBAunlock",
         currency: "omegaAlpha"
     },
     GBUAunlock: {
         cost: new Decimal(0.5),
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "usewhencostdisplaynotneeded", //TODO: woudlnt it be cool to remove these somehow?
         buttonDiv: "GBUAunlock",
         currency: "omegaAlpha"
     },
     MBUAunlock: {
         cost: new Decimal(0.5),
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "usewhencostdisplaynotneeded", //TODO: woudlnt it be cool to remove these somehow?
         buttonDiv: "MBUAunlock",
         currency: "omegaAlpha"
     },
     NPAunlock: {
         cost: new Decimal(0.5),
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "usewhencostdisplaynotneeded", //TODO: costDiv: "usewhencostdisplaynotneeded"
         buttonDiv: "NPAunlock",
         currency: "omegaAlpha"
     },
     AAccAunlock: {
         cost: new Decimal(0.5),
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "usewhencostdisplaynotneeded",
         buttonDiv: "AAccAunlock",
         currency: "omegaAlpha"
     },
     SAunlock: {
         cost: new Decimal(0.5),
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "usewhencostdisplaynotneeded",
         buttonDiv: "SAunlock",
         currency: "omegaAlpha"
     },
     unlocknpboost: {
         cost: Decimal.dTwo,
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "divnpboostcost",
         buttonDiv: "unlocknpboost",
         currency: "betaNum",
@@ -496,7 +496,7 @@ export const upgrades = {
     },
     unlocknapboost: {
         cost: new Decimal(15),
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "divnapboostcost",
         buttonDiv: "unlocknapboost",
         currency: "betaNum",
@@ -512,28 +512,28 @@ export const upgrades = {
     },
     reactorUnlockNAP: {
         cost: new Decimal(3e4),
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "divreactorunlockNAPcost",
         buttonDiv: "reactorUnlockNAP",
         currency: "betaNum"
     },
     reactorUnlockBP: {
         cost: new Decimal(8e6),
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "divreactorunlockBPcost",
         buttonDiv: "reactorUnlockBP",
         currency: "betaNum"
     },
     reactorUnlockMB: {
         cost: new Decimal(8000),
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "divreactorunlockMBcost",
         buttonDiv: "reactorUnlockMB",
         currency: "betaNum"
     },
     reactorUnlockGB: {
         cost: new Decimal(2.5e5),
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "divreactorunlockGBcost",
         buttonDiv: "reactorUnlockGB",
         currency: "betaNum"
@@ -555,7 +555,7 @@ export const upgrades = {
     },
     unlockaga: {
         cost: new Decimal(0.25),
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "divunlockaga",
         buttonDiv: "unlockaga",
         currency: "omegaAlpha",
@@ -572,7 +572,7 @@ export const upgrades = {
     },
     mergeautobuyerunlock: {
         cost: new Decimal(0.25),
-        scaleFunction: scaleMultiplier(Decimal.dInf),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "divmau",
         buttonDiv: "mergeautobuyerunlock",
         currency: "omegaAlpha",

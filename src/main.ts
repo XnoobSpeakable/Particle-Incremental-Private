@@ -751,21 +751,25 @@ function reactorHandler() {
         NAPtoggle = true;
         getElement("divreactorunlockNAPcost").textContent = "Unlocked";
         getElement("divreactornap").style.display = "block";
+        //getElement("reactorUnlockNAP").setAttribute("disabled", "true")
     }
     if (getUpgradeTimesBought("reactorUnlockBP").eq(Decimal.dOne)) {
         BPtoggle = true;
         getElement("divreactorunlockBPcost").textContent = "Unlocked";
         getElement("divreactorbp").style.display = "block";
+        getElement("reactorUnlockBP").setAttribute("disabled", "true")
     }
     if (getUpgradeTimesBought("reactorUnlockMB").eq(Decimal.dOne)) {
         MBtoggle = true;
         getElement("divreactorunlockMBcost").textContent = "Unlocked";
         getElement("divreactormb").style.display = "block";
+        getElement("reactorUnlockMB").setAttribute("disabled", "true")
     }
     if (getUpgradeTimesBought("reactorUnlockGB").eq(Decimal.dOne)) {
         GBtoggle = true;
         getElement("divreactorunlockGBcost").textContent = "Unlocked";
         getElement("divreactorgb").style.display = "block";
+        getElement("reactorUnlockGB").setAttribute("disabled", "true")
     }
 
     NAPfactor = NAPtoggle
@@ -1134,7 +1138,7 @@ function fgbTestConst(): void {
         getElement(
             "naptext"
         ).textContent = `Nuclear particles add a +${formatDecimal(
-            reactor.boost,
+            NAPfactor,
             2
         )}x multiplier to alpha gain`;
 
@@ -1194,12 +1198,12 @@ function fgbTestConst(): void {
         if (player.bangTimeLeft === 0) {
             player.alphaNum = player.alphaNum
                 .plus(alphaGain)
-            getElement("bangtimeleft").textContent = "";
+            getElement("bangtimeleft").textContent = "​";
         }
 
         if (player.mergeTimeLeft === 0) {
             player.betaNum = player.betaNum.plus(betaGain);
-            getElement("mergetimeleft").textContent = "";
+            getElement("mergetimeleft").textContent = "​";
         }
 
         if (getUpgradeTimesBought("machine").gte(Decimal.dOne)) {
@@ -1296,9 +1300,12 @@ function fgbTestConst(): void {
         ) {
             getElement("bangtimeleft").textContent =
                 "Bang time left: " + format(player.bangTimeLeft / 10);
-            getElement("bangbutton").style.display = "none";
+            getElement("bangbutton").setAttribute("disabled", "true")
+            getElement("bangbutton").style.setProperty('cursor', 'not-allowed')
+
         } else {
-            getElement("bangbutton").style.display = "block";
+            getElement("bangbutton").removeAttribute("disabled")
+            getElement("bangbutton").style.setProperty('cursor', 'pointer')
         }
 
         getElement("betapb").textContent =
@@ -1315,9 +1322,11 @@ function fgbTestConst(): void {
         ) {
             getElement("mergetimeleft").textContent =
                 "Merge time left: " + format(player.mergeTimeLeft / 10);
-            getElement("mergebutton").style.display = "none";
+            getElement("mergebutton").setAttribute("disabled", "true")
+            getElement("mergebutton").style.setProperty('cursor', 'not-allowed')
         } else {
-            getElement("mergebutton").style.display = "block";
+            getElement("mergebutton").removeAttribute("disabled")
+            getElement("mergebutton").style.setProperty('cursor', 'pointer')
         }
 
         if (player.genBoostTimeLeft.gt(Decimal.dZero)) {
@@ -1654,17 +1663,22 @@ function arbitraryHighlight(h: string) {
     getElement(h).style.setProperty('cursor', 'pointer')
 }
 
+function arbitraryUnhighlight(h: string) {
+    getElement(h).style.setProperty('border', '1px solid #333333')
+    getElement(h).style.setProperty('box-shadow', 'none')
+    getElement(h).style.setProperty('cursor', 'not-allowed')
+}
+
 function costHighlightHandle(upgradeName: UpgradeName): void {
     const upgrade = upgrades[upgradeName];
     const cost = getUpgradeCost(upgradeName);
+    const disabled = (getElement(upgrade.buttonDiv) as HTMLButtonElement).disabled
 
-    if (player[upgrade.currency].gte(cost)) {
+    if (player[upgrade.currency].gte(cost) && !disabled) {
         arbitraryHighlight(upgrade.buttonDiv)
     }
     else {
-        getElement(upgrade.buttonDiv).style.setProperty('border', '1px solid #333333')
-        getElement(upgrade.buttonDiv).style.setProperty('box-shadow', 'none')
-        getElement(upgrade.buttonDiv).style.setProperty('cursor', 'not-allowed')
+        arbitraryUnhighlight(upgrade.buttonDiv)
     }
 }
 
@@ -1675,14 +1689,15 @@ function costHighlighting(): void {
        costHighlightHandle(key)
     }
 
-    if(player.num.gte(getUpgradeCost("speed"))) {
-        arbitraryHighlight("fiftyspeed")
-    }
-    else {
-        getElement("fiftyspeed").style.setProperty('border', '1px solid #333333')
-        getElement("fiftyspeed").style.setProperty('box-shadow', 'none')
-        getElement("fiftyspeed").style.setProperty('cursor', 'not-allowed')
-    }
+    player.num.gte(getUpgradeCost("speed")) ? arbitraryHighlight("fiftyspeed") : arbitraryUnhighlight("fiftyspeed");
+
+    player.num.gte(1e9) ? arbitraryHighlight("particlechunk") : arbitraryUnhighlight("particlechunk");
+    const bangDisabled = (getElement("bangbutton") as HTMLButtonElement).disabled
+    getUpgradeTimesBought("alphaacc").gt(0) && player.pChunks.gt(1) && !bangDisabled ? arbitraryHighlight("bangbutton") : arbitraryUnhighlight("bangbutton");
+
+    const mergeDisabled = (getElement("mergebutton") as HTMLButtonElement).disabled
+    player.alphaNum.gte(1e9) ? arbitraryHighlight("alphagroup") : arbitraryUnhighlight("alphagroup");
+    getUpgradeTimesBought("betaacc").gt(0) && player.aGroups.gt(1) && !mergeDisabled ? arbitraryHighlight("mergebutton") : arbitraryUnhighlight("mergebutton");
 }
 
 arbitraryHighlight("manualboost");
