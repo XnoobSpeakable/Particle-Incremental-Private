@@ -57,6 +57,7 @@ declare global {
             autobuyerDiv: string
         ) => void;
         buyFuel: (fuelType: Fuels) => void;
+        unlockSelfcell: (cell: string, n: number) => void;
         saveSettings: VoidFunction;
         save: VoidFunction;
         reset: VoidFunction;
@@ -1078,6 +1079,38 @@ function returnParticleHandler(): void {
     }
 }
 
+function unlockSelfcell(cell: string, n: number) {
+    if(player.betaNum.gte(1e7) && n === 1) {
+        player.betaNum = player.betaNum.minus(1e7)
+        player.selfcells = 1
+        getElement("rotators").style.display = "none"
+        getElement("generators").style.display = "none"
+        getElement("movers").style.display = "none"
+        getElement("selfcelltexts").style.display = "none"
+        getElement("choosetext").style.display = "none"
+        switch(cell) {
+            case 'rotators':
+                player.unlockedSelfRotators = true
+                getElement("rotatorsWindow").style.display = "block";
+                break;
+            case 'generators':
+                player.unlockedSelfGenerators = true
+                getElement("generatorsWindow").style.display = "block";
+                break;
+            case 'movers':
+                player.unlockedSelfMovers = true
+                getElement("moversWindow").style.display = "block";
+                break;
+        }
+    }
+}
+window.unlockSelfcell = unlockSelfcell
+
+//function respecSelfcell(cell: string, n:)
+
+function SelfcellHandler() {
+}
+
 function fgbTestConst(): void {
     if (getUpgradeTimesBought("gen").gt(Decimal.dZero)) {
         getElement("boostsection").style.display = "flex";
@@ -1148,7 +1181,7 @@ function fgbTestConst(): void {
 
         getElement(
             "boostsactext"
-        ).textContent = `Reset your Booster Particles, but increase Booster Particle and Alpha Particle gain. Currently ${formatDecimal(
+        ).textContent = `Reset your Booster Particles, but increase Booster Particle and Alpha Particle gain from bangs. Currently ${formatDecimal(
             boostsacmult,
             1
         )}x.`;
@@ -1447,6 +1480,13 @@ function fgbTestConst(): void {
             getUpgradeTimesBought("buyreturngenerator").gt(Decimal.dZero)
         ) {
             getElement("returnbox").style.display = "block";
+        }
+
+        
+        if (
+            player.betaNum.gte(1e7)
+        ) {
+            getElement("selfcells").style.display = "block";
         }
 
         const freeNuclearParticles = nuclearParticles.minus(

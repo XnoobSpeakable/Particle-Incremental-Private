@@ -71,6 +71,12 @@ const features: Record<FeatureKey, Feature> = {
     Return: {
         displayName: "Return",
         unlocksAt: new Decimal(1e5),
+        currency: "betaNum",
+        next: "SelfCells"
+    },
+    SelfCells: {
+        displayName: "Self-Cells",
+        unlocksAt: new Decimal(1e7),
         currency: "betaNum"
     }
 };
@@ -86,7 +92,8 @@ type FeatureKey =
     | "NAP"
     | "Merge"
     | "Reactor"
-    | "Return";
+    | "Return"
+    | "SelfCells"
 
 interface Feature {
     displayName: string;

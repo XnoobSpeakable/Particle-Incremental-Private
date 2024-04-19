@@ -260,9 +260,9 @@ export const player = {
     chunkAutobuyerTimeLeft: 0,
     boosterParticles: Decimal.dZero,
     untilBoost: 1,
-    omegaBase: Decimal.dZero,
+    omegaBase: new Decimal(0.000001),
     omegaBaseCost: new Decimal(1e10),
-    omegaAlpha: Decimal.dZero,
+    omegaAlpha: new Decimal(0.000001),
     omegaAlphaCost: new Decimal(1e12),
     bangAutobuyerToggle: true,
     bangAutobuyerTime: 160,
@@ -294,7 +294,14 @@ export const player = {
     agaTime: 160,
     groupAutobuyerTimeLeft: 0,
     returnParticles: Decimal.dZero,
-    floatBugfix: false
+    floatBugfix: false,
+    unlockedSelfRotators: false,
+    unlockedSelfGenerators: false,
+    unlockedSelfMovers: false,
+    selfcells: 0,
+    degrees: Decimal.dZero,
+    generators: Decimal.dZero,
+    movers: Decimal.dZero,
 };
 
 /**
