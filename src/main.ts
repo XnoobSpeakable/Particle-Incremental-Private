@@ -752,7 +752,7 @@ function reactorHandler() {
         NAPtoggle = true;
         getElement("divreactorunlockNAPcost").textContent = "Unlocked";
         getElement("divreactornap").style.display = "block";
-        //getElement("reactorUnlockNAP").setAttribute("disabled", "true")
+        getElement("reactorUnlockNAP").setAttribute("disabled", "true")
     }
     if (getUpgradeTimesBought("reactorUnlockBP").eq(Decimal.dOne)) {
         BPtoggle = true;
