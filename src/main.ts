@@ -1712,7 +1712,7 @@ function arbitraryUnhighlight(h: string) {
 function costHighlightHandle(upgradeName: UpgradeName): void {
     const upgrade = upgrades[upgradeName];
     const cost = getUpgradeCost(upgradeName);
-    const disabled = (getElement(upgrade.buttonDiv) as HTMLButtonElement).disabled
+    const disabled = getElement(upgrade.buttonDiv, "button").disabled
 
     if (player[upgrade.currency].gte(cost) && !disabled) {
         arbitraryHighlight(upgrade.buttonDiv)

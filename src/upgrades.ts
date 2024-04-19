@@ -471,7 +471,7 @@ export const upgrades = {
     upgradenpboost: {
         cost: Decimal.dTwo,
         costFunction(upgradeAmount) {
-            // 2 6 amount
+            // 2 ^ amount
             return Decimal.dTwo.pow(upgradeAmount);
         },
         scaleFunction: scaleMultiplier(Decimal.dTwo),
@@ -615,6 +615,16 @@ export const upgrades = {
         buttonDiv: "omegabooster",
         currency: "omegaBase",
         extra: OBExtra
+    },
+    selfrotator: {
+        cost: new Decimal(1e6),
+        costFunction(upgradeAmount) {
+            return upgradeAmount.pow_base(2.5).times(1e6)
+        },
+        costDiv: "divselfrotatorcost",
+        buttonDiv: "selfrotator",
+        currency: "betaNum"
+
     }
 } as const satisfies Record<string, Upgrade>; // will fix later
 
@@ -825,7 +835,7 @@ export function buyUpgrade(upgradeName: UpgradeName): void {
             upgradeName
         ].timesBought.plus(Decimal.dOne);
         player[upgrade.currency] = player[upgrade.currency].minus(oldCost);
-        //upgrade.scaleFunction(upgradeName);
+        //upgrade.scaleFunction(upgradeName)
         if ("extra" in upgrade) {
             upgrade.extra();
         }
