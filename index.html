@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Particle Incremental</title>
 	<link rel="shortcut icon" href="./assets/favicon-3kmT_vz1.ico" type="image/x-icon">
-  <script type="module" crossorigin src="./assets/index-g2Es87Fj.js"></script>
+  <script type="module" crossorigin src="./assets/index-CFWnpWBh.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-6Dyvg4zC.css">
 </head>
 
@@ -372,7 +372,7 @@
 					<br />
 					<div id="boostsactext">
 						Reset your Booster Particles, but double their and
-						Alpha Particle gain. Currently 1x.
+						Alpha Particle gain from bangs. Currently 1x.
 					</div>
 				</div>
 			</div>
@@ -515,6 +515,43 @@
 						particles per second
 					</div>
 				</div>
+				<div id="selfcells" style="display:none" class="withtheoutline">
+					<div id="choosetext">Choose a self-cell: (Cost: 1e7 beta)</div>
+					<br id="br1"><br id="br2">
+					<div class="btn-group">
+						<button onclick="unlockSelfcell('rotators', 1)" class="button" id="rotators">Unlock Self-Rotators</button>
+						<button onclick="unlockSelfcell('generators', 1)" class="button" id="generators">Unlock Self-Generators</button>
+						<button onclick="unlockSelfcell('movers', 1)" class="button" id="movers">Unlock Self-Movers</button>
+					</div>
+					<div id="selfcelltexts">
+						<div style="display: inline-block;margin-right: 2em;">Idle Path</div>
+						<div style="display: inline-block;margin-right: 2em;">Middle Path</div>
+						<div style="display: inline-block;">Active Path</div>
+					</div>
+					<div id="rotatorsWindow" style="display:none">
+						<h2>Self-rotators</h2>
+						<div id="rotatorAmountText">You have _ self-rotators, _ free self-rotators</div>
+						<div id="rotatorSpeedText">They are rotating at a combined speed of _°/s</div>
+						<div id="rotatorDegreeText">You have _ degrees</div>
+						<div id="rotatorBoostText">Which are providing these gain multipliers: _x to Base, _x to Alpha, _x to Beta</div>
+						<br/>
+						<button onclick="buyUpgrade('selfrotator')" class="button" id="selfrotator">Buy Self-Rotator</button>
+						<div id="divselfrotatorcost">Cost: 1e6 beta</div>
+						<br>
+						<div class="btn-group">
+							<button onclick="buyUpgrade('doublerotate')" class="button" id="doublerotate">Double rotation speed</button>
+							<button onclick="buyUpgrade('doublefreerotators')" class="button" id="doublefreerotators">Double free self-rotator gain</button>
+						</div>
+						<div id="divdoublerotatecost" class="inline-block">Cost: 1e8 beta</div>
+						<div id="divdoublefreerotatorscost" class="inline-block" style="text-indent: 2em">Cost: 50 gamma</div>
+					</div>
+					<div id="generatorsWindow" style="display:none">
+						PLACEHOLDER
+					</div>
+					<div id="moversWindow" style="display:none">	
+						PLACEHOLDER
+					</div>
+				</div>
 			</div>
 		</div>
 		<div id="Reactor" style="display: none">
@@ -655,7 +692,7 @@
 			</div>
 		</div>
 		<div id="Gamma" style="display: none">
-			nothing here yet
+			coming soon!!!
 		</div>
 		<div id="Delta" style="display: none">
 			nothing here yet
