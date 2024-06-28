@@ -418,6 +418,24 @@ function fgbTestSingle() {
     } else {
         UpdateCostDisplay("divgencost", getUpgradeCost("gen"));
     }
+    if(player.selfcells === 1) {
+        getElement("rotators").style.display = "none"
+        getElement("generators").style.display = "none"
+        getElement("movers").style.display = "none"
+        getElement("selfcelltexts").style.display = "none"
+        getElement("choosetext").style.display = "none"   
+        getElement("br1").style.display = "none"
+        getElement("br2").style.display = "none"    
+    }
+    if(player.unlockedSelfRotators) {
+        getElement("rotatorsWindow").style.display = "block";
+    }
+    if(player.unlockedSelfGenerators) {
+        getElement("generatorsWindow").style.display = "block";
+    }
+    if(player.unlockedSelfMovers) {
+        getElement("moversWindow").style.display = "block";
+    }
 }
 
 let nuclearParticles = getUpgradeTimesBought("nuclearbuy");
@@ -1066,7 +1084,9 @@ function returnParticleHandler(): void {
             "*",
             [Decimal.dTwo, "^", "rpmult"],
             [totalBoostFromNAP, "+", Decimal.dOne],
-            [Decimal.dTwo, "^", "alphamachinedouble"]
+            [Decimal.dTwo, "^", "alphamachinedouble"],
+            "*",
+            alphaMultFromRotators
         ]);
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         getElement("returnboosttext").textContent = `Your ${formatBig(
@@ -1088,6 +1108,8 @@ function unlockSelfcell(cell: string, n: number) {
         getElement("movers").style.display = "none"
         getElement("selfcelltexts").style.display = "none"
         getElement("choosetext").style.display = "none"
+        getElement("br1").style.display = "none"
+        getElement("br2").style.display = "none"
         switch(cell) {
             case 'rotators':
                 player.unlockedSelfRotators = true
@@ -1108,7 +1130,40 @@ window.unlockSelfcell = unlockSelfcell
 
 //function respecSelfcell(cell: string, n:)
 
-function SelfcellHandler() {
+let baseMultFromRotators = Decimal.dOne
+let alphaMultFromRotators = Decimal.dOne
+let betaMultFromRotators = Decimal.dOne
+
+function tickRotators() {
+    const rotators = getUpgradeTimesBought("selfrotator").plus(player.freeRotators)
+    player.degrees = player.degrees.plus(rotators.times(1.2).times(Decimal.pow(2, getUpgradeTimesBought("doublerotate"))))
+    const z = (player.degrees.times(player.degrees)).div(36000).plus(player.degrees) // adjusted degree value for boosts
+
+    if (z.gt(10)) { // don't wanna cause instability or undefined values when z is small 
+        baseMultFromRotators = z.sqrt()
+        alphaMultFromRotators = z.cbrt()
+        if (z.gt(23)) { // making sure "boost" multiplier isn't less than 1
+            betaMultFromRotators = Decimal.log(z, 2).sqr().div(20)
+        }
+        player.freeRotators = Decimal.floor(Decimal.log(player.degrees, 60)).times(Decimal.pow(2, getUpgradeTimesBought("doublefreerotators")))
+    }  
+
+    getElement("rotatorAmountText").textContent = `You have ${formatBig(getUpgradeTimesBought("selfrotator"))} self-rotators, ${formatBig(player.freeRotators)} free self-rotators`
+    getElement("rotatorSpeedText").textContent = `They are rotating at a combined speed of ${formatBig(rotators.times(12))}°/s`
+    getElement("rotatorDegreeText").textContent = `You have ${formatBig(player.degrees)} degrees`
+    getElement("rotatorBoostText").textContent = `Which are providing these gain multipliers: ${formatBig(baseMultFromRotators)}x to Base, ${formatBig(alphaMultFromRotators)}x to Alpha, ${formatBig(betaMultFromRotators)}x to Beta`
+}
+
+function selfcellHandler() {
+    if (player.unlockedSelfRotators) {
+        tickRotators()
+    }
+    if (player.unlockedSelfGenerators) {
+        //tickGenerators()
+    }  
+    if (player.unlockedSelfMovers) {
+        //tickMovers()
+    }
 }
 
 function fgbTestConst(): void {
@@ -1215,7 +1270,8 @@ function fgbTestConst(): void {
             "alphaacc",
             ["perbang", "+", Decimal.dOne],
             [totalBoostFromNAP, "+", Decimal.dOne],
-            [Decimal.dTwo, "^", "alphamachinedouble"]
+            [Decimal.dTwo, "^", "alphamachinedouble"],
+            [alphaMultFromRotators]
         ).times(boostsacmult);
 
         player.mergeTime = Math.ceil(
@@ -1225,7 +1281,8 @@ function fgbTestConst(): void {
         const betaGain = onBought(
             "betaacc",
             ["permerge", "+", Decimal.dOne],
-            [Decimal.dTwo, "^", "doublebeta"]
+            [Decimal.dTwo, "^", "doublebeta"],
+            [betaMultFromRotators]
         );
 
         if (player.bangTimeLeft === 0) {
@@ -1301,7 +1358,9 @@ function fgbTestConst(): void {
             "*",
             abgbBoost,
             "*",
-            GBfactor
+            GBfactor,
+            "*",
+            baseMultFromRotators
         );
 
         getElement("particlesperclick").textContent =
@@ -1426,6 +1485,8 @@ function fgbTestConst(): void {
         player.clickerParticles =
             player.clickerParticles.plus(clickerParticleGain);
 
+        selfcellHandler()
+
         nextFeatureHandler();
 
         getElement("omegabasecost").textContent =
@@ -1484,7 +1545,7 @@ function fgbTestConst(): void {
 
         
         if (
-            player.betaNum.gte(1e7)
+            player.betaNum.gte(1e7) || player.selfcells > 0
         ) {
             getElement("selfcells").style.display = "block";
         }

@@ -516,7 +516,7 @@
 				</div>
 				<div id="selfcells" style="display:none" class="withtheoutline">
 					<div id="choosetext">Choose a self-cell: (Cost: 1e7 beta)</div>
-					<br><br>
+					<br id="br1"><br id="br2">
 					<div class="btn-group">
 						<button onclick="unlockSelfcell('rotators', 1)" class="button" id="rotators">Unlock Self-Rotators</button>
 						<button onclick="unlockSelfcell('generators', 1)" class="button" id="generators">Unlock Self-Generators</button>
@@ -528,12 +528,21 @@
 						<div style="display: inline-block;">Active Path</div>
 					</div>
 					<div id="rotatorsWindow" style="display:none">
+						<h2>Self-rotators</h2>
 						<div id="rotatorAmountText">You have _ self-rotators, _ free self-rotators</div>
 						<div id="rotatorSpeedText">They are rotating at a combined speed of _°/s</div>
 						<div id="rotatorDegreeText">You have _ degrees</div>
 						<div id="rotatorBoostText">Which are providing these gain multipliers: _x to Base, _x to Alpha, _x to Beta</div>
-						<button onclick="buyupgrade('selfrotator')" class="button" id="selfrotator">Buy Self-Rotator</button>
+						<br/>
+						<button onclick="buyUpgrade('selfrotator')" class="button" id="selfrotator">Buy Self-Rotator</button>
 						<div id="divselfrotatorcost">Cost: 1e6 beta</div>
+						<br>
+						<div class="btn-group">
+							<button onclick="buyUpgrade('doublerotate')" class="button" id="doublerotate">Double rotation speed</button>
+							<button onclick="buyUpgrade('doublefreerotators')" class="button" id="doublefreerotators">Double free self-rotator gain</button>
+						</div>
+						<div id="divdoublerotatecost" class="inline-block">Cost: 1e8 beta</div>
+						<div id="divdoublefreerotatorscost" class="inline-block" style="text-indent: 2em">Cost: 50 gamma</div>
 					</div>
 					<div id="generatorsWindow" style="display:none">
 						PLACEHOLDER
@@ -682,7 +691,7 @@
 			</div>
 		</div>
 		<div id="Gamma" style="display: none">
-			nothing here yet
+			coming soon!!!
 		</div>
 		<div id="Delta" style="display: none">
 			nothing here yet

@@ -241,6 +241,18 @@ export const player = {
         omegabooster: {
             cost: new Decimal(12),
             timesBought: Decimal.dZero
+        },
+        selfrotator: {
+            cost: new Decimal(1e6),
+            timesBought: Decimal.dZero
+        },
+        doublerotate: {
+            cost: new Decimal(1e8),
+            timesBought: Decimal.dZero
+        },
+        doublefreerotators: {
+            cost: new Decimal(50),
+            timesBought: Decimal.dZero
         }
     },
     num: Decimal.dZero,
@@ -300,6 +312,7 @@ export const player = {
     unlockedSelfMovers: false,
     selfcells: 0,
     degrees: Decimal.dZero,
+    freeRotators: Decimal.dZero,
     generators: Decimal.dZero,
     movers: Decimal.dZero,
 };

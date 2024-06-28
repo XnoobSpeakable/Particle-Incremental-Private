@@ -21,7 +21,8 @@ export const currencyName = {
     boosterParticles: " Booster Particles",
     omegaBase: " ",
     betaNum: " Beta",
-    omegaAlpha: " "
+    omegaAlpha: " ",
+    gammaNum: " Gamma"
 };
 
 export type CurrencyName = keyof typeof currencyName;
@@ -61,7 +62,7 @@ export const upgrades = {
             // 1000 * 4 ^ amount
             return upgradeAmount.pow_base(4).times(1000);
         },
-        //scaleFunction: scaleGen,
+        scaleFunction: scaleGen,
         costDiv: "divgencost",
         buttonDiv: "gen",
         currency: "num"
@@ -72,7 +73,7 @@ export const upgrades = {
             // 2000 * 2 ^ amount
             return upgradeAmount.pow_base(Decimal.dTwo).times(2000);
         },
-        //scaleFunction: scaleMultiplier(Decimal.dTwo),
+        scaleFunction: scaleMultiplier(Decimal.dTwo),
         costDiv: "divbbcost",
         buttonDiv: "biggerbatches",
         currency: "num"
@@ -96,7 +97,7 @@ export const upgrades = {
                     upgradeAmount.minus(1000).max(Decimal.dZero).pow_base(1.1)
                 );
         },
-        //scaleFunction: scaleSpeed,
+        scaleFunction: scaleSpeed,
         costDiv: "divspeedcost",
         buttonDiv: "speed",
         currency: "num"
@@ -108,7 +109,7 @@ export const upgrades = {
             // 100 * 1.5 ^ amount
             return upgradeAmount.pow_base(1.5).times(100);
         },
-        //scaleFunction: scaleMultiplier(new Decimal(1.5)),
+        scaleFunction: scaleMultiplier(new Decimal(1.5)),
         costDiv: "divmbupcost",
         buttonDiv: "mbup",
         currency: "num"
@@ -119,7 +120,7 @@ export const upgrades = {
             // 1000 * 2 ^ amount
             return Decimal.dTwo.pow(upgradeAmount).times(1000);
         },
-        //scaleFunction: scaleMultiplier(Decimal.dTwo),
+        scaleFunction: scaleMultiplier(Decimal.dTwo),
         costDiv: "divmbmultcost",
         buttonDiv: "mbmult",
         currency: "num"
@@ -137,7 +138,7 @@ export const upgrades = {
             // 100 * 5 ^ amount
             return upgradeAmount.pow_base(5).times(100);
         },
-        //scaleFunction: scaleMultiplier(new Decimal(5)),
+        scaleFunction: scaleMultiplier(new Decimal(5)),
         costDiv: "divgbuptcost",
         buttonDiv: "genboostuptime",
         currency: "num",
@@ -149,7 +150,7 @@ export const upgrades = {
             // 1e4 * 5 ^ amount
             return upgradeAmount.pow_base(5).times(1e4);
         },
-        //scaleFunction: scaleMultiplier(new Decimal(5)),
+        scaleFunction: scaleMultiplier(new Decimal(5)),
         costDiv: "divgbupmcost",
         buttonDiv: "genboostupmult",
         currency: "num",
@@ -161,7 +162,7 @@ export const upgrades = {
             // 1e8 * 7 ^ amount
             return upgradeAmount.pow_base(7).times(1e8);
         },
-        //scaleFunction: scaleMultiplier(new Decimal(7)),
+        scaleFunction: scaleMultiplier(new Decimal(7)),
         costDiv: "divnuclearcost",
         buttonDiv: "nuclearbuy",
         currency: "num",
@@ -173,7 +174,7 @@ export const upgrades = {
             // 5e4 * 5 ^ amount
             return upgradeAmount.pow_base(5).times(5e4);
         },
-        //scaleFunction: scaleMultiplier(new Decimal(5)),
+        scaleFunction: scaleMultiplier(new Decimal(5)),
         costDiv: "divspeedparticlecost",
         buttonDiv: "speedparticle",
         currency: "num"
@@ -184,7 +185,7 @@ export const upgrades = {
             // 2e4 * 1.5 ^ amount
             return upgradeAmount.pow_base(4).times(2e4);
         },
-        //scaleFunction: scaleMultiplier(new Decimal(4)),
+        scaleFunction: scaleMultiplier(new Decimal(4)),
         costDiv: "divmachinecost",
         buttonDiv: "machine",
         currency: "num",
@@ -196,7 +197,7 @@ export const upgrades = {
             // 1e10 * 1000 ^ amount
             return upgradeAmount.pow_base(1000).times(1e10);
         },
-        //scaleFunction: scaleMultiplier(new Decimal(1000)),
+        scaleFunction: scaleMultiplier(new Decimal(1000)),
         costDiv: "divalphaacceleratorcost",
         buttonDiv: "alphaacc",
         currency: "num"
@@ -207,7 +208,7 @@ export const upgrades = {
             // 4 ^ amount
             return upgradeAmount.pow_base(4);
         },
-        //scaleFunction: scaleMultiplier(new Decimal(4)),
+        scaleFunction: scaleMultiplier(new Decimal(4)),
         costDiv: "divthreeboostcost",
         buttonDiv: "threeboost",
         currency: "alphaNum"
@@ -218,7 +219,7 @@ export const upgrades = {
             // 4 ^ (amount + 1)
             return upgradeAmount.add(Decimal.dOne).pow_base(4);
         },
-        //scaleFunction: scaleMultiplier(new Decimal(4)),
+        scaleFunction: scaleMultiplier(new Decimal(4)),
         costDiv: "divperbangcost",
         buttonDiv: "perbang",
         currency: "alphaNum"
@@ -240,7 +241,7 @@ export const upgrades = {
                 )
                 .plus(Decimal.dTwo);
         },
-        //scaleFunction: scaleBangSpeed,
+        scaleFunction: scaleBangSpeed,
         costDiv: "divbangspeedcost",
         buttonDiv: "bangspeed",
         currency: "alphaNum"
@@ -248,7 +249,7 @@ export const upgrades = {
     unlockpca: {
         cost: new Decimal(20),
         costFunction: null,
-        //scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
+        scaleFunction: scaleMultiplier(new Decimal("10^^1e308")),
         costDiv: "divunlockpca",
         buttonDiv: "unlockpca",
         currency: "alphaNum"
@@ -259,7 +260,7 @@ export const upgrades = {
             // 2 * 3 ^ amount
             return upgradeAmount.pow_base(3).times(Decimal.dTwo);
         },
-        //scaleFunction: scaleMultiplier(new Decimal(3)),
+        scaleFunction: scaleMultiplier(new Decimal(3)),
         costDiv: "divupgradepcacost",
         buttonDiv: "upgradepca",
         currency: "alphaNum",
@@ -271,7 +272,7 @@ export const upgrades = {
             // 10 ^ (amount + 2)
             return upgradeAmount.add(Decimal.dTwo).pow_base(Decimal.dTen);
         },
-        //scaleFunction: scaleMultiplier(Decimal.dTen),
+        scaleFunction: scaleMultiplier(Decimal.dTen),
         costDiv: "divboosterupcost",
         buttonDiv: "boosterup",
         currency: "alphaNum"
@@ -282,7 +283,7 @@ export const upgrades = {
             // 10 ^ (amount + 2)
             return upgradeAmount.add(Decimal.dTwo).pow_base(Decimal.dTen);
         },
-        //scaleFunction: scaleMultiplier(Decimal.dTen),
+        scaleFunction: scaleMultiplier(Decimal.dTen),
         costDiv: "divboosteruppercentcost",
         buttonDiv: "boosteruppercent",
         currency: "alphaNum"
@@ -293,7 +294,7 @@ export const upgrades = {
             // 1e6 * 7 ^ amount
             return upgradeAmount.pow_base(7).times(1e6);
         },
-        //scaleFunction: scaleMultiplier(new Decimal(7)),
+        scaleFunction: scaleMultiplier(new Decimal(7)),
         costDiv: "divnuclearalphacost",
         buttonDiv: "nuclearalphabuy",
         currency: "alphaNum",
@@ -305,7 +306,7 @@ export const upgrades = {
             // 2 ^ amount
             return upgradeAmount.pow_base(Decimal.dTwo);
         },
-        //scaleFunction: scaleMultiplier(Decimal.dTwo),
+        scaleFunction: scaleMultiplier(Decimal.dTwo),
         costDiv: "gboostdouble",
         buttonDiv: "genboostdouble",
         currency: "alphaNum",
@@ -317,7 +318,7 @@ export const upgrades = {
             // 1000 * 3 ^ amount
             return upgradeAmount.pow_base(3).times(1000);
         },
-        //scaleFunction: scaleMultiplier(new Decimal(3)),
+        scaleFunction: scaleMultiplier(new Decimal(3)),
         costDiv: "divalphamachinedoublecost",
         buttonDiv: "alphamachinedouble",
         currency: "alphaNum"
@@ -336,7 +337,7 @@ export const upgrades = {
             // 1 + amount / 2
             return upgradeAmount.div(Decimal.dTwo).plus(Decimal.dOne);
         },
-        //scaleFunction: scaleBA,
+        scaleFunction: scaleBA,
         costDiv: "divupgradeba",
         buttonDiv: "upgradebangautobuyer",
         currency: "omegaBase",
@@ -349,7 +350,7 @@ export const upgrades = {
             // 1e5 * 10 ^ amount
             return upgradeAmount.pow_base(Decimal.dTen).times(1e5);
         },
-        //scaleFunction: scaleMultiplier(Decimal.dTen),
+        scaleFunction: scaleMultiplier(Decimal.dTen),
         costDiv: "divboostsacrificecost",
         buttonDiv: "boostsacrifice",
         currency: "boosterParticles",
@@ -361,7 +362,7 @@ export const upgrades = {
             // 1e10 * 1000 ^ amount
             return upgradeAmount.pow_base(1000).times(1e10);
         },
-        //scaleFunction: scaleMultiplier(new Decimal(1000)),
+        scaleFunction: scaleMultiplier(new Decimal(1000)),
         costDiv: "divbetaacceleratorcost",
         buttonDiv: "betaacc",
         currency: "alphaNum"
@@ -380,7 +381,7 @@ export const upgrades = {
             // 4 * (amount + 1)
             return upgradeAmount.plus(Decimal.dOne).pow_base(Decimal.dTwo);
         },
-        //scaleFunction: scaleMultiplier(Decimal.dTwo),
+        scaleFunction: scaleMultiplier(Decimal.dTwo),
         costDiv: "divabgbefficiencycost",
         buttonDiv: "abgbefficiency",
         currency: "betaNum"
@@ -391,7 +392,7 @@ export const upgrades = {
             // 4 ^ (amount + 1)
             return upgradeAmount.plus(Decimal.dOne).pow_base(Decimal.dTen);
         },
-        //scaleFunction: scaleMultiplier(new Decimal(4)),
+        scaleFunction: scaleMultiplier(new Decimal(4)),
         costDiv: "divpermergecost",
         buttonDiv: "permerge",
         currency: "betaNum"
@@ -413,7 +414,7 @@ export const upgrades = {
                 )
                 .plus(Decimal.dTwo);
         },
-        //scaleFunction: scaleBangSpeed,
+        scaleFunction: scaleBangSpeed,
         costDiv: "divmergespeedcost",
         buttonDiv: "mergespeed",
         currency: "betaNum"
@@ -621,9 +622,26 @@ export const upgrades = {
         costFunction(upgradeAmount) {
             return upgradeAmount.pow_base(2.5).times(1e6)
         },
+        scaleFunction: scaleMultiplier(new Decimal(2.5)),
         costDiv: "divselfrotatorcost",
         buttonDiv: "selfrotator",
         currency: "betaNum"
+
+    },
+    doublerotate: {
+        cost: new Decimal(1e8),
+        scaleFunction: scaleMultiplier(new Decimal(10)),
+        costDiv: "divdoublerotatecost",
+        buttonDiv: "doublerotate",
+        currency: "betaNum"
+
+    },
+    doublefreerotators: {
+        cost: new Decimal(50),
+        scaleFunction: scaleMultiplier(new Decimal(10)),
+        costDiv: "divdoublefreerotatorscost",
+        buttonDiv: "doublefreerotators",
+        currency: "gammaNum"
 
     }
 } as const satisfies Record<string, Upgrade>; // will fix later
@@ -835,7 +853,7 @@ export function buyUpgrade(upgradeName: UpgradeName): void {
             upgradeName
         ].timesBought.plus(Decimal.dOne);
         player[upgrade.currency] = player[upgrade.currency].minus(oldCost);
-        //upgrade.scaleFunction(upgradeName)
+        upgrade.scaleFunction(upgradeName)
         if ("extra" in upgrade) {
             upgrade.extra();
         }
