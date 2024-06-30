@@ -515,3 +515,15 @@ export function setUpgradeCost(
 export function getUpgradeTimesBought(upgradeName: UpgradeName): Decimal {
     return player.upgrades[upgradeName].timesBought;
 }
+
+/**
+ * A utility function to change the times bought of an upgrade.
+ * @param upgradeName The name of the upgrade.
+ * @param newTimesBought The new times bought of the given upgrade.
+ */
+export function setUpgradeTimesBought(
+    upgradeName: UpgradeName,
+    newTimesBought: Decimal
+): void {
+    player.upgrades[upgradeName].timesBought = newTimesBought;
+}

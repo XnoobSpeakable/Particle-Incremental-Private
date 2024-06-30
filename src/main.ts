@@ -11,7 +11,9 @@ import {
     UpgradeNames,
     type InstantAutobuyerName,
     isAutobuyerName,
-    type UpgradeName
+    type UpgradeName,
+    setUpgradeCost,
+    setUpgradeTimesBought
 } from "./player";
 import {
     format,
@@ -1128,7 +1130,44 @@ function unlockSelfcell(cell: string, n: number) {
 }
 window.unlockSelfcell = unlockSelfcell
 
-//function respecSelfcell(cell: string, n:)
+function respecSelfcell(cell: string) {
+    switch(cell) {
+        case 'rotators':
+            player.unlockedSelfRotators = false
+            player.selfcells -= 1
+            getElement("rotatorsWindow").style.display = "none"
+
+            getElement("rotators").style.display = "block"
+            getElement("generators").style.display = "block"
+            getElement("movers").style.display = "block"
+            getElement("selfcelltexts").style.display = "block"
+            getElement("choosetext").style.display = "block"
+            getElement("br1").style.display = "block"
+            getElement("br2").style.display = "block"
+
+            setUpgradeCost("selfrotator", new Decimal(1e6))
+            setUpgradeTimesBought("selfrotator", Decimal.dZero)
+            setUpgradeCost("doublerotate", new Decimal(1e8))
+            setUpgradeTimesBought("doublerotate", Decimal.dZero)
+            setUpgradeCost("doublefreerotators", new Decimal(50))
+            setUpgradeTimesBought("doublefreerotators", Decimal.dZero)
+
+            player.degrees = Decimal.dZero
+            player.freeRotators = Decimal.dZero
+            tickRotators()
+
+            break;
+        case 'generators':
+            player.unlockedSelfGenerators = false
+            getElement("generatorsWindow").style.display = "none";
+            break;
+        case 'movers':
+            player.unlockedSelfMovers = false
+            getElement("moversWindow").style.display = "none";
+            break;
+    }
+}
+window.respecSelfcell = respecSelfcell
 
 let baseMultFromRotators = Decimal.dOne
 let alphaMultFromRotators = Decimal.dOne
@@ -1146,6 +1185,11 @@ function tickRotators() {
             betaMultFromRotators = Decimal.log(z, 2).sqr().div(20)
         }
         player.freeRotators = Decimal.floor(Decimal.log(player.degrees, 60)).times(Decimal.pow(2, getUpgradeTimesBought("doublefreerotators")))
+    }
+    else {
+        baseMultFromRotators = Decimal.dOne
+        alphaMultFromRotators = Decimal.dOne
+        betaMultFromRotators = Decimal.dOne
     }  
 
     getElement("rotatorAmountText").textContent = `You have ${formatBig(getUpgradeTimesBought("selfrotator"))} self-rotators, ${formatBig(player.freeRotators)} free self-rotators`
