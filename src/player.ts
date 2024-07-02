@@ -257,6 +257,18 @@ export const player = {
         primgen: {
             cost: new Decimal(1e6),
             timesBought: Decimal.dOne
+        },
+        supergentime: {
+            cost: new Decimal(1e6),
+            timesBought: Decimal.dOne
+        },
+        supergenpower: {
+            cost: new Decimal(1e7),
+            timesBought: Decimal.dOne
+        },
+        genpower: {
+            cost: new Decimal(50),
+            timesBought: Decimal.dOne
         }
     },
     num: Decimal.dZero,

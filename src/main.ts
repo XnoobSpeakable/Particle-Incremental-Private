@@ -1090,7 +1090,9 @@ function returnParticleHandler(): void {
             [totalBoostFromNAP, "+", Decimal.dOne],
             [Decimal.dTwo, "^", "alphamachinedouble"],
             "*",
-            alphaMultFromRotators
+            alphaMultFromRotators,
+            "*",
+            alphaMultFromGenerators
         ]);
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         getElement("returnboosttext").textContent = `Your ${formatBig(
@@ -1206,19 +1208,38 @@ function transformPrimgens() {
 }
 window.transformPrimgens = transformPrimgens
 
+let baseMultFromGenerators = Decimal.dOne
+let alphaMultFromGenerators = Decimal.dOne
+let betaMultFromGenerators = Decimal.dOne
+
+
 function tickGenerators() {
     getElement("primgenAmountText").textContent = `You have ${formatBig(getUpgradeTimesBought("primgen"))} primary generators`
+    player.supergenTimeLeftCon = Decimal.add(10, (getUpgradeTimesBought("supergentime").times(20)) )
 
     if (getUpgradeTimesBought("primgen").gt(1)) {
         let gain = Decimal.sqrt(10).pow(getUpgradeTimesBought("primgen")).div(10)
+        let supergenpower = Decimal.dTen
+
+        if(getUpgradeTimesBought("supergenpower").gt(0)) {
+            supergenpower = Decimal.pow(10, (getUpgradeTimesBought("supergenpower").times(0.2).plus(1)) )
+        }
+
         if(player.supergenTimeLeft.gt(0)) {
             player.supergenTimeLeft = player.supergenTimeLeft.minus(1)
-            gain = gain.times(10)
+            getElement("primgenAmountText").textContent = `You have ${formatBig(getUpgradeTimesBought("primgen"))} super generators`
+            gain = gain.times(supergenpower)
         }
         player.generators = player.generators.plus(gain)
-        getElement("primgenSpeedText").textContent = `They are generating each other at a rate of ${gain.times(10)}gens/s`
-        getElement("genAmountText").textContent = `You have ${player.generators} generators`
-        getElement("genBoostText").textContent = `Which are providing these gain multipliers: 1x to Base, 1x to Alpha, 1x to Beta`
+
+        baseMultFromGenerators = player.generators.cbrt().times(getUpgradeTimesBought("genpower").pow_base(2))
+        alphaMultFromGenerators = player.generators.root(6).times(getUpgradeTimesBought("genpower").pow_base(2))
+        betaMultFromGenerators = player.generators.log10().times(getUpgradeTimesBought("genpower").pow_base(2)) //TODO: make this weaker!!
+
+        getElement("primgenSpeedText").textContent = `They are generating each other at a rate of ${formatBig(gain.times(10))}gens/s`
+        getElement("genAmountText").textContent = `You have ${formatBig(player.generators)} generators`
+        getElement("genBoostText").textContent = `Which are providing these gain multipliers: ${formatBig(baseMultFromGenerators)}x to Base, ${formatBig(alphaMultFromGenerators)}x to Alpha, ${formatBig(betaMultFromGenerators)}x to Beta`
+        getElement("divtransformstats").textContent = `${formatBig(supergenpower)}x generator gain for ${formatBig(player.supergenTimeLeftCon.div(10))} seconds`
 
     }
 }
@@ -1340,7 +1361,8 @@ function fgbTestConst(): void {
             ["perbang", "+", Decimal.dOne],
             [totalBoostFromNAP, "+", Decimal.dOne],
             [Decimal.dTwo, "^", "alphamachinedouble"],
-            [alphaMultFromRotators]
+            [alphaMultFromRotators],
+            [alphaMultFromGenerators]
         ).times(boostsacmult);
 
         player.mergeTime = Math.ceil(
@@ -1351,7 +1373,8 @@ function fgbTestConst(): void {
             "betaacc",
             ["permerge", "+", Decimal.dOne],
             [Decimal.dTwo, "^", "doublebeta"],
-            [betaMultFromRotators]
+            [betaMultFromRotators],
+            [betaMultFromGenerators]
         );
 
         if (player.bangTimeLeft === 0) {
@@ -1429,7 +1452,9 @@ function fgbTestConst(): void {
             "*",
             GBfactor,
             "*",
-            baseMultFromRotators
+            baseMultFromRotators,
+            "*",
+            baseMultFromGenerators
         );
 
         getElement("particlesperclick").textContent =

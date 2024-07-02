@@ -638,7 +638,7 @@ export const upgrades = {
     },
     doublefreerotators: {
         cost: new Decimal(50),
-        scaleFunction: scaleMultiplier(new Decimal(10)),
+        scaleFunction: scaleMultiplier(new Decimal(10)), //TODO: past 10 purchases scaling must increase to 1e3x
         costDiv: "divdoublefreerotatorscost",
         buttonDiv: "doublefreerotators",
         currency: "gammaNum"
@@ -652,6 +652,29 @@ export const upgrades = {
         currency: "betaNum"
 
     },
+    supergentime: {
+        cost: new Decimal(1e6),
+        scaleFunction: scaleMultiplier(new Decimal(2)),
+        costDiv: "divsupergentimecost",
+        buttonDiv: "supergentime",
+        currency: "betaNum" 
+    },
+    supergenpower: {
+        cost: new Decimal(1e7),
+        scaleFunction: scaleMultiplier(new Decimal(25)),
+        costDiv: "divsupergenpowercost",
+        buttonDiv: "supergenpower",
+        currency: "betaNum"
+
+    },
+    genpower: {
+        cost: new Decimal(50),
+        scaleFunction: scaleMultiplier(new Decimal(10)), //TODO: past 10 purchases scaling must increase to 1e3x
+        costDiv: "divgenpowercost",
+        buttonDiv: "genpower",
+        currency: "gammaNum"
+
+    }
 } as const satisfies Record<string, Upgrade>; // will fix later
 
 export function scaleMultiplier(
