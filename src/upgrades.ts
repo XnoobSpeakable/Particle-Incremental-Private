@@ -643,7 +643,15 @@ export const upgrades = {
         buttonDiv: "doublefreerotators",
         currency: "gammaNum"
 
-    }
+    },
+    primgen: {
+        cost: new Decimal(1e6),
+        scaleFunction: scaleMultiplier(new Decimal(25)),
+        costDiv: "divprimgencost",
+        buttonDiv: "primgen",
+        currency: "betaNum"
+
+    },
 } as const satisfies Record<string, Upgrade>; // will fix later
 
 export function scaleMultiplier(

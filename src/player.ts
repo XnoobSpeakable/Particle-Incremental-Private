@@ -253,6 +253,10 @@ export const player = {
         doublefreerotators: {
             cost: new Decimal(50),
             timesBought: Decimal.dZero
+        },
+        primgen: {
+            cost: new Decimal(1e6),
+            timesBought: Decimal.dOne
         }
     },
     num: Decimal.dZero,
@@ -315,6 +319,8 @@ export const player = {
     freeRotators: Decimal.dZero,
     generators: Decimal.dZero,
     movers: Decimal.dZero,
+    supergenTimeLeft: Decimal.dZero,
+    supergenTimeLeftCon: Decimal.dTen,
 };
 
 /**

@@ -60,6 +60,8 @@ declare global {
         ) => void;
         buyFuel: (fuelType: Fuels) => void;
         unlockSelfcell: (cell: string, n: number) => void;
+        respecSelfcell: (cell: string) => void;
+        transformPrimgens: VoidFunction;
         saveSettings: VoidFunction;
         save: VoidFunction;
         reset: VoidFunction;
@@ -1198,12 +1200,35 @@ function tickRotators() {
     getElement("rotatorBoostText").textContent = `Which are providing these gain multipliers: ${formatBig(baseMultFromRotators)}x to Base, ${formatBig(alphaMultFromRotators)}x to Alpha, ${formatBig(betaMultFromRotators)}x to Beta`
 }
 
+//terminology: primgen = primary generators; gen = generators
+function transformPrimgens() {
+    player.supergenTimeLeft = player.supergenTimeLeftCon
+}
+window.transformPrimgens = transformPrimgens
+
+function tickGenerators() {
+    getElement("primgenAmountText").textContent = `You have ${formatBig(getUpgradeTimesBought("primgen"))} primary generators`
+
+    if (getUpgradeTimesBought("primgen").gt(1)) {
+        let gain = Decimal.sqrt(10).pow(getUpgradeTimesBought("primgen"))
+        if(player.supergenTimeLeft.gt(0)) {
+            player.supergenTimeLeft = player.supergenTimeLeft.minus(1)
+            gain = gain.times(10)
+        }
+        player.generators = player.generators.plus(gain)
+        getElement("primgenSpeedText").textContent = `They are generating each other at a rate of ${gain.div(10)}gens/s`
+        getElement("genAmountText").textContent = `You have ${player.generators} generators`
+        getElement("genBoostText").textContent = `Which are providing these gain multipliers: 1x to Base, 1x to Alpha, 1x to Beta`
+
+    }
+}
+
 function selfcellHandler() {
     if (player.unlockedSelfRotators) {
         tickRotators()
     }
     if (player.unlockedSelfGenerators) {
-        //tickGenerators()
+        tickGenerators()
     }  
     if (player.unlockedSelfMovers) {
         //tickMovers()

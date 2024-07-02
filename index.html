@@ -548,7 +548,20 @@
 						<p style="padding:0;margin:0">Removes all progress and upgrades on this self-cell, without giving any refunds</p>
 					</div>
 					<div id="generatorsWindow" style="display:none">
-						PLACEHOLDER
+						<h2>Self-generators</h2>
+						<div id="primgenAmountText">You have 1 primary generators</div>
+						<div id="primgenSpeedText">They are generating each other at a rate of 0gens/s</div>
+						<div id="genAmountText">You have 0 generators</div>
+						<div id="genBoostText">Which are providing these gain multipliers: 1x to Base, 1x to Alpha, 1x to Beta</div>
+						<br>
+						<div class="btn-group">
+							<button onclick="buyUpgrade('primgen')" class="button" id="primgen">Buy Primary Generator</button>
+							<button onclick="transformPrimgens()" class="button">Transform primary generators into super generators</button>
+						</div>
+						<div id="divprimgencost" class="inline-block">Cost: 1e6 beta</div>
+						<div id="divtransformstats" class="inline-block" style="text-indent: 4em">_x generator gain for _ seconds</div>
+
+						
 					</div>
 					<div id="moversWindow" style="display:none">	
 						PLACEHOLDER
