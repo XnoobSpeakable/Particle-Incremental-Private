@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Particle Incremental</title>
 	<link rel="shortcut icon" href="./assets/favicon-3kmT_vz1.ico" type="image/x-icon">
-  <script type="module" crossorigin src="./assets/index-B964XKaz.js"></script>
+  <script type="module" crossorigin src="./assets/index-DQ-D4p3f.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-6Dyvg4zC.css">
 </head>
 
@@ -521,7 +521,7 @@
 					<div class="btn-group">
 						<button onclick="unlockSelfcell('rotators', 1)" class="button" id="rotators">Unlock Self-Rotators</button>
 						<button onclick="unlockSelfcell('generators', 1)" class="button" id="generators">Unlock Self-Generators</button>
-						<button onclick="unlockSelfcell('movers', 1)" class="button" id="movers">Unlock Self-Movers</button>
+						<button onclick="unlockSelfcell('movers', 1)" class="button" id="movers">DO NOT PRESS</button>
 					</div>
 					<div id="selfcelltexts">
 						<div style="display: inline-block;margin-right: 2em;">Idle Path</div>
@@ -570,10 +570,12 @@
 						<div id="divsupergentimecost" class="inline-block">Cost: 1e6 beta</div>
 						<div id="divsupergenpowercost" class="inline-block" style="text-indent: 3em">Cost: 1e7 beta</div>
 						<div id="divgenpowercost" class="inline-block" style="text-indent: 3em">Cost: 50 gamma</div>
-						
+						<br/><br/>
+						<button onclick="respecSelfcell('rotators')" class="button">Respec self-cell</button>
+						<p style="padding:0;margin:0">Removes all progress and upgrades on this self-cell, without giving any refunds</p>
 					</div>
 					<div id="moversWindow" style="display:none">	
-						PLACEHOLDER
+						<h2>Self-generators</h2>
 					</div>
 				</div>
 			</div>
