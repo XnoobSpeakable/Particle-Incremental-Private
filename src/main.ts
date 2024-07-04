@@ -1134,21 +1134,21 @@ function unlockSelfcell(cell: string, n: number) {
 }
 window.unlockSelfcell = unlockSelfcell
 
+let generatorsRespecFlag = false
+
 function respecSelfcell(cell: string) {
+    getElement("rotators").style.display = "block"
+    getElement("generators").style.display = "block"
+    getElement("movers").style.display = "block"
+    getElement("selfcelltexts").style.display = "block"
+    getElement("choosetext").style.display = "block"
+    getElement("br1").style.display = "block"
+    getElement("br2").style.display = "block"
     switch(cell) {
         case 'rotators':
             player.unlockedSelfRotators = false
             player.selfcells -= 1
             getElement("rotatorsWindow").style.display = "none"
-
-            getElement("rotators").style.display = "block"
-            getElement("generators").style.display = "block"
-            getElement("movers").style.display = "block"
-            getElement("selfcelltexts").style.display = "block"
-            getElement("choosetext").style.display = "block"
-            getElement("br1").style.display = "block"
-            getElement("br2").style.display = "block"
-
             setUpgradeCost("selfrotator", new Decimal(1e6))
             setUpgradeTimesBought("selfrotator", Decimal.dZero)
             setUpgradeCost("doublerotate", new Decimal(1e8))
@@ -1163,10 +1163,23 @@ function respecSelfcell(cell: string) {
             break;
         case 'generators':
             player.unlockedSelfGenerators = false
+            player.selfcells -= 1
             getElement("generatorsWindow").style.display = "none";
+            setUpgradeCost("primgen", new Decimal(1e6))
+            setUpgradeTimesBought("primgen", Decimal.dOne) //yes, one
+            setUpgradeCost("supergentime", new Decimal(1e6))
+            setUpgradeTimesBought("supergentime", Decimal.dZero)
+            setUpgradeCost("supergenpower", new Decimal(1e7))
+            setUpgradeTimesBought("supergenpower", Decimal.dZero)
+            setUpgradeCost("genpower", new Decimal(50))
+            setUpgradeTimesBought("genpower", Decimal.dZero)
+            player.generators = Decimal.dZero
+            generatorsRespecFlag = true
+            tickGenerators()
             break;
         case 'movers':
             player.unlockedSelfMovers = false
+            player.selfcells -= 1
             getElement("moversWindow").style.display = "none";
             break;
     }
@@ -1211,13 +1224,12 @@ window.transformPrimgens = transformPrimgens
 let baseMultFromGenerators = Decimal.dOne
 let alphaMultFromGenerators = Decimal.dOne
 let betaMultFromGenerators = Decimal.dOne
-
-
+ 
 function tickGenerators() {
     getElement("primgenAmountText").textContent = `You have ${formatBig(getUpgradeTimesBought("primgen"))} primary generators`
     player.supergenTimeLeftCon = Decimal.add(10, (getUpgradeTimesBought("supergentime").times(20)) )
 
-    if (getUpgradeTimesBought("primgen").gt(1)) {
+    if (getUpgradeTimesBought("primgen").gt(1) || generatorsRespecFlag) {
         let gain = Decimal.sqrt(10).pow(getUpgradeTimesBought("primgen")).div(10)
         let supergenpower = Decimal.dTen
 
@@ -1235,6 +1247,15 @@ function tickGenerators() {
         baseMultFromGenerators = player.generators.cbrt().times(getUpgradeTimesBought("genpower").pow_base(2))
         alphaMultFromGenerators = player.generators.root(6).times(getUpgradeTimesBought("genpower").pow_base(2))
         betaMultFromGenerators = player.generators.log10().times(getUpgradeTimesBought("genpower").pow_base(2)) //TODO: make this weaker!!
+
+        if(generatorsRespecFlag) {
+            gain = Decimal.dZero
+            supergenpower = Decimal.dTen
+            player.generators = Decimal.dZero
+            baseMultFromGenerators = Decimal.dOne
+            alphaMultFromGenerators = Decimal.dOne
+            betaMultFromGenerators = Decimal.dOne
+        }
 
         getElement("primgenSpeedText").textContent = `They are generating each other at a rate of ${formatBig(gain.times(10))}gens/s`
         getElement("genAmountText").textContent = `You have ${formatBig(player.generators)} generators`

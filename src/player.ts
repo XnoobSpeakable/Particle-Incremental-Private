@@ -260,15 +260,15 @@ export const player = {
         },
         supergentime: {
             cost: new Decimal(1e6),
-            timesBought: Decimal.dOne
+            timesBought: Decimal.dZero
         },
         supergenpower: {
             cost: new Decimal(1e7),
-            timesBought: Decimal.dOne
+            timesBought: Decimal.dZero
         },
         genpower: {
             cost: new Decimal(50),
-            timesBought: Decimal.dOne
+            timesBought: Decimal.dZero
         }
     },
     num: Decimal.dZero,
