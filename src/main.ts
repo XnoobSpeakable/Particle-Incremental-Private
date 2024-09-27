@@ -422,22 +422,22 @@ function fgbTestSingle() {
     } else {
         UpdateCostDisplay("divgencost", getUpgradeCost("gen"));
     }
-    if(player.selfcells === 1) {
+    if (player.selfcells === 1) {
         getElement("rotators").style.display = "none"
         getElement("generators").style.display = "none"
         getElement("movers").style.display = "none"
         getElement("selfcelltexts").style.display = "none"
-        getElement("choosetext").style.display = "none"   
+        getElement("choosetext").style.display = "none"
         getElement("br1").style.display = "none"
-        getElement("br2").style.display = "none"    
+        getElement("br2").style.display = "none"
     }
-    if(player.unlockedSelfRotators) {
+    if (player.unlockedSelfRotators) {
         getElement("rotatorsWindow").style.display = "block";
     }
-    if(player.unlockedSelfGenerators) {
+    if (player.unlockedSelfGenerators) {
         getElement("generatorsWindow").style.display = "block";
     }
-    if(player.unlockedSelfMovers) {
+    if (player.unlockedSelfMovers) {
         getElement("moversWindow").style.display = "block";
     }
 }
@@ -1106,7 +1106,7 @@ function returnParticleHandler(): void {
 }
 
 function unlockSelfcell(cell: string, n: number) {
-    if(player.betaNum.gte(1e7) && n === 1) {
+    if (player.betaNum.gte(1e7) && n === 1) {
         player.betaNum = player.betaNum.minus(1e7)
         player.selfcells = 1
         getElement("rotators").style.display = "none"
@@ -1116,7 +1116,7 @@ function unlockSelfcell(cell: string, n: number) {
         getElement("choosetext").style.display = "none"
         getElement("br1").style.display = "none"
         getElement("br2").style.display = "none"
-        switch(cell) {
+        switch (cell) {
             case 'rotators':
                 player.unlockedSelfRotators = true
                 getElement("rotatorsWindow").style.display = "block";
@@ -1144,7 +1144,7 @@ function respecSelfcell(cell: string) {
     getElement("choosetext").style.display = "block"
     getElement("br1").style.display = "block"
     getElement("br2").style.display = "block"
-    switch(cell) {
+    switch (cell) {
         case 'rotators':
             player.unlockedSelfRotators = false
             player.selfcells -= 1
@@ -1207,7 +1207,7 @@ function tickRotators() {
         baseMultFromRotators = Decimal.dOne
         alphaMultFromRotators = Decimal.dOne
         betaMultFromRotators = Decimal.dOne
-    }  
+    }
 
     getElement("rotatorAmountText").textContent = `You have ${formatBig(getUpgradeTimesBought("selfrotator"))} self-rotators, ${formatBig(player.freeRotators)} free self-rotators`
     getElement("rotatorSpeedText").textContent = `They are rotating at a combined speed of ${formatBig(rotators.times(12))}°/s`
@@ -1224,20 +1224,20 @@ window.transformPrimgens = transformPrimgens
 let baseMultFromGenerators = Decimal.dOne
 let alphaMultFromGenerators = Decimal.dOne
 let betaMultFromGenerators = Decimal.dOne
- 
+
 function tickGenerators() {
     getElement("primgenAmountText").textContent = `You have ${formatBig(getUpgradeTimesBought("primgen"))} primary generators`
-    player.supergenTimeLeftCon = Decimal.add(10, (getUpgradeTimesBought("supergentime").times(20)) )
+    player.supergenTimeLeftCon = Decimal.add(10, (getUpgradeTimesBought("supergentime").times(20)))
 
     if (getUpgradeTimesBought("primgen").gt(1) || generatorsRespecFlag) {
         let gain = Decimal.sqrt(10).pow(getUpgradeTimesBought("primgen")).div(10)
         let supergenpower = Decimal.dTen
 
-        if(getUpgradeTimesBought("supergenpower").gt(0)) {
-            supergenpower = Decimal.pow(10, (getUpgradeTimesBought("supergenpower").times(0.2).plus(1)) )
+        if (getUpgradeTimesBought("supergenpower").gt(0)) {
+            supergenpower = Decimal.pow(10, (getUpgradeTimesBought("supergenpower").times(0.2).plus(1)))
         }
 
-        if(player.supergenTimeLeft.gt(0)) {
+        if (player.supergenTimeLeft.gt(0)) {
             player.supergenTimeLeft = player.supergenTimeLeft.minus(1)
             getElement("primgenAmountText").textContent = `You have ${formatBig(getUpgradeTimesBought("primgen"))} super generators`
             gain = gain.times(supergenpower)
@@ -1248,7 +1248,7 @@ function tickGenerators() {
         alphaMultFromGenerators = player.generators.root(6).times(getUpgradeTimesBought("genpower").pow_base(2))
         betaMultFromGenerators = player.generators.log10().times(getUpgradeTimesBought("genpower").pow_base(2)) //TODO: make this weaker!!
 
-        if(generatorsRespecFlag) {
+        if (generatorsRespecFlag) {
             gain = Decimal.dZero
             supergenpower = Decimal.dTen
             player.generators = Decimal.dZero
@@ -1271,7 +1271,7 @@ function selfcellHandler() {
     }
     if (player.unlockedSelfGenerators) {
         tickGenerators()
-    }  
+    }
     if (player.unlockedSelfMovers) {
         //tickMovers()
     }
@@ -1574,8 +1574,8 @@ function fgbTestConst(): void {
                     .div(player.alphaNum.max(Decimal.dOne))
             )} booster particles per alpha particle per second,
                resulting in a +${formatBigSpecific(
-                   percentBoostDisplay
-               )}% boost to base particle production`;
+                percentBoostDisplay
+            )}% boost to base particle production`;
         } else {
             getElement(
                 "boostersmaintext"
@@ -1583,8 +1583,8 @@ function fgbTestConst(): void {
                 bpGain.times(Decimal.dTen).div(player.alphaNum)
             )} booster particles per alpha particle per second,
                resulting in a ${formatBigSpecific(
-                   percentBoostDisplay.div(100).plus(Decimal.dOne)
-               )}x boost to base particle production`;
+                percentBoostDisplay.div(100).plus(Decimal.dOne)
+            )}x boost to base particle production`;
         }
 
         getElement("bpamount").textContent =
@@ -1658,7 +1658,7 @@ function fgbTestConst(): void {
             getElement("returnbox").style.display = "block";
         }
 
-        
+
         if (
             player.betaNum.gte(1e7) || player.selfcells > 0
         ) {
@@ -1860,15 +1860,15 @@ function savinginloop(): void {
 
 
 function arbitraryHighlight(h: string) {
-    if(playerSettings.themeNumber > 2 && playerSettings.themeNumber < 5) {
+    if (playerSettings.themeNumber > 2 && playerSettings.themeNumber < 5) {
         getElement(h).style.setProperty('border', '1px solid #00FF00')
         getElement(h).style.setProperty('box-shadow', 'inset 0 0 5px #00FF00')
     }
-    else if(playerSettings.themeNumber === 7) {
+    else if (playerSettings.themeNumber === 7) {
         getElement(h).style.setProperty('border', '1px solid #FFFFFF')
         getElement(h).style.setProperty('box-shadow', 'inset 0 0 7px #FFFFFF')
     }
-    else if(playerSettings.themeNumber > 5) {
+    else if (playerSettings.themeNumber > 5) {
         getElement(h).style.setProperty('border', '1px solid #000000')
         getElement(h).style.setProperty('box-shadow', 'inset 0 0 5px #000000')
     }
@@ -1901,8 +1901,8 @@ function costHighlightHandle(upgradeName: UpgradeName): void {
 function costHighlighting(): void {
     let key: UpgradeName
 
-    for(key in upgrades) {
-       costHighlightHandle(key)
+    for (key in upgrades) {
+        costHighlightHandle(key)
     }
 
     player.num.gte(getUpgradeCost("speed")) ? arbitraryHighlight("fiftyspeed") : arbitraryUnhighlight("fiftyspeed");
@@ -1920,13 +1920,23 @@ arbitraryHighlight("manualboost");
 arbitraryHighlight("generatorboost");
 
 function statsUpdate() {
-    getElement("stat").textContent = 
-    `Raw values:\n
+    getElement("stat").textContent =
+        `Raw values:\n
     Particles: ${player.num}\n
     Alpha Particles: ${player.alphaNum}\n
     Beta Particles: ${player.betaNum}\n
     `
 }
+
+// CILoader Inject
+const loaded = ["ExpoUpgrade"];
+import CILoader, { type Mod } from "./mods/PILoader";
+
+const ciloader = new CILoader(player);
+loaded.forEach(async (name) => {
+    const mod: Mod = await import(`./mods/${name}.ts`);
+    mod.onStart(ciloader);
+})
 
 //Game loop, repeatedly run every 100ms.
 setInterval(() => {
@@ -1942,7 +1952,7 @@ setInterval(() => {
     savinginloop();
 }, 100);
 
-if(!player.floatBugfix) {
+if (!player.floatBugfix) {
     player.omegaBase = player.omegaBase.plus(0.000001)
     player.omegaAlpha = player.omegaAlpha.plus(0.000001)
     player.floatBugfix = true
