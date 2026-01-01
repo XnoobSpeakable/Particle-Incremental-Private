@@ -13,7 +13,7 @@
         "@typescript-eslint/parser": "^7.6.0",
         "eslint": "^8.56.0",
         "typescript": "^5.4.5",
-        "vite": "^5.2.8"
+        "vite": "^7.3.0"
     },
     "dependencies": {
         "break_eternity.js": "^1.4.2"
