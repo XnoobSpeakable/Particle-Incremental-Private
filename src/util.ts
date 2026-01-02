@@ -75,6 +75,13 @@ export function formatSpecific(n: number): string {
         : n.toFixed(3).replace(".000", "");
 }
 
+export function formatTime(n: number): string {
+    if(n < 0) n = 0;
+    return Math.log10(n) >= 6
+        ? n.toExponential(2).replace("e+", "e").replace(".00", "")
+        : n.toFixed(2)
+}
+
 export function formatBigSpecific(n: Decimal): string {
     return n.absLog10().toNumber() >= 6
         ? formatDecimal(n, 2).replace("e+", "e").replace(".00", "")

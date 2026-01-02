@@ -22,7 +22,8 @@ import {
     onBought,
     onBoughtInc,
     formatBigSpecific,
-    formatDecimal
+    formatDecimal,
+    formatTime
 } from "./util";
 import { UpdateCostDisplay, upgrades, buyUpgrade } from "./upgrades";
 import { createAchievementHTML } from "./achievements";
@@ -1712,14 +1713,14 @@ function pcaTestConst(): void {
         getElement("unlockpca").style.display = "none";
 
         if (player.pcaToggle === true) {
-            if (player.chunkAutobuyerTimeLeft === 0) {
+            if (player.chunkAutobuyerTimeLeft <= 0) {
                 player.chunkAutobuyerTimeLeft = player.pcaTime;
                 makechunk();
             }
 
-            player.chunkAutobuyerTimeLeft--;
+            player.chunkAutobuyerTimeLeft -= player.deltaTime;
             getElement("untilpca").textContent =
-                format(player.chunkAutobuyerTimeLeft / 10) +
+                formatTime(player.chunkAutobuyerTimeLeft) +
                 " left until next autobuy";
         }
     }
@@ -1732,14 +1733,14 @@ function agaTestConst(): void {
         getElement("unlockaga").style.display = "none";
 
         if (player.agaToggle === true) {
-            if (player.groupAutobuyerTimeLeft === 0) {
+            if (player.groupAutobuyerTimeLeft <= 0) {
                 player.groupAutobuyerTimeLeft = player.agaTime;
                 makegroup();
             }
 
-            player.groupAutobuyerTimeLeft--;
+            player.groupAutobuyerTimeLeft -= player.deltaTime;
             getElement("untilaga").textContent =
-                format(player.groupAutobuyerTimeLeft / 10) +
+                formatTime(player.groupAutobuyerTimeLeft) +
                 " left until next autobuy";
         }
     }
@@ -1753,14 +1754,14 @@ function baTestConst(): void {
         getElement("bangautobuyerunlock").style.display = "none";
 
         if (player.bangAutobuyerToggle === true) {
-            if (player.bangAutobuyerTimeLeft === 0) {
+            if (player.bangAutobuyerTimeLeft <= 0) {
                 player.bangAutobuyerTimeLeft = player.bangAutobuyerTime;
                 bang();
             }
 
-            player.bangAutobuyerTimeLeft--;
+            player.bangAutobuyerTimeLeft -= player.deltaTime;
             getElement("untilba").textContent =
-                format(player.bangAutobuyerTimeLeft) +
+                formatTime(player.bangAutobuyerTimeLeft) +
                 " left until next autobuy";
         }
     }
@@ -1774,14 +1775,14 @@ function maTestConst(): void {
         getElement("mergeautobuyerunlock").style.display = "none";
 
         if (player.mergeAutobuyerToggle === true) {
-            if (player.mergeAutobuyerTimeLeft === 0) {
+            if (player.mergeAutobuyerTimeLeft <= 0) {
                 player.mergeAutobuyerTimeLeft = player.mergeAutobuyerTime;
                 merge();
             }
 
-            player.mergeAutobuyerTimeLeft--;
+            player.mergeAutobuyerTimeLeft -= player.deltaTime;
             getElement("untilma").textContent =
-                format(player.mergeAutobuyerTimeLeft) +
+                formatTime(player.mergeAutobuyerTimeLeft) +
                 " left until next autobuy";
         }
     }
@@ -1928,8 +1929,15 @@ function statsUpdate() {
     `
 }
 
-//Game loop, repeatedly run every 100ms.
+const TPS = 10;
+let lastTickTime = 0;
+
+//Game loop, repeatedly run.
 setInterval(() => {
+    player.deltaTime = (Date.now() - lastTickTime) / 1000;
+    if(player.deltaTime === 0) player.deltaTime = 1 / TPS;
+    lastTickTime = Date.now();
+    console.log(player.deltaTime);
     passiveUnlockDisplay();
     pcaTestConst();
     agaTestConst();
@@ -1938,9 +1946,9 @@ setInterval(() => {
     fgbTestConst();
     instantAutobuyers();
     costHighlighting();
-    statsUpdate()
+    statsUpdate();
     savinginloop();
-}, 100);
+}, 1000 / TPS);
 
 if(!player.floatBugfix) {
     player.omegaBase = player.omegaBase.plus(0.000001)
