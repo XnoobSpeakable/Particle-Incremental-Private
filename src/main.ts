@@ -1951,9 +1951,9 @@ setInterval(() => {
 }, 1000 / TPS);
 
 if(!player.floatBugfix) {
-    player.omegaBase = player.omegaBase.plus(0.000001)
-    player.omegaAlpha = player.omegaAlpha.plus(0.000001)
-    player.floatBugfix = true
+    player.omegaBase = player.omegaBase.plus(0.000001);
+    player.omegaAlpha = player.omegaAlpha.plus(0.000001);
+    player.floatBugfix = true;
 }
 
 /**
