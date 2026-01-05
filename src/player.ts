@@ -332,8 +332,9 @@ export const player = {
     generators: Decimal.dZero,
     movers: Decimal.dZero,
     supergenTimeLeft: Decimal.dZero,
-    supergenTimeLeftCon: Decimal.dTen,
-    deltaTime: 0
+    supergenTimeLeftCon: Decimal.dOne,
+    deltaTime: 0,
+    lastTickTime: Date.now()
 };
 
 /**

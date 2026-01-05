@@ -1072,19 +1072,15 @@ let alphaFromReturn = Decimal.dZero;
 function returnParticleHandler(): void {
     if (getUpgradeTimesBought("buyreturngenerator").gt(Decimal.dZero)) {
         const gain = onBought([
-            new Decimal(0.1),
-            "*",
             "buyreturngenerator",
             "*",
             player.betaNum,
             "*",
             ["rpup", "+", Decimal.dOne]
         ]);
-        player.returnParticles = player.returnParticles.plus(gain);
+        player.returnParticles = player.returnParticles.plus(gain.times(player.deltaTime));
 
         alphaFromReturn = onBought([
-            new Decimal(0.1),
-            "*",
             player.returnParticles,
             "*",
             [Decimal.dTwo, "^", "rpmult"],
@@ -1099,9 +1095,9 @@ function returnParticleHandler(): void {
         getElement("returnboosttext").textContent = `Your ${formatBig(
             player.returnParticles
         )} Return particles (+${formatBig(
-            gain.times(10)
+            gain
         )}/s) are returning ${formatBig(
-            alphaFromReturn.times(10)
+            alphaFromReturn
         )} Alpha particles per second`;
     }
 }
@@ -1193,7 +1189,9 @@ let betaMultFromRotators = Decimal.dOne
 
 function tickRotators() {
     const rotators = getUpgradeTimesBought("selfrotator").plus(player.freeRotators)
-    player.degrees = player.degrees.plus(rotators.times(1.2).times(Decimal.pow(2, getUpgradeTimesBought("doublerotate"))))
+    player.degrees = player.degrees.plus( 
+        (rotators.times(1.2).times(Decimal.pow(2, getUpgradeTimesBought("doublerotate")))) .times(player.deltaTime).times(10) 
+    )
     const z = (player.degrees.times(player.degrees)).div(36000).plus(player.degrees) // adjusted degree value for boosts
 
     if (z.gt(10)) { // don't wanna cause instability or undefined values when z is small 
@@ -1218,20 +1216,20 @@ function tickRotators() {
 
 //terminology: primgen = primary generators; gen = generators
 function transformPrimgens() {
-    player.supergenTimeLeft = player.supergenTimeLeftCon
+    player.supergenTimeLeft = player.supergenTimeLeftCon;
 }
-window.transformPrimgens = transformPrimgens
+window.transformPrimgens = transformPrimgens;
 
-let baseMultFromGenerators = Decimal.dOne
-let alphaMultFromGenerators = Decimal.dOne
-let betaMultFromGenerators = Decimal.dOne
+let baseMultFromGenerators = Decimal.dOne;
+let alphaMultFromGenerators = Decimal.dOne;
+let betaMultFromGenerators = Decimal.dOne;
  
 function tickGenerators() {
     getElement("primgenAmountText").textContent = `You have ${formatBig(getUpgradeTimesBought("primgen"))} primary generators`
-    player.supergenTimeLeftCon = Decimal.add(10, (getUpgradeTimesBought("supergentime").times(20)) )
+    player.supergenTimeLeftCon = Decimal.add(1, (getUpgradeTimesBought("supergentime").times(2)) )
 
     if (getUpgradeTimesBought("primgen").gt(1) || generatorsRespecFlag) {
-        let gain = Decimal.sqrt(10).pow(getUpgradeTimesBought("primgen")).div(10)
+        let gain = Decimal.sqrt(10).pow(getUpgradeTimesBought("primgen"));
         let supergenpower = Decimal.dTen
 
         if(getUpgradeTimesBought("supergenpower").gt(0)) {
@@ -1239,11 +1237,11 @@ function tickGenerators() {
         }
 
         if(player.supergenTimeLeft.gt(0)) {
-            player.supergenTimeLeft = player.supergenTimeLeft.minus(1)
+            player.supergenTimeLeft = player.supergenTimeLeft.minus(player.deltaTime)
             getElement("primgenAmountText").textContent = `You have ${formatBig(getUpgradeTimesBought("primgen"))} super generators`
             gain = gain.times(supergenpower)
         }
-        player.generators = player.generators.plus(gain)
+        player.generators = player.generators.plus(gain.times(player.deltaTime))
 
         baseMultFromGenerators = player.generators.cbrt().times(getUpgradeTimesBought("genpower").pow_base(2))
         alphaMultFromGenerators = player.generators.root(6).times(getUpgradeTimesBought("genpower").pow_base(2))
@@ -1258,10 +1256,10 @@ function tickGenerators() {
             betaMultFromGenerators = Decimal.dOne
         }
 
-        getElement("primgenSpeedText").textContent = `They are generating each other at a rate of ${formatBig(gain.times(10))}gens/s`
+        getElement("primgenSpeedText").textContent = `They are generating each other at a rate of ${formatBig(gain)}gens/s`
         getElement("genAmountText").textContent = `You have ${formatBig(player.generators)} generators`
         getElement("genBoostText").textContent = `Which are providing these gain multipliers: ${formatBig(baseMultFromGenerators)}x to Base, ${formatBig(alphaMultFromGenerators)}x to Alpha, ${formatBig(betaMultFromGenerators)}x to Beta`
-        getElement("divtransformstats").textContent = `${formatBig(supergenpower)}x generator gain for ${formatBig(player.supergenTimeLeftCon.div(10))} seconds`
+        getElement("divtransformstats").textContent = `${formatBig(supergenpower)}x generator gain for ${formatBig(player.supergenTimeLeftCon)} seconds`
 
     }
 }
@@ -1327,7 +1325,7 @@ function fgbTestConst(): void {
 
         reactorHandler();
         returnParticleHandler();
-        player.alphaNum = player.alphaNum.plus(alphaFromReturn);
+        player.alphaNum = player.alphaNum.plus(alphaFromReturn.times(player.deltaTime));
 
         getElement(
             "nptext"
@@ -1375,7 +1373,7 @@ function fgbTestConst(): void {
         }
 
         player.bangTime = Math.ceil(
-            300 / 2 ** getUpgradeTimesBought("bangspeed").toNumber()
+            30 / 2 ** getUpgradeTimesBought("bangspeed").toNumber()
         );
 
         const alphaGain = onBought(
@@ -1388,7 +1386,7 @@ function fgbTestConst(): void {
         ).times(boostsacmult);
 
         player.mergeTime = Math.ceil(
-            300 / 2 ** getUpgradeTimesBought("mergespeed").toNumber()
+            30 / 2 ** getUpgradeTimesBought("mergespeed").toNumber()
         );
 
         const betaGain = onBought(
@@ -1412,7 +1410,7 @@ function fgbTestConst(): void {
 
         if (getUpgradeTimesBought("machine").gte(Decimal.dOne)) {
             machineProd = 9 / Math.log10(player.machineWear) + 1;
-            player.machineWear += 1;
+            player.machineWear += 10 * player.deltaTime;
         }
 
         clickerParticleMult = player.clickerParticles
@@ -1476,7 +1474,9 @@ function fgbTestConst(): void {
             "*",
             baseMultFromRotators,
             "*",
-            baseMultFromGenerators
+            baseMultFromGenerators,
+            "*",
+            Decimal.dTen
         );
 
         getElement("particlesperclick").textContent =
@@ -1498,16 +1498,16 @@ function fgbTestConst(): void {
             "You are getting " + formatBig(alphaGain) + " Alpha/bang";
         getElement("bangtimeconst").textContent =
             "Currently, bangs take " +
-            format(player.bangTime / 10) +
+            format(player.bangTime) +
             " seconds.";
-        player.bangTimeLeft -= 1;
+        player.bangTimeLeft -= player.deltaTime;
 
         if (
             player.bangTimeLeft >= 0 &&
             player.bangTimeLeft <= player.bangTime
         ) {
             getElement("bangtimeleft").textContent =
-                "Bang time left: " + format(player.bangTimeLeft / 10);
+                "Bang time left: " + format(player.bangTimeLeft);
             getElement("bangbutton").setAttribute("disabled", "true")
             getElement("bangbutton").style.setProperty('cursor', 'not-allowed')
 
@@ -1520,16 +1520,16 @@ function fgbTestConst(): void {
             "You are getting " + formatBig(betaGain) + " Beta/merge";
         getElement("mergetimeconst").textContent =
             "Currently, merges take " +
-            format(player.mergeTime / 10) +
+            format(player.mergeTime) +
             " seconds.";
-        player.mergeTimeLeft -= 1;
+        player.mergeTimeLeft -= player.deltaTime;
 
         if (
             player.mergeTimeLeft >= 0 &&
             player.mergeTimeLeft <= player.mergeTime
         ) {
             getElement("mergetimeleft").textContent =
-                "Merge time left: " + format(player.mergeTimeLeft / 10);
+                "Merge time left: " + format(player.mergeTimeLeft);
             getElement("mergebutton").setAttribute("disabled", "true")
             getElement("mergebutton").style.setProperty('cursor', 'not-allowed')
         } else {
@@ -1539,20 +1539,19 @@ function fgbTestConst(): void {
 
         if (player.genBoostTimeLeft.gt(Decimal.dZero)) {
             player.genBoostTimeLeft = player.genBoostTimeLeft.minus(
-                Decimal.dOne
+                player.deltaTime
             );
         }
         getElement("divgbtl").textContent =
             "Boost Time Left: " +
-            formatBig(player.genBoostTimeLeft.div(Decimal.dTen));
+            formatBig(player.genBoostTimeLeft);
 
         const bpGain = player.alphaNum
             .times(getUpgradeTimesBought("boosterup").plus(Decimal.dOne))
             .times(Decimal.dTwo)
-            .div(Decimal.dTen)
             .times(BPfactor);
 
-        player.boosterParticles = player.boosterParticles.plus(bpGain);
+        player.boosterParticles = player.boosterParticles.plus(bpGain.times(player.deltaTime));
 
         const percentBoostDisplay = player.boosterParticles.times(
             getUpgradeTimesBought("boosteruppercent")
@@ -1570,9 +1569,7 @@ function fgbTestConst(): void {
             getElement(
                 "boostersmaintext"
             ).textContent = `You are currently getting ${formatBig(
-                bpGain
-                    .times(Decimal.dTen)
-                    .div(player.alphaNum.max(Decimal.dOne))
+                bpGain.div(player.alphaNum.max(Decimal.dOne))
             )} booster particles per alpha particle per second,
                resulting in a +${formatBigSpecific(
                    percentBoostDisplay
@@ -1581,7 +1578,7 @@ function fgbTestConst(): void {
             getElement(
                 "boostersmaintext"
             ).textContent = `You are currently getting ${formatBig(
-                bpGain.times(Decimal.dTen).div(player.alphaNum)
+                bpGain.div(player.alphaNum)
             )} booster particles per alpha particle per second,
                resulting in a ${formatBigSpecific(
                    percentBoostDisplay.div(100).plus(Decimal.dOne)
@@ -1594,12 +1591,10 @@ function fgbTestConst(): void {
             " booster particles";
 
         const clickerParticleGain = onBought([
-            ["machine", "*", [new Decimal(1.5), "^", "speedparticle"]],
-            "/",
-            Decimal.dTen
-        ]).times(machineProd);
+            ["machine", "*", [new Decimal(1.5), "^", "speedparticle"]]
+        ]).times(machineProd)
         player.clickerParticles =
-            player.clickerParticles.plus(clickerParticleGain);
+            player.clickerParticles.plus(clickerParticleGain.times(player.deltaTime));
 
         selfcellHandler()
 
@@ -1614,11 +1609,11 @@ function fgbTestConst(): void {
         getElement("divoalpha").textContent =
             "You have " + formatDecimal(player.omegaAlpha, 2);
 
-        player.num = player.num.plus(gain);
+        player.num = player.num.plus(gain.times(player.deltaTime));
 
         getElement("particlespersecond").innerHTML =
             "You are getting <span style='color: #ed6464;'>" +
-            formatBig(gain.times(10)) +
+            formatBig(gain) +
             "</span> particles/s";
 
         if (player.num.gte(1e8) || nuclearParticles.gt(Decimal.dZero)) {
@@ -1689,7 +1684,7 @@ function fgbTestConst(): void {
         getElement("clickercounter").textContent = `You have 
           ${formatBig(player.clickerParticles)} 
           Clicker Particles 
-          (${formatBig(clickerParticleGain.times(Decimal.dTen))}
+          (${formatBig(clickerParticleGain)}
           /s), which are making Manual Boost 
           ${formatBigSpecific(clickerParticleMult)}
           x stronger.`;
@@ -1929,15 +1924,13 @@ function statsUpdate() {
     `
 }
 
-const TPS = 10;
-let lastTickTime = 0;
+const TPS = 60;
 
 //Game loop, repeatedly run.
 setInterval(() => {
-    player.deltaTime = (Date.now() - lastTickTime) / 1000;
-    if(player.deltaTime === 0) player.deltaTime = 1 / TPS;
-    lastTickTime = Date.now();
-    console.log(player.deltaTime);
+    player.deltaTime = (Date.now() - player.lastTickTime) / 1000;
+    if(player.deltaTime <= 0) player.deltaTime = 1 / TPS;
+    player.lastTickTime = Date.now();
     passiveUnlockDisplay();
     pcaTestConst();
     agaTestConst();
